@@ -10,10 +10,13 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.*;
-import com.bpkazemi.Encore.EncoreApplication;
-import com.bpkazemi.Encore.PickerActivity;
-import com.bpkazemi.Encore.R;
+import android.widget.ArrayAdapter;
+import android.widget.ImageView;
+import android.widget.ListView;
+import android.widget.TextView;
+import com.encore.EncoreApplication;
+import com.encore.PickerActivity;
+import com.encore.R;
 import com.facebook.*;
 import com.facebook.model.GraphObject;
 import com.facebook.model.GraphUser;
@@ -24,6 +27,7 @@ import org.json.JSONObject;
 import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
+
 
 /**
  * Created with IntelliJ IDEA.

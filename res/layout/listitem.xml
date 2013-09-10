@@ -9,7 +9,7 @@
 
     <ImageView
         android:id="@+id/icon"
-        android:src="@drawable/action_eating"
+        android:src="@drawable/action_people"
         android:layout_width="60dp"
         android:layout_height="60dp" />
 
