@@ -2,6 +2,9 @@
 *.apk
 *.ap_
 
+#Random Shit that is not playing nice
+.DS_Store
+
 # files for the dex VM
 *.dex
 
