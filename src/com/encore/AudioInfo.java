@@ -1,6 +1,6 @@
 package com.encore;
 
-import android.content.Context;
+import android.content.Intent;
 import android.util.Log;
 
 public class AudioInfo {
@@ -8,13 +8,17 @@ public class AudioInfo {
 	Long songStart;
 	Long recordStart;
 	Long recordEnd;
-	
+	String source;
 	
 
 
 
 	public Long getSongStart() {
 		return songStart;
+	}
+	
+	public Long getRecordDuration() {
+		return recordEnd - recordStart;
 	}
 
 	public void setSongStart(Long songStart) {
@@ -42,8 +46,19 @@ public class AudioInfo {
 
 	}
 
-	public AudioInfo() {
+	public AudioInfo(String source) {
+		this.source = source;
+	}
+	
+	public void setUpIntent(Intent i) {
+		Log.d(tag, "audioInfo AUDIO SOURCE: " + source);
+		i.putExtra("songStart", songStart);
+		i.putExtra("recordStart", recordStart);
+		i.putExtra("recordEnd", recordEnd);
+		i.putExtra("audioSource", source);
 		
 	}
+
+
 	
 }
