@@ -1,20 +1,30 @@
 package com.encore;
 
-import android.content.pm.PackageManager;
 import android.graphics.drawable.Drawable;
-import android.webkit.WebView.FindListener;
+import android.net.Uri;
 
 public class SessionTemp {
-	
-	public SessionTemp () {
-		
+	String desc;
+	Drawable icon;
+	Uri uri;
+	public SessionTemp (String description, Drawable icon) {
+		desc = description;
+		this.icon = icon;
 	}
 	
-	public Drawable loadIcon(PackageManager pm){
-		
-		
-		
-		return null;
-		
+	public Drawable loadIcon(){
+		return icon;
+	}
+	
+	public String loadLabel() {
+		return desc;
+	}
+	
+	public void setUri(Uri uri) {
+		this.uri = uri;
+	}
+	
+	public Uri getUri() {
+		return uri;
 	}
 }

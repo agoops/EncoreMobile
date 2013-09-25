@@ -12,7 +12,7 @@ public class CurrentSessions extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.current_sessions);
 		mListView = (ListView) findViewById(R.id.session_list_view);
-		SessionViewAdapter adapter = new SessionViewAdapter(this, null, getPackageManager());
+		SessionViewAdapter adapter = new SessionViewAdapter(this, null);
 	
 	}
 }
