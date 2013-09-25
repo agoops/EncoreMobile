@@ -31,10 +31,12 @@ import com.encore.R;
 import com.encore.SessionTemp;
 import com.encore.SessionView;
 import com.encore.SessionViewAdapter;
+import com.encore.VideoPlayer;
 
 public class VideoListViewFragment extends Fragment{
 	private static String tag = "VideoListViewFragment";
 	private VideoView videoView;
+	
 	@Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
         Bundle savedInstanceState) {
@@ -73,8 +75,8 @@ public class VideoListViewFragment extends Fragment{
 			Uri uri = element.getData().getUri();
 			Log.d(tag, "uri = " + uri.toString());
 			
-			Toast.makeText(getActivity().getBaseContext(), uri.toString(),
-                    Toast.LENGTH_SHORT).show();
+//			Toast.makeText(getActivity().getBaseContext(), uri.toString(),
+//                    Toast.LENGTH_SHORT).show();
 			showVideoDialog(uri);
 //			startActivity(new Intent(Intent.ACTION_VIEW, uri));
 //		    Log.i("Video", "Video Playing....");
@@ -114,22 +116,5 @@ public class VideoListViewFragment extends Fragment{
         dialog.show();
 	}
 
-	public class VideoPlayer {
-		VideoView videoView;
-		Context context;
-		public VideoPlayer(VideoView view, Context cntext) {
-			videoView = view;
-			context = cntext;
-		}
-		
-		public void playVideo(Uri uri) {
-			Log.d(tag, "playVideo()");
-			videoView.setVideoURI(uri);
-			MediaController mc = new MediaController(context);
-			videoView.setMediaController(mc);
-			videoView.requestFocus();
-			videoView.start();
-		}
-	}
 	
 }
