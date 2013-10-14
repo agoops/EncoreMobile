@@ -54,6 +54,7 @@ public class APIService {
 		// No instance variables necessary
 	}
 	
+	// Ignore the next 4 lines
 	// GET params:		("GET", ["action", "id"])	
 	// POST params:		("POST", ["action", "json_formatted_POST_data"]
 	// PUT params:		("PUT", ["action", "json_formatted_PUT_data"]
@@ -68,8 +69,8 @@ public class APIService {
 			uri += id;
 		}
 		
-		// 2. Get the right request type:
-		// 		get_users = GET, post_users = POST, etc
+		// 2. Get the request type:
+		// 	get_users = GET, post_users = POST, etc
 		String requestType = action.substring(0, action.indexOf("_")); 
 		
 		// 3. Execute the request and return
@@ -121,16 +122,7 @@ public class APIService {
         return null;
 	}
 	
-	// ------------- POST --------------
-	public static String post(String uri, Map<String, String> data) {
-		// Convert Map<String, String> to JSON
-		String json = new GsonBuilder().create().toJson(data, Map.class);
-		
-		// Make the post request
-		return makePostRequest(uri, json);
-	}
-	
-	// Execute the POST request to the target URI
+	// ---------------- POST ---------------
 	public static String makePostRequest(String uri, String json) {
 		try {
 			// Create a new client to communicate with our RESTful services
