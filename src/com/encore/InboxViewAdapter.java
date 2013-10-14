@@ -2,7 +2,9 @@ package com.encore;
 
 import java.util.List;
 
+import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -57,7 +59,8 @@ public class InboxViewAdapter extends BaseAdapter{
 				@Override
 				public void onClick(View arg0) {
 					
-					
+					((Activity)mContext).startActivityForResult(new Intent(mContext, AndroidVideoCapture.class), 0);
+
 				}
             	
             
@@ -76,5 +79,6 @@ public class InboxViewAdapter extends BaseAdapter{
         // return view
         return v;
 	}
+	
 
 }
