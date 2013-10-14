@@ -5,39 +5,34 @@
     android:background="@drawable/intro_background"
     android:orientation="vertical" >
 
-    <TextView
-        android:id="@+id/rapchat"
+
+    <ImageView
+        android:id="@+id/imageView1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
-        android:text=" RAPCHAT "
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:textColor="@android:color/white"
-        android:textSize="44sp"
-        android:textStyle="bold" />
-
+        android:src="@drawable/rapchat_logo" />
 
     <Button
-        android:id="@+id/login"
+        android:id="@+id/login_intro"
         style="?android:attr/borderlessButtonStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_above="@+id/signup"
-        android:layout_alignLeft="@+id/rapchat"
-        android:layout_alignRight="@+id/rapchat"
+        android:layout_above="@+id/signup_intro"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentRight="true"
         android:text="LOGIN"
-        android:textColor="@android:color/white"
-        android:layout_marginBottom="5dp" />
-
+        android:textColor="@android:color/white" />
+    
     <Button
-        android:id="@+id/signup"
+        android:id="@+id/signup_intro"
         style="?android:attr/borderlessButtonStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/login"
+        android:layout_alignLeft="@+id/login_intro"
         android:layout_alignParentBottom="true"
-        android:layout_alignRight="@+id/login"
+        android:layout_alignRight="@+id/login_intro"
         android:layout_marginBottom="58dp"
         android:text="SIGN UP"
         android:textColor="@android:color/white" />

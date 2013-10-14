@@ -23,23 +23,25 @@
         android:label="@string/app_name"
         android:theme="@style/AppTheme" >
         <activity android:name="com.encore.MainActivity" >
-            
-            
-            
         </activity>
-        <activity
-            android:name="com.encore.MyActivity"
-            android:label="@string/app_name" >
-            
-        </activity>
-        <activity android:name="com.encore.views.VideoListViewActivity" >
+        <activity android:name="com.encore.views.IntroScreen" 
+            <!-- android:theme="@android:style/Theme.NoTitleBar" -->
+            >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-            
-            
+        </activity>
+        <activity android:name="com.encore.views.LoginActivity" >
+        </activity>
+        <activity android:name="com.encore.views.SignUpActivity" >
+        </activity>
+        <activity
+            android:name="com.encore.MyActivity"
+            android:label="@string/app_name" >
+        </activity>
+        <activity android:name="com.encore.views.VideoListViewActivity" >
         </activity>
         <activity
             android:name="com.facebook.LoginActivity"

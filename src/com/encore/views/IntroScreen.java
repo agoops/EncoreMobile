@@ -19,8 +19,8 @@ public class IntroScreen extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.intro_activity);
 		
-		login = (Button) findViewById(R.id.login);
-		signup = (Button) findViewById(R.id.signup);
+		login = (Button) findViewById(R.id.login_intro);
+		signup = (Button) findViewById(R.id.signup_intro);
 		assignButtonsToActivities();
 		
 		
