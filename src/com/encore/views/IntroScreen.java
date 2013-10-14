@@ -1,28 +1,34 @@
 package com.encore.views;
 
-import android.graphics.Color;
+import android.app.Activity;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentActivity;
-import android.widget.TextView;
+import android.widget.Button;
 
 import com.encore.R;
 
-public class IntroScreen extends FragmentActivity {
+public class IntroScreen extends Activity {
 	
-	Fragment[] fragments;
 	private static int LOGIN = 0;
 	private static int SIGNUP = 1;
 	
-	TextView rapchat;
+	Button login;
+	Button signup;
 	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.intro_activity);
 		
-		rapchat = (TextView) findViewById(R.id.rapchat);
-		rapchat.setTextColor(Color.WHITE);
-	
+		login = (Button) findViewById(R.id.login);
+		signup = (Button) findViewById(R.id.signup);
+		assignButtonsToActivities();
+		
+		
 	}
+	
+	public void assignButtonsToActivities() {
+		
+	}
+	
+	
 }
