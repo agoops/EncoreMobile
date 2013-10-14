@@ -11,31 +11,35 @@
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
-        android:text="RAPCHAT"
+        android:text=" RAPCHAT "
         android:textAppearance="?android:attr/textAppearanceLarge"
+        android:textColor="@android:color/white"
         android:textSize="44sp"
         android:textStyle="bold" />
+
 
     <Button
         android:id="@+id/login"
         style="?android:attr/borderlessButtonStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_above="@+id/signup"
         android:layout_alignLeft="@+id/rapchat"
-        android:layout_alignParentBottom="true"
         android:layout_alignRight="@+id/rapchat"
-        android:layout_marginBottom="134dp"
-        android:text="LOGIN" />
+        android:text="LOGIN"
+        android:textColor="@android:color/white"
+        android:layout_marginBottom="5dp" />
 
     <Button
         android:id="@+id/signup"
         style="?android:attr/borderlessButtonStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/login"
         android:layout_alignParentBottom="true"
-        android:layout_below="@id/login"
-        android:layout_centerHorizontal="true"
+        android:layout_alignRight="@+id/login"
         android:layout_marginBottom="58dp"
-        android:text="SIGN UP" />
+        android:text="SIGN UP"
+        android:textColor="@android:color/white" />
 
 </RelativeLayout>
