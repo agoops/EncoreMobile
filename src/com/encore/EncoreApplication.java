@@ -1,7 +1,6 @@
 package com.encore;
 
 import android.app.Application;
-import com.facebook.model.GraphUser;
 
 import java.util.List;
 
@@ -13,13 +12,4 @@ import java.util.List;
  * To change this template use File | Settings | File Templates.
  */
 public class EncoreApplication extends Application {
-    private List<GraphUser> selectedUsers;
-
-    public List<GraphUser> getSelectedUsers() {
-        return selectedUsers;
-    }
-
-    public void setSelectedUsers(List<GraphUser> users) {
-        this.selectedUsers = users;
-    }
 }

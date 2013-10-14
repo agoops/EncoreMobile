@@ -15,13 +15,11 @@ import android.widget.TextView;
 public class SessionViewAdapter extends BaseAdapter{
 	
 	private Context mContext;
-    private List mSessionList;
-    private PackageManager mPackManager;
+    private List<SessionTemp> mSessionList;
     
-	public SessionViewAdapter(Context c, List list, PackageManager pm) {
+	public SessionViewAdapter(Context c, List<SessionTemp> list) {
 		mContext = c;
 		mSessionList = list;
-		mPackManager = pm;
 	}
 	
 	@Override
@@ -44,7 +42,7 @@ public class SessionViewAdapter extends BaseAdapter{
 		// get the selected entry
 		
 		//this shouldn't be an applicationInfo object
-        ApplicationInfo entry = (ApplicationInfo) mSessionList.get(position);
+        SessionTemp entry = (SessionTemp) mSessionList.get(position);
  
         // reference to convertView
         SessionView v = (SessionView) convertView;
@@ -52,7 +50,8 @@ public class SessionViewAdapter extends BaseAdapter{
         // inflate new layout if null
         if(v == null) {
             LayoutInflater inflater = LayoutInflater.from(mContext);
-            v = (SessionView) inflater.inflate(R.layout.session_view, null);
+            v = (SessionView) inflater.inflate(R.layout.session_view, parent, false);
+            v.setData(entry);
         }
  
         // load controls from layout resources
@@ -60,8 +59,8 @@ public class SessionViewAdapter extends BaseAdapter{
         TextView tvAppName = (TextView)v.findViewById(R.id.tvName);
  
         // set data to display
-        ivAppIcon.setImageDrawable(entry.loadIcon(mPackManager));
-        tvAppName.setText(entry.loadLabel(mPackManager));
+        ivAppIcon.setImageDrawable(entry.loadIcon());
+        tvAppName.setText(entry.loadLabel());
  
         // return view
         return v;
