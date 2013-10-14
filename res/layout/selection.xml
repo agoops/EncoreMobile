@@ -16,13 +16,13 @@
             android:orientation="vertical" >
 
        
-        <com.facebook.widget.ProfilePictureView
+       <!--  <com.facebook.widget.ProfilePictureView
                 android:id="@+id/selection_profile_pic"
                 android:layout_height="wrap_content"
                 android:layout_width="wrap_content"
                 android:layout_gravity="center"
                 android:gravity="center_horizontal"
-                facebook:preset_size="small" />
+                facebook:preset_size="small" /> -->
         <TextView
                 android:id="@+id/selection_user_name"
                 android:layout_width="wrap_content"
@@ -41,11 +41,11 @@
                 android:textColor="#303040"
                 android:textSize="18sp" />
 
-        <com.facebook.widget.LoginButton
+        <!-- <com.facebook.widget.LoginButton
                 android:id="@+id/authButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                />
+                /> -->
     </LinearLayout>
 
     <ListView
