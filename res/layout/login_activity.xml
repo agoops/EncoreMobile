@@ -1,19 +1,42 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:background="@drawable/intro_background_blurred"
-    android:layout_height="match_parent" >
+    android:layout_height="match_parent"
+    android:background="@drawable/intro_background_blurred" >
 
     <EditText
-        android:id="@+id/editText1"
+        android:id="@+id/username_login"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="98dp"
-        android:ems="10" >
+        android:layout_above="@+id/password_login"
+        android:layout_alignParentLeft="true"
+        android:ems="10"
+        android:hint="Username or email"
+        android:textColor="@android:color/white"
+        android:textColorHint="@android:color/background_light" />
+
+    <EditText
+        android:id="@+id/password_login"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_centerVertical="true"
+        android:ems="10"
+        android:hint="Password"
+        android:inputType="textPassword"
+        android:textColor="@android:color/white"
+        android:textColorHint="@android:color/background_light" >
 
         <requestFocus />
     </EditText>
+
+    <Button
+        android:id="@+id/login"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentRight="true"
+        android:layout_below="@+id/password_login"
+        android:text="Button" />
 
 </RelativeLayout>
