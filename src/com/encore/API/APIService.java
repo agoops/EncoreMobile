@@ -11,36 +11,32 @@ import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.util.Map;
 
-/**
- * Created with IntelliJ IDEA.
- * User: babakpourkazemi
- * Date: 9/7/13
- * Time: 9:42 PM
- * To change this template use File | Settings | File Templates.
- */
-public class APIService  {
-
-    public APIService() {
-        // No instance variables necessary
-    }
-
-    // Takes a Map object and converts to json to send in POST request
-    public static HttpResponse post(String uri, Map<String, String> mapData) {
-//        Map<String, String> comment = new HashMap<String, String>();
-//        mapData.put("subject", "Using the GSON library");
-        String json = new GsonBuilder().create().toJson(mapData, Map.class);
-        return makePostRequest(uri, json);
-    }
-
-    // Execute the POST request to the target uri
-    public static HttpResponse makePostRequest(String uri, String json) {
-        try {
-            HttpPost httpPost = new HttpPost(uri);
-            httpPost.setEntity(new StringEntity(json));
-            httpPost.setHeader("Accept", "application/json");
-            httpPost.setHeader("Content-type", "application/json");
-            return new DefaultHttpClient().execute(httpPost);
-        } catch (UnsupportedEncodingException e) {
+public class APIService {
+	
+	public APIService() {
+		// No instance variables necessary
+	}
+	
+	// Converts the Map<String, String> to JSON, which is sent in the POST payload
+	public static HttpResponse post(String uri, Map<String, String> mapData) {
+		// Convert Map<String, String> to json
+		String json = new GsonBuilder().create().toJson(mapData, Map.class);
+		
+		// Make the post request
+		return makePostRequest(uri, json);
+	}
+	
+	// Execute the POST request to the target URI
+	public static HttpResponse makePostRequest(String uri, String json) {
+		try {
+			HttpPost httpPost = new HttpPost(uri);
+			httpPost.setEntity(new StringEntity(json));
+			httpPost.setHeader("Accept", "application/json");
+			httpPost.setHeader("Content-type", "application/json");
+			
+			return new DefaultHttpClient().execute(httpPost);
+			
+		} catch (UnsupportedEncodingException e) {
             e.printStackTrace();
         } catch (ClientProtocolException e) {
             e.printStackTrace();
@@ -48,6 +44,5 @@ public class APIService  {
             e.printStackTrace();
         }
         return null;
-    }
-
+	}
 }
