@@ -23,7 +23,7 @@
             android:layout_height="wrap_content"
             android:inputType="textPersonName"
             android:textColor="@android:color/white"
-            android:textColorHint="@android:color/background_light"
+            android:textColorHint="@android:color/darker_gray"
             android:hint="Enter your name" >
 
             <requestFocus />
@@ -35,7 +35,7 @@
             android:layout_height="wrap_content"
             android:inputType="textEmailAddress" 
             android:textColor="@android:color/white"
-            android:textColorHint="@android:color/background_light"
+            android:textColorHint="@android:color/darker_gray"
             android:hint="Email address"/>
 
         <EditText
@@ -43,7 +43,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textColor="@android:color/white"
-            android:textColorHint="@android:color/background_light"
+            android:textColorHint="@android:color/darker_gray"
             android:hint="Pick a username" />
 
         <EditText
@@ -52,7 +52,7 @@
             android:layout_height="wrap_content"
             android:inputType="textPassword"
             android:textColor="@android:color/white"
-            android:textColorHint="@android:color/background_light"
+            android:textColorHint="@android:color/darker_gray"
             android:hint="Password" />
 
         <EditText
@@ -61,7 +61,7 @@
             android:layout_height="wrap_content"
             android:inputType="textPassword"
             android:textColor="@android:color/white"
-            android:textColorHint="@android:color/background_light"
+            android:textColorHint="@android:color/darker_gray"
             android:hint="Re-type Password" />
 
         <Button

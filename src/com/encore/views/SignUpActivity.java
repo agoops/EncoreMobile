@@ -58,9 +58,9 @@ public class SignUpActivity extends Activity {
 				passwordText = password.getText().toString();
 				retypePasswordText = retypePassword.getText().toString();
 				
-				if (name == "" || name == null || emailText == "" || emailText == null || 
-						usernameText =="" || usernameText == null|| passwordText == "" || 
-						passwordText ==null || retypePasswordText == "" || retypePasswordText == null ) {
+				if (name.equals("") || emailText.equals("")|| 
+						usernameText.equals("")|| passwordText.equals("")||
+						retypePasswordText.equals("")) {
 					Toast.makeText(mContext,"Please fill out all fields", 
 			                Toast.LENGTH_SHORT).show();
 					return;
@@ -70,11 +70,21 @@ public class SignUpActivity extends Activity {
 			                Toast.LENGTH_SHORT).show();
 					return;
 				}
+				String phoneNumber = "poop";
+				try{
 				TelephonyManager tMgr =(TelephonyManager)mContext.getSystemService(Context.TELEPHONY_SERVICE);
-				String phoneNumber = tMgr.getLine1Number();
+				phoneNumber = tMgr.getLine1Number();
+				}
+				catch(Exception e){
+					e.printStackTrace();
+				}
 				String[] names = name.split(" ");
 				String firstName = names[0];
-				String lastName = names[1];
+				String lastName = "";
+				if (names.length ==2){
+					lastName = names[1];
+				}
+				
 				
 				Map<String, String> map = new HashMap<String,String>();
 				map.put("first_name", firstName);
