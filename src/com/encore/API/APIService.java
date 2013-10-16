@@ -1,28 +1,24 @@
 package com.encore.API;
 
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.OutputStream;
+import java.io.OutputStreamWriter;
 import java.io.UnsupportedEncodingException;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.apache.http.HttpEntity;
 import org.apache.http.client.ClientProtocolException;
-import org.apache.http.client.methods.HttpDelete;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.client.methods.HttpPost;
-import org.apache.http.client.methods.HttpPut;
-import org.apache.http.entity.StringEntity;
-
-import android.net.http.AndroidHttpClient;
-
-import com.google.gson.GsonBuilder;
 
 public class APIService {
 	
-	public static final String DOMAIN = "domain.is.not.yet.known";
+	public static final String DOMAIN = "http://domain.is.not.yet.known";
 	
 	private static final Map<String, String> endpoints = new HashMap<String, String>();
 	static {
@@ -63,50 +59,66 @@ public class APIService {
 	// Example: APIService.connect("post_users", "{ name: \"Babak Pourkazemi\", email: \" bp5xj@virginia.edu \" }", null);
 	
 	public static String connect(String action, String json_data, String id) {
-		// 1. Create the URI
-		String uri = DOMAIN + endpoints.get(action);
-		if(id != null && id instanceof String) {
-			uri += id;
+		try {
+			// 1. Create the URL
+			String uri = DOMAIN + endpoints.get(action);
+			
+			if(id != null && id instanceof String) {
+				uri += id;
+			}
+			URL url = new URL(uri);
+			
+			// 2. Setup the basic connection
+			HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+			conn.setDoInput(true);
+			conn.setConnectTimeout(15000);
+			conn.setReadTimeout(15000);
+			
+			// 3. Get the request method:
+			// 	get_users = GET, post_users = POST, etc
+			String requestType = action.substring(0, action.indexOf("_")); 
+			
+			// 4. Execute the request and return
+			if(requestType.toUpperCase().equals("GET")) {
+				return makeGetRequest(conn, url);
+				
+			} else if(requestType.toUpperCase().equals("POST")) {
+				return makePostRequest(conn, url, json_data);
+				
+			} else if(requestType.toUpperCase().equals("PUT")) {
+				return makePutRequest(conn, url, json_data);
+				
+			} else if(requestType.toUpperCase().equals("DELETE")) {
+				return makeDeleteRequest(conn, url);
+				
+			}
+		} catch (MalformedURLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
 		
-		// 2. Get the request type:
-		// 	get_users = GET, post_users = POST, etc
-		String requestType = action.substring(0, action.indexOf("_")); 
-		
-		// 3. Execute the request and return
-		if(requestType.toUpperCase().equals("GET")) {
-			return makeGetRequest(uri);
-			
-		} else if(requestType.toUpperCase().equals("POST")) {
-			return makePostRequest(uri, json_data);
-			
-		} else if(requestType.toUpperCase().equals("PUT")) {
-			return makePutRequest(uri, json_data);
-			
-		} else if(requestType.toUpperCase().equals("DELETE")) {
-			return makeDeleteRequest(uri);
-			
-		}
 		return "";
 	}
 	
 	// --------------- GET ---------------
-	public static String makeGetRequest(String uri) {
+	public static String makeGetRequest(HttpURLConnection conn, URL url) {
 		try {
-			// Create a new client to communicate with our RESTful services
-			AndroidHttpClient client = AndroidHttpClient.newInstance("Android");
-			HttpGet httpGet = new HttpGet(uri);
+			// Setup the GET request
+			conn.setRequestMethod("GET");
 			
-			// Execute request and grab the HttpEntity - 
-			// which includes the Header, Content-Type, and payload
-			HttpEntity entity = client.execute(httpGet).getEntity();
+			// Execute the request
+			conn.connect();
 			
-			// Convert response to a string
+			// Read the response
 			String results = "";
-			if(entity != null) {
-				InputStream instream = entity.getContent();
-				results = convertStreamToString(instream);
-				
+			int response = conn.getResponseCode();
+			
+			InputStream instream = conn.getInputStream();
+			results = convertStreamToString(instream);
+			if(instream != null) {
 				instream.close();
 			}
 			
@@ -123,27 +135,33 @@ public class APIService {
 	}
 	
 	// ---------------- POST ---------------
-	public static String makePostRequest(String uri, String json) {
+	public static String makePostRequest(HttpURLConnection conn, URL url, String json) {
 		try {
-			// Create a new client to communicate with our RESTful services
-			AndroidHttpClient client = AndroidHttpClient.newInstance("Android");
-			
 			// Setup the POST request
-			HttpPost httpPost = new HttpPost(uri);
-			httpPost.setEntity(new StringEntity(json));
-			httpPost.setHeader("Accept", "application/json");
-			httpPost.setHeader("Content-type", "application/json");
+			conn.setRequestMethod("POST");
+			conn.setDoOutput(true);
+			conn.setChunkedStreamingMode(0);
+			conn.setRequestProperty("Accept-Encoding", "application/json");
+			conn.setRequestProperty("Content-Type", "application/json");
 			
-			// Execute request and grab the HttpEntity - 
-			// which includes the Header, Content-Type, and payload
-			HttpEntity entity = client.execute(httpPost).getEntity();
+			// Add the data being sent 
+			OutputStream outStream = conn.getOutputStream();
+			BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(outStream, "UTF-8"));
+			writer.write(json); // May need to URL encode this: writer.write(URLEncoder.encode(json, "UTF-8"));
+			writer.flush();
+			writer.close();
+			outStream.close();
 			
-			// Convert response to a string
+			// Execute the request
+			conn.connect();
+			
+			// Read the response
 			String results = "";
-			if(entity != null) {
-				InputStream instream = entity.getContent();
-				results = convertStreamToString(instream);
-				
+			int response = conn.getResponseCode();
+			
+			InputStream instream = conn.getInputStream();
+			results = convertStreamToString(instream);
+			if(instream != null) {
 				instream.close();
 			}
 			
@@ -160,27 +178,33 @@ public class APIService {
 	}
 	
 	// ---------------- PUT ---------------
-	public static String makePutRequest(String uri, String json) {
+	public static String makePutRequest(HttpURLConnection conn, URL url, String json) {
 		try {
-			// Create a new client to communicate with our RESTful services
-			AndroidHttpClient client = AndroidHttpClient.newInstance("Android");
+			// Setup the PUT request
+			conn.setRequestMethod("PUT");
+			conn.setDoOutput(true);
+			conn.setChunkedStreamingMode(0);
+			conn.setRequestProperty("Accept-Encoding", "application/json");
+			conn.setRequestProperty("Content-Type", "application/json");
 			
-			// Setup the POST request
-			HttpPut httpPut = new HttpPut(uri);
-			httpPut.setEntity(new StringEntity(json));
-			httpPut.setHeader("Accept", "application/json");
-			httpPut.setHeader("Content-type", "application/json");
+			// Write the data being sent
+			OutputStream outStream = conn.getOutputStream();
+			BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(outStream, "UTF-8"));
+			writer.write(json); // May need to URL encode this: writer.write(URLEncoder.encode(json, "UTF-8"));
+			writer.flush();
+			writer.close();
+			outStream.close();
 			
-			// Execute request and grab the HttpEntity - 
-			// which includes the Header, Content-Type, and payload
-			HttpEntity entity = client.execute(httpPut).getEntity();
+			// Execute the request
+			conn.connect();
 			
-			// Convert response to a string
+			// Read the response
 			String results = "";
-			if(entity != null) {
-				InputStream instream = entity.getContent();
-				results = convertStreamToString(instream);
-				
+			int response = conn.getResponseCode();
+			
+			InputStream instream = conn.getInputStream();
+			results = convertStreamToString(instream);
+			if(instream != null) {
 				instream.close();
 			}
 			
@@ -197,24 +221,21 @@ public class APIService {
 	}
 	
 	// ----------------- DELETE ----------------
-	public static String makeDeleteRequest(String uri) {
+	public static String makeDeleteRequest(HttpURLConnection conn, URL url) {
 		try {
-			// Create a new client to communicate with our RESTful services
-			AndroidHttpClient client = AndroidHttpClient.newInstance("Android");
+			// Set up the DELETE request
+			conn.setRequestMethod("DELETE");
 			
-			// Setup the POST request
-			HttpDelete httpDelete = new HttpDelete(uri);
+			// Execute
+			conn.connect();
 			
-			// Execute request and grab the HttpEntity - 
-			// which includes the Header, Content-Type, and payload
-			HttpEntity entity = client.execute(httpDelete).getEntity();
-			
-			// Convert response to a string
+			// Read the response
 			String results = "";
-			if(entity != null) {
-				InputStream instream = entity.getContent();
-				results = convertStreamToString(instream);
-				
+			int response = conn.getResponseCode();
+			
+			InputStream instream = conn.getInputStream();
+			results = convertStreamToString(instream);
+			if(instream != null) {
 				instream.close();
 			}
 			
