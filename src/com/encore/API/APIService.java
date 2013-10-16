@@ -18,8 +18,8 @@ import org.apache.http.client.ClientProtocolException;
 
 public class APIService {
 	
+	HttpURLConnection conn;
 	public static final String DOMAIN = "http://domain.is.not.yet.known";
-	
 	private static final Map<String, String> endpoints = new HashMap<String, String>();
 	static {
 		// Users
@@ -46,8 +46,8 @@ public class APIService {
 		endpoints.put("get_like", "/likes/"); // + :likeId
 	}
 	
-	public APIService() {
-		// No instance variables necessary
+	public APIService(HttpURLConnection conn) {
+		this.conn = conn;
 	}
 	
 	// Ignore the next 4 lines
@@ -58,7 +58,7 @@ public class APIService {
 	
 	// Example: APIService.connect("post_users", "{ name: \"Babak Pourkazemi\", email: \" bp5xj@virginia.edu \" }", null);
 	
-	public static String connect(String action, String json_data, String id) {
+	public String connect(String action, String json_data, String id) {
 		try {
 			// 1. Create the URL
 			String uri = DOMAIN + endpoints.get(action);
@@ -69,7 +69,7 @@ public class APIService {
 			URL url = new URL(uri);
 			
 			// 2. Setup the basic connection
-			HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+			conn = (HttpURLConnection) url.openConnection();
 			conn.setDoInput(true);
 			conn.setConnectTimeout(15000);
 			conn.setReadTimeout(15000);
@@ -104,7 +104,7 @@ public class APIService {
 	}
 	
 	// --------------- GET ---------------
-	public static String makeGetRequest(HttpURLConnection conn, URL url) {
+	public String makeGetRequest(HttpURLConnection conn, URL url) {
 		try {
 			// Setup the GET request
 			conn.setRequestMethod("GET");
@@ -135,7 +135,7 @@ public class APIService {
 	}
 	
 	// ---------------- POST ---------------
-	public static String makePostRequest(HttpURLConnection conn, URL url, String json) {
+	public String makePostRequest(HttpURLConnection conn, URL url, String json) {
 		try {
 			// Setup the POST request
 			conn.setRequestMethod("POST");
@@ -178,7 +178,7 @@ public class APIService {
 	}
 	
 	// ---------------- PUT ---------------
-	public static String makePutRequest(HttpURLConnection conn, URL url, String json) {
+	public String makePutRequest(HttpURLConnection conn, URL url, String json) {
 		try {
 			// Setup the PUT request
 			conn.setRequestMethod("PUT");
@@ -221,7 +221,7 @@ public class APIService {
 	}
 	
 	// ----------------- DELETE ----------------
-	public static String makeDeleteRequest(HttpURLConnection conn, URL url) {
+	public String makeDeleteRequest(HttpURLConnection conn, URL url) {
 		try {
 			// Set up the DELETE request
 			conn.setRequestMethod("DELETE");
@@ -252,7 +252,7 @@ public class APIService {
 	}
 	
 	// Converts an InputStream to a String
-	private static String convertStreamToString(InputStream is) {
+	private String convertStreamToString(InputStream is) {
 	    /*
 	     * To convert the InputStream to String we use the BufferedReader.readLine()
 	     * method. We iterate until the BufferedReader return null which means
