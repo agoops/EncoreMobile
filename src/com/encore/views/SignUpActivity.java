@@ -35,11 +35,11 @@ public class SignUpActivity extends Activity {
 		setContentView(R.layout.signup_activity);
 		mContext = this;
 		apiService = new APIService();
-		fullname = (EditText) findViewById(R.id.fullname);
-		email = (EditText) findViewById(R.id.email);
-		username = (EditText) findViewById(R.id.username);
-		password = (EditText) findViewById(R.id.password);
-		retypePassword = (EditText) findViewById(R.id.retypePassword);
+		fullname = (EditText) findViewById(R.id.fullname_signup);
+		email = (EditText) findViewById(R.id.email_signup);
+		username = (EditText) findViewById(R.id.username_signup);
+		password = (EditText) findViewById(R.id.password_signup);
+		retypePassword = (EditText) findViewById(R.id.retypePassword_signup);
 
 		signup = (Button) findViewById(R.id.signup_signup);
 
@@ -95,9 +95,9 @@ public class SignUpActivity extends Activity {
 				map.put("phone_number", phoneNumber);
 				
 				String jsonData = new JSONObject(map).toString();
+				String results = apiService.connect("post_users", jsonData, null);
 				Toast.makeText(mContext,jsonData, 
-		                Toast.LENGTH_LONG).show();
-				//apiService.connect("post_users", json_data, null);
+						Toast.LENGTH_LONG).show();
 				return;
 				
 			}
