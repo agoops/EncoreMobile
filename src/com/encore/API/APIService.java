@@ -8,87 +8,131 @@ import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.io.UnsupportedEncodingException;
+import java.lang.reflect.Type;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.HashMap;
-import java.util.Map;
 
 import org.apache.http.client.ClientProtocolException;
+import org.apache.http.entity.StringEntity;
+import org.apache.http.util.EntityUtils;
+
+import util.Constants;
+
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.squareup.okhttp.OkHttpClient;
 
 public class APIService {
+	OkHttpClient client; 
+	private static Gson mGson;
+	// Learning TODO
+	// 1. Learn about access tokens
+	// 2. Go over correct Gson usage
 	
-	HttpURLConnection conn;
-	public static final String DOMAIN = "http://domain.is.not.yet.known";
-	private static final Map<String, String> endpoints = new HashMap<String, String>();
-	static {
-		// Users
-		endpoints.put("get_users", "/users/"); // + :id
-		endpoints.put("put_users", "/users/");
-		endpoints.put("post_users", "/users/newuser/");
-		
-		// Sessions
-		endpoints.put("get_sessions", "/sessions/"); // + :id
-		endpoints.put("post_sessions", "/sessions/");
-		endpoints.put("add_clip_to_session", "/sessions/addclip/"); // + :sessionId
-		endpoints.put("get_session_comments", "/sessions/comments/"); // + :sessionId
-		endpoints.put("post_session_comments", "/sessions/comments"); // + :sessionId
-		endpoints.put("post_like", "sessions/likes/"); // + :sessionId
-		endpoints.put("delete_like", "sessions/likes/"); // + :sessionId
-		
-		// Comments
-		endpoints.put("get_all_comments", "/comments/");
-		endpoints.put("get_comment", "/comments/"); // + :commentId
-		endpoints.put("put_comment", "/comments/"); // + :commentId
-		
-		// Likes
-		endpoints.put("get_all_likes", "/likes/");
-		endpoints.put("get_like", "/likes/"); // + :likeId
+	// TODO
+	// 1. Reconfigure connect() method to work with "Type" and "params"
+	// API.get('likes', 'GET', 15)
+	
+	// Put the ACCESS_TOKEN's in the body
+	private static final String ACCESS_TOKEN = "result+from+creating+user+and+storing+access+token"; // send on every request
+	private static final String PROD = "rapchat.herokuapp.com";
+	private static final String QA = "rapchat.herokuapp.com";
+	private static final String BASE_URL = (Constants.DEBUG) ? QA : PROD;
+
+	// Users
+	private static final String users = BASE_URL + "/users?access_token=" + ACCESS_TOKEN;
+	private static final String create_user = BASE_URL + "/users/newuser?access_token=" + ACCESS_TOKEN;
+	
+	// Sessions
+	private static final String sessions = BASE_URL + "/sessions?access_token=" + ACCESS_TOKEN;
+	private static final String add_clip = BASE_URL + "/sessions/addclip?access_token=" + ACCESS_TOKEN;
+	private static final String session_comments = BASE_URL + "/sessions/comments?access_token=" + ACCESS_TOKEN;
+	private static final String session_likes = BASE_URL + "/session/likes?access_token=" + ACCESS_TOKEN;
+	
+	// Comments
+	private final String comments = BASE_URL + "/comments?access_token=" + ACCESS_TOKEN;
+	
+	// Likes
+	private final String likes= BASE_URL + "/likes?access_token=" + ACCESS_TOKEN;
+	
+	// Params
+	private static final String USER = "&id=%s";
+	private static final String SESSION = "&sessionId=%s";
+	private static final String COMMENTS = "&commentId=%s";
+	private static final String LIKES = "&likeId=%s";
+	
+	public APIService(OkHttpClient client) {
+		this.client = client;
 	}
 	
-	public APIService(HttpURLConnection conn) {
-		this.conn = conn;
+//	private <T> T get(String url, StringEntity entity, Type type) throws IOException {
+//		
+//	}
+	
+	private <T> T post(String url, StringEntity entity, Type type) throws IOException {
+		URL postUrl = new URL(url);
+		HttpURLConnection connection = client.open(postUrl);
+		connection.setDoOutput(true);
+		OutputStream out = null;
+		InputStream in = null;
+		try {
+			connection.setRequestMethod("POST");
+			
+			// Write entity to the output stream
+			out = connection.getOutputStream();
+			String entityOut = EntityUtils.toString(entity);
+			entity.writeTo(out);
+			out.close();
+			
+			// Read the response code
+			if(connection.getResponseCode() != HttpURLConnection.HTTP_OK) {
+				throw new IOException("Unexpected HTTP response: " +
+						+ connection.getResponseCode() + " " + connection.getResponseMessage());
+			}
+			
+			// Return the response 
+			in = connection.getInputStream();
+			return getGson().fromJson(new InputStreamReader(in), type);
+		} finally {
+			if(out != null) out.close();
+			if(in != null) in.close();
+		}
 	}
 	
-	// Ignore the next 4 lines
-	// GET params:		("GET", ["action", "id"])	
-	// POST params:		("POST", ["action", "json_formatted_POST_data"]
-	// PUT params:		("PUT", ["action", "json_formatted_PUT_data"]
-	// DELETE params: 	("DELETE", ["action", "json_formatted_DELETE_data]
+	public Gson getGson() {
+		if(mGson == null) {
+			mGson = new Gson();
+		}
+		return mGson;
+	}
 	
-	// Example: APIService.connect("post_users", "{ name: \"Babak Pourkazemi\", email: \" bp5xj@virginia.edu \" }", null);
-	
-	public String connect(String action, String json_data, String id) {
+	public String connect(String action, String type, String params) {
 		try {
 			// 1. Create the URL
-			String uri = DOMAIN + endpoints.get(action);
-			
-			if(id != null && id instanceof String) {
-				uri += id;
+			String url_action = action;
+			if(params != null && params instanceof String) {
+				url_action = url_action + "&id=" + params ;
 			}
-			URL url = new URL(uri);
+			URL url = new URL(url_action);
 			
 			// 2. Setup the basic connection
-			conn = (HttpURLConnection) url.openConnection();
+			HttpURLConnection conn = client.open(url);
 			conn.setDoInput(true);
 			conn.setConnectTimeout(15000);
 			conn.setReadTimeout(15000);
 			
-			// 3. Get the request method:
-			// 	get_users = GET, post_users = POST, etc
-			String requestType = action.substring(0, action.indexOf("_")); 
-			
-			// 4. Execute the request and return
-			if(requestType.toUpperCase().equals("GET")) {
+			// 3. Execute the request and return
+			if(type.toUpperCase().equals("GET")) {
 				return makeGetRequest(conn, url);
 				
-			} else if(requestType.toUpperCase().equals("POST")) {
-				return makePostRequest(conn, url, json_data);
+			} else if(type.toUpperCase().equals("POST")) {
+				return makePostRequest(conn, url, params);
 				
-			} else if(requestType.toUpperCase().equals("PUT")) {
-				return makePutRequest(conn, url, json_data);
+			} else if(type.toUpperCase().equals("PUT")) {
+				return makePutRequest(conn, url, params);
 				
-			} else if(requestType.toUpperCase().equals("DELETE")) {
+			} else if(type.toUpperCase().equals("DELETE")) {
 				return makeDeleteRequest(conn, url);
 				
 			}
@@ -113,6 +157,11 @@ public class APIService {
 			conn.connect();
 			
 			// Read the response
+			if(conn.getResponseCode() != HttpURLConnection.HTTP_OK) {
+				throw new IOException("Unexpected HTTP response: "
+                        + conn.getResponseCode() + " " + conn.getResponseMessage());
+			}
+			
 			String results = "";
 			int response = conn.getResponseCode();
 			
@@ -156,9 +205,12 @@ public class APIService {
 			conn.connect();
 			
 			// Read the response
-			String results = "";
-			int response = conn.getResponseCode();
+			if(conn.getResponseCode() != HttpURLConnection.HTTP_OK) {
+				throw new IOException("Unexpected HTTP response: "
+                        + conn.getResponseCode() + " " + conn.getResponseMessage());
+			}
 			
+			String results = "";
 			InputStream instream = conn.getInputStream();
 			results = convertStreamToString(instream);
 			if(instream != null) {
@@ -199,6 +251,10 @@ public class APIService {
 			conn.connect();
 			
 			// Read the response
+			if(conn.getResponseCode() != HttpURLConnection.HTTP_OK) {
+				throw new IOException("Unexpected HTTP response: "
+                        + conn.getResponseCode() + " " + conn.getResponseMessage());
+			}
 			String results = "";
 			int response = conn.getResponseCode();
 			
@@ -230,6 +286,10 @@ public class APIService {
 			conn.connect();
 			
 			// Read the response
+			if(conn.getResponseCode() != HttpURLConnection.HTTP_OK) {
+				throw new IOException("Unexpected HTTP response: "
+                        + conn.getResponseCode() + " " + conn.getResponseMessage());
+			}
 			String results = "";
 			int response = conn.getResponseCode();
 			
@@ -278,4 +338,5 @@ public class APIService {
 	    }
 	    return sb.toString();
 	}
+	
 }
