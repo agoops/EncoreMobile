@@ -18,17 +18,17 @@ import org.apache.http.entity.StringEntity;
 import org.apache.http.util.EntityUtils;
 
 import util.Constants;
+import android.util.Log;
 
 import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import com.squareup.okhttp.OkHttpClient;
 
 public class APIService {
 	OkHttpClient client; 
 	private static Gson mGson;
+	
 	// Learning TODO
 	// 1. Learn about access tokens
-	// 2. Go over correct Gson usage
 	
 	// TODO
 	// 1. Reconfigure connect() method to work with "Type" and "params"
@@ -43,16 +43,13 @@ public class APIService {
 	// Users
 	private static final String users = BASE_URL + "/users?access_token=" + ACCESS_TOKEN;
 	private static final String create_user = BASE_URL + "/users/newuser?access_token=" + ACCESS_TOKEN;
-	
 	// Sessions
 	private static final String sessions = BASE_URL + "/sessions?access_token=" + ACCESS_TOKEN;
 	private static final String add_clip = BASE_URL + "/sessions/addclip?access_token=" + ACCESS_TOKEN;
 	private static final String session_comments = BASE_URL + "/sessions/comments?access_token=" + ACCESS_TOKEN;
 	private static final String session_likes = BASE_URL + "/session/likes?access_token=" + ACCESS_TOKEN;
-	
 	// Comments
 	private final String comments = BASE_URL + "/comments?access_token=" + ACCESS_TOKEN;
-	
 	// Likes
 	private final String likes= BASE_URL + "/likes?access_token=" + ACCESS_TOKEN;
 	
@@ -66,10 +63,34 @@ public class APIService {
 		this.client = client;
 	}
 	
-//	private <T> T get(String url, StringEntity entity, Type type) throws IOException {
-//		
-//	}
+	public Gson getGson() {
+		if(mGson == null) {
+			mGson = new Gson();
+		}
+		return mGson;
+	}
 	
+	// ----------- GET ------------
+	private <T> T get(String url, Type type) throws IOException {
+		URL getUrl = new URL(url);
+		HttpURLConnection conn = client.open(getUrl);
+		conn.setDoInput(true);
+		InputStream in = null;
+		try {
+			conn.setRequestMethod("GET");
+			
+			in = conn.getInputStream();
+			return getGson().fromJson(new InputStreamReader(in), type);
+		} catch(Exception e) {
+			Log.e("API", "" + e.getMessage());
+			return null;
+		}
+		finally {
+			if(in != null) in.close();
+		}
+	}
+	
+	// ------------- POST -----------
 	private <T> T post(String url, StringEntity entity, Type type) throws IOException {
 		URL postUrl = new URL(url);
 		HttpURLConnection connection = client.open(postUrl);
@@ -88,7 +109,7 @@ public class APIService {
 			// Read the response code
 			if(connection.getResponseCode() != HttpURLConnection.HTTP_OK) {
 				throw new IOException("Unexpected HTTP response: " +
-						+ connection.getResponseCode() + " " + connection.getResponseMessage());
+						connection.getResponseCode() + " " + connection.getResponseMessage());
 			}
 			
 			// Return the response 
@@ -98,13 +119,6 @@ public class APIService {
 			if(out != null) out.close();
 			if(in != null) in.close();
 		}
-	}
-	
-	public Gson getGson() {
-		if(mGson == null) {
-			mGson = new Gson();
-		}
-		return mGson;
 	}
 	
 	public String connect(String action, String type, String params) {
