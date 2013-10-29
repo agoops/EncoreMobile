@@ -10,17 +10,17 @@ import java.io.OutputStreamWriter;
 import java.io.UnsupportedEncodingException;
 import java.lang.reflect.Type;
 import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
 import java.net.URL;
-import java.net.URLEncoder;
 
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.util.EntityUtils;
 
 import util.Constants;
+import util.T;
 import android.util.Log;
 
+import com.encore.API.models.AccessToken;
 import com.encore.API.models.User;
 import com.google.gson.Gson;
 import com.squareup.okhttp.OkHttpClient;
@@ -29,8 +29,7 @@ public class API {
 	OkHttpClient client; 
 	private static Gson mGson;
 	
-	// Learning TODO
-	// 1. Learn about access tokens
+	private static final String TAG = "API";
 	
 	// TODO
 	// 1. Reconfigure connect() method to work with "Type" and "params"
@@ -38,13 +37,13 @@ public class API {
 	
 	// Put the ACCESS_TOKEN's in the body
 	private static final String ACCESS_TOKEN = "result+from+creating+user+and+storing+access+token"; // send on every request
-	private static final String PROD = "rapchat.herokuapp.com";
-	private static final String QA = "rapchat.herokuapp.com";
+	private static final String PROD = "http://rapchat.herokuapp.com";
+	private static final String QA = "http://rapchat.herokuapp.com";
 	private static final String BASE_URL = (Constants.DEBUG) ? QA : PROD;
 
 	// Users
-	private static final String USERS = BASE_URL + "/users?access_token=" + ACCESS_TOKEN;
-	private static final String CREATE_USER = BASE_URL + "/users/newuser?access_token=" + ACCESS_TOKEN;
+	private static final String USERS = "/users/";
+	private static final String CREATE_USER = USERS + "create";
 	// Sessions
 	private static final String SESSIONS = BASE_URL + "/sessions?access_token=" + ACCESS_TOKEN;
 	private static final String ADD_CLIP = BASE_URL + "/sessions/addclip?access_token=" + ACCESS_TOKEN;
@@ -61,7 +60,7 @@ public class API {
 	private static final String COMMENT = "&commentId=%s";
 	private static final String LIKE = "&likeId=%s";
 	
-	private static final String SIGN_IN = BASE_URL + "/oauth?username=%s&password=%s";
+	private static final String SIGN_UP = BASE_URL + CREATE_USER;
 	
 	public API(OkHttpClient client) {
 		this.client = client;
@@ -77,13 +76,14 @@ public class API {
 	// ----------- GET ------------
 	private <T> T get(String url, Type type) throws IOException {
 		URL getUrl = new URL(url);
-		HttpURLConnection conn = client.open(getUrl);
-		conn.setDoInput(true);
+		HttpURLConnection connection = client.open(getUrl);
+		connection.setDoInput(true);
+		connection.setRequestProperty("Content-Type", "application/json");
 		InputStream in = null;
 		try {
-			conn.setRequestMethod("GET");
+			connection.setRequestMethod("GET");
 			
-			in = conn.getInputStream();
+			in = connection.getInputStream();
 			return getGson().fromJson(new InputStreamReader(in), type);
 		} catch(Exception e) {
 			Log.e("API", "" + e.getMessage());
@@ -98,6 +98,7 @@ public class API {
 	private <T> T post(String url, StringEntity entity, Type type) throws IOException {
 		URL postUrl = new URL(url);
 		HttpURLConnection connection = client.open(postUrl);
+		connection.setRequestProperty("Content-Type", "application/json");
 		connection.setDoOutput(true);
 		OutputStream out = null;
 		InputStream in = null;
@@ -106,8 +107,8 @@ public class API {
 			
 			// Write entity to the output stream
 			out = connection.getOutputStream();
-			String entityOut = EntityUtils.toString(entity); // Not used...
 			entity.writeTo(out);
+			Log.d(TAG, "POST'ing with body: " + entity);
 			out.close();
 			
 			// Read the response code
@@ -116,7 +117,7 @@ public class API {
 						connection.getResponseCode() + " " + connection.getResponseMessage());
 			}
 			
-			// Return the response 
+			// Return the response as the given type 
 			in = connection.getInputStream();
 			return getGson().fromJson(new InputStreamReader(in), type);
 		} finally {
@@ -125,18 +126,25 @@ public class API {
 		}
 	}
 	
-	public String signIn(String username, String password) throws Exception {
-		// Is it bad practice to have the username and password in the URL?
-		String url = String.format(SIGN_IN, URLEncoder.encode(username, "UTF-8"), password);
-		String access_token = get(url, String.class);
+	public String signUp(User user) throws Exception {
+		String url = SIGN_UP;
 		
+		Log.d(TAG, "signUp called with body: " + getGson().toJson(user).toString());
+		User mUser = post(url, new StringEntity(getGson().toJson(user)), User.class);
+		
+		
+		// Access Token!
+		String access_token = user.get_access_token();
 		return access_token;
 	}
 	
-	public String create_user(User user) throws Exception {
-		StringEntity userEntity = new StringEntity(getGson().toJson(user));
-		return post(CREATE_USER, userEntity, User.class);
-	}
+//	public String signIn(String username, String password) throws Exception {
+//		// Is it bad practice to have the username and password in the URL?
+//		String url = String.format(SIGN_IN, URLEncoder.encode(username, "UTF-8"), password);
+//		String access_token = get(url, String.class);
+//		
+//		return access_token;
+//	}
 	
 	// ---------------- PUT ---------------
 	public String makePutRequest(HttpURLConnection conn, URL url, String json) {

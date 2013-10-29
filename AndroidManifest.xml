@@ -58,6 +58,8 @@
 
         <service android:name="UploadService2" >
         </service>
+        
+        <service android:enabled="true" android:name=".API.APIService" />
 
         <meta-data
             android:name="com.facebook.sdk.ApplicationId"
