@@ -30,3 +30,6 @@ proguard/
 *.ipr
 *.iws
 .idea/
+
+# A personal list of things I've (Babak) done
+accomplished.txt

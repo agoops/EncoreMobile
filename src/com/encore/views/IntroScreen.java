@@ -1,11 +1,9 @@
 package com.encore.views;
 
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.widget.Button;
 
 import com.encore.R;
@@ -26,19 +24,17 @@ public class IntroScreen extends Activity {
 		mContext = this;
 		login = (Button) findViewById(R.id.login_intro);
 		signup = (Button) findViewById(R.id.signup_intro);
-		assignButtonsToActivities();
-		
-		
 	}
 	
-	public void assignButtonsToActivities() {
-		signup.setOnClickListener(new OnClickListener(){
-			@Override
-			public void onClick(View v) {
-				startActivity(new Intent(mContext, SignUpActivity.class));
-			}
-		});
+	// Registered to onClick in XML
+	public void launchLogin(View view) {
+		Intent intent = new Intent(this, LoginActivity.class);
+		startActivity(intent);
 	}
 	
-	
+	// Registered to onClick in XML
+	public void launchSignup(View view) {
+		Intent intent = new Intent(this, SignUpActivity.class);
+		startActivity(intent);
+	}
 }
