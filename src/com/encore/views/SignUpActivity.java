@@ -37,8 +37,6 @@ public class SignUpActivity extends Activity {
 	}
 	
 	public void signUp(View view) {
-		Log.d("SIGNUP", "Button clicked");
-		
 		Intent apiIntent = new Intent(this, APIService.class);
 		
 		apiIntent.putExtra(T.API_TYPE, T.SIGN_UP);

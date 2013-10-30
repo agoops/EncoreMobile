@@ -1,26 +1,19 @@
 package com.encore.API;
 
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
-import java.io.OutputStreamWriter;
-import java.io.UnsupportedEncodingException;
 import java.lang.reflect.Type;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
-import org.apache.http.client.ClientProtocolException;
 import org.apache.http.entity.StringEntity;
-import org.apache.http.util.EntityUtils;
 
 import util.Constants;
-import util.T;
 import android.util.Log;
 
-import com.encore.API.models.AccessToken;
+import com.encore.API.models.Session;
 import com.encore.API.models.User;
 import com.google.gson.Gson;
 import com.squareup.okhttp.OkHttpClient;
@@ -31,36 +24,52 @@ public class API {
 	
 	private static final String TAG = "API";
 	
-	// TODO
-	// 1. Reconfigure connect() method to work with "Type" and "params"
-	// API.get('likes', 'GET', 15)
-	
-	// Put the ACCESS_TOKEN's in the body
 	private static final String ACCESS_TOKEN = "result+from+creating+user+and+storing+access+token"; // send on every request
 	private static final String PROD = "http://rapchat.herokuapp.com";
 	private static final String QA = "http://rapchat.herokuapp.com";
 	private static final String BASE_URL = (Constants.DEBUG) ? QA : PROD;
 
+	// Common URLs
+	private static final String USERS = BASE_URL + "/users/";
+	private static final String SESSIONS = BASE_URL + "/sessions/";
+	private static final String CLIPS = BASE_URL + "/clips/";
+	private static final String FRIENDS = USERS + "friends/";
+	private static final String CROWDS = BASE_URL + "/crowds/";
+	
 	// Users
-	private static final String USERS = "/users/";
-	private static final String CREATE_USER = USERS + "create";
+	private static final String ALL_USERS = USERS;
+	private static final String GET_USER = USERS + "/find/%s";
+	private static final String SIGN_UP = USERS + "create";
+	private static final String USER_ME = USERS + "/me";
+	private static final String UPDATE_USER = USERS + "%s";
+	private static final String DELETE_USER = USERS + "%s";
+	
 	// Sessions
-	private static final String SESSIONS = BASE_URL + "/sessions?access_token=" + ACCESS_TOKEN;
-	private static final String ADD_CLIP = BASE_URL + "/sessions/addclip?access_token=" + ACCESS_TOKEN;
-	private static final String SESSION_COMMENTS = BASE_URL + "/sessions/comments?access_token=" + ACCESS_TOKEN;
-	private static final String SESSION_LIKES = BASE_URL + "/session/likes?access_token=" + ACCESS_TOKEN;
-	// Comments
-	private static final String COMMENTS = BASE_URL + "/comments?access_token=" + ACCESS_TOKEN;
-	// Likes
-	private static final String LIKES = BASE_URL + "/likes?access_token=" + ACCESS_TOKEN;
+	private static final String ALL_SESSIONS = SESSIONS;
+	private static final String CREATE_SESSION = SESSIONS;
+	private static final String GET_SESSION = SESSIONS + "%s";
+	private static final String ADD_CLIP = SESSIONS + "%s/addClip";
 	
-	// Params
-	private static final String USER = "&id=%s";
-	private static final String SESSION = "&sessionId=%s";
-	private static final String COMMENT = "&commentId=%s";
-	private static final String LIKE = "&likeId=%s";
+	// Clips
+	private static final String ALL_CLIPS = CLIPS;
+	private static final String CREATE_CLIP = CLIPS;
+	private static final String GET_CLIP = CLIPS + "%s";
+	private static final String UPDATE_CLIP = CLIPS + "%s";
+	private static final String DELETE_CLIP = CLIPS + "%s";
 	
-	private static final String SIGN_UP = BASE_URL + CREATE_USER;
+	// Friends
+	private static final String ALL_FRIENDS = FRIENDS;
+	private static final String GET_FRIEND = FRIENDS + "%s"; // untested
+	private static final String GET_FRIEND_REQUEST = FRIENDS + "requests";
+	private static final String CREATE_FRIEND_REQUEST = FRIENDS + "requests";
+	private static final String CREATE_FRIEND_REQUEST_REPLY = FRIENDS + "requests/reply";
+	
+	// Crowds
+	private static final String ALL_CROWDS = CROWDS;
+	private static final String CREATE_CROWD = CROWDS + "create/";
+	private static final String GET_CROWD = CROWDS + "%s";
+	private static final String UPDATE_CROWD = CROWDS + "%s";
+	private static final String DELETE_CROWD = CROWDS + "%s";
 	
 	public API(OkHttpClient client) {
 		this.client = client;
@@ -112,7 +121,9 @@ public class API {
 			out.close();
 			
 			// Read the response code
-			if(connection.getResponseCode() != HttpURLConnection.HTTP_OK) {
+			if(connection.getResponseCode() != HttpURLConnection.HTTP_OK && 
+					connection.getResponseCode() != HttpURLConnection.HTTP_CREATED &&
+						connection.getResponseCode() != HttpURLConnection.HTTP_ACCEPTED) {
 				throw new IOException("Unexpected HTTP response: " +
 						connection.getResponseCode() + " " + connection.getResponseMessage());
 			}
@@ -126,134 +137,77 @@ public class API {
 		}
 	}
 	
+	// ------------- PUT -----------
+	private <T> T put(String url, StringEntity entity, Type type) throws IOException {
+		URL postUrl = new URL(url);
+		HttpURLConnection connection = client.open(postUrl);
+		connection.setRequestProperty("Content-Type", "application/json");
+		connection.setDoOutput(true);
+		OutputStream out = null;
+		InputStream in = null;
+		try {
+			Log.d(TAG, "PUT body: " + entity);
+			connection.setRequestMethod("PUT");
+			
+			// Write entity to the output stream
+			out = connection.getOutputStream();
+			entity.writeTo(out);
+			out.close();
+			
+			// Read the response code
+			if(connection.getResponseCode() != HttpURLConnection.HTTP_OK && 
+					connection.getResponseCode() != HttpURLConnection.HTTP_CREATED &&
+						connection.getResponseCode() != HttpURLConnection.HTTP_ACCEPTED) {
+				throw new IOException("Unexpected HTTP response: " +
+						connection.getResponseCode() + " " + connection.getResponseMessage());
+			}
+			
+			// Return the response as the given type 
+			in = connection.getInputStream();
+			return getGson().fromJson(new InputStreamReader(in), type);
+		} finally {
+			if(out != null) out.close();
+			if(in != null) in.close();
+		}
+	}
+	
+	// ------------- DELETE -----------
+	private <T> T delete(String url, StringEntity entity, Type type) throws IOException {
+		URL postUrl = new URL(url);
+		HttpURLConnection connection = client.open(postUrl);
+		InputStream in = null;
+		try {
+			Log.d(TAG, "DELETE");
+			connection.setRequestMethod("DELETE");
+			
+			// Read the response code
+			if(connection.getResponseCode() != HttpURLConnection.HTTP_OK && 
+					connection.getResponseCode() != HttpURLConnection.HTTP_CREATED &&
+						connection.getResponseCode() != HttpURLConnection.HTTP_ACCEPTED) {
+				throw new IOException("Unexpected HTTP response: " +
+						connection.getResponseCode() + " " + connection.getResponseMessage());
+			}
+			
+			// Return the response as the given type 
+			in = connection.getInputStream();
+			return getGson().fromJson(new InputStreamReader(in), type);
+		} finally {
+			if(in != null) in.close();
+		}
+	}
+	
 	public String signUp(User user) throws Exception {
+		Log.d(TAG, "signUp called, bodyis : " + getGson().toJson(user).toString());
+		
 		String url = SIGN_UP;
-		
-		Log.d(TAG, "signUp called with body: " + getGson().toJson(user).toString());
 		User mUser = post(url, new StringEntity(getGson().toJson(user)), User.class);
-		
 		
 		// Access Token!
 		String access_token = user.get_access_token();
 		return access_token;
 	}
 	
-//	public String signIn(String username, String password) throws Exception {
-//		// Is it bad practice to have the username and password in the URL?
-//		String url = String.format(SIGN_IN, URLEncoder.encode(username, "UTF-8"), password);
-//		String access_token = get(url, String.class);
-//		
-//		return access_token;
-//	}
-	
-	// ---------------- PUT ---------------
-	public String makePutRequest(HttpURLConnection conn, URL url, String json) {
-		try {
-			// Setup the PUT request
-			conn.setRequestMethod("PUT");
-			conn.setDoOutput(true);
-			conn.setChunkedStreamingMode(0);
-			conn.setRequestProperty("Accept-Encoding", "application/json");
-			conn.setRequestProperty("Content-Type", "application/json");
-			
-			// Write the data being sent
-			OutputStream outStream = conn.getOutputStream();
-			BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(outStream, "UTF-8"));
-			writer.write(json); // May need to URL encode this: writer.write(URLEncoder.encode(json, "UTF-8"));
-			writer.flush();
-			writer.close();
-			outStream.close();
-			
-			// Execute the request
-			conn.connect();
-			
-			// Read the response
-			if(conn.getResponseCode() != HttpURLConnection.HTTP_OK) {
-				throw new IOException("Unexpected HTTP response: "
-                        + conn.getResponseCode() + " " + conn.getResponseMessage());
-			}
-			String results = "";
-			int response = conn.getResponseCode();
-			
-			InputStream instream = conn.getInputStream();
-			results = convertStreamToString(instream);
-			if(instream != null) {
-				instream.close();
-			}
-			
-			return results;
-			
-		} catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
-        } catch (ClientProtocolException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return null;
+	public boolean createSession(Session session) throws Exception { 
+		return false;
 	}
-	
-	// ----------------- DELETE ----------------
-	public String makeDeleteRequest(HttpURLConnection conn, URL url) {
-		try {
-			// Set up the DELETE request
-			conn.setRequestMethod("DELETE");
-			
-			// Execute
-			conn.connect();
-			
-			// Read the response
-			if(conn.getResponseCode() != HttpURLConnection.HTTP_OK) {
-				throw new IOException("Unexpected HTTP response: "
-                        + conn.getResponseCode() + " " + conn.getResponseMessage());
-			}
-			String results = "";
-			int response = conn.getResponseCode();
-			
-			InputStream instream = conn.getInputStream();
-			results = convertStreamToString(instream);
-			if(instream != null) {
-				instream.close();
-			}
-			
-			return results;
-			
-		} catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
-        } catch (ClientProtocolException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return null;
-	}
-	
-	// Converts an InputStream to a String
-	private String convertStreamToString(InputStream is) {
-	    /*
-	     * To convert the InputStream to String we use the BufferedReader.readLine()
-	     * method. We iterate until the BufferedReader return null which means
-	     * there's no more data to read. Each line will appended to a StringBuilder
-	     * and returned as String.
-	     */
-	    BufferedReader reader = new BufferedReader(new InputStreamReader(is));
-	    StringBuilder sb = new StringBuilder();
-
-	    String line = null;
-	    try {
-	        while ((line = reader.readLine()) != null) {
-	            sb.append(line + "\n");
-	        }
-	    } catch (IOException e) {
-	        e.printStackTrace();
-	    } finally {
-	        try {
-	            is.close();
-	        } catch (IOException e) {
-	            e.printStackTrace();
-	        }
-	    }
-	    return sb.toString();
-	}
-	
 }
