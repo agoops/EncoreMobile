@@ -1,6 +1,7 @@
 package com.encore.views;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -28,8 +29,9 @@ public class IntroScreen extends Activity {
 	
 	// Registered to onClick in XML
 	public void launchLogin(View view) {
-		Intent intent = new Intent(this, LoginActivity.class);
-		startActivity(intent);
+//		Intent intent = new Intent(this, LoginActivity.class);
+//		startActivity(intent);
+		startActivity(new Intent(this, HomeActivity.class));
 	}
 	
 	// Registered to onClick in XML

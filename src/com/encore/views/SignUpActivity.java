@@ -49,5 +49,7 @@ public class SignUpActivity extends Activity {
 		apiIntent.putExtra(T.PHONE_NUMBER, phone_number.getText().toString());
 		
 		startService(apiIntent);
+		
+		startActivity(new Intent(this, HomeActivity.class));
 	}
 }

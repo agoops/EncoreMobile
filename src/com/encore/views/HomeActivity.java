@@ -7,14 +7,16 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
+import android.view.Window;
 import android.widget.ListView;
+import android.widget.ProgressBar;
+import android.widget.TextView;
 
 import com.encore.R;
 
-public class VideoListViewActivity extends FragmentActivity {
+public class HomeActivity extends FragmentActivity {
 	private static String tag = "VideoListViewActivity";
 	ViewPager viewPager;
 	ListView listView;
@@ -22,54 +24,80 @@ public class VideoListViewActivity extends FragmentActivity {
 	Fragment[] fragments;
 	private static int HOME = 0;
 	private static int INBOX = 1;
-	
-	
+
+	boolean customTitleSupported;
+
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.video_list_activity);
+
+		// check if custom title is supported BEFORE setting the content view!
+		//TODO doesn't work. do later;
+		//customTitleSupported = requestWindowFeature(Window.FEATURE_CUSTOM_TITLE);
+
+		setContentView(R.layout.home_activity);
+		//customTitleBar();
+
 		fragments = new Fragment[2];
 		actionBar = getActionBar();
-		
 
 		Log.d(tag, "onCreate() reached");
 		viewPager = (ViewPager) findViewById(R.id.pager);
 		viewPager.setAdapter(new PagerAdapter(getSupportFragmentManager()));
 		setupActionBar(actionBar);
-		viewPager.setOnPageChangeListener(
-	            new ViewPager.SimpleOnPageChangeListener() {
-	                @Override
-	                public void onPageSelected(int position) {
-	                    // When swiping between pages, select the
-	                    // corresponding tab.
-	                    getActionBar().setSelectedNavigationItem(position);
-	                }
-	            });
+		viewPager
+				.setOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {
+					@Override
+					public void onPageSelected(int position) {
+						// When swiping between pages, select the
+						// corresponding tab.
+						getActionBar().setSelectedNavigationItem(position);
+					}
+				});
 	}
 
+	public void customTitleBar() {
+
+		// set up custom title
+		if (customTitleSupported) {
+			getWindow().setFeatureInt(Window.FEATURE_CUSTOM_TITLE,
+					R.layout.customtitlebar);
+			TextView title = (TextView) findViewById(R.id.title);
+			title.setText(getText(R.string.app_name).toString());
+
+		}
+	}
+
+	private void startNewSession() {
+		Log.d(tag, "Button clicked!");
+	}
 	private void setupActionBar(ActionBar actionBar) {
 		// Specify that tabs should be displayed in the action bar.
 		actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
 
 		// Create a tab listener that is called when the user changes tabs.
 		ActionBar.TabListener tabListener = new ActionBar.TabListener() {
-			
 
 			@Override
-			public void onTabReselected(Tab tab, android.app.FragmentTransaction ft) {
-				//TODO
+			public void onTabReselected(Tab tab,
+					android.app.FragmentTransaction ft) {
+				// TODO
 			}
+
 			@Override
-			public void onTabSelected(Tab tab, android.app.FragmentTransaction ft) {
+			public void onTabSelected(Tab tab,
+					android.app.FragmentTransaction ft) {
 				Log.d(tag, "onTabSelected() called");
-				viewPager.setCurrentItem(tab.getPosition(),true);
+				viewPager.setCurrentItem(tab.getPosition(), true);
 			}
+
 			@Override
-			public void onTabUnselected(Tab tab, android.app.FragmentTransaction ft) {
-				//TODO
+			public void onTabUnselected(Tab tab,
+					android.app.FragmentTransaction ft) {
+				// TODO
 			}
 		};
-		//Add title to tabs
+		// Add title to tabs
 		for (int i = 0; i < 2; i++) {
 			switch (i) {
 			case 0:
