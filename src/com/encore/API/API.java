@@ -25,51 +25,53 @@ public class API {
 	private static final String TAG = "API";
 	
 	private static final String ACCESS_TOKEN = "result+from+creating+user+and+storing+access+token"; // send on every request
-	private static final String PROD = "http://rapchat.herokuapp.com";
-	private static final String QA = "http://rapchat.herokuapp.com";
+	private static final String PROD = "http://rapchat-django.herokuapp.com";
+	private static final String QA = "http://rapchat-django.herokuapp.com";
 	private static final String BASE_URL = (Constants.DEBUG) ? QA : PROD;
 
 	// Common URLs
 	private static final String USERS = BASE_URL + "/users/";
 	private static final String SESSIONS = BASE_URL + "/sessions/";
-	private static final String CLIPS = BASE_URL + "/clips/";
-	private static final String FRIENDS = USERS + "friends/";
+//	private static final String CLIPS = BASE_URL + "/clips/";
+	private static final String FRIENDS = USERS + "/friends/";
 	private static final String CROWDS = BASE_URL + "/crowds/";
+	private static final String REQUESTS = FRIENDS + "requests/";
+	private static final String REPLY = REQUESTS + "reply/";
 	
 	// Users
-	private static final String ALL_USERS = USERS;
-	private static final String GET_USER = USERS + "/find/%s";
-	private static final String SIGN_UP = USERS + "create";
-	private static final String USER_ME = USERS + "/me";
-	private static final String UPDATE_USER = USERS + "%s";
-	private static final String DELETE_USER = USERS + "%s";
+//	private static final String ALL_USERS = USERS;
+//	private static final String GET_USER = USERS + "/find/%s";
+	private static final String SIGN_UP = USERS;
+//	private static final String USER_ME = USERS + "/me";
+//	private static final String UPDATE_USER = USERS + "%s";
+//	private static final String DELETE_USER = USERS + "%s";
 	
 	// Sessions
-	private static final String ALL_SESSIONS = SESSIONS;
-	private static final String CREATE_SESSION = SESSIONS;
-	private static final String GET_SESSION = SESSIONS + "%s";
-	private static final String ADD_CLIP = SESSIONS + "%s/addClip";
+//	private static final String ALL_SESSIONS = SESSIONS;
+//	private static final String CREATE_SESSION = SESSIONS;
+//	private static final String GET_SESSION = SESSIONS + "%s";
+//	private static final String ADD_CLIP = SESSIONS + "%s/addClip";
 	
 	// Clips
-	private static final String ALL_CLIPS = CLIPS;
-	private static final String CREATE_CLIP = CLIPS;
-	private static final String GET_CLIP = CLIPS + "%s";
-	private static final String UPDATE_CLIP = CLIPS + "%s";
-	private static final String DELETE_CLIP = CLIPS + "%s";
+//	private static final String ALL_CLIPS = CLIPS;
+//	private static final String CREATE_CLIP = CLIPS;
+//	private static final String GET_CLIP = CLIPS + "%s";
+//	private static final String UPDATE_CLIP = CLIPS + "%s";
+//	private static final String DELETE_CLIP = CLIPS + "%s";
 	
 	// Friends
-	private static final String ALL_FRIENDS = FRIENDS;
-	private static final String GET_FRIEND = FRIENDS + "%s"; // untested
-	private static final String GET_FRIEND_REQUEST = FRIENDS + "requests";
-	private static final String CREATE_FRIEND_REQUEST = FRIENDS + "requests";
-	private static final String CREATE_FRIEND_REQUEST_REPLY = FRIENDS + "requests/reply";
-	
+//	private static final String ALL_FRIENDS = FRIENDS;
+//	private static final String GET_FRIEND = FRIENDS + "%s";
+//	private static final String GET_FRIEND_REQUEST = FRIENDS + "requests";
+//	private static final String CREATE_FRIEND_REQUEST = FRIENDS + "requests";
+//	private static final String CREATE_FRIEND_REQUEST_REPLY = FRIENDS + "requests/reply";
+//	
 	// Crowds
-	private static final String ALL_CROWDS = CROWDS;
-	private static final String CREATE_CROWD = CROWDS + "create/";
-	private static final String GET_CROWD = CROWDS + "%s";
-	private static final String UPDATE_CROWD = CROWDS + "%s";
-	private static final String DELETE_CROWD = CROWDS + "%s";
+//	private static final String ALL_CROWDS = CROWDS;
+//	private static final String CREATE_CROWD = CROWDS + "create/";
+//	private static final String GET_CROWD = CROWDS + "%s";
+//	private static final String UPDATE_CROWD = CROWDS + "%s";
+//	private static final String DELETE_CROWD = CROWDS + "%s";
 	
 	public API(OkHttpClient client) {
 		this.client = client;
