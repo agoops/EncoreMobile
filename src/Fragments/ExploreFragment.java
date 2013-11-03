@@ -8,12 +8,11 @@ import android.view.ViewGroup;
 
 import com.encore.R;
 
-public class NewsfeedFragment extends Fragment {
-	
+public class ExploreFragment extends Fragment {
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, 
 			Bundle savedInstanceState) {
-		View v = inflater.inflate(R.layout.newsfeed_fragment, container, false);
+		View v = inflater.inflate(R.layout.explore_fragment, container, false);
 		return v;
 	}
 
