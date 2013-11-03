@@ -24,7 +24,7 @@
         android:theme="@style/AppTheme" >
         <activity android:name="com.encore.MainActivity" >
         </activity>
-        <activity android:name="com.encore.views.IntroScreen" 
+        <activity android:name="com.encore.views.WelcomeActivity" 
             android:theme="@android:style/Theme.NoTitleBar"
             >
             <intent-filter>

@@ -37,6 +37,6 @@
         android:layout_alignParentLeft="true"
         android:layout_alignParentRight="true"
         android:layout_below="@+id/password_login"
-        android:text="Button" />
+        android:text="Login" />
 
 </RelativeLayout>

@@ -40,8 +40,7 @@
 	        android:layout_weight="0.97"
 	        android:background="@drawable/orange_gradient"
 	        android:text="LOGIN"
-	        android:textColor="@android:color/white"
-	        android:onClick="launchLogin" />
+	        android:textColor="@android:color/white" />
 		    
 	    <Button
 	        android:id="@+id/signup_intro"
@@ -51,8 +50,7 @@
 	        android:background="@drawable/orange_gradient"
 	        android:layout_weight="1"
 	        android:text="SIGN UP"
-	        android:textColor="@android:color/white"
-	        android:onClick="launchSignup" />
+	        android:textColor="@android:color/white" />
     </LinearLayout>
     
 </RelativeLayout>
