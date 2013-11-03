@@ -42,7 +42,7 @@ public class SignupFragment extends Fragment implements OnClickListener {
 		return view;
 	}
 	
-	// Dynamically launches appropriate code
+	// Click listeners!
 	@Override
 	public void onClick(View v) {
 		switch(v.getId()) {
