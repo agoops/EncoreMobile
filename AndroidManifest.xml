@@ -49,6 +49,8 @@
         </activity>
         <activity android:name="com.encore.AudioSynthesisDemoActivity" >
         </activity>
+        <activity android:name="com.encore.views.HomeActivity">
+        </activity>
 
         <service android:name="UploadService2" >
         </service>
