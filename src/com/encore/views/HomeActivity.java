@@ -62,7 +62,7 @@ public class HomeActivity extends FragmentActivity {
 	    	
 			@Override
 			public void onTabReselected(ActionBar.Tab tab, android.app.FragmentTransaction ft) {
-				
+				// Ignore
 			}
 	    };
 	    

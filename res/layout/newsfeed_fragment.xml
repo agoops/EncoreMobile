@@ -7,18 +7,24 @@
     
     <TextView 
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:text="The Newsfeed!"
         android:textSize="30sp"
         android:gravity="center" />
     
-    <!-- <ListView 
-        android:id="@+id/newsfeed_lv"
+    <ListView 
+        android:id="@id/android:list"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
-        
-    </ListView> -->
+        android:layout_height="match_parent"
+        android:background="#61c227"
+        android:drawSelectorOnTop="false" >
+    </ListView>
     
-    
+    <TextView 
+        android:id="@id/android:empty"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#61c227"
+        android:text="No Data" />
 
 </LinearLayout>

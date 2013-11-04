@@ -49,7 +49,7 @@ public class API {
 	// Sessions
 //	private static final String ALL_SESSIONS = SESSIONS;
 //	private static final String CREATE_SESSION = SESSIONS;
-//	private static final String GET_SESSION = SESSIONS + "%s";
+	private static final String GET_SESSION = SESSIONS + "%s";
 //	private static final String ADD_CLIP = SESSIONS + "%s/addClip";
 	
 	// Clips
@@ -199,7 +199,7 @@ public class API {
 	}
 	
 	public String signUp(User user) throws Exception {
-		Log.d(TAG, "signUp called, bodyis : " + getGson().toJson(user).toString());
+		Log.d(TAG, "signUp called, body: " + getGson().toJson(user).toString());
 		
 		String url = SIGN_UP;
 		User mUser = post(url, new StringEntity(getGson().toJson(user)), User.class);
@@ -211,5 +211,12 @@ public class API {
 	
 	public boolean createSession(Session session) throws Exception { 
 		return false;
+	}
+	
+	public Session getSession(String id) throws Exception {
+		Log.d(TAG, "getSession called with body: " + getGson().toJson(id).toString());
+		
+		String url = String.format(GET_SESSION, id);
+		return get(url, Session.class);
 	}
 }
