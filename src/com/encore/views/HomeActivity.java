@@ -10,6 +10,9 @@ import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 
 import com.encore.R;
 
@@ -66,14 +69,20 @@ public class HomeActivity extends FragmentActivity {
 			}
 	    };
 	    
-	    // Add 3 tabs
-	    for(int i=0; i<4; i++) {
-	    	actionBar.addTab(
-	    			actionBar.newTab()
-	    				.setText("Tab " + (i+1))
-	    				.setTabListener(tabListener));
-	    }
+	    actionBar.addTab(actionBar.newTab()
+	    		.setText("Feed")
+	    		.setTabListener(tabListener));
+	    actionBar.addTab(actionBar.newTab()
+	    		.setText("Explore")
+	    		.setTabListener(tabListener));
+	    actionBar.addTab(actionBar.newTab()
+	    		.setText("Sessions")
+	    		.setTabListener(tabListener));
+	    actionBar.addTab(actionBar.newTab()
+	    		.setText("Profile")
+	    		.setTabListener(tabListener));
 	}
+	
 	
 	public class HomeActivityPagerAdapter extends FragmentStatePagerAdapter {
 		public HomeActivityPagerAdapter(FragmentManager fm) {
@@ -106,6 +115,26 @@ public class HomeActivity extends FragmentActivity {
 		@Override
 		public CharSequence getPageTitle(int position) {
 			return "OBJECT " + (position + 1);
+		}
+	}
+	
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		// Inflate the menu items for use in the action bar
+		MenuInflater inflater = getMenuInflater();
+		inflater.inflate(R.menu.home_activity_actions, menu);
+		return super.onCreateOptionsMenu(menu);
+	}
+	
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		// Handle presses on action bar items
+		switch(item.getItemId()) {
+		case R.id.action_video:
+			// Launch all the session stuff!
+			return true;
+		default:
+			return super.onOptionsItemSelected(item);
 		}
 	}
 }
