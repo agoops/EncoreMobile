@@ -185,6 +185,9 @@ public class StartSession2 extends Activity {
 				//finish();
 
 			}
+			case R.id.send_session: {
+				
+			}
 			}
 		}
 	};

@@ -28,4 +28,13 @@
         android:layout_centerHorizontal="true"
         android:text="Play" />
 
+    <Button
+        android:id="@+id/send_session"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentTop="true"
+        android:onClick="loadFriends"
+        android:text="Send" />
+
 </RelativeLayout>

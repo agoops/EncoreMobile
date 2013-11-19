@@ -24,9 +24,9 @@ public class HomeActivity extends FragmentActivity {
 	Fragment[] fragments;
 	private static int HOME = 0;
 	private static int INBOX = 1;
-
+	private static int FRIENDS = 2;
+	private static int NUM_TABS = 3;
 	boolean customTitleSupported;
-	String TOKEN;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -38,17 +38,15 @@ public class HomeActivity extends FragmentActivity {
 
 		setContentView(R.layout.home_activity);
 		//customTitleBar();
-		Bundle extras = getIntent().getExtras();
-		TOKEN = extras.getString("token");
-		Log.d(tag,TOKEN);
-		
-		fragments = new Fragment[2];
-		actionBar = getActionBar();
 
+		fragments = new Fragment[3];
+		actionBar = getActionBar();
+		
 		Log.d(tag, "onCreate() reached");
 		viewPager = (ViewPager) findViewById(R.id.pager);
 		viewPager.setAdapter(new PagerAdapter(getSupportFragmentManager()));
 		setupActionBar(actionBar);
+		Log.d(tag, "maybe got here?");
 		viewPager
 				.setOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {
 					@Override
@@ -102,7 +100,7 @@ public class HomeActivity extends FragmentActivity {
 			}
 		};
 		// Add title to tabs
-		for (int i = 0; i < 2; i++) {
+		for (int i = 0; i < NUM_TABS; i++) {
 			switch (i) {
 			case 0:
 				actionBar.addTab(actionBar.newTab().setText("Home")
@@ -110,6 +108,10 @@ public class HomeActivity extends FragmentActivity {
 				break;
 			case 1:
 				actionBar.addTab(actionBar.newTab().setText("Inbox")
+						.setTabListener(tabListener));
+				break;
+			case 2:
+				actionBar.addTab(actionBar.newTab().setText("Friends")
 						.setTabListener(tabListener));
 				break;
 			}
@@ -137,6 +139,10 @@ public class HomeActivity extends FragmentActivity {
 				Fragment fragment2 = new InboxListViewFragment();
 				fragments[INBOX] = fragment2;
 				return fragment2;
+			case 2:
+				Fragment fragment3 = new FriendsFragment();
+				fragments[FRIENDS] = fragment3;
+				return fragment3;
 			}
 
 			return null;
@@ -144,7 +150,7 @@ public class HomeActivity extends FragmentActivity {
 
 		@Override
 		public int getCount() {
-			return 2;
+			return NUM_TABS;
 		}
 
 		@Override
@@ -154,6 +160,8 @@ public class HomeActivity extends FragmentActivity {
 				return "Home page";
 			case 1:
 				return "Inbox";
+			case 2:
+				return "Friends";
 			}
 			System.out.println("Got here for some reason");
 			return null;

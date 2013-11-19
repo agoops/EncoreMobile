@@ -10,6 +10,7 @@ import android.os.Bundle;
 import android.os.ResultReceiver;
 import android.util.Log;
 
+import com.encore.TokenHelper;
 import com.encore.API.models.User;
 import com.squareup.okhttp.OkHttpClient;
 
@@ -45,11 +46,31 @@ public class APIService extends IntentService {
 			case T.START_SESSION:
 				startSession(intent.getExtras());
 				break;
+			case T.FRIENDS:
+				getFriends(intent.getExtras());
+				break;
 			default:
 				break;
 		}
 	}
 	
+	private void getFriends(Bundle data) {
+		Log.d(TAG, "getFriends called");
+		String token = TokenHelper.getToken(this);
+		Log.d(TAG, "token: " + token);
+		if (token == null) {
+			Log.d(TAG, "No token in shared prefs");
+			
+		}
+		try {
+			String result = api.getFriends(token);
+			Log.d(TAG, "result from api: " + result);
+			
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
 	private void signIn(Bundle data) {
 		Log.d(TAG, "signIn called");
 		
@@ -62,10 +83,13 @@ public class APIService extends IntentService {
 			StringEntity entity = new StringEntity(json.toString());
 			
 			String result = api.signIn(entity);
-			Bundle b = new Bundle();
-			b.putString("result", result);
-			Log.d(TAG, result);
-			resultReceiver.send(1, b);
+			
+			String token = (new JSONObject(result)).getString("token");
+			
+			TokenHelper.updateToken(this, token);
+			
+			Log.d(TAG, "result from api: " + result);
+			resultReceiver.send(1, new Bundle());
 			
 		} catch (Exception e) {
 			Log.e(TAG, e.getMessage() + " ");

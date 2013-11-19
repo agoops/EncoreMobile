@@ -55,9 +55,8 @@ public class LoginActivity extends Activity {
 		startActivity(new Intent(this, HomeActivity.class));
 	}
 	
-	private void goToHomeScreen(String token) {
+	private void goToHomeScreen() {
 		Intent i =  new Intent(this, HomeActivity.class);
-		i.putExtra("token", token);
 		startActivity(i);
 	}
 	private void showLoginFailed() {
@@ -75,9 +74,8 @@ public class LoginActivity extends Activity {
 		protected void onReceiveResult(int resultCode, Bundle resultData) {
 			if (resultCode == 1) {
 				Log.d(tag, "APISerivce returned successful");
-				Log.d(tag, resultData.get("result").toString());
-				String token = resultData.get("result").toString();
-				goToHomeScreen(token);
+				
+				goToHomeScreen();
 
 			}
 			else {
