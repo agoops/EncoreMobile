@@ -1,5 +1,6 @@
 package com.encore.API;
 
+import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -24,9 +25,10 @@ public class API {
 	
 	private static final String TAG = "API";
 	
-	private static final String ACCESS_TOKEN = "result+from+creating+user+and+storing+access+token"; // send on every request
-	private static final String PROD = "http://rapchat.herokuapp.com";
-	private static final String QA = "http://rapchat.herokuapp.com";
+	private static final String AUTHORIZATION = "Authorization";
+	private static String ACCESS_TOKEN = "result+from+creating+user+and+storing+access+token"; // send on every request
+	private static final String PROD = "http://rapchat-django.herokuapp.com";
+	private static final String QA = "http://rapchat-django.herokuapp.com";
 	private static final String BASE_URL = (Constants.DEBUG) ? QA : PROD;
 
 	// Common URLs
@@ -37,9 +39,10 @@ public class API {
 	private static final String CROWDS = BASE_URL + "/crowds/";
 	
 	// Users
+	private static final String SIGN_IN = USERS + "obtain-token/";
 	private static final String ALL_USERS = USERS;
 	private static final String GET_USER = USERS + "/find/%s";
-	private static final String SIGN_UP = USERS + "create";
+	private static final String SIGN_UP = USERS;
 	private static final String USER_ME = USERS + "/me";
 	private static final String UPDATE_USER = USERS + "%s";
 	private static final String DELETE_USER = USERS + "%s";
@@ -108,6 +111,7 @@ public class API {
 		URL postUrl = new URL(url);
 		HttpURLConnection connection = client.open(postUrl);
 		connection.setRequestProperty("Content-Type", "application/json");
+		connection.setRequestProperty(AUTHORIZATION, ACCESS_TOKEN);
 		connection.setDoOutput(true);
 		OutputStream out = null;
 		InputStream in = null;
@@ -130,7 +134,16 @@ public class API {
 			
 			// Return the response as the given type 
 			in = connection.getInputStream();
-			return getGson().fromJson(new InputStreamReader(in), type);
+			//return getGson().fromJson(new InputStreamReader(in), type);
+			
+			/*Adding this section to see response*/
+			BufferedReader r = new BufferedReader(new InputStreamReader(in));
+			StringBuilder total = new StringBuilder();
+			String line;
+			while ((line = r.readLine()) != null) {
+			    total.append(line);
+			}
+			return (T) total.toString();
 		} finally {
 			if(out != null) out.close();
 			if(in != null) in.close();
@@ -205,6 +218,18 @@ public class API {
 		// Access Token!
 		String access_token = user.get_access_token();
 		return access_token;
+	}
+	
+	public String signIn(StringEntity entity) throws Exception {
+		Log.d(TAG, "signIn called with entity: " + entity.toString());
+		String url = SIGN_IN;
+		String result = "emptystringdawg-API.signin worked?";
+		try {
+			result = post(url, entity, String.class);
+		} catch (Exception e) {
+			throw e;
+		}
+		return result;
 	}
 	
 	public boolean createSession(Session session) throws Exception { 

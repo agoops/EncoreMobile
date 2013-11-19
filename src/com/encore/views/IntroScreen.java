@@ -29,9 +29,9 @@ public class IntroScreen extends Activity {
 	
 	// Registered to onClick in XML
 	public void launchLogin(View view) {
-//		Intent intent = new Intent(this, LoginActivity.class);
-//		startActivity(intent);
-		startActivity(new Intent(this, HomeActivity.class));
+		Intent intent = new Intent(this, LoginActivity.class);
+		startActivity(intent);
+		//startActivity(new Intent(this, HomeActivity.class));
 	}
 	
 	// Registered to onClick in XML

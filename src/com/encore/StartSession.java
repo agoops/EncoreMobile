@@ -9,18 +9,21 @@ import android.media.AudioFormat;
 import android.media.AudioRecord;
 import android.media.MediaRecorder;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.Button;
 
 public class StartSession extends Activity {
-
+	private static String tag = "StartSession";
 	private static final int RECORDER_SAMPLERATE = 8000;
 	private static final int RECORDER_CHANNELS = AudioFormat.CHANNEL_IN_MONO;
 	private static final int RECORDER_AUDIO_ENCODING = AudioFormat.ENCODING_PCM_16BIT;
 	private AudioRecord recorder = null;
 	private Thread recordingThread = null;
 	private boolean isRecording = false;
+	
+	String filepath = "/sdcard/voice8K16bitmono.pcm";
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -37,6 +40,7 @@ public class StartSession extends Activity {
 	private void setButtonHandlers() {
 		((Button) findViewById(R.id.btnStart)).setOnClickListener(btnClick);
 		((Button) findViewById(R.id.btnStop)).setOnClickListener(btnClick);
+		((Button) findViewById(R.id.btnPlayback)).setOnClickListener(btnClick);
 	}
 
 	private void enableButton(int id, boolean isEnable) {
@@ -53,7 +57,7 @@ public class StartSession extends Activity {
 	int BytesPerElement = 2; // 2 bytes in 16bit format
 
 	private void startRecording() {
-
+		Long startTime = System.currentTimeMillis();
 		recorder = new AudioRecord(MediaRecorder.AudioSource.MIC,
 				RECORDER_SAMPLERATE, RECORDER_CHANNELS,
 				RECORDER_AUDIO_ENCODING, BufferElements2Rec * BytesPerElement);
@@ -65,6 +69,8 @@ public class StartSession extends Activity {
 				writeAudioDataToFile();
 			}
 		}, "AudioRecorder Thread");
+		Long timeTaken = System.currentTimeMillis() - startTime;
+		Log.d(tag, "setUp time: " + timeTaken);
 		recordingThread.start();
 	}
 
@@ -84,12 +90,11 @@ public class StartSession extends Activity {
 	private void writeAudioDataToFile() {
 		// Write the output audio in byte
 
-		String filePath = "/sdcard/voice8K16bitmono.pcm";
 		short sData[] = new short[BufferElements2Rec];
 
 		FileOutputStream os = null;
 		try {
-			os = new FileOutputStream(filePath);
+			os = new FileOutputStream(filepath);
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		}
@@ -97,8 +102,12 @@ public class StartSession extends Activity {
 		while (isRecording) {
 			// gets the voice output from microphone to byte format
 
-			recorder.read(sData, 0, BufferElements2Rec);
-			System.out.println("Short wirting to file" + sData.toString());
+			int whateverThisIs = recorder.read(sData, 0, BufferElements2Rec);
+			System.out.println("recorder.read() returns: "+ whateverThisIs);
+			for (int i = 0; i < 10; ++i) {
+				System.out.println("value to file: [ "+sData[i]+" ]");
+			}
+
 			try {
 				// // writes the data to file from buffer
 				// // stores the voice buffer
@@ -130,14 +139,21 @@ public class StartSession extends Activity {
 		public void onClick(View v) {
 			switch (v.getId()) {
 			case R.id.btnStart: {
+				Long startTime = System.currentTimeMillis();
 				enableButtons(true);
 				startRecording();
+				Long timeTaken = System.currentTimeMillis() - startTime;
+				Log.d(tag, "seconds taken: " + timeTaken);
 				break;
 			}
 			case R.id.btnStop: {
 				enableButtons(false);
 				stopRecording();
 				break;
+			}
+			case R.id.btnPlayback: {
+				AudioPlayback track = new AudioPlayback(filepath);
+				track.play();
 			}
 			}
 		}

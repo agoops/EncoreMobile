@@ -60,7 +60,7 @@ public class InboxViewAdapter extends BaseAdapter{
 				public void onClick(View arg0) {
 					
 					//((Activity)mContext).startActivityForResult(new Intent(mContext, AndroidVideoCapture.class), 0);
-					((Activity)mContext).startActivityForResult(new Intent(mContext, StartSession.class), 0);
+					((Activity)mContext).startActivityForResult(new Intent(mContext, StartSession2.class), 0);
 					
 				}
             	

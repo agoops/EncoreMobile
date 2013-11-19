@@ -51,6 +51,8 @@
         </activity>
         <activity android:name="com.encore.StartSession" >
         </activity>
+          <activity android:name="com.encore.StartSession2" >
+        </activity>
 
         <service android:name="UploadService2" >
         </service>

@@ -26,6 +26,7 @@ public class HomeActivity extends FragmentActivity {
 	private static int INBOX = 1;
 
 	boolean customTitleSupported;
+	String TOKEN;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -37,7 +38,10 @@ public class HomeActivity extends FragmentActivity {
 
 		setContentView(R.layout.home_activity);
 		//customTitleBar();
-
+		Bundle extras = getIntent().getExtras();
+		TOKEN = extras.getString("token");
+		Log.d(tag,TOKEN);
+		
 		fragments = new Fragment[2];
 		actionBar = getActionBar();
 

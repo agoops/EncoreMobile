@@ -13,4 +13,6 @@ public class T {
 	public static final int SIGN_IN = 0;
 	public static final int SIGN_UP = 1;
 	public static final int ADD_CLIP = 2;
+	public static final int START_SESSION = 3;
+
 }
