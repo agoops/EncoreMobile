@@ -42,4 +42,11 @@ public class User {
 	public String get_access_token() {
 		return this.access_token;
 	}
+	
+	public void setUsername(String username) {
+		this.username = username;
+	}
+	public String getUsername() {
+		return username;
+	}
 }

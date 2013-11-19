@@ -1,5 +1,6 @@
 package com.encore.API;
 
+import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -13,6 +14,7 @@ import org.apache.http.entity.StringEntity;
 import util.Constants;
 import android.util.Log;
 
+import com.encore.TokenHelper;
 import com.encore.API.models.Session;
 import com.encore.API.models.User;
 import com.google.gson.Gson;
@@ -24,7 +26,8 @@ public class API {
 	
 	private static final String TAG = "API";
 	
-	private static final String ACCESS_TOKEN = "result+from+creating+user+and+storing+access+token"; // send on every request
+	private static final String AUTHORIZATION = "Authorization";
+	private static String ACCESS_TOKEN = "result+from+creating+user+and+storing+access+token"; // send on every request
 	private static final String PROD = "http://rapchat-django.herokuapp.com";
 	private static final String QA = "http://rapchat-django.herokuapp.com";
 	private static final String BASE_URL = (Constants.DEBUG) ? QA : PROD;
@@ -32,19 +35,20 @@ public class API {
 	// Common URLs
 	private static final String USERS = BASE_URL + "/users/";
 	private static final String SESSIONS = BASE_URL + "/sessions/";
-//	private static final String CLIPS = BASE_URL + "/clips/";
-	private static final String FRIENDS = USERS + "/friends/";
+	private static final String CLIPS = BASE_URL + "/clips/";
+	private static final String FRIENDS = BASE_URL + "/friends/";
 	private static final String CROWDS = BASE_URL + "/crowds/";
 	private static final String REQUESTS = FRIENDS + "requests/";
 	private static final String REPLY = REQUESTS + "reply/";
 	
 	// Users
-//	private static final String ALL_USERS = USERS;
-//	private static final String GET_USER = USERS + "/find/%s";
+	private static final String SIGN_IN = USERS + "obtain-token/";
+	private static final String ALL_USERS = USERS;
+	private static final String GET_USER = USERS + "/find/%s";
 	private static final String SIGN_UP = USERS;
-//	private static final String USER_ME = USERS + "/me";
-//	private static final String UPDATE_USER = USERS + "%s";
-//	private static final String DELETE_USER = USERS + "%s";
+	private static final String USER_ME = USERS + "/me";
+	private static final String UPDATE_USER = USERS + "%s";
+	private static final String DELETE_USER = USERS + "%s";
 	
 	// Sessions
 //	private static final String ALL_SESSIONS = SESSIONS;
@@ -75,6 +79,7 @@ public class API {
 	
 	public API(OkHttpClient client) {
 		this.client = client;
+		
 	}
 	
 	public Gson getGson() {
@@ -88,15 +93,28 @@ public class API {
 	private <T> T get(String url, Type type) throws IOException {
 		URL getUrl = new URL(url);
 		HttpURLConnection connection = client.open(getUrl);
-		connection.setDoInput(true);
-		connection.setRequestProperty("Content-Type", "application/json");
+//		connection.setDoInput(true);
+//		connection.setRequestProperty("Content-Type", "application/json");
+		connection.setRequestProperty(AUTHORIZATION, ACCESS_TOKEN);
 		InputStream in = null;
 		try {
 			connection.setRequestMethod("GET");
-			
+			Log.d(TAG, connection.toString());
 			in = connection.getInputStream();
-			return getGson().fromJson(new InputStreamReader(in), type);
+			Log.d(TAG, in.toString());
+//			return getGson().fromJson(new InputStreamReader(in), type);
+	
+			/*Adding this section to see response*/
+			BufferedReader r = new BufferedReader(new InputStreamReader(in));
+			StringBuilder total = new StringBuilder();
+			String line;
+			while ((line = r.readLine()) != null) {
+			    total.append(line);
+			}
+			return (T) total.toString();
+		
 		} catch(Exception e) {
+			e.printStackTrace();
 			Log.e("API", "" + e.getMessage());
 			return null;
 		}
@@ -110,6 +128,7 @@ public class API {
 		URL postUrl = new URL(url);
 		HttpURLConnection connection = client.open(postUrl);
 		connection.setRequestProperty("Content-Type", "application/json");
+		connection.setRequestProperty(AUTHORIZATION, ACCESS_TOKEN);
 		connection.setDoOutput(true);
 		OutputStream out = null;
 		InputStream in = null;
@@ -132,7 +151,18 @@ public class API {
 			
 			// Return the response as the given type 
 			in = connection.getInputStream();
-			return getGson().fromJson(new InputStreamReader(in), type);
+			
+			//return getGson().fromJson(new InputStreamReader(in), type);
+			Log.d(TAG, "Just got input stream: " + in.toString());
+			/*Adding this section to see response*/
+			BufferedReader r = new BufferedReader(new InputStreamReader(in));
+			StringBuilder total = new StringBuilder();
+			String line;
+			while ((line = r.readLine()) != null) {
+			    total.append(line);
+			}
+			return (T) total.toString();
+			
 		} finally {
 			if(out != null) out.close();
 			if(in != null) in.close();
@@ -207,6 +237,33 @@ public class API {
 		// Access Token!
 		String access_token = user.get_access_token();
 		return access_token;
+	}
+	
+	public String signIn(StringEntity entity) throws Exception {
+		Log.d(TAG, "signIn called with entity: " + entity.toString());
+		String url = SIGN_IN;
+		String result = "emptystringdawg-API.signin worked?";
+		try {
+			result = post(url, entity, String.class);
+		} catch (Exception e) {
+			throw e;
+		}
+		return result;
+	}
+	
+	public String getFriends(String token) throws Exception {
+		Log.d(TAG, "getFriends called");
+		ACCESS_TOKEN = "Token " + token;
+		String url = FRIENDS;
+		String result = "defaultstringifnoresult";
+		try {
+			result = get(url, String.class);
+			return result;
+		} catch (Exception e) {
+			Log.d(TAG,"API.getFriends error");
+			throw e;
+		}
+		
 	}
 	
 	public boolean createSession(Session session) throws Exception { 

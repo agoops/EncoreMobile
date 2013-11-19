@@ -40,7 +40,7 @@ public class NewsfeedFragment extends ListFragment implements LoaderManager.Load
 				R.id.newsfeed_session_comments, R.id.newsfeed_session_shares};
 		
 		mAdapter = new SimpleCursorAdapter(getActivity(),
-				R.layout.newfeed_list_row, null,
+				R.layout.newsfeed_list_row, null,
 				fromColumns, toViews, 0);
 		setListAdapter(mAdapter);
 		

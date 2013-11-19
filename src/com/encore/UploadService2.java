@@ -55,14 +55,14 @@ public class UploadService2 extends Service {
 		return null;
 	}
 	
-	public class UploadTask extends AsyncTask<Void,Void,Void> {
+	public class UploadTask extends AsyncTask<String,Void,Void> {
 		
 		public UploadTask () {
 			
 		}
 		
 		@Override
-		protected Void doInBackground(Void... params) {
+		protected Void doInBackground(String... params) {
 			uploadFile();
 			stopSelf();
 			return null;

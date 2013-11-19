@@ -14,7 +14,6 @@ public class T {
 	public static final int SIGN_IN = 0;
 	public static final int SIGN_UP = 1;
 	public static final int ADD_CLIP = 2;
-	public static final int GET_SESSION = 3;
 	
 	// Column names for newsfeed query
 	public static final String SESSION_TITLE = "title";
@@ -22,4 +21,7 @@ public class T {
 	public static final String SESSION_SHARES = "num_shares";
 	public static final String SESSION_COMMENTS = "num_comments";
 	public static final String SESSION_VIDEO_URL = "video_url";
+	
+	public static final int START_SESSION = 3;
+	public static final int FRIENDS = 4;
 }

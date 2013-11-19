@@ -15,6 +15,7 @@
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.RECORD_AUDIO" />
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.READ_PHONE_STATE"/>
 
     <application
         android:name=".EncoreApplication"
@@ -41,13 +42,16 @@
             android:name="com.encore.MyActivity"
             android:label="@string/app_name" >
         </activity>
-        <activity android:name="com.encore.views.VideoListViewActivity" >
+        <activity android:name="com.encore.views.HomeActivity" 
+            android:theme="@style/AppBaseTheme">
         </activity>
         <activity android:name="com.encore.AndroidVideoCapture" >
         </activity>
         <activity android:name="com.encore.VideoPlayback" >
         </activity>
-        <activity android:name="com.encore.AudioSynthesisDemoActivity" >
+        <activity android:name="com.encore.StartSession" >
+        </activity>
+          <activity android:name="com.encore.StartSession2" >
         </activity>
         <activity android:name="com.encore.views.HomeActivity">
         </activity>

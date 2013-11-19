@@ -5,6 +5,7 @@ import java.util.List;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -16,6 +17,7 @@ import android.widget.TextView;
 
 public class InboxViewAdapter extends BaseAdapter{
 	
+	private static String tag = "InboxViewAdapter";
 	private Context mContext;
     private List<SessionTemp> mSessionList;
     
@@ -42,7 +44,7 @@ public class InboxViewAdapter extends BaseAdapter{
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
 		// get the selected entry
-		
+		Log.d(tag, "populating position: " + position);
 		//this shouldn't be an applicationInfo object
         SessionTemp entry = (SessionTemp) mSessionList.get(position);
  
@@ -59,8 +61,9 @@ public class InboxViewAdapter extends BaseAdapter{
 				@Override
 				public void onClick(View arg0) {
 					
-					((Activity)mContext).startActivityForResult(new Intent(mContext, AndroidVideoCapture.class), 0);
-
+					//((Activity)mContext).startActivityForResult(new Intent(mContext, AndroidVideoCapture.class), 0);
+					((Activity)mContext).startActivityForResult(new Intent(mContext, StartSession2.class), 0);
+					
 				}
             	
             
