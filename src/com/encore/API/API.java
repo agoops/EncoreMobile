@@ -100,7 +100,7 @@ public class API {
 			Log.d(TAG, connection.toString());
 			in = connection.getInputStream();
 			Log.d(TAG, in.toString());
-			//return getGson().fromJson(new InputStreamReader(in), type);
+//			return getGson().fromJson(new InputStreamReader(in), type);
 	
 			/*Adding this section to see response*/
 			BufferedReader r = new BufferedReader(new InputStreamReader(in));
