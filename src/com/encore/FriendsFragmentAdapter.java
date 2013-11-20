@@ -1,5 +1,6 @@
 package com.encore;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import android.content.Context;
@@ -11,14 +12,15 @@ import android.widget.BaseAdapter;
 import android.widget.CheckBox;
 import android.widget.TextView;
 
+import com.encore.API.models.Profile;
 import com.encore.API.models.User;
 
 public class FriendsFragmentAdapter extends BaseAdapter {
 	private Context mContext;
-	private List<User> mFriendList;
+	private List<Profile> mFriendList;
 	private String tag = "FriendsFragmentAdapter";
 	
-	public FriendsFragmentAdapter(Context context, List<User> list) {
+	public FriendsFragmentAdapter(Context context, List<Profile> list) {
 
 		this.mContext=context;
 		this.mFriendList=list;
@@ -26,14 +28,18 @@ public class FriendsFragmentAdapter extends BaseAdapter {
 
 	@Override
 	public int getCount() {
-		Log.d(tag, "size of friends list: " + mFriendList.size());
-		return mFriendList.size();
+		if (mFriendList != null){
+			return mFriendList.size();
+		}
+		return 0;
 	}
 	
 	@Override
 	public Object getItem(int arg0){
-		Log.d(tag,"Asking for item: " + arg0);
-		return mFriendList.get(arg0);
+		if (mFriendList != null){
+			return mFriendList.get(arg0);
+		}
+		return null;
 	}
 	
 	@Override
@@ -47,15 +53,13 @@ public class FriendsFragmentAdapter extends BaseAdapter {
 		Log.d(tag, "Populating position: " + position);
         // reference to convertView
         FriendView v = (FriendView) convertView;
-        User user = mFriendList.get(position);
+        User user = mFriendList.get(position).getUser();
         Log.d(tag, "User for this view is: "+user.getUsername());
         
         // inflate new layout if null
         if(v == null) {
             LayoutInflater inflater = LayoutInflater.from(mContext);
             v = (FriendView) inflater.inflate(R.layout.friend_view, parent, false);
-            
-            
         }
  
         // load controls from layout resources
@@ -68,5 +72,9 @@ public class FriendsFragmentAdapter extends BaseAdapter {
  
         // return view
         return v;
+	}
+
+	public void setItemList(ArrayList<Profile> profiles) {
+		this.mFriendList = profiles;
 	}
 }

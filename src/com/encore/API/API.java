@@ -233,8 +233,7 @@ public class API {
 		User mUser = post(url, new StringEntity(getGson().toJson(user)), User.class);
 		
 		// Access Token!
-		String access_token = user.get_access_token();
-		return access_token;
+		return "accessToken to be";
 	}
 	
 	public String signIn(StringEntity entity) throws Exception {
