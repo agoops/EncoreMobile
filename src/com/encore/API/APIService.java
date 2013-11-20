@@ -50,8 +50,8 @@ public class APIService extends IntentService {
 			case T.SIGN_UP:
 				signUp(intent.getExtras());
 				break;
-			case T.START_SESSION:
-				startSession(intent.getExtras());
+			case T.CREATE_SESSION:
+				createSession(intent.getExtras());
 				break;
 			case T.FRIENDS:
 				getFriends(intent.getExtras());
@@ -117,13 +117,19 @@ public class APIService extends IntentService {
 			api.signUp(user);
 		} catch (Exception e) {
 			Log.e(TAG, e.getMessage() + " ");
-		}
+		} 
 	}
 	
-	private void startSession(Bundle data){
-		Log.d(TAG, "startSession calledd");
+	private void createSession(Bundle data){
+		Log.d(TAG, "createSession() called");
 		try {
-			
+			Session session = new Session(data.getString(T.SESSION_TITLE), data.getBoolean(T.SESSION_USE_EXISTING_CROWD),
+					data.getString(T.SESSION_CROWD_TITLE), (String[]) data.getStringArrayList(T.SESSION_CROWD_MEMBERS).toArray(), 
+					data.getString(T.SESSION_CROWD_ID));
+			Session result = api.createSession(session);
+			if(result == null) {
+				Log.e(TAG, "No session created");
+			}
 		}
 		catch (Exception e) {
 			Log.e(TAG, e.getMessage() + " ");

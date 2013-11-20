@@ -11,7 +11,9 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 
+import util.T;
 import android.app.Activity;
+import android.content.Intent;
 import android.media.AudioFormat;
 import android.media.AudioManager;
 import android.media.AudioRecord;
@@ -23,6 +25,10 @@ import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
+
+import com.encore.API.APIService;
+import com.encore.views.HomeActivity;
 
 public class StartSession2 extends Activity {
 	
@@ -30,6 +36,9 @@ public class StartSession2 extends Activity {
 	String tag = "StartSession2";
 	Thread recordThread = null;
 	int sampleRateInHz = 11025;
+	
+	APIService api;
+	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -183,10 +192,33 @@ public class StartSession2 extends Activity {
 
 				play();
 				//finish();
+				break;
 
 			}
 			case R.id.send_session: {
+				// Make the API call to send the session
+				// TODO: Check if a recording has been made, first!
+				api = new APIService();
+				EditText session_title = (EditText) findViewById(R.id.session_title);
 				
+				Intent apiIntent = new Intent(getApplicationContext(), APIService.class);
+				
+				apiIntent.putExtra(T.API_TYPE, T.CREATE_SESSION);
+				
+				apiIntent.putExtra(T.SESSION_TITLE, session_title.getText().toString());
+				apiIntent.putExtra(T.SESSION_USE_EXISTING_CROWD, false);
+				apiIntent.putExtra(T.SESSION_CROWD_TITLE, "Test Crowd Title");
+				apiIntent.putExtra(T.SESSION_CROWD_MEMBERS, "Test Crowd Members");
+				apiIntent.putExtra(T.SESSION_CROWD_ID, "");
+				
+				getApplicationContext().startService(apiIntent);
+				
+				Intent launchHome = new Intent(getApplicationContext(), HomeActivity.class);
+				startActivity(launchHome);
+				break;
+			}
+			default: {
+				break;
 			}
 			}
 		}

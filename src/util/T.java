@@ -16,16 +16,16 @@ public class T {
 	public static final int SIGN_IN = 0;
 	public static final int SIGN_UP = 1;
 	public static final int ADD_CLIP = 2;
-	public static final int GET_SESSION = 5;
-	public static final int GET_SESSIONS = 6;
-	public static final int START_SESSION = 3;
+	public static final int CREATE_SESSION = 3;
 	public static final int FRIENDS = 4;
+	public static final int GET_SESSION = 6;
+	public static final int GET_SESSIONS = 7;
 	
 	// Column names for newsfeed query
 	public static final String SESSION_TITLE = "title";
-	public static final String SESSION_LIKES = "num_likes";
-	public static final String SESSION_SHARES = "num_shares";
-	public static final String SESSION_COMMENTS = "num_comments";
-	public static final String SESSION_VIDEO_URL = "video_url";
+	public static final String SESSION_USE_EXISTING_CROWD = "use_existing_crowd";
+	public static final String SESSION_CROWD_TITLE = "crowd_title";
+	public static final String SESSION_CROWD_MEMBERS = "crowd_members";
+	public static final String SESSION_CROWD_ID = "crowd";
 	
 }

@@ -49,12 +49,12 @@ public class SessionsAdapter extends ArrayAdapter<Session> {
 		}
 		
 		// Fill each row with the session at "position" 
-		viewHolder.newsfeed_session_title.setText(sessions.get(position).getTitle());
-		viewHolder.newsfeed_session_video.setText(sessions.get(position).getVideo_url());
-		// "Here" is not being called. This is our problem!!
-//		viewHolder.newsfeed_session_likes.setText(sessions.get(position).getNum_likes());
-		viewHolder.newsfeed_session_comments.setText(sessions.get(position).getNum_comments());
-		Log.d("SessionsAdapter", "Here");
+//		viewHolder.newsfeed_session_title.setText(sessions.get(position).getTitle());
+//		viewHolder.newsfeed_session_video.setText(sessions.get(position).getVideo_url());
+//		// "Here" is not being called. This is our problem!!
+////		viewHolder.newsfeed_session_likes.setText(sessions.get(position).getNum_likes());
+//		viewHolder.newsfeed_session_comments.setText(sessions.get(position).getNum_comments());
+//		Log.d("SessionsAdapter", "Here");
 //		viewHolder.newsfeed_session_shares.setText(sessions.get(position).getNum_shares());
 		
     	return rowView;

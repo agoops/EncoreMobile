@@ -1,65 +1,37 @@
 package com.encore.API.models;
 
-import java.sql.Date;
+import com.google.gson.annotations.SerializedName;
 
 public class Session {
-	private int session_id, num_clips, 
-		crowd_id, num_likes, num_shares, num_comments;
-	private byte is_complete;
-	private String title, video_url;
-	private Date created_at;
+	@SerializedName("title")
+	private String title;
+	
+	@SerializedName("crowd_title")
+	private String crowdTitle; 
+	
+	@SerializedName("crowd_id")
+	private String crowdId;
+	
+	@SerializedName("use_existing_crowd")
+	private boolean useExistingCrowd;
+	
+	@SerializedName("crowdMembers")
+	private String[] crowdMembers;
 	
 	public Session() {
-		session_id = -1;
-		num_clips = -1;
-		crowd_id = -1;
-		num_likes = -1;
-		num_shares = -1;
-		num_comments = -1;
-		is_complete = 0;
-		title = null;
-		video_url = null;
-		created_at = null;
+		this.title = null;
+		this.crowdTitle = null;
+		this.crowdId = null;
+		this.useExistingCrowd = false;
+		this.crowdMembers = null;
 	}
-
-	public Session(int session_id, int num_clips, int crowd_id, int likes,
-			byte is_complete, String title, String video_url, Date created_at, 
-			int shares, int comments) {
-		this.session_id = session_id;
-		this.num_clips = num_clips;
-		this.crowd_id = crowd_id;
-		this.num_likes = likes;
-		this.num_shares = shares;
-		this.num_comments = comments;
-		this.is_complete = is_complete;
+	
+	public Session(String title, boolean use_existing_crowd, String crowd_title, 
+			String[] crowd_members, String crowd_id) {
 		this.title = title;
-		this.video_url = video_url;
-		this.created_at = created_at;
+		this.crowdTitle = crowd_title;
+		this.crowdId = crowd_id;
+		this.useExistingCrowd = use_existing_crowd;
+		this.crowdMembers = crowd_members;
 	}
-
-	public int getNum_likes() {
-		return num_likes;
-	}
-
-	public int getNum_shares() {
-		return num_shares;
-	}
-
-	public int getNum_comments() {
-		return num_comments;
-	}
-
-	public String getTitle() {
-		return title;
-	}
-
-	public String getVideo_url() {
-		return video_url;
-	}
-
-	public Date getCreated_at() {
-		return created_at;
-	}
-	
-	
 }

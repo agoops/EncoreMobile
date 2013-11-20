@@ -55,7 +55,7 @@ public class API {
 	
 	// Sessions
 //	private static final String ALL_SESSIONS = SESSIONS;
-//	private static final String CREATE_SESSION = SESSIONS;
+	private static final String CREATE_SESSION = SESSIONS;
 	private static final String GET_SESSION = SESSIONS + "%s";
 	private static final String GET_SESSIONS = SESSIONS;
 //	private static final String ADD_CLIP = SESSIONS + "%s/addClip";
@@ -270,8 +270,18 @@ public class API {
 		
 	}
 	
-	public boolean createSession(Session session) throws Exception { 
-		return false;
+	public Session createSession(Session session) throws Exception { 
+		Log.d(TAG, "createSession() called");
+		String url = CREATE_SESSION;
+		Session result = null;
+		
+		try {
+			result = post(url, new StringEntity(getGson().toJson(session)), Session.class);
+		} catch(Exception e) {
+			Log.d(TAG, "createSession() error");
+			throw e;
+		}
+		return result;
 	}
 	
 	public Session getSession(String id) throws Exception {

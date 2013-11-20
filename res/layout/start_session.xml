@@ -4,6 +4,15 @@
     android:layout_height="match_parent" >
 
     <Button
+        android:id="@+id/send_session"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentTop="true"
+        android:onClick="loadFriends"
+        android:text="Send" />
+    
+    <Button
         android:id="@+id/btnStart"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -27,14 +36,13 @@
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
         android:text="Play" />
-
-    <Button
-        android:id="@+id/send_session"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentTop="true"
-        android:onClick="loadFriends"
-        android:text="Send" />
+    
+    <EditText 
+         android:id="@+id/session_title"
+         android:layout_width="225dp"
+         android:layout_height="wrap_content"
+         android:layout_below="@id/send_session"
+         android:layout_centerHorizontal="true"
+         android:hint="Session Title" />
 
 </RelativeLayout>

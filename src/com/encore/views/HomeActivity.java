@@ -3,6 +3,7 @@ package com.encore.views;
 import util.T;
 import android.app.ActionBar;
 import android.app.ActionBar.Tab;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
@@ -18,6 +19,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.encore.R;
+import com.encore.StartSession2;
 
 public class HomeActivity extends FragmentActivity {
 	private static String tag = "VideoListViewActivity";
@@ -73,9 +75,6 @@ public class HomeActivity extends FragmentActivity {
 		}
 	}
 
-	private void startNewSession() {
-		Log.d(tag, "Button clicked!");
-	}
 	private void setupActionBar(ActionBar actionBar) {
 		// Specify that tabs should be displayed in the action bar.
 		actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
@@ -185,6 +184,8 @@ public class HomeActivity extends FragmentActivity {
 		switch(item.getItemId()) {
 		case R.id.action_video:
 			// Launch new session or new clip or something...!
+			Intent intent = new Intent(this, StartSession2.class);
+			startActivity(intent);
 			return true;
 		default:
 			return super.onOptionsItemSelected(item);
