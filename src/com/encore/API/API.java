@@ -248,6 +248,19 @@ public class API {
 		return result;
 	}
 	
+	public String getUsers(String token) throws Exception {
+		Log.d(TAG, "getUsers called");
+		ACCESS_TOKEN = "Token " + token;
+		String url = USERS;
+		String result = "defaultstringifnoresult";
+		try {
+			result = get(url, String.class);
+			return result;
+		} catch (Exception e) {
+			Log.d(TAG,"API.getFriends error");
+			throw e;
+		}
+	}
 	public String getFriends(String token) throws Exception {
 		Log.d(TAG, "getFriends called");
 		ACCESS_TOKEN = "Token " + token;

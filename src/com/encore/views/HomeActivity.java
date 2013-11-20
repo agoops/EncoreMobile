@@ -25,7 +25,10 @@ public class HomeActivity extends FragmentActivity {
 	private static int HOME = 0;
 	private static int INBOX = 1;
 	private static int FRIENDS = 2;
-	private static int NUM_TABS = 3;
+	private static int USERS = 3;
+
+	// Change this to take out tabs from HomeActivity
+	private static int NUM_TABS = 4;
 	boolean customTitleSupported;
 
 	@Override
@@ -33,15 +36,16 @@ public class HomeActivity extends FragmentActivity {
 		super.onCreate(savedInstanceState);
 
 		// check if custom title is supported BEFORE setting the content view!
-		//TODO doesn't work. do later;
-		//customTitleSupported = requestWindowFeature(Window.FEATURE_CUSTOM_TITLE);
+		// TODO doesn't work. do later;
+		// customTitleSupported =
+		// requestWindowFeature(Window.FEATURE_CUSTOM_TITLE);
 
 		setContentView(R.layout.home_activity);
-		//customTitleBar();
+		// customTitleBar();
 
-		fragments = new Fragment[3];
+		fragments = new Fragment[NUM_TABS];
 		actionBar = getActionBar();
-		
+
 		Log.d(tag, "onCreate() reached");
 		viewPager = (ViewPager) findViewById(R.id.pager);
 		viewPager.setAdapter(new PagerAdapter(getSupportFragmentManager()));
@@ -73,6 +77,7 @@ public class HomeActivity extends FragmentActivity {
 	private void startNewSession() {
 		Log.d(tag, "Button clicked!");
 	}
+
 	private void setupActionBar(ActionBar actionBar) {
 		// Specify that tabs should be displayed in the action bar.
 		actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
@@ -114,6 +119,10 @@ public class HomeActivity extends FragmentActivity {
 				actionBar.addTab(actionBar.newTab().setText("Friends")
 						.setTabListener(tabListener));
 				break;
+			case 3:
+				actionBar.addTab(actionBar.newTab().setText("Users")
+						.setTabListener(tabListener));
+
 			}
 		}
 	}
@@ -143,6 +152,10 @@ public class HomeActivity extends FragmentActivity {
 				Fragment fragment3 = new FriendsFragment();
 				fragments[FRIENDS] = fragment3;
 				return fragment3;
+			case 3:
+				Fragment fragment4 = new UsersFragment();
+				fragments[USERS] = fragment4;
+				return fragment4;
 			}
 
 			return null;
@@ -162,6 +175,8 @@ public class HomeActivity extends FragmentActivity {
 				return "Inbox";
 			case 2:
 				return "Friends";
+			case 3:
+				return "Users";
 			}
 			System.out.println("Got here for some reason");
 			return null;

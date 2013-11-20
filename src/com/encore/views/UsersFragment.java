@@ -1,7 +1,19 @@
 package com.encore.views;
 
 import java.util.ArrayList;
+
 import util.T;
+
+import com.encore.FriendsFragmentAdapter;
+import com.encore.R;
+import com.encore.UsersFragmentAdapter;
+import com.encore.API.APIService;
+import com.encore.API.models.Profile;
+import com.google.gson.Gson;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonParser;
+
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
@@ -13,53 +25,43 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
 
-import com.encore.FriendsFragmentAdapter;
-import com.encore.R;
-import com.encore.API.APIService;
-import com.encore.API.models.Profile;
-import com.google.gson.Gson;
-import com.google.gson.JsonArray;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonParser;
-
-public class FriendsFragment extends Fragment {
-
-
-	private static String tag = "FriendsFragment";
+public class UsersFragment extends Fragment{
+	private static String tag = "UsersFragment";
 	private ListView listView;
-	FriendsFragmentAdapter adapter;
-
+	UsersFragmentAdapter adapter;
+	
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
 		
 		// Inflate the layout for this fragment
-		View view = inflater.inflate(R.layout.friends_fragment, container,
+		View view = inflater.inflate(R.layout.users_fragment, container,
 				false);
-		listView = (ListView) view.findViewById(R.id.friends_list_view);
+		listView = (ListView) view.findViewById(R.id.users_list_view);
 
 		
-		adapter = new FriendsFragmentAdapter(container.getContext(), 0, null);
+		adapter = new UsersFragmentAdapter(container.getContext(), 0, null);
 		listView.setAdapter(adapter);
-		FriendListReceiver mReceiver = new FriendListReceiver(new Handler());
+		UsersListReceiver mReceiver = new UsersListReceiver(new Handler());
 
 		/* This is the receiver and method that hits the endpoint for list of friends
 		 */
-		getFriends(mReceiver);
+		getUsers(mReceiver);
 		return view;
 	}
-
-	public void getFriends(ResultReceiver receiver) {
+	
+	public void getUsers(ResultReceiver receiver) {
 		Intent apiIntent = new Intent(getActivity(), APIService.class);
 		apiIntent.putExtra("receiver", receiver);
-		apiIntent.putExtra(T.API_TYPE, T.FRIENDS);
+		apiIntent.putExtra(T.API_TYPE, T.USERS);
 		
 		getActivity().startService(apiIntent);
 		return;
 	}
-
-	private class FriendListReceiver extends ResultReceiver {
-		public FriendListReceiver(Handler handler) {
+	
+	
+	private class UsersListReceiver extends ResultReceiver {
+		public UsersListReceiver(Handler handler) {
 			super(handler);
 			// TODO Auto-generated constructor stub
 		}
@@ -87,15 +89,14 @@ public class FriendsFragment extends Fragment {
 			}
 		}
 	}
-
+	
 	public ArrayList<Profile> convertJsonToListOfProfile(String json) {
 		Log.d(tag, "CONVERT TO OBJECT STARTED");
 		Gson gson = new Gson();
 		ArrayList<Profile> profiles = new ArrayList<Profile>();
 		JsonParser jsonParser = new JsonParser();
 
-		JsonArray profilesJson = jsonParser.parse(json).getAsJsonObject()
-				.getAsJsonArray("friends");
+		JsonArray profilesJson = jsonParser.parse(json).getAsJsonArray();
 
 		for (JsonElement j : profilesJson) {
 			Profile profile = gson.fromJson(j, Profile.class);
@@ -105,17 +106,4 @@ public class FriendsFragment extends Fragment {
 
 		return profiles;
 	}
-	
-
-
-//	public ArrayList<User> makeListOfFriends() {
-//		ArrayList<User> list = new ArrayList<User>();
-//		for (int i =0; i < 4; ++i) {
-//			User user = new User();
-//			user.setUsername("yung$$ user "+ i);
-//			list.add(user); 
-//		}
-//		return list;
-//	}
-	
 }

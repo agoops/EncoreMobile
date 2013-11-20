@@ -49,11 +49,33 @@ public class APIService extends IntentService {
 		case T.FRIENDS:
 			getFriends(intent.getExtras());
 			break;
+		case T.USERS:
+			getUsers(intent.getExtras());
+			break;
 		default:
 			break;
 		}
 	}
+	
+	private void getUsers(Bundle data) {
+		Log.d(TAG, "getUsers called");
+		String token = TokenHelper.getToken(this);
+		Log.d(TAG, "token: " + token);
+		if (token == null) {
+			Log.d(TAG, "No token in shared prefs");
+		}
+		try {
+			String result = api.getUsers(token);
+			Log.d(TAG, "result from api: " + result);
+			Bundle b = new Bundle();
+			b.putString("result", result);
+			resultReceiver.send(1, b);
 
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
 	private void getFriends(Bundle data) {
 		Log.d(TAG, "getFriends called");
 		String token = TokenHelper.getToken(this);

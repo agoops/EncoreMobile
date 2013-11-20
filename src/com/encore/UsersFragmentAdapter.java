@@ -9,47 +9,36 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.BaseAdapter;
 import android.widget.CheckBox;
 import android.widget.TextView;
 
 import com.encore.API.models.Profile;
 import com.encore.API.models.User;
 
-public class FriendsFragmentAdapter extends ArrayAdapter<Profile> {
-
+public class UsersFragmentAdapter extends ArrayAdapter<Profile> {
 	private Context mContext;
-	private List<Profile> mFriendList;
-	private String tag = "FriendsFragmentAdapter";
+	private List<Profile> mUserList;
+	private String tag = "UsersFragmentAdapter";
 
-	public FriendsFragmentAdapter(Context context, int resource,
+	public UsersFragmentAdapter(Context context, int resource,
 			List<Profile> objects) {
 		super(context, resource, objects);
 		mContext = context;
-		mFriendList = objects;
-		
-		
-		
+		mUserList = objects;
 	}
-
-	// public FriendsFragmentAdapter(Context context, List<Profile> list) {
-	//
-	// this.mContext=context;
-	// this.mFriendList=list;
-	// }
 
 	@Override
 	public int getCount() {
-		if (mFriendList != null) {
-			return mFriendList.size();
+		if (mUserList != null) {
+			return mUserList.size();
 		}
 		return 0;
 	}
 
 	@Override
 	public Profile getItem(int arg0) {
-		if (mFriendList != null) {
-			return mFriendList.get(arg0);
+		if (mUserList != null) {
+			return mUserList.get(arg0);
 		}
 		return null;
 	}
@@ -61,24 +50,24 @@ public class FriendsFragmentAdapter extends ArrayAdapter<Profile> {
 
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
-		Log.d(tag, "Populating position: " + position);
+
 		// reference to convertView
 		FriendView v = (FriendView) convertView;
-		User user = mFriendList.get(position).getUser();
+		User user = mUserList.get(position).getUser();
 		Log.d(tag, "User for this view is: " + user.getUsername());
 
 		// inflate new layout if null
 		if (v == null) {
 			LayoutInflater inflater = LayoutInflater.from(mContext);
-			v = (FriendView) inflater.inflate(R.layout.friend_view, parent,
+			v = (FriendView) inflater.inflate(R.layout.users_view, parent,
 					false);
 		}
 
 		// load controls from layout resources
 		TextView username = (TextView) v
-				.findViewById(R.id.username_friend_view);
+				.findViewById(R.id.username_user_view);
 		CheckBox checkbox = (CheckBox) v
-				.findViewById(R.id.checkbox_friend_view);
+				.findViewById(R.id.checkbox_user_view);
 
 		// set data to display
 		username.setText(user.getUsername());
@@ -89,6 +78,6 @@ public class FriendsFragmentAdapter extends ArrayAdapter<Profile> {
 	}
 
 	public void setItemList(ArrayList<Profile> profiles) {
-		this.mFriendList = profiles;
+		this.mUserList = profiles;
 	}
 }
