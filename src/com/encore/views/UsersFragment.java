@@ -3,17 +3,6 @@ package com.encore.views;
 import java.util.ArrayList;
 
 import util.T;
-
-import com.encore.FriendsFragmentAdapter;
-import com.encore.R;
-import com.encore.UsersFragmentAdapter;
-import com.encore.API.APIService;
-import com.encore.API.models.Profile;
-import com.google.gson.Gson;
-import com.google.gson.JsonArray;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonParser;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
@@ -23,11 +12,22 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ListView;
+
+import com.encore.R;
+import com.encore.UsersFragmentAdapter;
+import com.encore.API.APIService;
+import com.encore.API.models.Profile;
+import com.google.gson.Gson;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonParser;
 
 public class UsersFragment extends Fragment{
 	private static String tag = "UsersFragment";
 	private ListView listView;
+	public Button sendRequests;
 	UsersFragmentAdapter adapter;
 	
 	@Override
@@ -38,7 +38,6 @@ public class UsersFragment extends Fragment{
 		View view = inflater.inflate(R.layout.users_fragment, container,
 				false);
 		listView = (ListView) view.findViewById(R.id.users_list_view);
-
 		
 		adapter = new UsersFragmentAdapter(container.getContext(), 0, null);
 		listView.setAdapter(adapter);

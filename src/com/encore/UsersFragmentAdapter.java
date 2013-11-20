@@ -66,12 +66,12 @@ public class UsersFragmentAdapter extends ArrayAdapter<Profile> {
 		// load controls from layout resources
 		TextView username = (TextView) v
 				.findViewById(R.id.username_user_view);
-		CheckBox checkbox = (CheckBox) v
-				.findViewById(R.id.checkbox_user_view);
+//		CheckBox checkbox = (CheckBox) v
+//				.findViewById(R.id.checkbox_user_view);
 
 		// set data to display
 		username.setText(user.getUsername());
-		checkbox.setChecked(false);
+//		checkbox.setChecked(false);
 
 		// return view
 		return v;
