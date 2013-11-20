@@ -4,6 +4,7 @@ import android.content.Context;
 import android.util.AttributeSet;
 import android.widget.LinearLayout;
 
+import com.encore.API.models.Profile;
 import com.encore.API.models.User;
 
 public class FriendView extends LinearLayout {
@@ -18,5 +19,9 @@ public class FriendView extends LinearLayout {
 
 	public void setUser(User user){
 		this.user = user;
+	}
+	
+	public Profile getProfile() {
+		return new Profile();
 	}
 }

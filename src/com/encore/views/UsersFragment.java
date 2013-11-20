@@ -38,11 +38,11 @@ public class UsersFragment extends Fragment{
 		View view = inflater.inflate(R.layout.users_fragment, container,
 				false);
 		listView = (ListView) view.findViewById(R.id.users_list_view);
-		
 		adapter = new UsersFragmentAdapter(container.getContext(), 0, null);
 		listView.setAdapter(adapter);
+		
+		
 		UsersListReceiver mReceiver = new UsersListReceiver(new Handler());
-
 		/* This is the receiver and method that hits the endpoint for list of friends
 		 */
 		getUsers(mReceiver);

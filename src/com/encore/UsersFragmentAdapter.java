@@ -3,15 +3,19 @@ package com.encore;
 import java.util.ArrayList;
 import java.util.List;
 
+import util.T;
 import android.content.Context;
+import android.content.Intent;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.CheckBox;
+import android.widget.Button;
 import android.widget.TextView;
 
+import com.encore.API.APIService;
 import com.encore.API.models.Profile;
 import com.encore.API.models.User;
 
@@ -66,17 +70,38 @@ public class UsersFragmentAdapter extends ArrayAdapter<Profile> {
 		// load controls from layout resources
 		TextView username = (TextView) v
 				.findViewById(R.id.username_user_view);
+		
+		Button sr = (Button) v.findViewById(R.id.send_request);
+		sr.setOnClickListener(new OnClickListener(){
+
+			@Override
+			public void onClick(View v) {
+				FriendView fv = (FriendView) v.getParent();
+				Button button = (Button) v;
+				String username = fv.getProfile().getUser().getUsername();
+				
+				Intent apiIntent = new Intent(mContext, APIService.class);
+				apiIntent.putExtra(T.API_TYPE, T.FRIEND_REQUEST);
+				apiIntent.putExtra(T.USERNAME, username);
+				//TODO: maybe put a receiver in apiIntent to change text to pending when it's acutally pending
+				mContext.startService(apiIntent);
+				button.setText("Pending");
+				
+			}
+			
+		});
 //		CheckBox checkbox = (CheckBox) v
 //				.findViewById(R.id.checkbox_user_view);
 
 		// set data to display
 		username.setText(user.getUsername());
 //		checkbox.setChecked(false);
-
+		
 		// return view
 		return v;
 	}
-
+	
+	
 	public void setItemList(ArrayList<Profile> profiles) {
 		this.mUserList = profiles;
 	}

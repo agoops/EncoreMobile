@@ -26,6 +26,12 @@ public class API {
 	
 	private static final String TAG = "API";
 	
+	/***************************************
+	 * 
+	 * Different endpoints the client can hit
+	 * 
+	 * *****************************************
+	 */
 	private static final String AUTHORIZATION = "Authorization";
 	private static String ACCESS_TOKEN = "result+from+creating+user+and+storing+access+token"; // send on every request
 	private static final String PROD = "http://rapchat-django.herokuapp.com";
@@ -65,7 +71,7 @@ public class API {
 	private static final String ALL_FRIENDS = FRIENDS;
 	private static final String GET_FRIEND = FRIENDS + "%s"; // untested
 	private static final String GET_FRIEND_REQUEST = FRIENDS + "requests";
-	private static final String CREATE_FRIEND_REQUEST = FRIENDS + "requests";
+	private static final String SEND_FRIEND_REQUEST = FRIENDS + "requests/";
 	private static final String CREATE_FRIEND_REQUEST_REPLY = FRIENDS + "requests/reply";
 	
 	// Crowds
@@ -86,6 +92,14 @@ public class API {
 		}
 		return mGson;
 	}
+	
+	
+	/**********************************************
+	 * 
+	 * GET, POST, PUT, DELETE api service call methods
+	 * 
+	 * *********************************************
+	 */
 	
 	// ----------- GET ------------
 	private <T> T get(String url, Type type) throws IOException {
@@ -226,6 +240,16 @@ public class API {
 		}
 	}
 	
+	
+	
+	/*************************************************************
+	 * 
+	 * Helper methods to take in the kind of request occurring, and execute the proper method above.
+	 * 
+	 * ***************************************************************
+	 */
+	
+	
 	public String signUp(User user) throws Exception {
 		Log.d(TAG, "signUp called, bodyis : " + getGson().toJson(user).toString());
 		
@@ -248,6 +272,19 @@ public class API {
 		return result;
 	}
 	
+	public String sendFriendRequest(String token, StringEntity entity) throws Exception {
+		ACCESS_TOKEN = "Token " + token;
+		String url = SEND_FRIEND_REQUEST;
+		String result = "emptystirngdawg-sendfriendrequest probably didn't work";
+		
+		try {
+			result = post(url, entity, String.class);
+		} catch (Exception e) {
+			throw e;
+		}
+		return result;
+	}
+	
 	public String getUsers(String token) throws Exception {
 		Log.d(TAG, "getUsers called");
 		ACCESS_TOKEN = "Token " + token;
@@ -261,6 +298,7 @@ public class API {
 			throw e;
 		}
 	}
+	
 	public String getFriends(String token) throws Exception {
 		Log.d(TAG, "getFriends called");
 		ACCESS_TOKEN = "Token " + token;

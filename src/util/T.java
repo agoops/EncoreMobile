@@ -16,5 +16,6 @@ public class T {
 	public static final int START_SESSION = 3;
 	public static final int FRIENDS = 4;
 	public static final int USERS = 5;
+	public static final int FRIEND_REQUEST = 6;
 
 }

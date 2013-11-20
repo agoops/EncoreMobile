@@ -1,6 +1,7 @@
 package com.encore.API;
 
 import org.apache.http.entity.StringEntity;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import util.T;
@@ -49,14 +50,68 @@ public class APIService extends IntentService {
 		case T.FRIENDS:
 			getFriends(intent.getExtras());
 			break;
+		case T.FRIEND_REQUEST:
+			sendFriendRequest(intent.getExtras());
+			break;
 		case T.USERS:
 			getUsers(intent.getExtras());
 			break;
+		
 		default:
 			break;
 		}
 	}
 	
+	private void sendFriendRequest(Bundle data) {
+		String token = TokenHelper.getToken(this);
+		
+		String username = data.getString(T.USERNAME);
+		JSONObject json = null;
+		StringEntity entity = null;
+		/**
+		 * TODO: 
+		 * problem with POST body (maybe not right username) is somewhere here.
+		 */
+		try{
+			json = new JSONObject();
+			json.put(T.USERNAME, username);
+			Log.d(TAG, "json for entity: " + json.toString());
+			entity = new StringEntity(json.toString());
+			Log.d(TAG, entity.toString());
+		} catch (Exception e) {
+			e.printStackTrace();;
+		}
+		
+		
+		try {
+			String result = api.sendFriendRequest(token, entity);
+			Log.d(TAG, "response from sendFriendRequest: " + result);
+		} catch (Exception e ){
+			e.printStackTrace();
+		}
+		
+	}
+	
+	
+	private void getFriends(Bundle data) {
+		Log.d(TAG, "getFriends called");
+		String token = TokenHelper.getToken(this);
+		Log.d(TAG, "token: " + token);
+		if (token == null) {
+			Log.d(TAG, "No token in shared prefs");
+			
+		}
+		try {
+			String result = api.getFriends(token);
+			Log.d(TAG, "result from api: " + result);
+			Bundle b = new Bundle();
+			b.putString("result", result);
+			resultReceiver.send(1, b);
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
 	private void getUsers(Bundle data) {
 		Log.d(TAG, "getUsers called");
 		String token = TokenHelper.getToken(this);
@@ -66,26 +121,6 @@ public class APIService extends IntentService {
 		}
 		try {
 			String result = api.getUsers(token);
-			Log.d(TAG, "result from api: " + result);
-			Bundle b = new Bundle();
-			b.putString("result", result);
-			resultReceiver.send(1, b);
-
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
-	
-	private void getFriends(Bundle data) {
-		Log.d(TAG, "getFriends called");
-		String token = TokenHelper.getToken(this);
-		Log.d(TAG, "token: " + token);
-		if (token == null) {
-			Log.d(TAG, "No token in shared prefs");
-
-		}
-		try {
-			String result = api.getFriends(token);
 			Log.d(TAG, "result from api: " + result);
 			Bundle b = new Bundle();
 			b.putString("result", result);
