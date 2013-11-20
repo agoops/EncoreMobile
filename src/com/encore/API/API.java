@@ -8,6 +8,8 @@ import java.io.OutputStream;
 import java.lang.reflect.Type;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.apache.http.entity.StringEntity;
 
@@ -18,6 +20,7 @@ import com.encore.TokenHelper;
 import com.encore.API.models.Session;
 import com.encore.API.models.User;
 import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import com.squareup.okhttp.OkHttpClient;
 
 public class API {
@@ -54,6 +57,7 @@ public class API {
 //	private static final String ALL_SESSIONS = SESSIONS;
 //	private static final String CREATE_SESSION = SESSIONS;
 	private static final String GET_SESSION = SESSIONS + "%s";
+	private static final String GET_SESSIONS = SESSIONS;
 //	private static final String ADD_CLIP = SESSIONS + "%s/addClip";
 	
 	// Clips
@@ -275,5 +279,22 @@ public class API {
 		
 		String url = String.format(GET_SESSION, id);
 		return get(url, Session.class);
+	}
+	
+	// NEEDS TO BE TESTED
+	public List<Session> getSessions() throws Exception {
+		Log.d(TAG, "getSessions called");
+	
+		
+		String url = GET_SESSIONS;
+		Type listType = new TypeToken<List<Session>>(){}.getType();
+		
+		// Query doesn't work, using dummy data for now.
+		List<Session> dummy = new ArrayList<Session>();
+		dummy.add(new Session());
+		dummy.add(new Session());
+		dummy.add(new Session());
+		return dummy;
+//		return get(url, listType);
 	}
 }

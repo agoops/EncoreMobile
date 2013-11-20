@@ -1,9 +1,14 @@
 package com.encore.API;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.apache.http.entity.StringEntity;
 import org.json.JSONObject;
 
 import util.T;
+import Bus.BusProvider;
+import Bus.SessionsEvent;
 import android.app.IntentService;
 import android.content.Intent;
 import android.os.Bundle;
@@ -11,6 +16,7 @@ import android.os.ResultReceiver;
 import android.util.Log;
 
 import com.encore.TokenHelper;
+import com.encore.API.models.Session;
 import com.encore.API.models.User;
 import com.squareup.okhttp.OkHttpClient;
 
@@ -49,6 +55,9 @@ public class APIService extends IntentService {
 				break;
 			case T.FRIENDS:
 				getFriends(intent.getExtras());
+				break;
+			case T.GET_SESSIONS:
+				getSessions();
 				break;
 			default:
 				break;
@@ -119,6 +128,24 @@ public class APIService extends IntentService {
 		catch (Exception e) {
 			Log.e(TAG, e.getMessage() + " ");
 		}
+	}
+	
+	private void getSessions() {
+		Log.d(TAG, "getSessions called");
+		
+		SessionsEvent event = new SessionsEvent();
+		
+		try {
+//			event.sessions = api.getSessions();
+		} catch(Exception e) {
+			Log.e(TAG, e.getMessage() + " ");
+		}
+		List<Session> dummy = new ArrayList<Session>();
+		dummy.add(new Session());
+		dummy.add(new Session());
+		dummy.add(new Session());
+		event.sessions = dummy;
+		BusProvider.getInstance().post(event);
 	}
 	
 	private void login(Bundle data) {

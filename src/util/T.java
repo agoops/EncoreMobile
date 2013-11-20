@@ -10,10 +10,16 @@ public class T {
 	public static final String ID = "id";
 	public static final String API_TYPE = "api_type";
 	
+	public static final int NUM_VIEWS = 3;
+	
 	// API call types
 	public static final int SIGN_IN = 0;
 	public static final int SIGN_UP = 1;
 	public static final int ADD_CLIP = 2;
+	public static final int GET_SESSION = 5;
+	public static final int GET_SESSIONS = 6;
+	public static final int START_SESSION = 3;
+	public static final int FRIENDS = 4;
 	
 	// Column names for newsfeed query
 	public static final String SESSION_TITLE = "title";
@@ -22,6 +28,4 @@ public class T {
 	public static final String SESSION_COMMENTS = "num_comments";
 	public static final String SESSION_VIDEO_URL = "video_url";
 	
-	public static final int START_SESSION = 3;
-	public static final int FRIENDS = 4;
 }

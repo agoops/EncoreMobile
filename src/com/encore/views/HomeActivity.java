@@ -1,5 +1,6 @@
 package com.encore.views;
 
+import util.T;
 import android.app.ActionBar;
 import android.app.ActionBar.Tab;
 import android.os.Bundle;
@@ -9,9 +10,11 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.Window;
 import android.widget.ListView;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.encore.R;
@@ -25,7 +28,7 @@ public class HomeActivity extends FragmentActivity {
 	private static int HOME = 0;
 	private static int INBOX = 1;
 	private static int FRIENDS = 2;
-	private static int NUM_TABS = 3;
+	private static int NUM_VIEWS = T.NUM_VIEWS;
 	boolean customTitleSupported;
 
 	@Override
@@ -100,7 +103,7 @@ public class HomeActivity extends FragmentActivity {
 			}
 		};
 		// Add title to tabs
-		for (int i = 0; i < NUM_TABS; i++) {
+		for (int i = 0; i < NUM_VIEWS; i++) {
 			switch (i) {
 			case 0:
 				actionBar.addTab(actionBar.newTab().setText("Home")
@@ -127,8 +130,8 @@ public class HomeActivity extends FragmentActivity {
 		@Override
 		public Fragment getItem(int i) {
 			Log.d(tag, "getItem() called with " + i);
+			
 			switch (i) {
-
 			case 0:
 				Fragment fragment1 = new VideoListViewFragment();
 				Bundle args = new Bundle();
@@ -150,7 +153,7 @@ public class HomeActivity extends FragmentActivity {
 
 		@Override
 		public int getCount() {
-			return NUM_TABS;
+			return NUM_VIEWS;
 		}
 
 		@Override
@@ -162,9 +165,29 @@ public class HomeActivity extends FragmentActivity {
 				return "Inbox";
 			case 2:
 				return "Friends";
+			default:
+				return null;
 			}
-			System.out.println("Got here for some reason");
-			return null;
+		}
+	}
+	
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		// Inflate the menu items in the action bar
+		MenuInflater inflater = getMenuInflater();
+		inflater.inflate(R.menu.home_activity_actions, menu);
+		return super.onCreateOptionsMenu(menu);
+	}
+	
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		// Handle presses on action bar items
+		switch(item.getItemId()) {
+		case R.id.action_video:
+			// Launch new session or new clip or something...!
+			return true;
+		default:
+			return super.onOptionsItemSelected(item);
 		}
 	}
 

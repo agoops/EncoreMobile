@@ -36,4 +36,30 @@ public class Session {
 		this.video_url = video_url;
 		this.created_at = created_at;
 	}
+
+	public int getNum_likes() {
+		return num_likes;
+	}
+
+	public int getNum_shares() {
+		return num_shares;
+	}
+
+	public int getNum_comments() {
+		return num_comments;
+	}
+
+	public String getTitle() {
+		return title;
+	}
+
+	public String getVideo_url() {
+		return video_url;
+	}
+
+	public Date getCreated_at() {
+		return created_at;
+	}
+	
+	
 }
