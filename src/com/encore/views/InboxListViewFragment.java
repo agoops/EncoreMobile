@@ -68,10 +68,9 @@ public class InboxListViewFragment extends Fragment{
 			Log.d(tag, "uri = " + uri.toString());
 			
 			showVideoDialog(uri);
-
 		}
-		
 	}
+	
 	private void showVideoDialog(Uri uri) {
 
 		final Dialog dialog = new Dialog(getActivity());

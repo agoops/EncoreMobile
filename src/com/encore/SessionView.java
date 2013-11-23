@@ -18,9 +18,4 @@ public class SessionView extends LinearLayout {
 	public SessionTemp getData() {
 		return data;
 	}
-
-	
-	
-	
-	
 }

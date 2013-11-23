@@ -1,10 +1,15 @@
 package com.encore.API;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.apache.http.entity.StringEntity;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import util.T;
+import Bus.BusProvider;
+import Bus.SessionsEvent;
 import android.app.IntentService;
 import android.content.Intent;
 import android.os.Bundle;
@@ -12,6 +17,9 @@ import android.os.ResultReceiver;
 import android.util.Log;
 
 import com.encore.TokenHelper;
+import com.encore.API.models.Crowd;
+import com.encore.API.models.PostSession;
+import com.encore.API.models.Session;
 import com.encore.API.models.User;
 import com.squareup.okhttp.OkHttpClient;
 
@@ -34,7 +42,7 @@ public class APIService extends IntentService {
 		} else {
 			Log.d(TAG, "noReceiver??");
 		}
-		api = new API(new OkHttpClient());
+			api = new API(new OkHttpClient());
 		// Where processing occurs
 		int apiType = intent.getIntExtra(T.API_TYPE, -1);
 		switch (apiType) {
@@ -44,11 +52,14 @@ public class APIService extends IntentService {
 		case T.SIGN_UP:
 			signUp(intent.getExtras());
 			break;
-		case T.START_SESSION:
-			startSession(intent.getExtras());
+		case T.CREATE_SESSION:
+			createSession(intent);
 			break;
 		case T.FRIENDS:
 			getFriends(intent.getExtras());
+			break;
+		case T.GET_SESSIONS:
+			getSessions();
 			break;
 		case T.FRIEND_REQUEST:
 			sendFriendRequest(intent.getExtras());
@@ -56,7 +67,6 @@ public class APIService extends IntentService {
 		case T.USERS:
 			getUsers(intent.getExtras());
 			break;
-		
 		default:
 			break;
 		}
@@ -99,7 +109,7 @@ public class APIService extends IntentService {
 		Log.d(TAG, "token: " + token);
 		if (token == null) {
 			Log.d(TAG, "No token in shared prefs");
-			
+
 		}
 		try {
 			String result = api.getFriends(token);
@@ -173,13 +183,62 @@ public class APIService extends IntentService {
 		}
 	}
 
-	private void startSession(Bundle data) {
-		Log.d(TAG, "startSession calledd");
+	private void createSession(Intent intent) {
+		Log.d(TAG, "createSession() called");
+		Bundle data = intent.getExtras();
+		String token = TokenHelper.getToken(this);
+		Session result = null;
+		PostSession pSession = null;
 		try {
-
+			if( !data.getBoolean(T.SESSION_USE_EXISTING_CROWD) ) {
+				// If user doesn't want to use an existing crowd...
+				
+				// TODO: Should be from user input, not this arbitrary list
+				String members[] = {"anskeet", "babs"};
+				
+				// Bundle fields into a PostSession object...
+				pSession = new PostSession(data.getString(T.SESSION_TITLE), data.getBoolean(T.SESSION_USE_EXISTING_CROWD), 
+						data.getString(T.SESSION_CROWD_TITLE), members, 0);
+				
+				result = api.createSession(pSession, token);
+			} else {
+				// else they DO want to use an existing crowd...
+				String crowdTitle = "";
+				String[] members = {};
+				
+				// TODO: pass existingCrowd in from a lv of existing crowds on the client app,
+				// instead of creating this arbitrary group
+				pSession = new PostSession(data.getString(T.SESSION_TITLE), data.getBoolean(T.SESSION_USE_EXISTING_CROWD), 
+						null, null, Integer.parseInt(data.getString(T.SESSION_CROWD_ID)));
+				
+				result = api.createSession(pSession, token);
+			}
+			
+			// Error checking
+			if (result == null) {
+				Log.e(TAG, "No session created");
+			}
 		} catch (Exception e) {
 			Log.e(TAG, e.getMessage() + " ");
 		}
+	}
+
+	private void getSessions() {
+		Log.d(TAG, "getSessions called");
+
+		SessionsEvent event = new SessionsEvent();
+
+		try {
+			// event.sessions = api.getSessions();
+		} catch (Exception e) {
+			Log.e(TAG, e.getMessage() + " ");
+		}
+		List<Session> dummy = new ArrayList<Session>();
+		dummy.add(new Session());
+		dummy.add(new Session());
+		dummy.add(new Session());
+		event.sessions = dummy;
+		BusProvider.getInstance().post(event);
 	}
 
 	private void login(Bundle data) {
@@ -193,4 +252,5 @@ public class APIService extends IntentService {
 	private void addClip(Bundle data) {
 
 	}
+
 }

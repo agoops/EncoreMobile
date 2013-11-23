@@ -1,7 +1,9 @@
 package com.encore.views;
 
+import util.T;
 import android.app.ActionBar;
 import android.app.ActionBar.Tab;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
@@ -9,12 +11,15 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.Window;
 import android.widget.ListView;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.encore.R;
+import com.encore.StartSession2;
 
 public class HomeActivity extends FragmentActivity {
 	private static String tag = "VideoListViewActivity";
@@ -136,8 +141,8 @@ public class HomeActivity extends FragmentActivity {
 		@Override
 		public Fragment getItem(int i) {
 			Log.d(tag, "getItem() called with " + i);
+			
 			switch (i) {
-
 			case 0:
 				Fragment fragment1 = new VideoListViewFragment();
 				Bundle args = new Bundle();
@@ -175,11 +180,33 @@ public class HomeActivity extends FragmentActivity {
 				return "Inbox";
 			case 2:
 				return "Friends";
-			case 3:
-				return "Users";
+			default:
+				return null;
 			}
-			System.out.println("Got here for some reason");
-			return null;
+		}
+	}
+	
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		// Inflate the menu items in the action bar
+		MenuInflater inflater = getMenuInflater();
+		inflater.inflate(R.menu.home_activity_actions, menu);
+		return super.onCreateOptionsMenu(menu);
+	}
+	
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		Log.d("HOMEACTIVITY.JAVA", "Action Item selected");
+		// Handle presses on action bar items
+		switch(item.getItemId()) {
+		case R.id.action_video:
+			// Launch a new session
+			Log.d("HOMEACTIVITY.JAVA", "Launching StartSession2");
+			Intent intent = new Intent(this, StartSession2.class);
+			startActivity(intent);
+			return true;
+		default:
+			return super.onOptionsItemSelected(item);
 		}
 	}
 
