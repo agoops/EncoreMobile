@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical" >
+    
+    <TextView 
+        android:id="@+id/newsfeed_session_title"
+        android:layout_width="wrap_content" 
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:text="Club Clem Sesh" />
+    
+    <TextView 
+        android:id="@+id/newsfeed_session_video"
+        android:layout_width="wrap_content" 
+        android:layout_height="wrap_content"
+        android:layout_below="@id/newsfeed_session_title"
+        android:text="rapchat-django.com" />
+    
+    <TextView 
+        android:id="@+id/newsfeed_session_likes"
+        android:layout_width="wrap_content" 
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@id/newsfeed_session_video"
+        android:layout_marginLeft="10dp"
+        android:text="51.6k Likes" />
+    
+    <TextView 
+        android:id="@+id/newsfeed_session_comments"
+        android:layout_width="wrap_content" 
+        android:layout_height="wrap_content"
+        android:layout_below="@id/newsfeed_session_likes"
+        android:layout_toRightOf="@id/newsfeed_session_video"
+        android:layout_marginLeft="10dp"
+        android:text="3.1k Comments" />
+    
+    <TextView 
+        android:id="@+id/newsfeed_session_shares"
+        android:layout_width="wrap_content" 
+        android:layout_height="wrap_content"
+        android:layout_below="@id/newsfeed_session_comments"
+        android:layout_toRightOf="@id/newsfeed_session_video"
+        android:layout_marginLeft="10dp"
+        android:text="12k Shares" />
+    
+
+</RelativeLayout>

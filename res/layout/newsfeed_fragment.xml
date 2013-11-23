@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="#3da7de" >
+    
+    <TextView 
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="The Newsfeed!"
+        android:textSize="30sp"
+        android:gravity="center" />
+    
+    <ListView 
+        android:id="@id/android:list"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#61c227"
+        android:drawSelectorOnTop="false" >
+    </ListView>
+    
+    <TextView 
+        android:id="@id/android:empty"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#61c227"
+        android:text="No Data" />
+
+</LinearLayout>
