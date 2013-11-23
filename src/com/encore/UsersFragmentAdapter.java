@@ -57,7 +57,8 @@ public class UsersFragmentAdapter extends ArrayAdapter<Profile> {
 
 		// reference to convertView
 		FriendView v = (FriendView) convertView;
-		User user = mUserList.get(position).getUser();
+		Profile profile = mUserList.get(position);
+		User user = profile.getUser();
 		Log.d(tag, "User for this view is: " + user.getUsername());
 
 		// inflate new layout if null
@@ -79,7 +80,7 @@ public class UsersFragmentAdapter extends ArrayAdapter<Profile> {
 				FriendView fv = (FriendView) v.getParent();
 				Button button = (Button) v;
 				String username = fv.getProfile().getUser().getUsername();
-				
+				Log.d(tag, "username in adapter: " + username);
 				Intent apiIntent = new Intent(mContext, APIService.class);
 				apiIntent.putExtra(T.API_TYPE, T.FRIEND_REQUEST);
 				apiIntent.putExtra(T.USERNAME, username);
@@ -93,10 +94,9 @@ public class UsersFragmentAdapter extends ArrayAdapter<Profile> {
 //		CheckBox checkbox = (CheckBox) v
 //				.findViewById(R.id.checkbox_user_view);
 
-		// set data to display
+		// set data to display and store
 		username.setText(user.getUsername());
-//		checkbox.setChecked(false);
-		
+		v.setProfile(profile);
 		// return view
 		return v;
 	}

@@ -10,7 +10,7 @@ import com.encore.API.models.User;
 public class FriendView extends LinearLayout {
 
 	User user;
-
+	Profile profile;
 	
 	public FriendView(Context context, AttributeSet attrs) {
 		super(context, attrs);
@@ -22,6 +22,10 @@ public class FriendView extends LinearLayout {
 	}
 	
 	public Profile getProfile() {
-		return new Profile();
+		return this.profile;
+	}
+	
+	public void setProfile(Profile profile) {
+		this.profile = profile;
 	}
 }
