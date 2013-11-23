@@ -2,19 +2,29 @@ package com.encore.API.models;
 
 import java.sql.Date;
 
+import com.google.gson.annotations.SerializedName;
+
 public class FriendRequest {
-	private int user_id, requested_id;
-	Date created_at;
+	@SerializedName("username")
+	private String username;
 	
+	@SerializedName("pending_me")
+	private String[] pendingMe;
+	
+	@SerializedName("pending_them")
+	private String[] pendingThem;
+	
+	// GET: Use "username" field, others null
+	// POST: Use pendingMe and pendingThem, username null;
 	public FriendRequest() {
-		user_id = -1;
-		requested_id = -1;
-		created_at = null;
+		this.username = null;
+		this.pendingMe = null;
+		this.pendingThem = null;
 	}
 
-	public FriendRequest(int user_id, int requested_id, Date created_at) {
-		this.user_id = user_id;
-		this.requested_id = requested_id;
-		this.created_at = created_at;
+	public FriendRequest(String username, String[] pendingMe, String[] pendingThem) {
+		this.username = username;
+		this.pendingMe = pendingMe;
+		this.pendingThem = pendingThem;
 	}
 }

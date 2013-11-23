@@ -93,13 +93,9 @@ public class StartSession2 extends Activity implements OnClickListener {
 			// Radio button click listener
 			RadioGroup rg = (RadioGroup) findViewById(R.id.radio_group);
 			int selected = rg.getCheckedRadioButtonId();
-			if(selected == R.id.yes_radio) {
-				yes_checked = true;
-			} else {
-				yes_checked = false;
-			}
+			yes_checked = (selected == R.id.yes_radio);
 			
-			// User's session title and crowd_members
+			// User-input fields
 			EditText sessionTitle = (EditText) findViewById(R.id.session_title);
 			EditText crowdMembers = (EditText) findViewById(R.id.crowd_members);
 			EditText crowdTitle = (EditText) findViewById(R.id.crowd_title);

@@ -134,9 +134,8 @@ public class APIService extends IntentService {
 		try {
 			if( !data.getBoolean(T.SESSION_USE_EXISTING_CROWD) ) {
 				// If user doesn't want to use an existing crowd...
-				Log.d(TAG, "NO checked");
 				
-				// TODO: Should be from user input
+				// TODO: Should be from user input, not this arbitrary list
 				String members[] = {"anskeet", "babs"};
 				
 				// Bundle fields into a PostSession object...
@@ -146,13 +145,11 @@ public class APIService extends IntentService {
 				result = api.createSession(pSession, token);
 			} else {
 				// else they DO want to use an existing crowd...
-				Log.d(TAG, "YES checked");
 				String crowdTitle = "";
 				String[] members = {};
 				
 				// TODO: pass existingCrowd in from a lv of existing crowds on the client app,
 				// instead of creating this arbitrary group
-				// Bundle fields into a PostSession object...
 				pSession = new PostSession(data.getString(T.SESSION_TITLE), data.getBoolean(T.SESSION_USE_EXISTING_CROWD), 
 						null, null, Integer.parseInt(data.getString(T.SESSION_CROWD_ID)));
 				

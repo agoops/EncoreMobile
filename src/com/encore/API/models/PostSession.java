@@ -14,6 +14,7 @@ public class PostSession {
 	@SerializedName("use_existing_crowd")
 	private boolean useExistingCrowd;
 	
+	// POST only, use Session for GET
 	public PostSession() {
 		this.title = null;
 		this.useExistingCrowd = false;

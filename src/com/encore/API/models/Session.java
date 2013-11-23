@@ -9,6 +9,7 @@ public class Session {
 	@SerializedName("crowd")
 	private Crowd crowd;
 	
+	// GET only, use PostSession for POST
 	public Session() {
 		this.title = null;
 		this.crowd = crowd;

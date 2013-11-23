@@ -1,21 +1,40 @@
 package com.encore.API.models;
 
+import java.sql.Date;
+
 import com.google.gson.annotations.SerializedName;
 
 public class Comment {
-	@SerializedName("detail")
-	private String detail;
+	@SerializedName("creator")
+	private int creator;
 	
-	@SerializedName("comments")
-	private String[] comments;
+	@SerializedName("session")
+	private int session;
+	
+	@SerializedName("text")
+	private String text;
 	
 	public Comment() {
-		detail = null;
-		comments = null;
+		this.creator = 0;
+		this.session = 0;
+		this.text = null;
+	}
+	
+	public Comment(int creator, int session, String text) {
+		this.creator = creator;
+		this.session = session;
+		this.text = text;
 	}
 
-	public Comment(String detail, String[] comments) {
-		this.detail = detail;
-		this.comments = comments;
+	public void setCreator(int creator) {
+		this.creator = creator;
+	}
+
+	public void setSession(int session) {
+		this.session = session;
+	}
+
+	public void setText(String text) {
+		this.text = text;
 	}
 }

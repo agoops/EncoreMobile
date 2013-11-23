@@ -30,10 +30,7 @@ public class API {
 	private static final String TAG = "API";
 
 	private static final String AUTHORIZATION = "Authorization";
-	private static String ACCESS_TOKEN = "result+from+creating+user+and+storing+access+token"; // send
-																								// on
-																								// every
-																								// request
+	private static String ACCESS_TOKEN = "result+from+creating+user+and+storing+access+token"; // send on every request
 	private static final String PROD = "http://rapchat-django.herokuapp.com";
 	private static final String QA = "http://rapchat-django.herokuapp.com";
 	private static final String BASE_URL = (Constants.DEBUG) ? QA : PROD;
