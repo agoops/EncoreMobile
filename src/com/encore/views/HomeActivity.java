@@ -180,10 +180,12 @@ public class HomeActivity extends FragmentActivity {
 	
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
+		Log.d("HOMEACTIVITY.JAVA", "Action Item selected");
 		// Handle presses on action bar items
 		switch(item.getItemId()) {
 		case R.id.action_video:
-			// Launch new session or new clip or something...!
+			// Launch a new session
+			Log.d("HOMEACTIVITY.JAVA", "Launching StartSession2");
 			Intent intent = new Intent(this, StartSession2.class);
 			startActivity(intent);
 			return true;

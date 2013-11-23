@@ -1,21 +1,31 @@
 package com.encore.API.models;
 
-import java.sql.Date;
+import com.google.gson.annotations.SerializedName;
 
 public class Crowd {
+	@SerializedName("title")
+	private String title;
 	
-	private int crowd_id, num_members;
-	private Date created_at;
+	@SerializedName("members")
+	private String[] members;
 	
 	public Crowd() {
-		crowd_id = -1;
-		num_members = -1;
-		created_at = null;
+		title = null;;
+		members = null;
 	}
 
-	public Crowd(int crowd_id, int num_members, Date created_at) {
-		this.crowd_id = crowd_id;
-		this.num_members = num_members;
-		this.created_at = created_at;
+	public Crowd(String title, String[] members) {
+		this.title = title;
+		this.members = members;
 	}
+
+	public void setTitle(String title) {
+		this.title = title;
+	}
+
+	public void setMembers(String[] members) {
+		this.members = members;
+	}
+	
+	
 }

@@ -24,21 +24,28 @@ import android.os.Environment;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 
 import com.encore.API.APIService;
 import com.encore.views.HomeActivity;
 
-public class StartSession2 extends Activity {
-	
+public class StartSession2 extends Activity implements OnClickListener {
+
+	private static final String TAG = "StartSession2.java";
+
 	boolean isRecording = false;
 	String tag = "StartSession2";
 	Thread recordThread = null;
 	int sampleRateInHz = 11025;
+
+	private boolean yes_checked = false;
 	
 	APIService api;
-	
+
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -46,7 +53,93 @@ public class StartSession2 extends Activity {
 
 		setButtonHandlers();
 		enableButtons(false);
+	}
 
+	@Override
+	public void onClick(View v) {
+		switch (v.getId()) {
+		case R.id.btnStart: {
+			enableButtons(true);
+			isRecording = true;
+			recordThread = new Thread(new Runnable() {
+				public void run() {
+					record();
+				}
+			});
+			recordThread.start();
+			break;
+		}
+		case R.id.btnStop: {
+			enableButtons(false);
+			isRecording = false;
+			break;
+		}
+		case R.id.btnPlayback: {
+			try {
+				recordThread.join();
+			} catch (Exception e) {
+			}
+
+			play();
+			// finish();
+			break;
+
+		}
+		case R.id.send_session: {
+			// Make the API call to send the session
+			// TODO: First check if a recording has been made!
+			api = new APIService();
+			
+			// Radio button click listener
+			RadioGroup rg = (RadioGroup) findViewById(R.id.radio_group);
+			int selected = rg.getCheckedRadioButtonId();
+			if(selected == R.id.yes_radio) {
+				yes_checked = true;
+			} else {
+				yes_checked = false;
+			}
+			
+			// User's session title and crowd_members
+			EditText sessionTitle = (EditText) findViewById(R.id.session_title);
+			EditText crowdMembers = (EditText) findViewById(R.id.crowd_members);
+			EditText crowdTitle = (EditText) findViewById(R.id.crowd_title);
+			EditText crowdId = (EditText) findViewById(R.id.crowd_id);
+			
+			// TODO: Figure out how to get an array from user
+			// Solution: lv of usernames that onClick() get dropped into an array
+			String[] crowdMembersArray = { crowdMembers.getText().toString() }; 
+			
+			Intent apiIntent = new Intent(getApplicationContext(),
+					APIService.class);
+
+			apiIntent.putExtra(T.API_TYPE, T.CREATE_SESSION);
+
+			apiIntent.putExtra(T.SESSION_TITLE, sessionTitle.getText()
+					.toString());
+			apiIntent.putExtra(T.SESSION_USE_EXISTING_CROWD, yes_checked);
+			apiIntent.putExtra(T.SESSION_CROWD_TITLE, crowdTitle.getText().toString());
+			apiIntent.putExtra(T.SESSION_CROWD_MEMBERS, crowdMembersArray);
+			apiIntent.putExtra(T.SESSION_CROWD_ID, crowdId.getText().toString());
+
+			getApplicationContext().startService(apiIntent);
+
+			Intent launchHome = new Intent(getApplicationContext(),
+					HomeActivity.class);
+			startActivity(launchHome);
+			break;
+		}
+		default: {
+			break;
+		}
+		}
+	}
+	
+	public void onRadioButtonClicked(View view) {
+		Log.d(TAG, "onRadioButtonClicked called");
+		
+		if(view.getId() == R.id.yes_radio) {
+			yes_checked = true;
+		}
 	}
 	
 	public void record() {
@@ -86,9 +179,10 @@ public class StartSession2 extends Activity {
 			Long time2 = System.currentTimeMillis();
 			audioRecord.startRecording();
 			Long time3 = System.currentTimeMillis();
-			Log.d(tag, "Time to set up audiorecord: " + (time2-time1));
-			Log.d(tag,"Time from startRecording() to while loop: " + (time3-time2));
-			
+			Log.d(tag, "Time to set up audiorecord: " + (time2 - time1));
+			Log.d(tag, "Time from startRecording() to while loop: "
+					+ (time3 - time2));
+
 			while (isRecording) {
 				int bufferReadResult = audioRecord.read(buffer, 0, bufferSize);
 				for (int i = 0; i < bufferReadResult; i++)
@@ -112,9 +206,8 @@ public class StartSession2 extends Activity {
 		// and create a short array to store the recorded audio.
 		int musicLength = (int) (file.length() / 2);
 		short[] music = new short[musicLength];
-		Log.d(tag,"size of file: " + file.length());
-		
-		
+		Log.d(tag, "size of file: " + file.length());
+
 		try {
 			// Create a DataInputStream to read the audio data back from the
 			// saved file.
@@ -149,10 +242,16 @@ public class StartSession2 extends Activity {
 			Log.e("AudioTrack", "Playback Failed");
 		}
 	}
+
 	private void setButtonHandlers() {
-		((Button) findViewById(R.id.btnStart)).setOnClickListener(btnClick);
-		((Button) findViewById(R.id.btnStop)).setOnClickListener(btnClick);
-		((Button) findViewById(R.id.btnPlayback)).setOnClickListener(btnClick);
+		((Button) findViewById(R.id.btnStart))
+				.setOnClickListener((OnClickListener) this);
+		((Button) findViewById(R.id.btnStop))
+				.setOnClickListener((OnClickListener) this);
+		((Button) findViewById(R.id.btnPlayback))
+				.setOnClickListener((OnClickListener) this);
+		((Button) findViewById(R.id.send_session))
+				.setOnClickListener((OnClickListener) this);
 	}
 
 	private void enableButton(int id, boolean isEnable) {
@@ -164,66 +263,6 @@ public class StartSession2 extends Activity {
 		enableButton(R.id.btnStop, isRecording);
 	}
 
-
-	private View.OnClickListener btnClick = new View.OnClickListener() {
-		public void onClick(View v) {
-			switch (v.getId()) {
-			case R.id.btnStart: {
-				enableButtons(true);
-				isRecording = true;
-				recordThread = new Thread(new Runnable() {
-					public void run() {
-						record();
-					}
-				});
-				recordThread.start();
-				break;
-			}
-			case R.id.btnStop: {
-				enableButtons(false);
-				isRecording = false;
-				break;
-			}
-			case R.id.btnPlayback: {
-				try {
-					recordThread.join();
-				} catch (Exception e) {
-				}
-
-				play();
-				//finish();
-				break;
-
-			}
-			case R.id.send_session: {
-				// Make the API call to send the session
-				// TODO: Check if a recording has been made, first!
-				api = new APIService();
-				EditText session_title = (EditText) findViewById(R.id.session_title);
-				
-				Intent apiIntent = new Intent(getApplicationContext(), APIService.class);
-				
-				apiIntent.putExtra(T.API_TYPE, T.CREATE_SESSION);
-				
-				apiIntent.putExtra(T.SESSION_TITLE, session_title.getText().toString());
-				apiIntent.putExtra(T.SESSION_USE_EXISTING_CROWD, false);
-				apiIntent.putExtra(T.SESSION_CROWD_TITLE, "Test Crowd Title");
-				apiIntent.putExtra(T.SESSION_CROWD_MEMBERS, "Test Crowd Members");
-				apiIntent.putExtra(T.SESSION_CROWD_ID, "");
-				
-				getApplicationContext().startService(apiIntent);
-				
-				Intent launchHome = new Intent(getApplicationContext(), HomeActivity.class);
-				startActivity(launchHome);
-				break;
-			}
-			default: {
-				break;
-			}
-			}
-		}
-	};
-
 	@Override
 	public boolean onKeyDown(int keyCode, KeyEvent event) {
 		if (keyCode == KeyEvent.KEYCODE_BACK) {
@@ -232,4 +271,3 @@ public class StartSession2 extends Activity {
 		return super.onKeyDown(keyCode, event);
 	}
 }
-

@@ -57,6 +57,7 @@ public class SignupFragment extends Fragment implements OnClickListener {
 	
 	// Signup using our APIService
 	public void signUp(View view) {
+		// This should be moved into APIService, and an APIService instance should be instantiated on top
 		Intent apiIntent = new Intent(getActivity(), APIService.class);
 		
 		apiIntent.putExtra(T.API_TYPE, T.SIGN_UP);

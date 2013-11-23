@@ -27,3 +27,4 @@ public class WelcomeActivity extends FragmentActivity {
 		ft.commit();
 	}
 }
+// Sessions & Comments accurately reflect Django models. createSession() endpoint works. LoginActivity converted to fragment. SignupActivity still needs to get converted to fragments
