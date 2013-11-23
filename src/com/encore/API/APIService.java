@@ -153,7 +153,7 @@ public class APIService extends IntentService {
 				// TODO: pass existingCrowd in from a lv of existing crowds on the client app,
 				// instead of creating this arbitrary group
 				// Bundle fields into a PostSession object...
-				pSession = new PostSession(null, data.getBoolean(T.SESSION_USE_EXISTING_CROWD), 
+				pSession = new PostSession(data.getString(T.SESSION_TITLE), data.getBoolean(T.SESSION_USE_EXISTING_CROWD), 
 						null, null, Integer.parseInt(data.getString(T.SESSION_CROWD_ID)));
 				
 				result = api.createSession(pSession, token);

@@ -9,8 +9,8 @@ public class PostSession {
 	private String crowdTitle;
 	@SerializedName("crowd_members")
 	private String[] crowdMembers;
-	@SerializedName("crowd_id")
-	private int crowdId;
+	@SerializedName("crowd")
+	private int crowd;
 	@SerializedName("use_existing_crowd")
 	private boolean useExistingCrowd;
 	
@@ -19,7 +19,7 @@ public class PostSession {
 		this.useExistingCrowd = false;
 		this.crowdTitle = null;
 		this.crowdMembers = null;
-		this.crowdId = -1;
+		this.crowd = -1;
 	}
 
 	public PostSession(String title, boolean useExistingCrowd, String crowdTitle, String[] crowdMembers,
@@ -27,7 +27,7 @@ public class PostSession {
 		this.title = title;
 		this.crowdTitle = crowdTitle;
 		this.crowdMembers = crowdMembers;
-		this.crowdId = crowdId;
+		this.crowd = crowdId;
 		this.useExistingCrowd = useExistingCrowd;
 	}
 
@@ -44,7 +44,7 @@ public class PostSession {
 	}
 
 	public void setCrowdId(int crowdId) {
-		this.crowdId = crowdId;
+		this.crowd = crowdId;
 	}
 
 	public void setUseExistingCrowd(boolean useExistingCrowd) {
