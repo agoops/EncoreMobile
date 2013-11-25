@@ -9,6 +9,7 @@ public class T {
 	public static final String EMAIL = "email";
 	public static final String ID = "id";
 	public static final String API_TYPE = "api_type";
+	public static final String RECEIVER = "receiver";
 	
 	public static final int NUM_VIEWS = 3;
 	

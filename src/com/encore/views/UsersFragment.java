@@ -34,6 +34,8 @@ public class UsersFragment extends Fragment{
 	private final static int REQUESTS = 0;
 	private final static int USERS = 1;
 	private final static String JSON_REQUESTS_KEY = "pending_me";
+	
+	
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
@@ -56,6 +58,9 @@ public class UsersFragment extends Fragment{
 		
 		return view;
 	}
+	
+	
+	
 	
 	public void getPendingFriendRequests(ResultReceiver receiver) {
 		Intent apiIntent = new Intent(getActivity(), APIService.class);

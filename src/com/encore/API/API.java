@@ -14,8 +14,10 @@ import java.util.List;
 import org.apache.http.entity.StringEntity;
 
 import util.Constants;
+import android.content.Context;
 import android.util.Log;
 
+import com.encore.TokenHelper;
 import com.encore.API.models.PostSession;
 import com.encore.API.models.Session;
 import com.encore.API.models.User;
@@ -36,7 +38,7 @@ public class API {
 	 * *****************************************
 	 */
 	private static final String AUTHORIZATION = "Authorization";
-	private static String ACCESS_TOKEN = "result+from+creating+user+and+storing+access+token"; // send on every request
+	private static String ACCESS_TOKEN = "invalidacecsstoken"; 
 	private static final String PROD = "http://rapchat-django.herokuapp.com";
 	private static final String QA = "http://rapchat-django.herokuapp.com";
 	private static final String BASE_URL = (Constants.DEBUG) ? QA : PROD;
@@ -64,8 +66,7 @@ public class API {
 	private static final String CREATE_SESSION = SESSIONS;
 	private static final String GET_SESSION = SESSIONS + "%s";
 	private static final String GET_SESSIONS = SESSIONS;
-
-	// private static final String ADD_CLIP = SESSIONS + "%s/addClip";
+	private static final String ADD_CLIP = SESSIONS + "addclip/";
 
 	// Clips
 	// private static final String ALL_CLIPS = CLIPS;
@@ -88,9 +89,10 @@ public class API {
 	// private static final String UPDATE_CROWD = CROWDS + "%s";
 	// private static final String DELETE_CROWD = CROWDS + "%s";
 
-	public API(OkHttpClient client) {
+	public API(OkHttpClient client, Context context) {
 		this.client = client;
-
+		this.ACCESS_TOKEN = "Token " + TokenHelper.getToken(context);
+		
 	}
 
 	public Gson getGson() {
@@ -371,28 +373,22 @@ public class API {
 		return result;
 	}
 
-	public Session getSession(String id) throws Exception {
-		Log.d(TAG, "getSession called with body: "
-				+ getGson().toJson(id).toString());
 
-		String url = String.format(GET_SESSION, id);
-		return get(url, Session.class);
-	}
-
+	
+	
 	// NEEDS TO BE TESTED
-	public List<Session> getSessions() throws Exception {
+	public String getSessions() throws IOException {
 		Log.d(TAG, "getSessions called");
 
 		String url = GET_SESSIONS;
-		Type listType = new TypeToken<List<Session>>() {
-		}.getType();
-
-		// Query doesn't work, using dummy data for now.
-		List<Session> dummy = new ArrayList<Session>();
-		dummy.add(new Session());
-		dummy.add(new Session());
-		dummy.add(new Session());
-		return dummy;
-		// return get(url, listType);
+		String result = "emptyresult";
+		try {
+			result = get(url, String.class);
+		} catch (IOException e) {
+			Log.d(TAG,  "getSessions() error");
+			throw e;
+		}
+		return result;
+		
 	}
 }

@@ -36,13 +36,15 @@ public class APIService extends IntentService {
 	@Override
 	protected void onHandleIntent(Intent intent) {
 		Log.d(TAG, "Handling intent type " + intent.getIntExtra(T.API_TYPE, -1));
-		if (intent.hasExtra("receiver")) {
-			Log.d(TAG, "receiver!!!!!!!!");
+		
+		if (intent.hasExtra(T.RECEIVER)) {
+			Log.d(TAG, "Receiver received");
 			resultReceiver = intent.getParcelableExtra("receiver");
 		} else {
-			Log.d(TAG, "noReceiver??");
+			Log.d(TAG, "No receiver received");
 		}
-		api = new API(new OkHttpClient());
+		
+		api = new API(new OkHttpClient(), this);
 		// Where processing occurs
 		int apiType = intent.getIntExtra(T.API_TYPE, -1);
 		switch (apiType) {
@@ -241,19 +243,16 @@ public class APIService extends IntentService {
 	private void getSessions() {
 		Log.d(TAG, "getSessions called");
 
-		SessionsEvent event = new SessionsEvent();
-
 		try {
-			// event.sessions = api.getSessions();
+			String result = api.getSessions();
+			Bundle b = new Bundle();
+			b.putString("result", result);
+			resultReceiver.send(1, b);
 		} catch (Exception e) {
-			Log.e(TAG, e.getMessage() + " ");
+			e.printStackTrace();
+			resultReceiver.send(0,null);
 		}
-		List<Session> dummy = new ArrayList<Session>();
-		dummy.add(new Session());
-		dummy.add(new Session());
-		dummy.add(new Session());
-		event.sessions = dummy;
-		BusProvider.getInstance().post(event);
+		
 	}
 
 	private void login(Bundle data) {

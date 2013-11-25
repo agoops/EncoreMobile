@@ -21,13 +21,14 @@ import android.media.AudioTrack;
 import android.media.MediaRecorder;
 import android.os.Bundle;
 import android.os.Environment;
+import android.os.Handler;
+import android.os.ResultReceiver;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.RadioButton;
 import android.widget.RadioGroup;
 
 import com.encore.API.APIService;
@@ -55,6 +56,13 @@ public class StartSession2 extends Activity implements OnClickListener {
 		enableButtons(false);
 	}
 
+	/**********************************************
+	 * 
+	 * 
+	 * Button Logic 
+	 * 
+	 * 
+	 *******************************************/
 	@Override
 	public void onClick(View v) {
 		switch (v.getId()) {
@@ -124,10 +132,64 @@ public class StartSession2 extends Activity implements OnClickListener {
 			startActivity(launchHome);
 			break;
 		}
+		
+		case (R.id.get_sessions): {
+			
+			Intent apiIntent = new Intent(this, APIService.class);
+			apiIntent.putExtra(T.API_TYPE, T.GET_SESSIONS);
+			GetSessionsReceiver gsReceiver = new GetSessionsReceiver(new Handler());
+			apiIntent.putExtra("receiver", gsReceiver);
+			startService(apiIntent);
+			
+			
+			break;
+		}
 		default: {
 			break;
 		}
 		}
+	}
+	
+	private class GetSessionsReceiver extends ResultReceiver {
+
+		public GetSessionsReceiver(Handler handler) {
+			super(handler);
+		}
+		
+
+    	@Override
+    	protected void onReceiveResult(int resultCode, Bundle resultData) {
+    		if (resultCode == 1) {
+    			Log.d(TAG, "APIService returned successful");
+    			String json = resultData.getString("result");
+    			Log.d(TAG, json);
+    		}
+    		else {
+    			Log.d(TAG, "resultCode in GetSessionsReceiver is 0. Error");
+    		
+    		}
+    	}
+		
+	}
+	private void setButtonHandlers() {
+		((Button) findViewById(R.id.btnStart))
+				.setOnClickListener((OnClickListener) this);
+		((Button) findViewById(R.id.btnStop))
+				.setOnClickListener((OnClickListener) this);
+		((Button) findViewById(R.id.btnPlayback))
+				.setOnClickListener((OnClickListener) this);
+		((Button) findViewById(R.id.send_session))
+				.setOnClickListener((OnClickListener) this);
+		((Button) findViewById(R.id.get_sessions)).setOnClickListener(this);
+	}
+
+	private void enableButton(int id, boolean isEnable) {
+		((Button) findViewById(id)).setEnabled(isEnable);
+	}
+
+	private void enableButtons(boolean isRecording) {
+		enableButton(R.id.btnStart, !isRecording);
+		enableButton(R.id.btnStop, isRecording);
 	}
 	
 	public void onRadioButtonClicked(View view) {
@@ -137,6 +199,20 @@ public class StartSession2 extends Activity implements OnClickListener {
 			yes_checked = true;
 		}
 	}
+	
+	
+	
+	
+	
+	
+	/***************************************************************
+	 * 
+	 * 
+	 * Recording audio logic
+	 * 
+	 * 
+	 * 
+	 *****************************************************************/
 	
 	public void record() {
 		Long time1 = System.currentTimeMillis();
@@ -239,25 +315,7 @@ public class StartSession2 extends Activity implements OnClickListener {
 		}
 	}
 
-	private void setButtonHandlers() {
-		((Button) findViewById(R.id.btnStart))
-				.setOnClickListener((OnClickListener) this);
-		((Button) findViewById(R.id.btnStop))
-				.setOnClickListener((OnClickListener) this);
-		((Button) findViewById(R.id.btnPlayback))
-				.setOnClickListener((OnClickListener) this);
-		((Button) findViewById(R.id.send_session))
-				.setOnClickListener((OnClickListener) this);
-	}
 
-	private void enableButton(int id, boolean isEnable) {
-		((Button) findViewById(id)).setEnabled(isEnable);
-	}
-
-	private void enableButtons(boolean isRecording) {
-		enableButton(R.id.btnStart, !isRecording);
-		enableButton(R.id.btnStop, isRecording);
-	}
 
 	@Override
 	public boolean onKeyDown(int keyCode, KeyEvent event) {

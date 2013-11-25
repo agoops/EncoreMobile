@@ -21,11 +21,16 @@ public class FriendView extends LinearLayout {
 		this.user = user;
 	}
 	
+	public User getUser() {
+		return this.user;
+	}
+	
 	public Profile getProfile() {
 		return this.profile;
 	}
 	
 	public void setProfile(Profile profile) {
 		this.profile = profile;
+		this.user = profile.getUser();
 	}
 }
