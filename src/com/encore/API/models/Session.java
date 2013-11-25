@@ -12,7 +12,7 @@ public class Session {
 	// GET only, use PostSession for POST
 	public Session() {
 		this.title = null;
-		this.crowd = crowd;
+		this.crowd = null;
 	}
 	
 	public Session(String title, Crowd crowd) {

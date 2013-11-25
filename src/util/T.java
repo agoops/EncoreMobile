@@ -22,8 +22,7 @@ public class T {
 	public static final int USERS = 5;
 	public static final int FRIEND_REQUEST = 6;
 
-	public static final int GET_SESSION = 7;
-	public static final int GET_SESSIONS = 8;
+	public static final int GET_CROWDS = 7;
 	
 	// Column names for newsfeed query
 	public static final String SESSION_TITLE = "title";

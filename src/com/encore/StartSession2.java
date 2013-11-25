@@ -53,6 +53,13 @@ public class StartSession2 extends Activity implements OnClickListener {
 
 		setButtonHandlers();
 		enableButtons(false);
+		
+		api = new APIService();
+		
+		// Get crowds
+		Intent apiIntent = new Intent(getApplicationContext(), APIService.class);
+		apiIntent.putExtra(T.API_TYPE, T.GET_CROWDS);
+		getApplicationContext().startService(apiIntent);
 	}
 
 	@Override
@@ -88,7 +95,6 @@ public class StartSession2 extends Activity implements OnClickListener {
 		case R.id.send_session: {
 			// Make the API call to send the session
 			// TODO: First check if a recording has been made!
-			api = new APIService();
 			
 			// Radio button click listener
 			RadioGroup rg = (RadioGroup) findViewById(R.id.radio_group);

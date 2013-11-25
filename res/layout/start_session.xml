@@ -83,8 +83,8 @@
         android:id="@+id/btnStart"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
         android:layout_alignParentLeft="true"
+        android:layout_below="@id/crowd_id"
         android:onClick="record"
         android:text="REC" />
 
@@ -92,7 +92,7 @@
         android:id="@+id/btnStop"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
+        android:layout_below="@id/crowd_id"
         android:layout_alignParentRight="true"
         android:text="STOP" />
 
@@ -100,9 +100,14 @@
         android:id="@+id/btnPlayback"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
+        android:layout_below="@id/crowd_id"
         android:layout_centerHorizontal="true"
         android:text="Play" />
     
+    <ListView
+        android:id="@+id/crowds_lv"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/btnStop" />
 
 </RelativeLayout>

@@ -8,19 +8,18 @@ import java.io.OutputStream;
 import java.lang.reflect.Type;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.List;
 
 import org.apache.http.entity.StringEntity;
 
 import util.Constants;
 import android.util.Log;
 
+import com.encore.API.models.Crowd;
+import com.encore.API.models.Crowds;
 import com.encore.API.models.PostSession;
 import com.encore.API.models.Session;
 import com.encore.API.models.User;
 import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
 import com.squareup.okhttp.OkHttpClient;
 
 public class API {
@@ -82,7 +81,7 @@ public class API {
 	private static final String CREATE_FRIEND_REQUEST_REPLY = FRIENDS + "requests/reply";
 	
 	// Crowds
-	// private static final String ALL_CROWDS = CROWDS;
+	private static final String GET_CROWDS = CROWDS;
 	// private static final String CREATE_CROWD = CROWDS + "create/";
 	// private static final String GET_CROWD = CROWDS + "%s";
 	// private static final String UPDATE_CROWD = CROWDS + "%s";
@@ -112,15 +111,13 @@ public class API {
 	private <T> T get(String url, Type type) throws IOException {
 		URL getUrl = new URL(url);
 		HttpURLConnection connection = client.open(getUrl);
-//		connection.setDoInput(true);
-//		connection.setRequestProperty("Content-Type", "application/json");
 		connection.setRequestProperty(AUTHORIZATION, ACCESS_TOKEN);
 		InputStream in = null;
 		try {
 			connection.setRequestMethod("GET");
-			Log.d(TAG, connection.toString());
+			Log.d(TAG, "connection: " + connection.toString());
 			in = connection.getInputStream();
-			Log.d(TAG, in.toString());
+			Log.d(TAG, "input stream: " + in.toString());
 			// return getGson().fromJson(new InputStreamReader(in), type);
 
 			/* Adding this section to see response */
@@ -134,7 +131,7 @@ public class API {
 
 		} catch (Exception e) {
 			e.printStackTrace();
-			Log.e("API", "" + e.getMessage());
+			Log.e("API", e.getMessage() + " ");
 			return null;
 		} finally {
 			if (in != null)
@@ -291,6 +288,7 @@ public class API {
 		} catch (Exception e) {
 			throw e;
 		}
+		Log.d(TAG, "Result is " + result);
 		return result;
 	}
 	
@@ -338,10 +336,10 @@ public class API {
 
 	public Session createSession(PostSession pSession, String token) throws Exception {
 		Log.d(TAG, "createSession() called");
+		ACCESS_TOKEN = "Token " + token;
 		String url = CREATE_SESSION;
 		String postResult = null;
 		Session result = null;
-		ACCESS_TOKEN = "Token " + token;
 		try {
 			String JSON = getGson().toJson(pSession);
 			Log.d(TAG, "JSON: " + JSON);
@@ -356,29 +354,23 @@ public class API {
 		}
 		return result;
 	}
-
-	public Session getSession(String id) throws Exception {
-		Log.d(TAG, "getSession called with body: "
-				+ getGson().toJson(id).toString());
-
-		String url = String.format(GET_SESSION, id);
-		return get(url, Session.class);
-	}
-
-	// NEEDS TO BE TESTED
-	public List<Session> getSessions() throws Exception {
-		Log.d(TAG, "getSessions called");
-
-		String url = GET_SESSIONS;
-		Type listType = new TypeToken<List<Session>>() {
-		}.getType();
-
-		// Query doesn't work, using dummy data for now.
-		List<Session> dummy = new ArrayList<Session>();
-		dummy.add(new Session());
-		dummy.add(new Session());
-		dummy.add(new Session());
-		return dummy;
-		// return get(url, listType);
+	
+	// GET all crowds
+	public Crowd[] getCrowds(String token) throws Exception {
+		Log.d(TAG, "getCrowds calld");
+		ACCESS_TOKEN = "Token " + token;
+		String url = GET_CROWDS;
+		String json = "";
+		Crowds result = null;
+		
+		try {
+			json = get(url, Crowds.class);
+			result  = getGson().fromJson(json, Crowds.class);
+		} catch(Exception e) {
+			Log.e(TAG, "getCrowds() error");
+			throw e;
+		}
+		
+		return (result != null) ? result.getCrowds():null;
 	}
 }
