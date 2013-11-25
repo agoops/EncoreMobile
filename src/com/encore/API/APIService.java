@@ -60,9 +60,6 @@ public class APIService extends IntentService {
 		case T.FRIENDS:
 			getFriends(intent.getExtras());
 			break;
-		case T.GET_SESSIONS:
-			getSessions();
-			break;
 		case T.FRIEND_REQUEST:
 			sendFriendRequest(intent.getExtras());
 			break;
@@ -72,6 +69,8 @@ public class APIService extends IntentService {
 		case T.USERS:
 			getUsers(intent.getExtras());
 			break;
+		case T.GET_CROWDS:
+			getCrowds(intent.getExtras());
 		default:
 			break;
 		}
@@ -126,7 +125,6 @@ public class APIService extends IntentService {
 		Log.d(TAG, "token: " + token);
 		if (token == null) {
 			Log.d(TAG, "No token in shared prefs");
-
 		}
 		try {
 			String result = api.getFriends(token);
@@ -134,7 +132,6 @@ public class APIService extends IntentService {
 			Bundle b = new Bundle();
 			b.putString("result", result);
 			resultReceiver.send(1, b);
-			
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -239,6 +236,19 @@ public class APIService extends IntentService {
 			Log.e(TAG, e.getMessage() + " ");
 		}
 	}
+	
+	// GET all crowds
+	private void getCrowds(Bundle data) {
+		Log.d(TAG, "getCrowds() called");
+		String token = TokenHelper.getToken(this);
+		Crowd[] result = null;
+		String json = "";
+		try {
+			result = api.getCrowds(token);
+		} catch(Exception e) {
+			Log.e(TAG, e.getMessage() + " ");
+		}
+	}
 
 	private void getSessions() {
 		Log.d(TAG, "getSessions called");
@@ -255,16 +265,5 @@ public class APIService extends IntentService {
 		
 	}
 
-	private void login(Bundle data) {
-
-	}
-
-	private void newSession(Bundle data) {
-
-	}
-
-	private void addClip(Bundle data) {
-
-	}
 
 }

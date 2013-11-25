@@ -7,25 +7,24 @@ public class Crowd {
 	private String title;
 	
 	@SerializedName("members")
-	private String[] members;
+	private DjangoUser[] members;
 	
 	public Crowd() {
 		title = null;;
 		members = null;
 	}
 
-	public Crowd(String title, String[] members) {
+	public Crowd(String title, DjangoUser[] members) {
 		this.title = title;
 		this.members = members;
 	}
 
-	public void setTitle(String title) {
-		this.title = title;
-	}
-
-	public void setMembers(String[] members) {
-		this.members = members;
+	public String getTitle() {
+		return this.title;
 	}
 	
+	public DjangoUser[] getMembers() {
+		return this.members;
+	}
 	
 }
