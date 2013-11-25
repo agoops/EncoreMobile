@@ -307,6 +307,20 @@ public class API {
 		return result;
 	}
 	
+	public String getPendingFriendRequests(String token) throws Exception {
+		ACCESS_TOKEN = "Token " + token;
+		String url = REQUESTS;
+		String result = "emptystringiffailed??";
+		
+		try {
+			result = get(url, String.class);
+			return result;
+		} catch (Exception e) {
+			Log.d(TAG, "API.getPendingFriendRequests() error");
+			throw e;
+		}
+	}
+	
 	public String getUsers(String token) throws Exception {
 		Log.d(TAG, "getUsers called");
 		ACCESS_TOKEN = "Token " + token;

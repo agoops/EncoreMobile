@@ -42,7 +42,7 @@ public class APIService extends IntentService {
 		} else {
 			Log.d(TAG, "noReceiver??");
 		}
-			api = new API(new OkHttpClient());
+		api = new API(new OkHttpClient());
 		// Where processing occurs
 		int apiType = intent.getIntExtra(T.API_TYPE, -1);
 		switch (apiType) {
@@ -64,6 +64,9 @@ public class APIService extends IntentService {
 		case T.FRIEND_REQUEST:
 			sendFriendRequest(intent.getExtras());
 			break;
+		case T.FRIEND_REQUESTS_PENDING:
+			getPendingFriendRequests(intent.getExtras());
+			break;
 		case T.USERS:
 			getUsers(intent.getExtras());
 			break;
@@ -72,6 +75,18 @@ public class APIService extends IntentService {
 		}
 	}
 	
+	private void getPendingFriendRequests(Bundle data) {
+		String token = TokenHelper.getToken(this);
+		try{
+			String result = api.getPendingFriendRequests(token);
+			Bundle b = new Bundle();
+			b.putString("result", result);
+			resultReceiver.send(1, b);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+	}
 	private void sendFriendRequest(Bundle data) {
 		String token = TokenHelper.getToken(this);
 		
