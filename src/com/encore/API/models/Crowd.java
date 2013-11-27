@@ -7,14 +7,14 @@ public class Crowd {
 	private String title;
 	
 	@SerializedName("members")
-	private DjangoUser[] members;
+	private Profile[] members;
 	
 	public Crowd() {
 		title = null;;
 		members = null;
 	}
 
-	public Crowd(String title, DjangoUser[] members) {
+	public Crowd(String title, Profile[] members) {
 		this.title = title;
 		this.members = members;
 	}
@@ -23,7 +23,7 @@ public class Crowd {
 		return this.title;
 	}
 	
-	public DjangoUser[] getMembers() {
+	public Profile[] getMembers() {
 		return this.members;
 	}
 	

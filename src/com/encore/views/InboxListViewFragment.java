@@ -21,14 +21,14 @@ import android.widget.VideoView;
 
 import com.encore.InboxViewAdapter;
 import com.encore.R;
-import com.encore.SessionTemp;
+import com.encore.API.models.Session;
 import com.encore.SessionView;
 import com.encore.VideoPlayer;
 
 public class InboxListViewFragment extends Fragment{
 	private static String tag = "InboxListViewFragment";
 	private VideoView videoView;
-	
+	private InboxViewAdapter adapter;
 	@Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
         Bundle savedInstanceState) {
@@ -37,25 +37,27 @@ public class InboxListViewFragment extends Fragment{
 		View view = inflater.inflate(R.layout.video_list_fragment, container, false);
 		
 	    ListView lv = (ListView) view.findViewById(R.id.video_list_view2);
-	    List<SessionTemp> list = getTempResponseList();
-	    lv.setAdapter(new InboxViewAdapter(container.getContext(), list));
+	    adapter = new InboxViewAdapter(container.getContext(), new ArrayList<Session>());
+	    lv.setAdapter(adapter);
 	    lv.setOnItemClickListener(new ResponseListener());
 	    return view;
     }
 	
-	
-	private List<SessionTemp> getTempResponseList() {
-		Drawable icon = getResources().getDrawable(R.drawable.action_people);
-		List<SessionTemp> temp = new ArrayList<SessionTemp>();
-		
-		for (int i = 0; i < 10; ++i) {
-			SessionTemp entry = new SessionTemp("Respond to clip " + i+"!", icon);
-			entry.setUri(Uri.parse("/storage/sdcard0/DCIM/Camera/20130923_224141.mp4"));
-			temp.add(entry);
-		}
-		
-		return temp;
+	public InboxViewAdapter getAdapter () {
+		return adapter;
 	}
+//	private List<Session> getTempResponseList() {
+//		Drawable icon = getResources().getDrawable(R.drawable.action_people);
+//		List<Session> temp = new ArrayList<Session>();
+//		
+//		for (int i = 0; i < 10; ++i) {
+//			Session entry = new Session("Respond to clip " + i+"!", icon);
+//			entry.setUri(Uri.parse("/storage/sdcard0/DCIM/Camera/20130923_224141.mp4"));
+//			temp.add(entry);
+//		}
+//		
+//		return temp;
+//	}
 	
 	public class ResponseListener implements OnItemClickListener {
 
@@ -64,7 +66,7 @@ public class InboxListViewFragment extends Fragment{
 			Log.d(tag, "parent = " + parent.toString() );
 			Log.d(tag, "view = " + view.toString());
 			SessionView element = (SessionView) view;
-			Uri uri = element.getData().getUri();
+			Uri uri = Uri.parse(element.getUri());
 			Log.d(tag, "uri = " + uri.toString());
 			
 			showVideoDialog(uri);

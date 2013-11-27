@@ -32,7 +32,7 @@ import android.widget.EditText;
 import android.widget.RadioGroup;
 
 import com.encore.API.APIService;
-import com.encore.views.HomeActivity;
+import com.encore.views.NewsfeedActivity;
 
 public class StartSession2 extends Activity implements OnClickListener {
 
@@ -42,13 +42,14 @@ public class StartSession2 extends Activity implements OnClickListener {
 	String tag = "StartSession2";
 	Thread recordThread = null;
 	int sampleRateInHz = 11025;
-
+	String filepath = "/storage/sdcard0/testaudio.pcm";
 	private boolean yes_checked = false;
 	
 	APIService api;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
+		Log.d(TAG, "StartSession2 entered");
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.start_session);
 
@@ -58,9 +59,9 @@ public class StartSession2 extends Activity implements OnClickListener {
 		api = new APIService();
 		
 		// Get crowds
-		Intent apiIntent = new Intent(getApplicationContext(), APIService.class);
-		apiIntent.putExtra(T.API_TYPE, T.GET_CROWDS);
-		getApplicationContext().startService(apiIntent);
+//		Intent apiIntent = new Intent(getApplicationContext(), APIService.class);
+//		apiIntent.putExtra(T.API_TYPE, T.GET_CROWDS);
+//		getApplicationContext().startService(apiIntent);
 	}
 
 	/**********************************************
@@ -134,7 +135,7 @@ public class StartSession2 extends Activity implements OnClickListener {
 			getApplicationContext().startService(apiIntent);
 
 			Intent launchHome = new Intent(getApplicationContext(),
-					HomeActivity.class);
+					NewsfeedActivity.class);
 			startActivity(launchHome);
 			break;
 		}
@@ -146,8 +147,17 @@ public class StartSession2 extends Activity implements OnClickListener {
 			GetSessionsReceiver gsReceiver = new GetSessionsReceiver(new Handler());
 			apiIntent.putExtra("receiver", gsReceiver);
 			startService(apiIntent);
-			
-			
+			break;
+		}
+		
+		case (R.id.add_clip): {
+			Log.d(TAG, "Add Clip clicked");
+			Intent apiIntent = new Intent(this,APIService.class);
+			apiIntent.putExtra(T.API_TYPE, T.ADD_CLIP);
+			apiIntent.putExtra(T.DURATION, 69);
+			apiIntent.putExtra(T.SESSION, 14);
+			apiIntent.putExtra(T.FILEPATH, filepath);
+			startService(apiIntent);
 			break;
 		}
 		default: {
@@ -187,6 +197,7 @@ public class StartSession2 extends Activity implements OnClickListener {
 		((Button) findViewById(R.id.send_session))
 				.setOnClickListener((OnClickListener) this);
 		((Button) findViewById(R.id.get_sessions)).setOnClickListener(this);
+		((Button) findViewById(R.id.add_clip)).setOnClickListener(this);
 	}
 
 	private void enableButton(int id, boolean isEnable) {
@@ -226,7 +237,8 @@ public class StartSession2 extends Activity implements OnClickListener {
 		int audioEncoding = AudioFormat.ENCODING_PCM_16BIT;
 		File file = new File(Environment.getExternalStorageDirectory()
 				.getAbsolutePath() + "/testaudio.pcm");
-
+		filepath = file.getAbsolutePath();
+		Log.d(TAG, "abs file path: " + filepath);
 		// Delete any previous recording.
 		if (file.exists())
 			file.delete();

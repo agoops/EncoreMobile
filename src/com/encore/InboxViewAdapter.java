@@ -1,5 +1,6 @@
 package com.encore;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import android.app.Activity;
@@ -15,13 +16,15 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.encore.API.models.Session;
+
 public class InboxViewAdapter extends BaseAdapter{
 	
 	private static String tag = "InboxViewAdapter";
 	private Context mContext;
-    private List<SessionTemp> mSessionList;
+    private List<Session> mSessionList;
     
-	public InboxViewAdapter(Context c, List<SessionTemp> list) {
+	public InboxViewAdapter(Context c, ArrayList<Session> list) {
 		mContext = c;
 		mSessionList = list;
 	}
@@ -40,13 +43,17 @@ public class InboxViewAdapter extends BaseAdapter{
 	public long getItemId(int arg0) {
 		return arg0;
 	}
+	
+	public void setItemList(ArrayList<Session> list) {
+		this.mSessionList = list;
+	}
 
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
 		// get the selected entry
 		Log.d(tag, "populating position: " + position);
 		//this shouldn't be an applicationInfo object
-        SessionTemp entry = (SessionTemp) mSessionList.get(position);
+        Session entry = (Session) mSessionList.get(position);
  
         // reference to convertView
         SessionView v = (SessionView) convertView;
@@ -68,7 +75,7 @@ public class InboxViewAdapter extends BaseAdapter{
             	
             
             });
-            v.setData(entry);
+            v.setSession(entry);
         }
  
         // load controls from layout resources
@@ -76,8 +83,8 @@ public class InboxViewAdapter extends BaseAdapter{
         TextView tvAppName = (TextView)v.findViewById(R.id.tvName);
  
         // set data to display
-        ivAppIcon.setImageDrawable(entry.loadIcon());
-        tvAppName.setText(entry.loadLabel());
+//        ivAppIcon.setImageDrawable(entry.loadIcon());
+        tvAppName.setText(entry.getTitle());
  
         // return view
         return v;

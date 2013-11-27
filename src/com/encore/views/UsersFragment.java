@@ -53,8 +53,6 @@ public class UsersFragment extends Fragment{
 		 */
 		getUsers(uReceiver);
 		
-		RequestsListReceiver rReceiver = new RequestsListReceiver(new Handler());
-		getPendingFriendRequests(rReceiver);
 		
 		return view;
 	}
@@ -81,27 +79,7 @@ public class UsersFragment extends Fragment{
 		return;
 	}
 	
-	private class RequestsListReceiver extends ResultReceiver {
-		public RequestsListReceiver(Handler handler) {
-			super(handler);
-			// TODO Auto-generated constructor stub
-		}
 
-		@Override
-		protected void onReceiveResult(int resultCode, Bundle resultData) {
-			if (resultCode == 1) {
-				Log.d(tag, "APISerivce returned successful with pending requests");
-				
-				String result = resultData.getString("result");
-				Log.d(tag, "Response for pending requests: " + result);
-				ArrayList<User> profiles = convertJsonToListOfUser(result);
-				
-			} else {
-				Log.d(tag, "APIService get friends failed?");
-
-			}
-		}
-	}
 	private class UsersListReceiver extends ResultReceiver {
 		public UsersListReceiver(Handler handler) {
 			super(handler);

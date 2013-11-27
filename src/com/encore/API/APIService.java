@@ -15,6 +15,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.ResultReceiver;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.encore.TokenHelper;
 import com.encore.API.models.Crowd;
@@ -71,8 +72,69 @@ public class APIService extends IntentService {
 			break;
 		case T.GET_CROWDS:
 			getCrowds(intent.getExtras());
+			break;
+		case T.ADD_CLIP:
+			Log.d(TAG, "case ADD_CLIP in API Service");
+			addClip(intent.getExtras());
+			break;
+		case T.ACCEPT_FRIEND_REQUEST:
+			acceptFriendRequest(intent.getExtras());
+			break;
+		case T.GET_SESSIONS:
+			getSessions();
+			break;
 		default:
 			break;
+		}
+	}
+	
+	
+	private void acceptFriendRequest(Bundle data) {
+		String username = data.getString(T.USERNAME);
+		boolean accepted = data.getBoolean(T.ACCEPTED);
+		Log.d(TAG, "Value of accepted in apiservice: " + accepted);
+		JSONObject json = null;
+		StringEntity entity = null;
+		
+		try {
+			json  = new JSONObject();
+			json.put(T.USERNAME, username);
+			json.put(T.ACCEPTED, accepted);
+			entity = new StringEntity(json.toString());
+			String result = api.acceptFriendRequest(entity);
+			Log.d(TAG, result);
+		}catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
+	
+	/***
+	 * TODO: DOESN"T WORK FUCKKKKKKKKK
+	 * @param data
+	 */
+	private void addClip(Bundle data) {
+		int duration = data.getInt(T.DURATION);
+		int sessionId = data.getInt(T.SESSION);
+		String filepath = data.getString(T.FILEPATH);
+		
+		JSONObject json = null;
+		StringEntity entity = null;
+		
+		try {
+			json = new JSONObject();
+			json.put(T.DURATION, duration);
+			json.put(T.SESSION, sessionId);
+			
+			Log.d(TAG, "json for entity: " + json.toString());
+			entity = new StringEntity(json.toString());
+			Log.d(TAG, "about to call api.addClip");
+			String result = api.addClip(entity,filepath);
+			Log.d(TAG, "Result from api.addClip(): " + result);
+			Toast.makeText(this, result, Toast.LENGTH_LONG).show();
+			
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
 	}
 	
@@ -244,7 +306,8 @@ public class APIService extends IntentService {
 		Crowd[] result = null;
 		String json = "";
 		try {
-			result = api.getCrowds(token);
+			json = api.getCrowds(token);
+			Log.d(TAG, json);
 		} catch(Exception e) {
 			Log.e(TAG, e.getMessage() + " ");
 		}

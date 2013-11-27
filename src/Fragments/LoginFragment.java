@@ -17,7 +17,7 @@ import android.widget.Toast;
 
 import com.encore.R;
 import com.encore.API.APIService;
-import com.encore.views.HomeActivity;
+import com.encore.views.NewsfeedActivity;
 
 public class LoginFragment extends Fragment implements OnClickListener {
 	private static final String TAG = "LoginActivity";
@@ -76,7 +76,7 @@ public class LoginFragment extends Fragment implements OnClickListener {
     }
 
     public void skip(View view) {
-        startActivity(new Intent(getActivity(), HomeActivity.class));
+        goToHomeScreen();
     }
     
     private class LoginReceiver extends ResultReceiver {
@@ -97,7 +97,7 @@ public class LoginFragment extends Fragment implements OnClickListener {
     	}
     }
     private void goToHomeScreen() {
-        Intent i =  new Intent(getActivity(), HomeActivity.class);
+        Intent i =  new Intent(getActivity(), NewsfeedActivity.class);
         startActivity(i);
     }
     private void showLoginFailed() {

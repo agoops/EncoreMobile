@@ -21,15 +21,11 @@ public class FriendsFragmentAdapter extends ArrayAdapter<Profile> {
 	private Context mContext;
 	private List<Profile> mFriendList;
 	private String tag = "FriendsFragmentAdapter";
-
 	public FriendsFragmentAdapter(Context context, int resource,
 			List<Profile> objects) {
 		super(context, resource, objects);
 		mContext = context;
 		mFriendList = objects;
-		
-		
-		
 	}
 
 	// public FriendsFragmentAdapter(Context context, List<Profile> list) {

@@ -120,4 +120,12 @@
         android:layout_height="match_parent"
         android:layout_below="@id/btnStop" />
 
+    <Button
+        android:id="@+id/add_clip"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/btnPlayback"
+        android:layout_alignParentTop="true"
+        android:text="Add Clip" />
+
 </RelativeLayout>

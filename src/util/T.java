@@ -10,7 +10,11 @@ public class T {
 	public static final String ID = "id";
 	public static final String API_TYPE = "api_type";
 	public static final String RECEIVER = "receiver";
-	
+	public static final String SESSION = "session";
+	public static final String DURATION = "duration";
+	public static final String FILEPATH = "filepath";
+	public static final String ACCEPTED = "accepted";
+
 	public static final int NUM_VIEWS = 3;
 	
 	// API call types
@@ -21,11 +25,13 @@ public class T {
 	public static final int FRIENDS = 4;
 
 	public static final int USERS = 5;
+	
 	public static final int FRIEND_REQUEST = 6;
 	public static final int FRIEND_REQUESTS_PENDING = 7;
+	public static final int ACCEPT_FRIEND_REQUEST = 8;
 
-	public static final int GET_CROWDS = 8;
-	public static final int GET_SESSIONS = 9;
+	public static final int GET_CROWDS = 9;
+	public static final int GET_SESSIONS = 10;
 	
 	// Column names for newsfeed query
 	public static final String SESSION_TITLE = "title";

@@ -1,6 +1,8 @@
 package com.encore.views;
 
-import util.T;
+import com.encore.R;
+import com.encore.StartSession2;
+
 import android.app.ActionBar;
 import android.app.ActionBar.Tab;
 import android.content.Intent;
@@ -14,28 +16,16 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.view.Window;
-import android.widget.ListView;
-import android.widget.TextView;
 
-import com.encore.R;
-import com.encore.StartSession2;
-
-public class HomeActivity extends FragmentActivity {
-	private static String tag = "VideoListViewActivity";
+public class FriendsActivity extends FragmentActivity{
+	private static String tag = "FriendsActivity";
 	ViewPager viewPager;
-	ListView listView;
 	ActionBar actionBar;
 	Fragment[] fragments;
-	private static int HOME = 0;
-	private static int INBOX = 1;
-	private static int FRIENDS = 2;
-	private static int USERS = 3;
-
-	// Change this to take out tabs from HomeActivity
-	private static int NUM_TABS = 4;
-	boolean customTitleSupported;
-
+	private static int FRIENDS = 0;
+	private static int USERS = 1;
+	private int NUM_TABS = 2;
+	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -66,23 +56,9 @@ public class HomeActivity extends FragmentActivity {
 					}
 				});
 	}
-
-	public void customTitleBar() {
-
-		// set up custom title
-		if (customTitleSupported) {
-			getWindow().setFeatureInt(Window.FEATURE_CUSTOM_TITLE,
-					R.layout.customtitlebar);
-			TextView title = (TextView) findViewById(R.id.title);
-			title.setText(getText(R.string.app_name).toString());
-
-		}
-	}
-
-	private void startNewSession() {
-		Log.d(tag, "Button clicked!");
-	}
-
+	
+	
+	
 	private void setupActionBar(ActionBar actionBar) {
 		// Specify that tabs should be displayed in the action bar.
 		actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
@@ -113,25 +89,20 @@ public class HomeActivity extends FragmentActivity {
 		for (int i = 0; i < NUM_TABS; i++) {
 			switch (i) {
 			case 0:
-				actionBar.addTab(actionBar.newTab().setText("Home")
+				actionBar.addTab(actionBar.newTab().setText("Pending")
 						.setTabListener(tabListener));
 				break;
 			case 1:
-				actionBar.addTab(actionBar.newTab().setText("Inbox")
-						.setTabListener(tabListener));
-				break;
-			case 2:
-				actionBar.addTab(actionBar.newTab().setText("Friends")
-						.setTabListener(tabListener));
-				break;
-			case 3:
 				actionBar.addTab(actionBar.newTab().setText("Users")
 						.setTabListener(tabListener));
+				break;
+			
 
 			}
 		}
 	}
 
+	
 	public class PagerAdapter extends FragmentStatePagerAdapter {
 		public PagerAdapter(FragmentManager fm) {
 			super(fm);
@@ -144,20 +115,10 @@ public class HomeActivity extends FragmentActivity {
 			
 			switch (i) {
 			case 0:
-				Fragment fragment1 = new VideoListViewFragment();
-				Bundle args = new Bundle();
-				fragment1.setArguments(args);
-				fragments[HOME] = fragment1;
-				return fragment1;
-			case 1:
-				Fragment fragment2 = new InboxListViewFragment();
-				fragments[INBOX] = fragment2;
-				return fragment2;
-			case 2:
-				Fragment fragment3 = new FriendsFragment();
+				Fragment fragment3 = new FriendRequestsFragment();
 				fragments[FRIENDS] = fragment3;
 				return fragment3;
-			case 3:
+			case 1:
 				Fragment fragment4 = new UsersFragment();
 				fragments[USERS] = fragment4;
 				return fragment4;
@@ -175,17 +136,19 @@ public class HomeActivity extends FragmentActivity {
 		public CharSequence getPageTitle(int position) {
 			switch (position) {
 			case 0:
-				return "Home page";
+				return "Pending";
 			case 1:
-				return "Inbox";
-			case 2:
-				return "Friends";
+				return "Users";
+			
 			default:
 				return null;
 			}
 		}
 	}
 	
+	
+	
+
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu items in the action bar
@@ -205,9 +168,16 @@ public class HomeActivity extends FragmentActivity {
 			Intent intent = new Intent(this, StartSession2.class);
 			startActivity(intent);
 			return true;
+		case R.id.newsfeed_activity:
+			Intent newsfeedIntent = new Intent(this, NewsfeedActivity.class);
+			startActivity(newsfeedIntent);
+			return true;
+		case R.id.friends_activity:
+//			Intent friendsIntent = new Intent(this, FriendsActivity.class);
+//			startActivity(friendsIntent);
+			return true;
 		default:
 			return super.onOptionsItemSelected(item);
 		}
 	}
-
 }
