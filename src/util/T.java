@@ -18,17 +18,19 @@ public class T {
 	public static final int ADD_CLIP = 2;
 	public static final int CREATE_SESSION = 3;
 	public static final int FRIENDS = 4;
-
 	public static final int USERS = 5;
 	public static final int FRIEND_REQUEST = 6;
-
 	public static final int GET_CROWDS = 7;
+	public static final int CREATE_CROWD = 8;
 	
-	// Column names for newsfeed query
+	// names for storing various data in Intents
 	public static final String SESSION_TITLE = "title";
 	public static final String SESSION_USE_EXISTING_CROWD = "use_existing_crowd";
 	public static final String SESSION_CROWD_TITLE = "crowd_title";
 	public static final String SESSION_CROWD_MEMBERS = "crowd_members";
 	public static final String SESSION_CROWD_ID = "crowd";
+	
+	public static final String CROWD_TITLE = "title";
+	public static final String CROWD_MEMBERS = "members";
 	
 }

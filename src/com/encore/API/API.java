@@ -19,6 +19,7 @@ import com.encore.API.models.Crowds;
 import com.encore.API.models.PostSession;
 import com.encore.API.models.Session;
 import com.encore.API.models.User;
+import com.encore.API.models.postCrowd;
 import com.google.gson.Gson;
 import com.squareup.okhttp.OkHttpClient;
 
@@ -59,7 +60,6 @@ public class API {
 	private static final String DELETE_USER = USERS + "%s";
 
 	// Sessions
-	// private static final String ALL_SESSIONS = SESSIONS;
 	private static final String CREATE_SESSION = SESSIONS;
 	private static final String GET_SESSION = SESSIONS + "%s";
 	private static final String GET_SESSIONS = SESSIONS;
@@ -82,7 +82,7 @@ public class API {
 	
 	// Crowds
 	private static final String GET_CROWDS = CROWDS;
-	// private static final String CREATE_CROWD = CROWDS + "create/";
+	private static final String CREATE_CROWD = CROWDS;
 	// private static final String GET_CROWD = CROWDS + "%s";
 	// private static final String UPDATE_CROWD = CROWDS + "%s";
 	// private static final String DELETE_CROWD = CROWDS + "%s";
@@ -155,10 +155,6 @@ public class API {
 			// Write entity to the output stream
 			out = connection.getOutputStream();
 			entity.writeTo(out);
-			Log.d(TAG,
-					"POST'ing with auth: "
-							+ connection.getRequestProperty(AUTHORIZATION)
-							+ " and header " + entity);
 			out.close();
 
 			// Read the response code
@@ -333,7 +329,9 @@ public class API {
 		}
 		
 	}
-
+	
+	// POST to sessions/
+	// Creates a new session
 	public Session createSession(PostSession pSession, String token) throws Exception {
 		Log.d(TAG, "createSession() called");
 		ACCESS_TOKEN = "Token " + token;
@@ -342,10 +340,10 @@ public class API {
 		Session result = null;
 		try {
 			String JSON = getGson().toJson(pSession);
-			Log.d(TAG, "JSON: " + JSON);
+			Log.d(TAG, "Posting JSON: " + JSON);
 			
-			postResult = post(url, new StringEntity(getGson().toJson(pSession)),
-					String.class);
+			postResult = post(url, new StringEntity(JSON), String.class);
+			Log.d(TAG, "POST result: " + postResult);
 			result = getGson().fromJson(postResult, Session.class);
 			
 		} catch (Exception e) {
@@ -355,9 +353,10 @@ public class API {
 		return result;
 	}
 	
-	// GET all crowds
-	public Crowd[] getCrowds(String token) throws Exception {
-		Log.d(TAG, "getCrowds calld");
+	// GET crowds/
+	// Returns all crowds
+	public String getCrowds(String token) throws Exception {
+		Log.d(TAG, "getCrowds called");
 		ACCESS_TOKEN = "Token " + token;
 		String url = GET_CROWDS;
 		String json = "";
@@ -365,12 +364,34 @@ public class API {
 		
 		try {
 			json = get(url, Crowds.class);
-			result  = getGson().fromJson(json, Crowds.class);
 		} catch(Exception e) {
 			Log.e(TAG, "getCrowds() error");
 			throw e;
 		}
 		
-		return (result != null) ? result.getCrowds():null;
+		return json;
+	}
+	
+	// POST crowds/
+	// Creates a new crowd
+	public Crowd createCrowd(postCrowd pCrowd, String token) throws Exception {
+		Log.d(TAG, "createCrowd called");
+		ACCESS_TOKEN = "Token " + token;
+		String url = CREATE_CROWD;
+		String postResult = null;
+		Crowd resultCrowd = null;
+		
+		try {
+			String JSON = getGson().toJson(pCrowd);
+			Log.d(TAG, "Posting JSON: " + JSON);
+			
+			postResult = post(url, new StringEntity(JSON), String.class);
+			
+			resultCrowd = getGson().fromJson(postResult, Crowd.class);
+		} catch (Exception e) {
+			Log.e(TAG, "createCrowd() error");
+			throw e;
+		}
+		return resultCrowd;
 	}
 }

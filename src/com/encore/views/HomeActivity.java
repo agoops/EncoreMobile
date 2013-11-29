@@ -22,7 +22,7 @@ import com.encore.R;
 import com.encore.StartSession2;
 
 public class HomeActivity extends FragmentActivity {
-	private static String tag = "VideoListViewActivity";
+	private static final String TAG = "HomeActivity";
 	ViewPager viewPager;
 	ListView listView;
 	ActionBar actionBar;
@@ -51,11 +51,11 @@ public class HomeActivity extends FragmentActivity {
 		fragments = new Fragment[NUM_TABS];
 		actionBar = getActionBar();
 
-		Log.d(tag, "onCreate() reached");
+		Log.d(TAG, "onCreate() reached");
 		viewPager = (ViewPager) findViewById(R.id.pager);
 		viewPager.setAdapter(new PagerAdapter(getSupportFragmentManager()));
 		setupActionBar(actionBar);
-		Log.d(tag, "maybe got here?");
+		Log.d(TAG, "maybe got here?");
 		viewPager
 				.setOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {
 					@Override
@@ -80,7 +80,7 @@ public class HomeActivity extends FragmentActivity {
 	}
 
 	private void startNewSession() {
-		Log.d(tag, "Button clicked!");
+		Log.d(TAG, "Button clicked!");
 	}
 
 	private void setupActionBar(ActionBar actionBar) {
@@ -99,7 +99,7 @@ public class HomeActivity extends FragmentActivity {
 			@Override
 			public void onTabSelected(Tab tab,
 					android.app.FragmentTransaction ft) {
-				Log.d(tag, "onTabSelected() called");
+				Log.d(TAG, "onTabSelected() called");
 				viewPager.setCurrentItem(tab.getPosition(), true);
 			}
 
@@ -135,12 +135,12 @@ public class HomeActivity extends FragmentActivity {
 	public class PagerAdapter extends FragmentStatePagerAdapter {
 		public PagerAdapter(FragmentManager fm) {
 			super(fm);
-			Log.d(tag, "PagerAdapter ctor");
+			Log.d(TAG, "PagerAdapter ctor");
 		}
 
 		@Override
 		public Fragment getItem(int i) {
-			Log.d(tag, "getItem() called with " + i);
+			Log.d(TAG, "getItem() called with " + i);
 			
 			switch (i) {
 			case 0:
@@ -196,12 +196,12 @@ public class HomeActivity extends FragmentActivity {
 	
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
-		Log.d("HOMEACTIVITY.JAVA", "Action Item selected");
+		Log.d(TAG, "Action Item selected");
 		// Handle presses on action bar items
 		switch(item.getItemId()) {
 		case R.id.action_video:
 			// Launch a new session
-			Log.d("HOMEACTIVITY.JAVA", "Launching StartSession2");
+			Log.d(TAG, "Launching StartSession2");
 			Intent intent = new Intent(this, StartSession2.class);
 			startActivity(intent);
 			return true;

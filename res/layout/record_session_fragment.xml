@@ -5,19 +5,19 @@
 	
     
     <Button
-        android:id="@+id/send_session"
+        android:id="@+id/next_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
         android:layout_alignParentTop="true"
-        android:text="Send" />
-    
+        android:text="Next" />
+    <!-- 
     <TextView 
         android:id="@+id/existing_crowd"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Use existing crowd?"
-        android:layout_below="@id/send_session"
+        android:layout_below="@id/next_button"
         android:layout_centerHorizontal="true"
         android:textSize="15dp"
         android:layout_marginLeft="15dp" />
@@ -44,7 +44,6 @@
 	        android:text="No"
 	        android:onClick="onRadioButtonClicked" />
     </RadioGroup>
-
     
     <EditText 
          android:id="@+id/session_title"
@@ -78,13 +77,14 @@
          android:layout_below="@id/crowd_title"
          android:layout_centerHorizontal="true"
          android:hint="Crowd ID" />
+ -->
     
     <Button
         android:id="@+id/btnStart"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
-        android:layout_below="@id/crowd_id"
+        android:layout_alignParentBottom="true"
         android:onClick="record"
         android:text="REC" />
 
@@ -92,22 +92,22 @@
         android:id="@+id/btnStop"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/crowd_id"
         android:layout_alignParentRight="true"
+        android:layout_alignParentBottom="true"
         android:text="STOP" />
 
     <Button
         android:id="@+id/btnPlayback"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/crowd_id"
         android:layout_centerHorizontal="true"
+        android:layout_alignParentBottom="true"
         android:text="Play" />
     
-    <ListView
+    <!-- <ListView
         android:id="@+id/crowds_lv"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@id/btnStop" />
+        android:layout_below="@id/btnStop" /> -->
 
 </RelativeLayout>

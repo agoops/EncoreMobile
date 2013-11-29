@@ -1,15 +1,9 @@
 package com.encore.API;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.apache.http.entity.StringEntity;
-import org.json.JSONException;
 import org.json.JSONObject;
 
 import util.T;
-import Bus.BusProvider;
-import Bus.SessionsEvent;
 import android.app.IntentService;
 import android.content.Intent;
 import android.os.Bundle;
@@ -21,6 +15,8 @@ import com.encore.API.models.Crowd;
 import com.encore.API.models.PostSession;
 import com.encore.API.models.Session;
 import com.encore.API.models.User;
+import com.encore.API.models.postCrowd;
+import com.google.gson.Gson;
 import com.squareup.okhttp.OkHttpClient;
 
 public class APIService extends IntentService {
@@ -66,6 +62,8 @@ public class APIService extends IntentService {
 			break;
 		case T.GET_CROWDS:
 			getCrowds(intent.getExtras());
+		case T.CREATE_CROWD:
+			createCrowd(intent.getExtras());
 		default:
 			break;
 		}
@@ -187,34 +185,14 @@ public class APIService extends IntentService {
 		Session result = null;
 		PostSession pSession = null;
 		try {
-			if( !data.getBoolean(T.SESSION_USE_EXISTING_CROWD) ) {
-				// If user doesn't want to use an existing crowd...
-				
-				// TODO: Should be from user input, not this arbitrary list
-				String members[] = {"anskeet", "babs"};
-				
-				// Bundle fields into a PostSession object...
-				pSession = new PostSession(data.getString(T.SESSION_TITLE), data.getBoolean(T.SESSION_USE_EXISTING_CROWD), 
-						data.getString(T.SESSION_CROWD_TITLE), members, 0);
-				
-				result = api.createSession(pSession, token);
-			} else {
-				// else they DO want to use an existing crowd...
-				String crowdTitle = "";
-				String[] members = {};
-				
-				// TODO: pass existingCrowd in from a lv of existing crowds on the client app,
-				// instead of creating this arbitrary group
-				pSession = new PostSession(data.getString(T.SESSION_TITLE), data.getBoolean(T.SESSION_USE_EXISTING_CROWD), 
-						null, null, Integer.parseInt(data.getString(T.SESSION_CROWD_ID)));
-				
-				result = api.createSession(pSession, token);
-			}
+			// Note: USE_EXISTING_CROWD will always be true
+			// because the client flow requires so
+			pSession = new PostSession(data.getString(T.SESSION_TITLE), data.getBoolean(T.SESSION_USE_EXISTING_CROWD), 
+					null, null, Integer.parseInt(data.getString(T.SESSION_CROWD_ID)));
 			
-			// Error checking
-			if (result == null) {
-				Log.e(TAG, "No session created");
-			}
+			result = api.createSession(pSession, token);
+			Log.d(TAG, result.toString());
+			
 		} catch (Exception e) {
 			Log.e(TAG, e.getMessage() + " ");
 		}
@@ -227,8 +205,32 @@ public class APIService extends IntentService {
 		Crowd[] result = null;
 		String json = "";
 		try {
-			result = api.getCrowds(token);
+			json = api.getCrowds(token);
 		} catch(Exception e) {
+			Log.e(TAG, e.getMessage() + " ");
+		}
+		
+		Bundle crowdBundle = new Bundle();
+		crowdBundle.putString("crowdsJson", json);
+		resultReceiver.send(T.GET_CROWDS, crowdBundle);
+	}
+	
+	// POST to crowds
+	private void createCrowd(Bundle data) {
+		Log.d(TAG, "createCrowd() called");
+		String token = TokenHelper.getToken(this);
+		Crowd resultCrowd = null;
+		
+		String crowdTitle = data.getString(T.CROWD_TITLE);
+		String[] members = data.getStringArray(T.CROWD_MEMBERS);
+		
+		postCrowd pCrowd = new postCrowd(crowdTitle, members);
+		
+		try {
+			resultCrowd = api.createCrowd(pCrowd, token);
+			String postJson = (new Gson()).toJson(resultCrowd);
+			Log.d(TAG, "createCrowd() result: " + postJson);
+		} catch( Exception e ) {
 			Log.e(TAG, e.getMessage() + " ");
 		}
 	}

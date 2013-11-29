@@ -28,7 +28,7 @@ public class StartSession extends Activity {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.start_session);
+		setContentView(R.layout.record_session_fragment);
 
 		setButtonHandlers();
 		enableButtons(false);
