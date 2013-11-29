@@ -69,8 +69,14 @@ public class InboxViewAdapter extends BaseAdapter{
 				public void onClick(View arg0) {
 					
 					//((Activity)mContext).startActivityForResult(new Intent(mContext, AndroidVideoCapture.class), 0);
-					((Activity)mContext).startActivityForResult(new Intent(mContext, StartSession2.class), 0);
+					SessionView sv = (SessionView) arg0;
+					Session session = sv.getSession();
 					
+					Intent intent = new Intent(mContext, StartSession2.class);
+					intent.putExtra("reply", true);
+					intent.putExtra("sessionid", sv.getId());
+					
+					mContext.startActivity(intent);
 				}
             	
             
