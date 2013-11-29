@@ -8,11 +8,23 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
+import java.io.UnsupportedEncodingException;
 import java.lang.reflect.Type;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
+import org.apache.http.HttpEntity;
+import org.apache.http.HttpResponse;
+import org.apache.http.client.ClientProtocolException;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.StringEntity;
+import org.apache.http.entity.mime.HttpMultipartMode;
+import org.apache.http.entity.mime.MultipartEntityBuilder;
+import org.apache.http.entity.mime.content.FileBody;
+import org.apache.http.entity.mime.content.StringBody;
+import org.apache.http.impl.client.DefaultHttpClient;
+import org.json.JSONObject;
 
 import util.Constants;
 import android.content.Context;
@@ -145,7 +157,7 @@ public class API {
 	}
 
 	// ------------- POST -----------
-	private <T> T post(String url, StringEntity entity, Type type)
+	private <T> T post(String url, HttpEntity entity, Type type)
 			throws IOException {
 		URL postUrl = new URL(url);
 		HttpURLConnection connection = client.open(postUrl);
@@ -314,6 +326,43 @@ public class API {
 				in.close();
 		}
 	}
+	
+//	private String postClip(String filepath) throws Exception {
+//		
+//		HttpClient client = new DefaultHttpClient();
+//	    HttpPost post = new HttpPost(ADD_CLIP);
+//	    post.addHeader(AUTHORIZATION, ACCESS_TOKEN);
+//	    MultipartEntityBuilder multipartEntity = MultipartEntityBuilder.create();   
+//	    multipartEntity.setMode(HttpMultipartMode.BROWSER_COMPATIBLE);
+//	    multipartEntity.addPart("clip", new FileBody(new File(filepath)));
+//	    multipartEntity.addPart("session", new StringBody("14"));
+//	    multipartEntity.addTextBody("duration", "69");
+//	    HttpEntity entity = multipartEntity.build();
+//	    post.setEntity(entity);
+//	    HttpURLConnection connection = this.client.open(new URL("What"));
+//	    
+//	    entity.writeTo(connection);
+//	    
+//	    HttpResponse response;
+//		try {
+//			response = client.execute(post);
+//		} catch (ClientProtocolException e) {
+////			e.printStackTrace();
+//			throw e;
+//		} catch (IOException e) {
+////			e.printStackTrace();
+//			throw e;
+//		}
+//		
+//	    HttpEntity entity = response.getEntity();
+//	    BufferedReader r = new BufferedReader(new InputStreamReader(entity.getContent()));
+//		StringBuilder total = new StringBuilder();
+//		String line;
+//		while ((line = r.readLine()) != null) {
+//			total.append(line);
+//		}
+//		return total.toString();
+//	}
 
 	// ------------- PUT -----------
 	private <T> T put(String url, StringEntity entity, Type type)
@@ -406,7 +455,7 @@ public class API {
 	}
 
 	public String addClip(StringEntity entity, String filepath)
-			throws IOException {
+			throws Exception {
 
 		// String url, StringEntity entity, Type type, String path
 
@@ -414,9 +463,10 @@ public class API {
 
 		String result = "emptyresult_failed";
 		try {
-			result = postClip(url, entity, String.class, filepath);
+//			result = postClip(url, entity, String.class, filepath);
+			//result = postClip(filepath);
 			return result;
-		} catch (IOException e) {
+		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 			throw e;

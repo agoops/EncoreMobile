@@ -128,10 +128,12 @@ public class APIService extends IntentService {
 			
 			Log.d(TAG, "json for entity: " + json.toString());
 			entity = new StringEntity(json.toString());
+			
 			Log.d(TAG, "about to call api.addClip");
 			String result = api.addClip(entity,filepath);
+			
 			Log.d(TAG, "Result from api.addClip(): " + result);
-			Toast.makeText(this, result, Toast.LENGTH_LONG).show();
+//			Toast.makeText(this, result, Toast.LENGTH_LONG).show();
 			
 		} catch (Exception e) {
 			e.printStackTrace();
