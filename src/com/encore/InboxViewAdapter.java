@@ -1,5 +1,6 @@
 package com.encore;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import android.app.Activity;
@@ -15,13 +16,15 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-public class InboxViewAdapter extends BaseAdapter{
+import com.encore.API.models.Session;
+
+public class InboxViewAdapter extends BaseAdapter implements OnClickListener {
 	
 	private static String tag = "InboxViewAdapter";
 	private Context mContext;
-    private List<SessionTemp> mSessionList;
+    private List<Session> mSessionList;
     
-	public InboxViewAdapter(Context c, List<SessionTemp> list) {
+	public InboxViewAdapter(Context c, ArrayList<Session> list) {
 		mContext = c;
 		mSessionList = list;
 	}
@@ -40,13 +43,17 @@ public class InboxViewAdapter extends BaseAdapter{
 	public long getItemId(int arg0) {
 		return arg0;
 	}
+	
+	public void setItemList(ArrayList<Session> list) {
+		this.mSessionList = list;
+	}
 
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
 		// get the selected entry
 		Log.d(tag, "populating position: " + position);
 		//this shouldn't be an applicationInfo object
-        SessionTemp entry = (SessionTemp) mSessionList.get(position);
+        Session entry = (Session) mSessionList.get(position);
  
         // reference to convertView
         SessionView v = (SessionView) convertView;
@@ -56,19 +63,9 @@ public class InboxViewAdapter extends BaseAdapter{
             LayoutInflater inflater = LayoutInflater.from(mContext);
             v = (SessionView) inflater.inflate(R.layout.inbox_view, parent, false);
             Button reply = (Button) v.findViewById(R.id.reply);
-            reply.setOnClickListener(new OnClickListener() {
-
-				@Override
-				public void onClick(View arg0) {
-					
-					//((Activity)mContext).startActivityForResult(new Intent(mContext, AndroidVideoCapture.class), 0);
-					((Activity)mContext).startActivityForResult(new Intent(mContext, StartSession2.class), 0);
-					
-				}
-            	
-            
-            });
-            v.setData(entry);
+            reply.setTag(entry);
+            reply.setOnClickListener((OnClickListener) this);
+            v.setSession(entry);
         }
  
         // load controls from layout resources
@@ -76,12 +73,30 @@ public class InboxViewAdapter extends BaseAdapter{
         TextView tvAppName = (TextView)v.findViewById(R.id.tvName);
  
         // set data to display
-        ivAppIcon.setImageDrawable(entry.loadIcon());
-        tvAppName.setText(entry.loadLabel());
+//        ivAppIcon.setImageDrawable(entry.loadIcon());
+        tvAppName.setText(entry.getTitle());
  
         // return view
         return v;
 	}
 	
-
+	@Override
+	public void onClick(View v) {
+		switch(v.getId())
+		{
+		case R.id.reply:
+			// TODO: GET crowd_id and session_title from sessions
+			// Pass on to StartSession2
+			Session sesh = (Session) v.getTag();
+			
+			int crowdId = sesh.getCrowd().getId();
+			Intent launchRecordFragment = new Intent(mContext, StartSession2.class);
+			launchRecordFragment.putExtra("crowdId", crowdId);
+			launchRecordFragment.putExtra("sessionTitle", sesh.getTitle());
+			((Activity)mContext).startActivity(new Intent(mContext, StartSession2.class));
+			break;
+		default:
+			break;
+		}
+	}
 }

@@ -2,7 +2,7 @@ package com.encore.API.models;
 
 import com.google.gson.annotations.SerializedName;
 
-public class Profile {
+public class Profile implements UserInfo{
 
 	@SerializedName("id")
 	private int profileId;
@@ -40,5 +40,23 @@ public class Profile {
 	@Override
 	public String toString() {
 		return "P_ID: " + profileId + " user: " + user.toString() + " " + "PhoneNo.: " + phoneNumber;
+	}
+
+
+	@Override
+	public String getUsername() {
+		return user.getUsername();
+	}
+
+
+	@Override
+	public String getFirstName() {
+		return user.getFirstName();
+	}
+
+
+	@Override
+	public String getLastName() {
+		return user.getLastName();
 	}
 }

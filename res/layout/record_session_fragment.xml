@@ -11,73 +11,14 @@
         android:layout_alignParentRight="true"
         android:layout_alignParentTop="true"
         android:text="Next" />
-    <!-- 
-    <TextView 
-        android:id="@+id/existing_crowd"
+    
+    <Button 
+        android:id="@+id/send_clip_btn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Use existing crowd?"
-        android:layout_below="@id/next_button"
-        android:layout_centerHorizontal="true"
-        android:textSize="15dp"
-        android:layout_marginLeft="15dp" />
-    
-    <RadioGroup
-        android:id="@+id/radio_group"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/existing_crowd"
-        android:layout_centerHorizontal="true"
-        android:orientation="horizontal">
-	    <RadioButton 
-	        android:id="@+id/yes_radio"
-	        android:layout_width="wrap_content"
-	        android:layout_height="wrap_content"
-	        android:text="Yes"
-	        android:checked="true"
-	        android:onClick="onRadioButtonClicked" />
-	    
-	    <RadioButton 
-	        android:id="@+id/no_radio"
-	        android:layout_width="wrap_content"
-	        android:layout_height="wrap_content"
-	        android:text="No"
-	        android:onClick="onRadioButtonClicked" />
-    </RadioGroup>
-    
-    <EditText 
-         android:id="@+id/session_title"
-         android:layout_width="225dp"
-         android:layout_height="wrap_content"
-         android:layout_below="@id/radio_group"
-         android:layout_centerHorizontal="true"
-         android:layout_marginTop="15dp"
-         android:hint="Session Title" />
-    
-    <EditText 
-         android:id="@+id/crowd_members"
-         android:layout_width="225dp"
-         android:layout_height="wrap_content"
-         android:layout_below="@id/session_title"
-         android:layout_centerHorizontal="true"
-         android:hint="Crowd Members" />
-    
-    <EditText 
-         android:id="@+id/crowd_title"
-         android:layout_width="225dp"
-         android:layout_height="wrap_content"
-         android:layout_below="@id/crowd_members"
-         android:layout_centerHorizontal="true"
-         android:hint="Crowd Title" />
-    
-    <EditText 
-         android:id="@+id/crowd_id"
-         android:layout_width="225dp"
-         android:layout_height="wrap_content"
-         android:layout_below="@id/crowd_title"
-         android:layout_centerHorizontal="true"
-         android:hint="Crowd ID" />
- -->
+        android:layout_alignParentRight="true"
+        android:layout_alignParentTop="true"
+        android:visibility="invisible" />
     
     <Button
         android:id="@+id/btnStart"
@@ -103,11 +44,5 @@
         android:layout_centerHorizontal="true"
         android:layout_alignParentBottom="true"
         android:text="Play" />
-    
-    <!-- <ListView
-        android:id="@+id/crowds_lv"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_below="@id/btnStop" /> -->
 
 </RelativeLayout>

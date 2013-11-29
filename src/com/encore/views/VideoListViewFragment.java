@@ -32,11 +32,11 @@ import com.encore.SessionTemp;
 import com.encore.SessionView;
 import com.encore.SessionViewAdapter;
 import com.encore.VideoPlayer;
-
+import com.encore.API.models.Session;
 public class VideoListViewFragment extends Fragment{
 	private static String tag = "VideoListViewFragment";
 	private VideoView videoView;
-	
+	private SessionViewAdapter adapter;
 	@Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
         Bundle savedInstanceState) {
@@ -46,12 +46,15 @@ public class VideoListViewFragment extends Fragment{
 		
 	    ListView lv = (ListView) view.findViewById(R.id.video_list_view2);
 	    List<SessionTemp> list = getTempSessionList();
-	    lv.setAdapter(new SessionViewAdapter(container.getContext(), list));    
+	    adapter = new SessionViewAdapter(container.getContext(), new ArrayList<Session>());
+	    lv.setAdapter(adapter);    
 	    lv.setOnItemClickListener(new ViewVideoListener());
 	    return view;
     }
 	
-	
+	public SessionViewAdapter getAdapter() {
+		return adapter;
+	}
 	private List<SessionTemp> getTempSessionList() {
 		Drawable icon = getResources().getDrawable(R.drawable.action_people);
 		List<SessionTemp> temp = new ArrayList<SessionTemp>();
@@ -72,14 +75,10 @@ public class VideoListViewFragment extends Fragment{
 			Log.d(tag, "parent = " + parent.toString() );
 			Log.d(tag, "view = " + view.toString());
 			SessionView element = (SessionView) view;
-			Uri uri = element.getData().getUri();
+			Uri uri = Uri.parse(element.getUri());
 			Log.d(tag, "uri = " + uri.toString());
 			
-//			Toast.makeText(getActivity().getBaseContext(), uri.toString(),
-//                    Toast.LENGTH_SHORT).show();
 			showVideoDialog(uri);
-//			startActivity(new Intent(Intent.ACTION_VIEW, uri));
-//		    Log.i("Video", "Video Playing....");
 
 		}
 		

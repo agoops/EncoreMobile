@@ -9,6 +9,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.ResultReceiver;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.encore.TokenHelper;
 import com.encore.API.models.Crowd;
@@ -32,13 +33,15 @@ public class APIService extends IntentService {
 	@Override
 	protected void onHandleIntent(Intent intent) {
 		Log.d(TAG, "Handling intent type " + intent.getIntExtra(T.API_TYPE, -1));
-		if (intent.hasExtra("receiver")) {
-			Log.d(TAG, "receiver!!!!!!!!");
+		
+		if (intent.hasExtra(T.RECEIVER)) {
+			Log.d(TAG, "Receiver received");
 			resultReceiver = intent.getParcelableExtra("receiver");
 		} else {
-			Log.d(TAG, "noReceiver??");
+			Log.d(TAG, "No receiver received");
 		}
-			api = new API(new OkHttpClient());
+		
+		api = new API(new OkHttpClient(), this);
 		// Where processing occurs
 		int apiType = intent.getIntExtra(T.API_TYPE, -1);
 		switch (apiType) {
@@ -57,6 +60,9 @@ public class APIService extends IntentService {
 		case T.FRIEND_REQUEST:
 			sendFriendRequest(intent.getExtras());
 			break;
+		case T.FRIEND_REQUESTS_PENDING:
+			getPendingFriendRequests(intent.getExtras());
+			break;
 		case T.USERS:
 			getUsers(intent.getExtras());
 			break;
@@ -64,11 +70,84 @@ public class APIService extends IntentService {
 			getCrowds(intent.getExtras());
 		case T.CREATE_CROWD:
 			createCrowd(intent.getExtras());
+			break;
+		case T.ADD_CLIP:
+			Log.d(TAG, "case ADD_CLIP in API Service");
+			addClip(intent.getExtras());
+			break;
+		case T.ACCEPT_FRIEND_REQUEST:
+			acceptFriendRequest(intent.getExtras());
+			break;
+		case T.GET_SESSIONS:
+			// Note implemented currently
+			break;
 		default:
 			break;
 		}
 	}
 	
+	
+	private void acceptFriendRequest(Bundle data) {
+		String username = data.getString(T.USERNAME);
+		boolean accepted = data.getBoolean(T.ACCEPTED);
+		Log.d(TAG, "Value of accepted in apiservice: " + accepted);
+		JSONObject json = null;
+		StringEntity entity = null;
+		
+		try {
+			json  = new JSONObject();
+			json.put(T.USERNAME, username);
+			json.put(T.ACCEPTED, accepted);
+			entity = new StringEntity(json.toString());
+			String result = api.acceptFriendRequest(entity);
+			Log.d(TAG, result);
+		}catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
+	
+	/***
+	 * TODO: DOESN"T WORK FUCKKKKKKKKK
+	 * @param data
+	 */
+	private void addClip(Bundle data) {
+		int duration = data.getInt(T.DURATION);
+		int sessionId = data.getInt(T.SESSION);
+		String filepath = data.getString(T.FILEPATH);
+		
+		JSONObject json = null;
+		StringEntity entity = null;
+		
+		try {
+			json = new JSONObject();
+			json.put(T.DURATION, duration);
+			json.put(T.SESSION, sessionId);
+			
+			Log.d(TAG, "json for entity: " + json.toString());
+			entity = new StringEntity(json.toString());
+			Log.d(TAG, "about to call api.addClip");
+			String result = api.addClip(entity,filepath);
+			Log.d(TAG, "Result from api.addClip(): " + result);
+			Toast.makeText(this, result, Toast.LENGTH_LONG).show();
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
+	private void getPendingFriendRequests(Bundle data) {
+		String token = TokenHelper.getToken(this);
+		try{
+			String result = api.getPendingFriendRequests(token);
+			Bundle b = new Bundle();
+			b.putString("result", result);
+			resultReceiver.send(1, b);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+	}
 	private void sendFriendRequest(Bundle data) {
 		String token = TokenHelper.getToken(this);
 		
@@ -234,5 +313,4 @@ public class APIService extends IntentService {
 			Log.e(TAG, e.getMessage() + " ");
 		}
 	}
-
 }

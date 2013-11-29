@@ -26,7 +26,7 @@ import com.encore.R;
 import com.encore.API.APIService;
 import com.encore.API.models.Crowd;
 import com.encore.API.models.Crowds;
-import com.encore.views.HomeActivity;
+import com.encore.views.NewsfeedActivity;
 import com.google.gson.Gson;
 
 public class PickCrowdFragment extends Fragment implements OnClickListener {
@@ -76,7 +76,7 @@ public class PickCrowdFragment extends Fragment implements OnClickListener {
 			} else if(selectedCrowds.size() <= 0) { 
 				Toast.makeText(getActivity(), "Yo! Pick a crowd.", Toast.LENGTH_LONG).show();
 			} else {
-				// ONLY THE FIRST SELECTED CROWD IS PICKED.
+				// Only one crowd will ever be picked.
 				int crowdId = selectedCrowds.get(0).getId();
 				
 				// Make a "POST sessions" to create a new session
@@ -92,7 +92,7 @@ public class PickCrowdFragment extends Fragment implements OnClickListener {
 				
 				getActivity().startService(apiIntent);
 				
-				Intent launchHome = new Intent(getActivity(), HomeActivity.class);
+				Intent launchHome = new Intent(getActivity(), NewsfeedActivity.class);
 				startActivity(launchHome);
 			}
 			break;
