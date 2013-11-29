@@ -1,10 +1,14 @@
 package com.encore.views;
 
+import java.util.ArrayList;
+
 import util.T;
 import android.app.ActionBar;
 import android.app.ActionBar.Tab;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.ResultReceiver;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
@@ -18,8 +22,16 @@ import android.view.Window;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.encore.InboxViewAdapter;
 import com.encore.R;
+import com.encore.SessionViewAdapter;
 import com.encore.StartSession2;
+import com.encore.API.APIService;
+import com.encore.API.models.Session;
+import com.google.gson.Gson;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonParser;
 
 public class HomeActivity extends FragmentActivity {
 	private static final String TAG = "HomeActivity";
@@ -27,9 +39,9 @@ public class HomeActivity extends FragmentActivity {
 	ListView listView;
 	ActionBar actionBar;
 	Fragment[] fragments;
-	private static int HOME = 0;
+	private static int NEWSFEED = 0;
 	private static int INBOX = 1;
-	private static int FRIENDS = 2;
+	private static int PENDING_REQUESTS = 2;
 	private static int USERS = 3;
 
 	// Change this to take out tabs from HomeActivity
@@ -56,6 +68,7 @@ public class HomeActivity extends FragmentActivity {
 		viewPager.setAdapter(new PagerAdapter(getSupportFragmentManager()));
 		setupActionBar(actionBar);
 		Log.d(TAG, "maybe got here?");
+		viewPager.setOffscreenPageLimit(NUM_TABS - 1);
 		viewPager
 				.setOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {
 					@Override
@@ -65,6 +78,7 @@ public class HomeActivity extends FragmentActivity {
 						getActionBar().setSelectedNavigationItem(position);
 					}
 				});
+		getAllSessions();
 	}
 
 	public void customTitleBar() {
@@ -113,7 +127,7 @@ public class HomeActivity extends FragmentActivity {
 		for (int i = 0; i < NUM_TABS; i++) {
 			switch (i) {
 			case 0:
-				actionBar.addTab(actionBar.newTab().setText("Home")
+				actionBar.addTab(actionBar.newTab().setText("Newsfeed")
 						.setTabListener(tabListener));
 				break;
 			case 1:
@@ -121,7 +135,7 @@ public class HomeActivity extends FragmentActivity {
 						.setTabListener(tabListener));
 				break;
 			case 2:
-				actionBar.addTab(actionBar.newTab().setText("Friends")
+				actionBar.addTab(actionBar.newTab().setText("Requests")
 						.setTabListener(tabListener));
 				break;
 			case 3:
@@ -147,15 +161,15 @@ public class HomeActivity extends FragmentActivity {
 				Fragment fragment1 = new VideoListViewFragment();
 				Bundle args = new Bundle();
 				fragment1.setArguments(args);
-				fragments[HOME] = fragment1;
+				fragments[NEWSFEED] = fragment1;
 				return fragment1;
 			case 1:
 				Fragment fragment2 = new InboxListViewFragment();
 				fragments[INBOX] = fragment2;
 				return fragment2;
 			case 2:
-				Fragment fragment3 = new FriendsFragment();
-				fragments[FRIENDS] = fragment3;
+				Fragment fragment3 = new FriendRequestsFragment();
+				fragments[PENDING_REQUESTS] = fragment3;
 				return fragment3;
 			case 3:
 				Fragment fragment4 = new UsersFragment();
@@ -179,7 +193,9 @@ public class HomeActivity extends FragmentActivity {
 			case 1:
 				return "Inbox";
 			case 2:
-				return "Friends";
+				return "Requests";
+			case 3:
+				return "Users";
 			default:
 				return null;
 			}
@@ -209,5 +225,71 @@ public class HomeActivity extends FragmentActivity {
 			return super.onOptionsItemSelected(item);
 		}
 	}
+	
+	 
+    private void getAllSessions() {
+            Intent apiIntent = new Intent(this, APIService.class);
+            apiIntent.putExtra(T.API_TYPE, T.GET_SESSIONS);
+            SessionListReceiver mReceiver = new SessionListReceiver(new Handler());
+            apiIntent.putExtra(T.RECEIVER, mReceiver);
+            startService(apiIntent);
+    }
+    
+    private class SessionListReceiver extends ResultReceiver {
+            public SessionListReceiver(Handler handler) {
+                    super(handler);
+                    // TODO Auto-generated constructor stub
+            }
+
+            @Override
+            protected void onReceiveResult(int resultCode, Bundle resultData) {
+                    if (resultCode == 1) {
+                            Log.d(TAG, "APISerivce returned successful with sessions");
+                            
+                            
+                            String result = resultData.getString("result");
+                            ArrayList<ArrayList<Session>> sessions = convertJsonToListOfSession(result);
+                            
+                            SessionViewAdapter nAdapter = ((VideoListViewFragment) fragments[NEWSFEED])
+                                            .getAdapter();
+                            nAdapter.setItemList(sessions.get(NEWSFEED));
+                            nAdapter.notifyDataSetChanged();
+                            
+                            InboxViewAdapter iAdapter = ((InboxListViewFragment) fragments[INBOX]).getAdapter();
+                            iAdapter.setItemList(sessions.get(INBOX));
+                            iAdapter.notifyDataSetChanged();
+                            
+                    } else {
+                            Log.d(TAG, "APIService get session failed?");
+
+                    }
+            }
+    }
+    
+    private ArrayList<ArrayList<Session>> convertJsonToListOfSession(String json) {
+            ArrayList<ArrayList<Session>> sessions = new ArrayList<ArrayList<Session>>();
+            
+            Gson gson = new Gson();
+            ArrayList<Session> inbox = new ArrayList<Session>();
+            ArrayList<Session> newsfeed = new ArrayList<Session>();
+            sessions.add(NEWSFEED, newsfeed);
+            sessions.add(INBOX, inbox);
+            JsonParser jsonParser = new JsonParser();
+            JsonArray sessionsJson = new JsonArray();
+            
+            sessionsJson = jsonParser.parse(json).getAsJsonObject()
+                            .getAsJsonArray("sessions");
+            for (JsonElement j : sessionsJson) {
+                    Session session = gson.fromJson(j, Session.class);
+                    if (session.isComplete()) {
+                            newsfeed.add(session);
+                    } else{
+                            inbox.add(session);
+                    }
+            }
+            
+            return sessions;
+            
+    }
 
 }

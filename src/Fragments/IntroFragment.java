@@ -54,7 +54,7 @@ public class IntroFragment extends Fragment implements OnClickListener {
 		LoginFragment loginFragment = new LoginFragment();
 		
 		// Replace the intro fragment with the login fragment
-		ft.replace(R.id.welcome_fragment_placeholder, loginFragment);
+		ft.replace(R.id.fragment_placeholder, loginFragment);
 		ft.addToBackStack(null);
 		
 		ft.commit();
@@ -67,7 +67,7 @@ public class IntroFragment extends Fragment implements OnClickListener {
 		SignupFragment signupFragment = new SignupFragment();
 		
 		// Replace the intro fragment with the signup fragment 
-		ft.replace(R.id.welcome_fragment_placeholder, signupFragment);
+		ft.replace(R.id.fragment_placeholder, signupFragment);
 		ft.addToBackStack(null);
 		
 		ft.commit();

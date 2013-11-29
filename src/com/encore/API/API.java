@@ -8,33 +8,25 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
-import java.io.UnsupportedEncodingException;
 import java.lang.reflect.Type;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
 import org.apache.http.HttpEntity;
-import org.apache.http.HttpResponse;
-import org.apache.http.client.ClientProtocolException;
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.StringEntity;
-import org.apache.http.entity.mime.HttpMultipartMode;
-import org.apache.http.entity.mime.MultipartEntityBuilder;
-import org.apache.http.entity.mime.content.FileBody;
-import org.apache.http.entity.mime.content.StringBody;
-import org.apache.http.impl.client.DefaultHttpClient;
-import org.json.JSONObject;
 
 import util.Constants;
 import android.content.Context;
 import android.util.Log;
 
 import com.encore.TokenHelper;
+import com.encore.API.models.Crowd;
+import com.encore.API.models.Crowds;
 //import com.encore.API.models.Crowds;
 import com.encore.API.models.PostSession;
 import com.encore.API.models.Session;
 import com.encore.API.models.User;
+import com.encore.API.models.postCrowd;
 import com.google.gson.Gson;
 import com.squareup.okhttp.OkHttpClient;
 
@@ -75,7 +67,6 @@ public class API {
 	private static final String DELETE_USER = USERS + "%s";
 
 	// Sessions
-	// private static final String ALL_SESSIONS = SESSIONS;
 	private static final String CREATE_SESSION = SESSIONS;
 	private static final String GET_SESSION = SESSIONS + "%s";
 	private static final String GET_SESSIONS = SESSIONS;
@@ -98,8 +89,7 @@ public class API {
 
 	// Crowds
 	private static final String GET_CROWDS = CROWDS;
-
-	// private static final String CREATE_CROWD = CROWDS + "create/";
+	private static final String CREATE_CROWD = CROWDS;
 	// private static final String GET_CROWD = CROWDS + "%s";
 	// private static final String UPDATE_CROWD = CROWDS + "%s";
 	// private static final String DELETE_CROWD = CROWDS + "%s";
@@ -172,10 +162,6 @@ public class API {
 			// Write entity to the output stream
 			out = connection.getOutputStream();
 			entity.writeTo(out);
-			Log.d(TAG,
-					"POST'ing with auth: "
-							+ connection.getRequestProperty(AUTHORIZATION)
-							+ " and header " + entity);
 			out.close();
 
 			// Read the response code
@@ -553,9 +539,10 @@ public class API {
 		}
 
 	}
-
-	public Session createSession(PostSession pSession, String token)
-			throws Exception {
+	
+	// POST to sessions/
+	// Creates a new session
+	public Session createSession(PostSession pSession, String token) throws Exception {
 		Log.d(TAG, "createSession() called");
 		ACCESS_TOKEN = "Token " + token;
 		String url = CREATE_SESSION;
@@ -563,10 +550,10 @@ public class API {
 		Session result = null;
 		try {
 			String JSON = getGson().toJson(pSession);
-			Log.d(TAG, "JSON: " + JSON);
-
-			postResult = post(url,
-					new StringEntity(getGson().toJson(pSession)), String.class);
+			Log.d(TAG, "Posting JSON: " + JSON);
+			
+			postResult = post(url, new StringEntity(JSON), String.class);
+			Log.d(TAG, "POST result: " + postResult);
 			result = getGson().fromJson(postResult, Session.class);
 
 		} catch (Exception e) {
@@ -575,14 +562,15 @@ public class API {
 		}
 		return result;
 	}
-
-	// GET all crowds
+	
+	// GET crowds/
+	// Returns all crowds
 	public String getCrowds(String token) throws Exception {
-		Log.d(TAG, "getCrowds calld");
+		Log.d(TAG, "getCrowds called");
 		ACCESS_TOKEN = "Token " + token;
 		String url = GET_CROWDS;
 		String json = "";
-		// Crowds result = null;
+		 Crowds result = null;
 
 		// try {
 		// json = get(url, Crowds.class);
@@ -593,15 +581,39 @@ public class API {
 		// }
 
 		try {
-			json = get(url, String.class);
-			return json;
-		} catch (Exception e) {
+			json = get(url, Crowds.class);
+			result  = getGson().fromJson(json, Crowds.class);
+		} catch(Exception e) {
 			Log.e(TAG, "getCrowds() error");
 			throw e;
 		}
+		
+		return json;
 	}
-
-	// NEEDS TO BE TESTED
+	
+	// POST crowds/
+	// Creates a new crowd
+	public Crowd createCrowd(postCrowd pCrowd, String token) throws Exception {
+		Log.d(TAG, "createCrowd called");
+		ACCESS_TOKEN = "Token " + token;
+		String url = CREATE_CROWD;
+		String postResult = null;
+		Crowd resultCrowd = null;
+		
+		try {
+			String JSON = getGson().toJson(pCrowd);
+			Log.d(TAG, "Posting JSON: " + JSON);
+			
+			postResult = post(url, new StringEntity(JSON), String.class);
+			
+			resultCrowd = getGson().fromJson(postResult, Crowd.class);
+		} catch (Exception e) {
+			Log.e(TAG, "createCrowd() error");
+			throw e;
+		}
+		return resultCrowd;
+	}
+// NEEDS TO BE TESTED
 	public String getSessions() throws IOException {
 		Log.d(TAG, "getSessions called");
 

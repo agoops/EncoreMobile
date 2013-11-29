@@ -5,6 +5,9 @@ import java.sql.Date;
 import com.google.gson.annotations.SerializedName;
 
 public class DjangoUser {
+	
+	// TODO: This already exists as a "Profile" model
+	
 	@SerializedName("id")
 	private int pythonId;
 	

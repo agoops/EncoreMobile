@@ -1,4 +1,4 @@
-package com.encore;
+package Fragments;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
@@ -11,7 +11,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 
-import Fragments.RecordSessionFragment;
 import android.media.AudioFormat;
 import android.media.AudioManager;
 import android.media.AudioRecord;
@@ -19,135 +18,100 @@ import android.media.AudioTrack;
 import android.media.MediaRecorder;
 import android.os.Bundle;
 import android.os.Environment;
-import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
-import android.view.KeyEvent;
+import android.view.LayoutInflater;
+import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.ListView;
 
-import com.encore.API.APIService;
-import com.encore.API.models.Crowd;
+import com.encore.R;
 
-public class StartSession2 extends FragmentActivity {
-
-	private static final String TAG = "StartSession2.java";
-
+public class RecordSessionFragment extends Fragment implements OnClickListener {
+	private static final String TAG = "RecordSessionFragment";
+	private View v;
 	boolean isRecording = false;
+	int sampleRateInHz = 11025;
 	String tag = "StartSession2";
 	Thread recordThread = null;
-	int sampleRateInHz = 11025;
-
-	private boolean yes_checked = false;
 	
-	private String jsonResult = "";
-	private Crowd[] crowds = null;
-	
-	ListView crowdsLV;
-	
-	APIService api;
-
 	@Override
-	public void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
-		setContentView(R.layout.placeholder);
-//
-//		setButtonHandlers();
-//		enableButtons(false);
-//		
-		Log.d(TAG, "About to launch a RecordSessionFragment");
-		// Create a new transaction and RecordSessionFragment
-		FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-		RecordSessionFragment recordFragment = new RecordSessionFragment();
-		
-		// Add the RecordSessionFragment to and commit the transaction
-		ft.add(R.id.fragment_placeholder, recordFragment);
-		ft.commit();
-	}
+	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+		Log.d(TAG, "RecordSessionFragment successfully launched");
+		v = inflater.inflate(R.layout.record_session_fragment, container, false);
 
-//	@Override
-//	public void onClick(View v) {
-//		switch (v.getId()) {
-//		case R.id.btnStart: {
-//			enableButtons(true);
-//			isRecording = true;
-//			recordThread = new Thread(new Runnable() {
-//				public void run() {
-//					record();
-//				}
-//			});
-//			recordThread.start();
-//			break;
-//		}
-//		case R.id.btnStop: {
-//			enableButtons(false);
-//			isRecording = false;
-//			break;
-//		}
-//		case R.id.btnPlayback: {
-//			try {
-//				recordThread.join();
-//			} catch (Exception e) {
-//			}
-//
-//			play();
-//			// finish();
-//			break;
-//
-//		}
-//		case R.id.next_button: {
-//			// Make the API call to send the session
-//			// TODO: First check if a recording has been made!
-//			
-//			// Radio button click listener
-//			RadioGroup rg = (RadioGroup) findViewById(R.id.radio_group);
-//			int selected = rg.getCheckedRadioButtonId();
-//			yes_checked = (selected == R.id.yes_radio);
-//			
-//			// User-input fields
-//			EditText sessionTitle = (EditText) findViewById(R.id.session_title);
-//			EditText crowdMembers = (EditText) findViewById(R.id.crowd_members);
-//			EditText crowdTitle = (EditText) findViewById(R.id.crowd_title);
-//			EditText crowdId = (EditText) findViewById(R.id.crowd_id);
-//			
-//			// TODO: Figure out how to get an array from user
-//			// Solution: lv of usernames that onClick() get dropped into an array
-//			String[] crowdMembersArray = { crowdMembers.getText().toString() }; 
-//			
-//			Intent apiIntent = new Intent(getApplicationContext(),
-//					APIService.class);
-//
-//			apiIntent.putExtra(T.API_TYPE, T.CREATE_SESSION);
-//
-//			apiIntent.putExtra(T.SESSION_TITLE, sessionTitle.getText()
-//					.toString());
-//			apiIntent.putExtra(T.SESSION_USE_EXISTING_CROWD, yes_checked);
-//			apiIntent.putExtra(T.SESSION_CROWD_TITLE, crowdTitle.getText().toString());
-//			apiIntent.putExtra(T.SESSION_CROWD_MEMBERS, crowdMembersArray);
-//			apiIntent.putExtra(T.SESSION_CROWD_ID, crowdId.getText().toString());
-//
-//			getApplicationContext().startService(apiIntent);
-//
-//			Intent launchHome = new Intent(getApplicationContext(),
-//					HomeActivity.class);
-//			startActivity(launchHome);
-//			break;
-//		}
-//		default: {
-//			break;
-//		}
-//		}
-//	}
+		setButtonHandlers();
+		enableButtons(false);
+		
+		return v;
+	}
 	
-//	public void onRadioButtonClicked(View view) {
-//		Log.d(TAG, "onRadioButtonClicked called");
-//		
-//		if(view.getId() == R.id.yes_radio) {
-//			yes_checked = true;
-//		}
-//	}
-	
+	@Override
+	public void onClick(View v) {
+		switch (v.getId()) {
+		case R.id.btnStart: {
+			Log.d(TAG, "record clicked");
+			enableButtons(true);
+			isRecording = true;
+			recordThread = new Thread(new Runnable() {
+				public void run() {
+					record();
+				}
+			});
+			recordThread.start();
+			break;
+		}
+		case R.id.btnStop: {
+			Log.d(TAG, "stop clicked");
+			enableButtons(false);
+			isRecording = false;
+			break;
+		}
+		case R.id.btnPlayback: {
+			try {
+				recordThread.join();
+			} catch (Exception e) {
+			}
+
+			play();
+			// ();
+			break;
+
+		}
+		case R.id.next_button: {
+			// TODO: First check if a recording has been made!
+			
+			// Create a new fragment transaction and PickCrowdFragment
+			FragmentTransaction ft = getFragmentManager().beginTransaction();
+			ft.setCustomAnimations(R.anim.enter, R.anim.exit, R.anim.pop_enter, R.anim.pop_exit);
+			PickCrowdFragment pickCrowdFragment = new PickCrowdFragment();
+			
+			// Replace the RecordSessionFragment with a PickCrowdFragment
+			ft.replace(R.id.fragment_placeholder, pickCrowdFragment);
+			ft.addToBackStack(null);
+			ft.commit();
+			break;
+		}
+		default: {
+			break;
+		}
+		}
+	}
+	/**
+	 * 
+	 * 
+	 * 
+	 * TODO
+	 * 
+	 * REPLACE THIS WITH RECORDING MP3
+	 * 
+	 * 
+	 * 
+	 * 
+	 * 
+	 */
 	public void record() {
 		Long time1 = System.currentTimeMillis();
 		int channelConfiguration = AudioFormat.CHANNEL_CONFIGURATION_MONO;
@@ -250,18 +214,18 @@ public class StartSession2 extends FragmentActivity {
 	}
 
 	private void setButtonHandlers() {
-		((Button) findViewById(R.id.btnStart))
+		((Button) v.findViewById(R.id.btnStart))
 				.setOnClickListener((OnClickListener) this);
-		((Button) findViewById(R.id.btnStop))
+		((Button) v.findViewById(R.id.btnStop))
 				.setOnClickListener((OnClickListener) this);
-		((Button) findViewById(R.id.btnPlayback))
+		((Button) v.findViewById(R.id.btnPlayback))
 				.setOnClickListener((OnClickListener) this);
-		((Button) findViewById(R.id.next_button))
+		((Button) v.findViewById(R.id.next_button))
 				.setOnClickListener((OnClickListener) this);
 	}
 
 	private void enableButton(int id, boolean isEnable) {
-		((Button) findViewById(id)).setEnabled(isEnable);
+		((Button) v.findViewById(id)).setEnabled(isEnable);
 	}
 
 	private void enableButtons(boolean isRecording) {
@@ -269,11 +233,11 @@ public class StartSession2 extends FragmentActivity {
 		enableButton(R.id.btnStop, isRecording);
 	}
 	
-	@Override
-	public boolean onKeyDown(int keyCode, KeyEvent event) {
-		if (keyCode == KeyEvent.KEYCODE_BACK) {
-			finish();
-		}
-		return super.onKeyDown(keyCode, event);
-	}
+//	@Override
+//	public boolean onKeyDown(int keyCode, KeyEvent event) {
+//		if (keyCode == KeyEvent.KEYCODE_BACK) {
+//			finish();
+//		}
+//		return super.onKeyDown(keyCode, event);
+//	}
 }

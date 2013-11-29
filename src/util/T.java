@@ -23,15 +23,17 @@ public class T {
 	public static final int ADD_CLIP = 2;
 	public static final int CREATE_SESSION = 3;
 	public static final int FRIENDS = 4;
-
 	public static final int USERS = 5;
 	
 	public static final int FRIEND_REQUEST = 6;
-	public static final int FRIEND_REQUESTS_PENDING = 7;
-	public static final int ACCEPT_FRIEND_REQUEST = 8;
+	public static final int GET_CROWDS = 7;
+	public static final int CREATE_CROWD = 8;
+	
+	// names for storing various data in Intents
+	public static final int FRIEND_REQUESTS_PENDING = 9;
+	public static final int ACCEPT_FRIEND_REQUEST = 10;
 
-	public static final int GET_CROWDS = 9;
-	public static final int GET_SESSIONS = 10;
+	public static final int GET_SESSIONS = 11;
 	
 	// Column names for newsfeed query
 	public static final String SESSION_TITLE = "title";
@@ -39,5 +41,8 @@ public class T {
 	public static final String SESSION_CROWD_TITLE = "crowd_title";
 	public static final String SESSION_CROWD_MEMBERS = "crowd_members";
 	public static final String SESSION_CROWD_ID = "crowd";
+	
+	public static final String CROWD_TITLE = "title";
+	public static final String CROWD_MEMBERS = "members";
 	
 }
