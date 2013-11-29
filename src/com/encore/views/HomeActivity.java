@@ -68,7 +68,7 @@ public class HomeActivity extends FragmentActivity {
 		viewPager.setAdapter(new PagerAdapter(getSupportFragmentManager()));
 		setupActionBar(actionBar);
 		Log.d(TAG, "maybe got here?");
-		viewPager.setOffscreenPageLimit(NUM_TABS - 1);
+		viewPager.setOffscreenPageLimit(0);
 		viewPager
 				.setOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {
 					@Override
@@ -281,7 +281,7 @@ public class HomeActivity extends FragmentActivity {
                             .getAsJsonArray("sessions");
             for (JsonElement j : sessionsJson) {
                     Session session = gson.fromJson(j, Session.class);
-                    if (session.isComplete()) {
+                    if (session.isComplete() == 1) {
                             newsfeed.add(session);
                     } else{
                             inbox.add(session);

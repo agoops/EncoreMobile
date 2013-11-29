@@ -100,7 +100,7 @@ public class UsersFragment extends Fragment{
 				 * that it is seperate), and update UI with Handler given.
 				 */
 				String result = resultData.getString("result");
-				ArrayList<Profile> profiles = convertJsonToListOfProfile(result);
+				ArrayList<User> profiles = convertJsonToListOfUser(result);
 				adapter.setItemList(profiles);
 				adapter.notifyDataSetChanged();
 			} else {
@@ -114,12 +114,11 @@ public class UsersFragment extends Fragment{
 		Log.d(tag, "CONVERT TO OBJECT STARTED");
 		Gson gson = new Gson();
 		ArrayList<User> users = new ArrayList<User>();
-		JsonParser jsonParser = new JsonParser();
 		
+		JsonParser jsonParser = new JsonParser();
 		JsonArray usersJson = new JsonArray();
 		
-		usersJson = jsonParser.parse(json).getAsJsonObject()
-				.getAsJsonArray(JSON_REQUESTS_KEY);
+		usersJson = jsonParser.parse(json).getAsJsonArray();
 		for (JsonElement j : usersJson) {
 			User user = gson.fromJson(j, User.class);
 			users.add(user);

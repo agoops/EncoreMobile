@@ -16,7 +16,7 @@ public class Session {
 	private Crowd crowd;
 	
 	@SerializedName("is_complete")
-	private boolean complete;
+	private int complete;
 	
 	@SerializedName("comments")
 	private List<Comment> comments;
@@ -56,11 +56,11 @@ public class Session {
 		this.crowd = crowd;
 	}
 
-	public boolean isComplete() {
+	public int isComplete() {
 		return complete;
 	}
 
-	public void setComplete(boolean complete) {
+	public void setComplete(int complete) {
 		this.complete = complete;
 	}
 

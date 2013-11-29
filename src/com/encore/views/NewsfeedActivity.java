@@ -129,7 +129,7 @@ public class NewsfeedActivity extends FragmentActivity {
 				.getAsJsonArray("sessions");
 		for (JsonElement j : sessionsJson) {
 			Session session = gson.fromJson(j, Session.class);
-			if (session.isComplete()) {
+			if (session.isComplete()==1) {
 				newsfeed.add(session);
 			} else{
 				inbox.add(session);

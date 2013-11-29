@@ -16,16 +16,15 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.encore.API.APIService;
-import com.encore.API.models.Profile;
 import com.encore.API.models.User;
 
-public class UsersFragmentAdapter extends ArrayAdapter<Profile> {
+public class UsersFragmentAdapter extends ArrayAdapter<User> {
 	private Context mContext;
-	private List<Profile> mUserList;
+	private List<User> mUserList;
 	private String tag = "UsersFragmentAdapter";
 
 	public UsersFragmentAdapter(Context context, int resource,
-			List<Profile> objects) {
+			List<User> objects) {
 		super(context, resource, objects);
 		mContext = context;
 		mUserList = objects;
@@ -40,7 +39,7 @@ public class UsersFragmentAdapter extends ArrayAdapter<Profile> {
 	}
 
 	@Override
-	public Profile getItem(int arg0) {
+	public User getItem(int arg0) {
 		if (mUserList != null) {
 			return mUserList.get(arg0);
 		}
@@ -57,8 +56,7 @@ public class UsersFragmentAdapter extends ArrayAdapter<Profile> {
 
 		// reference to convertView
 		FriendView v = (FriendView) convertView;
-		Profile profile = mUserList.get(position);
-		User user = profile.getUser();
+		User user = mUserList.get(position);
 		Log.d(tag, "User for this view is: " + user.getUsername());
 
 		// inflate new layout if null
@@ -79,7 +77,7 @@ public class UsersFragmentAdapter extends ArrayAdapter<Profile> {
 			public void onClick(View v) {
 				FriendView fv = (FriendView) v.getParent();
 				Button button = (Button) v;
-				String username = fv.getProfile().getUser().getUsername();
+				String username = fv.getUser().getUsername();
 				Log.d(tag, "username in adapter: " + username);
 				Intent apiIntent = new Intent(mContext, APIService.class);
 				apiIntent.putExtra(T.API_TYPE, T.FRIEND_REQUEST);
@@ -96,13 +94,13 @@ public class UsersFragmentAdapter extends ArrayAdapter<Profile> {
 
 		// set data to display and store
 		username.setText(user.getUsername());
-		v.setProfile(profile);
+		v.setUser(user);
 		// return view
 		return v;
 	}
 	
 	
-	public void setItemList(ArrayList<Profile> profiles) {
-		this.mUserList = profiles;
+	public void setItemList(ArrayList<User> Users) {
+		this.mUserList = Users;
 	}
 }
