@@ -1,14 +1,21 @@
 package Fragments;
 
 import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
 import java.io.DataInputStream;
+import java.io.DataOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
 
 import android.media.AudioFormat;
 import android.media.AudioManager;
+import android.media.AudioRecord;
 import android.media.AudioTrack;
+import android.media.MediaRecorder;
 import android.os.Bundle;
 import android.os.Environment;
 import android.support.v4.app.Fragment;
@@ -30,17 +37,19 @@ public class RecordSessionFragment extends Fragment implements OnClickListener {
 	int sampleRateInHz = 11025;
 	String tag = "StartSession2";
 	Thread recordThread = null;
+	String path = Environment.getExternalStorageDirectory()
+			.getAbsolutePath() + "/testaudio.pcm";
 	
 	RecMicToMp3 recorder;
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		Log.d(TAG, "RecordSessionFragment successfully launched");
 		v = inflater.inflate(R.layout.record_session_fragment, container, false);
-		recorder = new RecMicToMp3(Environment.getExternalStorageDirectory().getAbsolutePath() + "/testaudio.pcm",8000);
+//		recorder = new RecMicToMp3(path,8000);
 		setButtonHandlers();
 		enableButtons(false);
-		
-		return v;
+		Log.d(TAG, "noth");
+		return v;                 
 	}
 	
 	@Override
@@ -53,6 +62,7 @@ public class RecordSessionFragment extends Fragment implements OnClickListener {
 			recordThread = new Thread(new Runnable() {
 				public void run() {
 					record();
+//					recorder.start();
 				}
 			});
 			recordThread.start();
@@ -62,6 +72,7 @@ public class RecordSessionFragment extends Fragment implements OnClickListener {
 			Log.d(TAG, "stop clicked");
 			enableButtons(false);
 			isRecording = false;
+//			recorder.stop();
 			break;
 		}
 		case R.id.btnPlayback: {
@@ -71,7 +82,6 @@ public class RecordSessionFragment extends Fragment implements OnClickListener {
 			}
 
 			play();
-			// ();
 			break;
 
 		}
@@ -82,7 +92,7 @@ public class RecordSessionFragment extends Fragment implements OnClickListener {
 			FragmentTransaction ft = getFragmentManager().beginTransaction();
 			ft.setCustomAnimations(R.anim.enter, R.anim.exit, R.anim.pop_enter, R.anim.pop_exit);
 			PickCrowdFragment pickCrowdFragment = new PickCrowdFragment();
-			
+			pickCrowdFragment.setPath(path);
 			// Replace the RecordSessionFragment with a PickCrowdFragment
 			ft.replace(R.id.fragment_placeholder, pickCrowdFragment);
 			ft.addToBackStack(null);
@@ -107,65 +117,63 @@ public class RecordSessionFragment extends Fragment implements OnClickListener {
 	 * 
 	 * 
 	 */
-//	public void record() {
-//		Long time1 = System.currentTimeMillis();
-//		int channelConfiguration = AudioFormat.CHANNEL_CONFIGURATION_MONO;
-//		int audioEncoding = AudioFormat.ENCODING_PCM_16BIT;
-//		File file = new File(Environment.getExternalStorageDirectory()
-//				.getAbsolutePath() + "/testaudio.pcm");
-//
-//		// Delete any previous recording.
-//		if (file.exists())
-//			file.delete();
-//
-//		// Create the new file.
-//		try {
-//			file.createNewFile();
-//		} catch (IOException e) {
-//			throw new IllegalStateException("Failed to create "
-//					+ file.toString());
-//		}
-//
-//		try {
-//			// Create a DataOuputStream to write the audio data into the saved
-//			// file.
-//			OutputStream os = new FileOutputStream(file);
-//			BufferedOutputStream bos = new BufferedOutputStream(os);
-//			DataOutputStream dos = new DataOutputStream(bos);
-//
-//			// Create a new AudioRecord object to record the audio.
-//			int bufferSize = AudioRecord.getMinBufferSize(sampleRateInHz,
-//					channelConfiguration, audioEncoding);
-//			AudioRecord audioRecord = new AudioRecord(
-//					MediaRecorder.AudioSource.MIC, sampleRateInHz,
-//					channelConfiguration, audioEncoding, bufferSize);
-//
-//			short[] buffer = new short[bufferSize];
-//			Long time2 = System.currentTimeMillis();
-//			audioRecord.startRecording();
-//			Long time3 = System.currentTimeMillis();
-//			Log.d(tag, "Time to set up audiorecord: " + (time2 - time1));
-//			Log.d(tag, "Time from startRecording() to while loop: "
-//					+ (time3 - time2));
-//
-//			while (isRecording) {
-//				int bufferReadResult = audioRecord.read(buffer, 0, bufferSize);
-//				for (int i = 0; i < bufferReadResult; i++)
-//					dos.writeShort(buffer[i]);
-//			}
-//
-//			audioRecord.stop();
-//			dos.close();
-//
-//		} catch (Throwable t) {
-//			Log.e("AudioRecord", "Recording Failed");
-//		}
-//	}
+	public void record() {
+		Long time1 = System.currentTimeMillis();
+		int channelConfiguration = AudioFormat.CHANNEL_CONFIGURATION_MONO;
+		int audioEncoding = AudioFormat.ENCODING_PCM_16BIT;
+		File file = new File(path);
+
+		// Delete any previous recording.
+		if (file.exists())
+			file.delete();
+
+		// Create the new file.
+		try {
+			file.createNewFile();
+		} catch (IOException e) {
+			throw new IllegalStateException("Failed to create "
+					+ file.toString());
+		}
+
+		try {
+			// Create a DataOuputStream to write the audio data into the saved
+			// file.
+			OutputStream os = new FileOutputStream(file);
+			BufferedOutputStream bos = new BufferedOutputStream(os);
+			DataOutputStream dos = new DataOutputStream(bos);
+
+			// Create a new AudioRecord object to record the audio.
+			int bufferSize = AudioRecord.getMinBufferSize(sampleRateInHz,
+					channelConfiguration, audioEncoding);
+			AudioRecord audioRecord = new AudioRecord(
+					MediaRecorder.AudioSource.MIC, sampleRateInHz,
+					channelConfiguration, audioEncoding, bufferSize);
+
+			short[] buffer = new short[bufferSize];
+			Long time2 = System.currentTimeMillis();
+			audioRecord.startRecording();
+			Long time3 = System.currentTimeMillis();
+			Log.d(tag, "Time to set up audiorecord: " + (time2 - time1));
+			Log.d(tag, "Time from startRecording() to while loop: "
+					+ (time3 - time2));
+
+			while (isRecording) {
+				int bufferReadResult = audioRecord.read(buffer, 0, bufferSize);
+				for (int i = 0; i < bufferReadResult; i++)
+					dos.writeShort(buffer[i]);
+			}
+
+			audioRecord.stop();
+			dos.close();
+
+		} catch (Throwable t) {
+			Log.e("AudioRecord", "Recording Failed");
+		}
+	}
 
 	public void play() {
 		// Get the file we want to playback.
-		File file = new File(Environment.getExternalStorageDirectory()
-				.getAbsolutePath() + "/testaudio.pcm");
+		File file = new File(path);
 		// Get the length of the audio stored in the file (16 bit so 2 bytes per
 		// short)
 		// and create a short array to store the recorded audio.
@@ -205,6 +213,7 @@ public class RecordSessionFragment extends Fragment implements OnClickListener {
 
 		} catch (Throwable t) {
 			Log.e("AudioTrack", "Playback Failed");
+			t.printStackTrace();
 		}
 	}
 

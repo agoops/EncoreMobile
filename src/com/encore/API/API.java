@@ -13,7 +13,12 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 
 import org.apache.http.HttpEntity;
+import org.apache.http.HttpResponse;
+import org.apache.http.client.ClientProtocolException;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.StringEntity;
+import org.apache.http.impl.client.DefaultHttpClient;
 
 import util.Constants;
 import android.content.Context;
@@ -22,13 +27,11 @@ import android.util.Log;
 import com.encore.TokenHelper;
 import com.encore.API.models.Crowd;
 import com.encore.API.models.Crowds;
-//import com.encore.API.models.Crowds;
-import com.encore.API.models.PostSession;
-import com.encore.API.models.Session;
 import com.encore.API.models.User;
 import com.encore.API.models.postCrowd;
 import com.google.gson.Gson;
 import com.squareup.okhttp.OkHttpClient;
+//import com.encore.API.models.Crowds;
 
 public class API {
 	OkHttpClient client;
@@ -196,159 +199,34 @@ public class API {
 	}
 
 	// ---------------------POST CLIP----------------------
-	/**
-	 * Entity should contain all body info except for filepath, which will be
-	 * taken care of here.
-	 * 
-	 * @param url
-	 * @param entity
-	 * @param type
-	 * @param path
-	 * @return
-	 * @throws IOException
-	 */
 
-	String lineEnd = "\r\n";
-	String twoHyphens = "--";
-	String boundary = "*****";
-
-	private <T> T postClip(String url, StringEntity entity, Type type,
-			String path) throws IOException {
-		URL postUrl = new URL(url);
-		HttpURLConnection connection = client.open(postUrl);
-		connection.setDoOutput(true);
-		connection.setUseCaches(false);
-
-		connection.setRequestProperty(AUTHORIZATION, ACCESS_TOKEN);
-		Log.d(TAG, "token: " + ACCESS_TOKEN);
-		// connection.setRequestProperty("Content-Type", "application/json");
-		connection.setRequestProperty("Connection", "Keep-Alive");
-		connection.setRequestProperty("Content-Type",
-				"multipart/form-data;boundary=" + boundary);
-		DataOutputStream out = null;
-		InputStream in = null;
+	private String postClip(HttpEntity entity, String url) throws Exception {
+		
+		HttpClient client = new DefaultHttpClient();
+	    HttpPost post = new HttpPost(url);
+	    post.addHeader(AUTHORIZATION, ACCESS_TOKEN);
+	    post.setEntity(entity);
+	    
+	    HttpResponse response;
 		try {
-			connection.setRequestMethod("POST");
-
-			// Write data to the output stream
-			out = new DataOutputStream(connection.getOutputStream());
-			// entity.writeTo(out);
-
-			out.writeBytes(twoHyphens + boundary + lineEnd);
-			out.writeBytes("Content-Disposition: form-data; name=\"session\""
-					+ lineEnd);
-			out.writeBytes("14");
-
-			out.writeBytes(twoHyphens + boundary + lineEnd);
-			out.writeBytes("Content-Disposition: form-data; name=\"duration\""
-					+ lineEnd);
-			out.writeBytes("100");
-
-			out.writeBytes(twoHyphens + boundary + lineEnd);
-			out.writeBytes("Content-Disposition: form-data; name=\"clip\";filename=\""
-					+ path + "\"" + lineEnd);
-			out.writeBytes(lineEnd);
-			int maxBufferSize = 1 * 1024 * 1024;
-			FileInputStream fileInputStream = new FileInputStream(
-					new File(path));
-
-			int bytesAvailable = fileInputStream.available();
-			int bufferSize = Math.min(bytesAvailable, maxBufferSize);
-			byte[] buffer = new byte[bufferSize];
-
-			// Read file
-			Log.d(TAG, "reading file");
-
-			int bytesRead = fileInputStream.read(buffer, 0, bufferSize);
-
-			while (bytesRead > 0) {
-				out.write(buffer, 0, bufferSize);
-				bytesAvailable = fileInputStream.available();
-				bufferSize = Math.min(bytesAvailable, maxBufferSize);
-				bytesRead = fileInputStream.read(buffer, 0, bufferSize);
-			}
-			out.writeBytes(lineEnd);
-			out.writeBytes(twoHyphens + boundary + twoHyphens + lineEnd);
-			out.flush();
-			out.close();
-			fileInputStream.close();
-			// Read the response code
-			if (connection.getResponseCode() != HttpURLConnection.HTTP_OK
-					&& connection.getResponseCode() != HttpURLConnection.HTTP_CREATED
-					&& connection.getResponseCode() != HttpURLConnection.HTTP_ACCEPTED) {
-
-				// in = connection.getInputStream();
-				// BufferedReader r = new BufferedReader(new
-				// InputStreamReader(in));
-				// StringBuilder total = new StringBuilder();
-				// String line;
-				// while ((line = r.readLine()) != null) {
-				// total.append(line);
-				// }
-				// Log.d(TAG, "Error received: " + total.toString());
-				throw new IOException("Unexpected HTTP response: "
-						+ connection.getResponseCode() + " "
-						+ connection.getResponseMessage());
-			}
-
-			// Return the response as the given type
-			in = connection.getInputStream();
-
-			// return getGson().fromJson(new InputStreamReader(in), type);
-			Log.d(TAG, "Just got input stream: " + in.toString());
-			/* Adding this section to see response */
-			BufferedReader r = new BufferedReader(new InputStreamReader(in));
-			StringBuilder total = new StringBuilder();
-			String line;
-			while ((line = r.readLine()) != null) {
-				total.append(line);
-			}
-			return (T) total.toString();
-
-		} finally {
-			if (out != null)
-				out.close();
-			if (in != null)
-				in.close();
+			response = client.execute(post);
+		} catch (ClientProtocolException e) {
+//			e.printStackTrace();
+			throw e;
+		} catch (IOException e) {
+//			e.printStackTrace();
+			throw e;
 		}
+		
+	    entity = response.getEntity();
+	    BufferedReader r = new BufferedReader(new InputStreamReader(entity.getContent()));
+		StringBuilder total = new StringBuilder();
+		String line;
+		while ((line = r.readLine()) != null) {
+			total.append(line);
+		}
+		return total.toString();
 	}
-	
-//	private String postClip(String filepath) throws Exception {
-//		
-//		HttpClient client = new DefaultHttpClient();
-//	    HttpPost post = new HttpPost(ADD_CLIP);
-//	    post.addHeader(AUTHORIZATION, ACCESS_TOKEN);
-//	    MultipartEntityBuilder multipartEntity = MultipartEntityBuilder.create();   
-//	    multipartEntity.setMode(HttpMultipartMode.BROWSER_COMPATIBLE);
-//	    multipartEntity.addPart("clip", new FileBody(new File(filepath)));
-//	    multipartEntity.addPart("session", new StringBody("14"));
-//	    multipartEntity.addTextBody("duration", "69");
-//	    HttpEntity entity = multipartEntity.build();
-//	    post.setEntity(entity);
-//	    HttpURLConnection connection = this.client.open(new URL("What"));
-//	    
-//	    entity.writeTo(connection);
-//	    
-//	    HttpResponse response;
-//		try {
-//			response = client.execute(post);
-//		} catch (ClientProtocolException e) {
-////			e.printStackTrace();
-//			throw e;
-//		} catch (IOException e) {
-////			e.printStackTrace();
-//			throw e;
-//		}
-//		
-//	    HttpEntity entity = response.getEntity();
-//	    BufferedReader r = new BufferedReader(new InputStreamReader(entity.getContent()));
-//		StringBuilder total = new StringBuilder();
-//		String line;
-//		while ((line = r.readLine()) != null) {
-//			total.append(line);
-//		}
-//		return total.toString();
-//	}
 
 	// ------------- PUT -----------
 	private <T> T put(String url, StringEntity entity, Type type)
@@ -440,17 +318,16 @@ public class API {
 		return result;
 	}
 
-	public String addClip(StringEntity entity, String filepath)
+	public String addClip(HttpEntity entity)
 			throws Exception {
 
 		// String url, StringEntity entity, Type type, String path
 
 		String url = ADD_CLIP;
-
+		
 		String result = "emptyresult_failed";
 		try {
-//			result = postClip(url, entity, String.class, filepath);
-			//result = postClip(filepath);
+			result = postClip(entity, url);
 			return result;
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
@@ -542,19 +419,17 @@ public class API {
 	
 	// POST to sessions/
 	// Creates a new session
-	public Session createSession(PostSession pSession, String token) throws Exception {
+	public String createSession(HttpEntity entity) throws Exception {
+		
 		Log.d(TAG, "createSession() called");
-		ACCESS_TOKEN = "Token " + token;
 		String url = CREATE_SESSION;
 		String postResult = null;
-		Session result = null;
+		String result = null;
 		try {
-			String JSON = getGson().toJson(pSession);
-			Log.d(TAG, "Posting JSON: " + JSON);
-			
-			postResult = post(url, new StringEntity(JSON), String.class);
+			postResult = postClip(entity, url);
+			result = postResult;
 			Log.d(TAG, "POST result: " + postResult);
-			result = getGson().fromJson(postResult, Session.class);
+//			result = getGson().fromJson(postResult, String.class);
 
 		} catch (Exception e) {
 			Log.e(TAG, "createSession() error");
