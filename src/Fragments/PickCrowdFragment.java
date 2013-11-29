@@ -26,7 +26,7 @@ import com.encore.R;
 import com.encore.API.APIService;
 import com.encore.API.models.Crowd;
 import com.encore.API.models.Crowds;
-import com.encore.views.NewsfeedActivity;
+import com.encore.views.HomeActivity;
 import com.google.gson.Gson;
 
 public class PickCrowdFragment extends Fragment implements OnClickListener {
@@ -92,7 +92,7 @@ public class PickCrowdFragment extends Fragment implements OnClickListener {
 				
 				getActivity().startService(apiIntent);
 				
-				Intent launchHome = new Intent(getActivity(), NewsfeedActivity.class);
+				Intent launchHome = new Intent(getActivity(), HomeActivity.class);
 				startActivity(launchHome);
 			}
 			break;

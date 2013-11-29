@@ -12,7 +12,6 @@ import java.io.InputStream;
 import java.io.OutputStream;
 
 import util.T;
-
 import android.content.Intent;
 import android.media.AudioFormat;
 import android.media.AudioManager;
@@ -32,7 +31,7 @@ import android.widget.Button;
 
 import com.encore.R;
 import com.encore.API.APIService;
-import com.encore.views.NewsfeedActivity;
+import com.encore.views.HomeActivity;
 
 public class RecordSessionFragment extends Fragment implements OnClickListener {
 	private static final String TAG = "RecordSessionFragment";
@@ -126,7 +125,7 @@ public class RecordSessionFragment extends Fragment implements OnClickListener {
 			
 			getActivity().startService(apiIntent);
 			
-			Intent launchHome = new Intent(getActivity(), NewsfeedActivity.class);
+			Intent launchHome = new Intent(getActivity(), HomeActivity.class);
 			startActivity(launchHome);
 		}
 		default: {
