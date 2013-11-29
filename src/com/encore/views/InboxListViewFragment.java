@@ -1,10 +1,12 @@
 package com.encore.views;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import util.T;
 import android.app.Dialog;
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Bundle;
@@ -64,18 +66,18 @@ public class InboxListViewFragment extends Fragment{
 		return result;
 	}
 	
-//	private List<Session> getTempResponseList() {
-//		Drawable icon = getResources().getDrawable(R.drawable.action_people);
-//		List<Session> temp = new ArrayList<Session>();
-//		
+	private List<Session> getTempResponseList() {
+		Drawable icon = getResources().getDrawable(R.drawable.action_people);
+		List<Session> temp = new ArrayList<Session>();
+		
 //		for (int i = 0; i < 10; ++i) {
 //			Session entry = new Session("Respond to clip " + i+"!", icon);
 //			entry.setUri(Uri.parse("/storage/sdcard0/DCIM/Camera/20130923_224141.mp4"));
 //			temp.add(entry);
 //		}
-//		
-//		return temp;
-//	}
+		
+		return temp;
+	}
 	
 	public class ResponseListener implements OnItemClickListener {
 

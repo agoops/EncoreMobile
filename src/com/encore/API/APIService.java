@@ -1,6 +1,14 @@
 package com.encore.API;
 
+import java.io.File;
+import java.io.UnsupportedEncodingException;
+
+import org.apache.http.HttpEntity;
 import org.apache.http.entity.StringEntity;
+import org.apache.http.entity.mime.HttpMultipartMode;
+import org.apache.http.entity.mime.MultipartEntityBuilder;
+import org.apache.http.entity.mime.content.FileBody;
+import org.apache.http.entity.mime.content.StringBody;
 import org.json.JSONObject;
 
 import util.T;
@@ -9,12 +17,9 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.ResultReceiver;
 import android.util.Log;
-import android.widget.Toast;
 
 import com.encore.TokenHelper;
 import com.encore.API.models.Crowd;
-import com.encore.API.models.PostSession;
-import com.encore.API.models.Session;
 import com.encore.API.models.User;
 import com.encore.API.models.postCrowd;
 import com.google.gson.Gson;
@@ -52,7 +57,7 @@ public class APIService extends IntentService {
 			signUp(intent.getExtras());
 			break;
 		case T.CREATE_SESSION:
-			createSession(intent);
+			createSession(intent.getExtras());
 			break;
 		case T.FRIENDS:
 			getFriends(intent.getExtras());
@@ -68,6 +73,7 @@ public class APIService extends IntentService {
 			break;
 		case T.GET_CROWDS:
 			getCrowds(intent.getExtras());
+			break;
 		case T.CREATE_CROWD:
 			createCrowd(intent.getExtras());
 			break;
@@ -112,28 +118,20 @@ public class APIService extends IntentService {
 	 * @param data
 	 */
 	private void addClip(Bundle data) {
-		int duration = data.getInt(T.DURATION);
-		int sessionId = data.getInt(T.SESSION);
-		String filepath = data.getString(T.FILEPATH);
-		
-		JSONObject json = null;
-		StringEntity entity = null;
-		
+
+		MultipartEntityBuilder multipartEntity = MultipartEntityBuilder
+				.create();
+		multipartEntity.setMode(HttpMultipartMode.BROWSER_COMPATIBLE);
+
+		multipartEntity.setBoundary("---*******");
+		multipartEntity.addPart("clip",new FileBody(new File(data.getString(T.FILEPATH))));
+		multipartEntity.addTextBody("session", data.getString(T.SESSION));
+		HttpEntity entity = multipartEntity.build();
 		try {
-			json = new JSONObject();
-			json.put(T.DURATION, duration);
-			json.put(T.SESSION, sessionId);
-			
-			Log.d(TAG, "json for entity: " + json.toString());
-			entity = new StringEntity(json.toString());
-			
-			Log.d(TAG, "about to call api.addClip");
-			String result = api.addClip(entity,filepath);
-			
-			Log.d(TAG, "Result from api.addClip(): " + result);
-//			Toast.makeText(this, result, Toast.LENGTH_LONG).show();
-			
-		} catch (Exception e) {
+			String result = api.addClip(entity);
+			Log.d(TAG, "FROM createSessions() apiservice" + result);
+		} 
+		catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
@@ -259,24 +257,30 @@ public class APIService extends IntentService {
 		}
 	}
 
-	private void createSession(Intent intent) {
-		Log.d(TAG, "createSession() called");
-		Bundle data = intent.getExtras();
-		String token = TokenHelper.getToken(this);
-		Session result = null;
-		PostSession pSession = null;
+	private void createSession(Bundle data) {
+
+		
+	    MultipartEntityBuilder multipartEntity = MultipartEntityBuilder.create();   
+	    multipartEntity.setMode(HttpMultipartMode.BROWSER_COMPATIBLE);
+	    
+	    multipartEntity.setBoundary("---*******");
+	    multipartEntity.addPart("clip", new FileBody(new File(data.getString(T.FILEPATH))));
+	    multipartEntity.addTextBody("title", data.getString(T.SESSION_TITLE));
+		multipartEntity.addTextBody("crowd", data.getString(T.SESSION_CROWD_ID));
+		multipartEntity.addTextBody("use_existing_crowd", data.getBoolean(T.SESSION_USE_EXISTING_CROWD) ? "True": "False");
+	    
+	    HttpEntity entity = multipartEntity.build();
 		try {
-			// Note: USE_EXISTING_CROWD will always be true
-			// because the client flow requires so
-			pSession = new PostSession(data.getString(T.SESSION_TITLE), data.getBoolean(T.SESSION_USE_EXISTING_CROWD), 
-					null, null, Integer.parseInt(data.getString(T.SESSION_CROWD_ID)));
-			
-			result = api.createSession(pSession, token);
-			Log.d(TAG, result.toString());
-			
+			String result = api.createSession(entity);
+			Log.d(TAG, "FROM createSessions() apiservice"+result);
 		} catch (Exception e) {
-			Log.e(TAG, e.getMessage() + " ");
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
+		
+		
+		
+		
 	}
 	
 	// GET all crowds
@@ -290,7 +294,7 @@ public class APIService extends IntentService {
 		} catch(Exception e) {
 			Log.e(TAG, e.getMessage() + " ");
 		}
-		
+		Log.d(TAG, "Got here in getCrowds apiservice");
 		Bundle crowdBundle = new Bundle();
 		crowdBundle.putString("crowdsJson", json);
 		resultReceiver.send(T.GET_CROWDS, crowdBundle);

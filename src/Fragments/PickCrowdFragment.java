@@ -40,6 +40,13 @@ public class PickCrowdFragment extends Fragment implements OnClickListener {
 	private Crowd[] crowds = null;
 	private List<Crowd> selectedCrowds;
 	
+	private String path;
+	
+	public void setPath(String path) {
+		this.path = path;
+	}
+	
+	
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		Log.d(TAG, "PickCrowdFragment successfully launched");
 		v = inflater.inflate(R.layout.pick_crowd_fragment, container, false);
@@ -52,7 +59,6 @@ public class PickCrowdFragment extends Fragment implements OnClickListener {
 		apiIntent.putExtra(T.API_TYPE, T.GET_CROWDS);
 		apiIntent.putExtra("receiver", receiver);
 		getActivity().startService(apiIntent);
-		
 		((Button) v.findViewById(R.id.send_button))
 			.setOnClickListener((OnClickListener)this);
 		((Button) v.findViewById(R.id.create_new_crowd_button))
@@ -83,6 +89,7 @@ public class PickCrowdFragment extends Fragment implements OnClickListener {
 				Intent apiIntent = new Intent(getActivity(),
 						APIService.class);
 				apiIntent.putExtra(T.API_TYPE, T.CREATE_SESSION);
+				apiIntent.putExtra(T.FILEPATH,this.path);
 				apiIntent.putExtra(T.SESSION_TITLE, seshTitle);
 				apiIntent.putExtra(T.SESSION_USE_EXISTING_CROWD, true);
 				apiIntent.putExtra(T.SESSION_CROWD_TITLE, "");
@@ -92,8 +99,8 @@ public class PickCrowdFragment extends Fragment implements OnClickListener {
 				
 				getActivity().startService(apiIntent);
 				
-				Intent launchHome = new Intent(getActivity(), HomeActivity.class);
-				startActivity(launchHome);
+//				Intent launchHome = new Intent(getActivity(), HomeActivity.class);
+//				startActivity(launchHome);
 			}
 			break;
 		case R.id.create_new_crowd_button:
