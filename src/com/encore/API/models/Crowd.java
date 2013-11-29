@@ -3,14 +3,14 @@ package com.encore.API.models;
 import com.google.gson.annotations.SerializedName;
 
 public class Crowd {
-	@SerializedName("id")
+	@SerializedName("crowd_id")
 	private int id;
 	
 	@SerializedName("title")
 	private String title;
 	
 	@SerializedName("members")
-	private Profile[] members;
+	private User[] members;
 	
 	public Crowd() {
 		title = null;;
@@ -18,7 +18,7 @@ public class Crowd {
 		id = -1;
 	}
 
-	public Crowd(String title, Profile[] members) {
+	public Crowd(String title, User[] members) {
 		this.title = title;
 		this.members = members;
 		this.id = id;
@@ -28,7 +28,7 @@ public class Crowd {
 		return this.title;
 	}
 	
-	public Profile[] getMembers() {
+	public User[] getMembers() {
 		return this.members;
 	}
 	

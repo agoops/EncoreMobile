@@ -21,7 +21,7 @@ import android.widget.TextView;
 import com.encore.R;
 import com.encore.StartSession2;
 
-public class HomeActivity extends FragmentActivity {
+public class FriendsActivity extends FragmentActivity {
 	private static final String TAG = "HomeActivity";
 	ViewPager viewPager;
 	ListView listView;
