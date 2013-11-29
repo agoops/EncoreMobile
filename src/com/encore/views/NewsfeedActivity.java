@@ -248,14 +248,6 @@ public class NewsfeedActivity extends FragmentActivity {
 			Intent intent = new Intent(this, StartSession2.class);
 			startActivity(intent);
 			return true;
-		case R.id.newsfeed_activity:
-//			Intent newsfeedIntent = new Intent(this, NewsfeedActivity.class);
-//			startActivity(newsfeedIntent);
-			return true;
-		case R.id.friends_activity:
-			Intent friendsIntent = new Intent(this, FriendsActivity.class);
-			startActivity(friendsIntent);
-			return true;
 		default:
 			return super.onOptionsItemSelected(item);
 		}

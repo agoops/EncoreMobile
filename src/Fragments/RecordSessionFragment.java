@@ -70,6 +70,7 @@ public class RecordSessionFragment extends Fragment implements OnClickListener {
 	public void onClick(View v) {
 		switch (v.getId()) {
 		case R.id.btnStart: {
+			Log.d(TAG, "record clicked");
 			enableButtons(true);
 			isRecording = true;
 			recordThread = new Thread(new Runnable() {
@@ -81,6 +82,7 @@ public class RecordSessionFragment extends Fragment implements OnClickListener {
 			break;
 		}
 		case R.id.btnStop: {
+			Log.d(TAG, "stop clicked");
 			enableButtons(false);
 			isRecording = false;
 			break;
@@ -133,7 +135,19 @@ public class RecordSessionFragment extends Fragment implements OnClickListener {
 		}
 		}
 	}
-	
+	/**
+	 * 
+	 * 
+	 * 
+	 * TODO
+	 * 
+	 * REPLACE THIS WITH RECORDING MP3
+	 * 
+	 * 
+	 * 
+	 * 
+	 * 
+	 */
 	public void record() {
 		Long time1 = System.currentTimeMillis();
 		int channelConfiguration = AudioFormat.CHANNEL_CONFIGURATION_MONO;

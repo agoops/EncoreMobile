@@ -12,6 +12,7 @@ import java.lang.reflect.Type;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
+import org.apache.http.HttpEntity;
 import org.apache.http.entity.StringEntity;
 
 import util.Constants;
@@ -21,6 +22,7 @@ import android.util.Log;
 import com.encore.TokenHelper;
 import com.encore.API.models.Crowd;
 import com.encore.API.models.Crowds;
+//import com.encore.API.models.Crowds;
 import com.encore.API.models.PostSession;
 import com.encore.API.models.Session;
 import com.encore.API.models.User;
@@ -146,7 +148,7 @@ public class API {
 	}
 
 	// ------------- POST -----------
-	private <T> T post(String url, StringEntity entity, Type type)
+	private <T> T post(String url, HttpEntity entity, Type type)
 			throws IOException {
 		URL postUrl = new URL(url);
 		HttpURLConnection connection = client.open(postUrl);
@@ -311,6 +313,43 @@ public class API {
 				in.close();
 		}
 	}
+	
+//	private String postClip(String filepath) throws Exception {
+//		
+//		HttpClient client = new DefaultHttpClient();
+//	    HttpPost post = new HttpPost(ADD_CLIP);
+//	    post.addHeader(AUTHORIZATION, ACCESS_TOKEN);
+//	    MultipartEntityBuilder multipartEntity = MultipartEntityBuilder.create();   
+//	    multipartEntity.setMode(HttpMultipartMode.BROWSER_COMPATIBLE);
+//	    multipartEntity.addPart("clip", new FileBody(new File(filepath)));
+//	    multipartEntity.addPart("session", new StringBody("14"));
+//	    multipartEntity.addTextBody("duration", "69");
+//	    HttpEntity entity = multipartEntity.build();
+//	    post.setEntity(entity);
+//	    HttpURLConnection connection = this.client.open(new URL("What"));
+//	    
+//	    entity.writeTo(connection);
+//	    
+//	    HttpResponse response;
+//		try {
+//			response = client.execute(post);
+//		} catch (ClientProtocolException e) {
+////			e.printStackTrace();
+//			throw e;
+//		} catch (IOException e) {
+////			e.printStackTrace();
+//			throw e;
+//		}
+//		
+//	    HttpEntity entity = response.getEntity();
+//	    BufferedReader r = new BufferedReader(new InputStreamReader(entity.getContent()));
+//		StringBuilder total = new StringBuilder();
+//		String line;
+//		while ((line = r.readLine()) != null) {
+//			total.append(line);
+//		}
+//		return total.toString();
+//	}
 
 	// ------------- PUT -----------
 	private <T> T put(String url, StringEntity entity, Type type)
@@ -403,7 +442,7 @@ public class API {
 	}
 
 	public String addClip(StringEntity entity, String filepath)
-			throws IOException {
+			throws Exception {
 
 		// String url, StringEntity entity, Type type, String path
 
@@ -411,9 +450,10 @@ public class API {
 
 		String result = "emptyresult_failed";
 		try {
-			result = postClip(url, entity, String.class, filepath);
+//			result = postClip(url, entity, String.class, filepath);
+			//result = postClip(filepath);
 			return result;
-		} catch (IOException e) {
+		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 			throw e;
@@ -531,7 +571,7 @@ public class API {
 		ACCESS_TOKEN = "Token " + token;
 		String url = GET_CROWDS;
 		String json = "";
-		// Crowds result = null;
+		 Crowds result = null;
 
 		// try {
 		// json = get(url, Crowds.class);
@@ -543,6 +583,7 @@ public class API {
 
 		try {
 			json = get(url, Crowds.class);
+			result  = getGson().fromJson(json, Crowds.class);
 		} catch(Exception e) {
 			Log.e(TAG, "getCrowds() error");
 			throw e;
@@ -572,5 +613,19 @@ public class API {
 			throw e;
 		}
 		return resultCrowd;
+	}
+	
+	public String getSessions() throws IOException {
+		Log.d(TAG, "getSessions called");
+
+		String url = GET_SESSIONS;
+		String result = "emptyresult";
+		try {
+			result = get(url, String.class);
+		} catch (IOException e) {
+			Log.d(TAG, "getSessions() error");
+			throw e;
+		}
+		return result;
 	}
 }

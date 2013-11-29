@@ -79,7 +79,7 @@ public class APIService extends IntentService {
 			acceptFriendRequest(intent.getExtras());
 			break;
 		case T.GET_SESSIONS:
-			// Note implemented currently
+			// Not implemented currently
 			break;
 		default:
 			break;
@@ -126,10 +126,12 @@ public class APIService extends IntentService {
 			
 			Log.d(TAG, "json for entity: " + json.toString());
 			entity = new StringEntity(json.toString());
+			
 			Log.d(TAG, "about to call api.addClip");
 			String result = api.addClip(entity,filepath);
+			
 			Log.d(TAG, "Result from api.addClip(): " + result);
-			Toast.makeText(this, result, Toast.LENGTH_LONG).show();
+//			Toast.makeText(this, result, Toast.LENGTH_LONG).show();
 			
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -311,6 +313,20 @@ public class APIService extends IntentService {
 			Log.d(TAG, "createCrowd() result: " + postJson);
 		} catch( Exception e ) {
 			Log.e(TAG, e.getMessage() + " ");
+		}
+	}
+
+	private void getSessions() {
+		Log.d(TAG, "getSessions called");
+
+		try {
+			String result = api.getSessions();
+			Bundle b = new Bundle();
+			b.putString("result", result);
+			resultReceiver.send(1, b);
+		} catch (Exception e) {
+			e.printStackTrace();
+			resultReceiver.send(0,null);
 		}
 	}
 }

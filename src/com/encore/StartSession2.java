@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.ResultReceiver;
+import android.os.Environment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
@@ -25,7 +26,7 @@ public class StartSession2 extends FragmentActivity {
 	String tag = "StartSession2";
 	Thread recordThread = null;
 	int sampleRateInHz = 11025;
-	String filepath = "/storage/sdcard0/testaudio.pcm";
+
 	private boolean yes_checked = false;
 	
 	private String jsonResult = "";
@@ -37,7 +38,6 @@ public class StartSession2 extends FragmentActivity {
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
-		Log.d(TAG, "StartSession2 entered");
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.placeholder);
 		
