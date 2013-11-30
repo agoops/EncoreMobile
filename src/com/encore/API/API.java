@@ -28,7 +28,7 @@ import com.encore.TokenHelper;
 import com.encore.API.models.Crowd;
 import com.encore.API.models.Crowds;
 import com.encore.API.models.User;
-import com.encore.API.models.postCrowd;
+import com.encore.API.models.PostCrowd;
 import com.google.gson.Gson;
 import com.squareup.okhttp.OkHttpClient;
 //import com.encore.API.models.Crowds;
@@ -468,7 +468,7 @@ public class API {
 	
 	// POST crowds/
 	// Creates a new crowd
-	public Crowd createCrowd(postCrowd pCrowd, String token) throws Exception {
+	public Crowd createCrowd(PostCrowd pCrowd, String token) throws Exception {
 		Log.d(TAG, "createCrowd called");
 		ACCESS_TOKEN = "Token " + token;
 		String url = CREATE_CROWD;

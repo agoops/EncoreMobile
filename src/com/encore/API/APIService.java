@@ -21,7 +21,7 @@ import android.util.Log;
 import com.encore.TokenHelper;
 import com.encore.API.models.Crowd;
 import com.encore.API.models.User;
-import com.encore.API.models.postCrowd;
+import com.encore.API.models.PostCrowd;
 import com.google.gson.Gson;
 import com.squareup.okhttp.OkHttpClient;
 
@@ -309,7 +309,7 @@ public class APIService extends IntentService {
 		String crowdTitle = data.getString(T.CROWD_TITLE);
 		String[] members = data.getStringArray(T.CROWD_MEMBERS);
 		
-		postCrowd pCrowd = new postCrowd(crowdTitle, members);
+		PostCrowd pCrowd = new PostCrowd(crowdTitle, members);
 		
 		try {
 			resultCrowd = api.createCrowd(pCrowd, token);
