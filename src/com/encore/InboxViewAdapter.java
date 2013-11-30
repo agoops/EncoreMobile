@@ -18,9 +18,9 @@ import android.widget.TextView;
 
 import com.encore.API.models.Session;
 
-public class InboxViewAdapter extends BaseAdapter{
+public class InboxViewAdapter extends BaseAdapter implements OnClickListener {
 	
-	private static String tag = "InboxViewAdapter";
+	private static final String TAG = "InboxViewAdapter";
 	private Context mContext;
     private List<Session> mSessionList;
     
@@ -51,7 +51,7 @@ public class InboxViewAdapter extends BaseAdapter{
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
 		// get the selected entry
-		Log.d(tag, "populating position: " + position);
+		Log.d(TAG, "populating position: " + position);
 		//this shouldn't be an applicationInfo object
         Session entry = (Session) mSessionList.get(position);
  
@@ -63,24 +63,8 @@ public class InboxViewAdapter extends BaseAdapter{
             LayoutInflater inflater = LayoutInflater.from(mContext);
             v = (SessionView) inflater.inflate(R.layout.inbox_view, parent, false);
             Button reply = (Button) v.findViewById(R.id.reply);
-            reply.setOnClickListener(new OnClickListener() {
-
-				@Override
-				public void onClick(View arg0) {
-					
-					//((Activity)mContext).startActivityForResult(new Intent(mContext, AndroidVideoCapture.class), 0);
-					SessionView sv = (SessionView) arg0;
-					Session session = sv.getSession();
-					
-					Intent intent = new Intent(mContext, StartSession2.class);
-					intent.putExtra("reply", true);
-					intent.putExtra("sessionid", sv.getId());
-					
-					mContext.startActivity(intent);
-				}
-            	
-            
-            });
+            reply.setTag(entry);
+            reply.setOnClickListener((OnClickListener) this);
             v.setSession(entry);
         }
  
@@ -94,6 +78,27 @@ public class InboxViewAdapter extends BaseAdapter{
  
         // return view
         return v;
+	}
+	
+	@Override
+	public void onClick(View v) {
+		switch(v.getId())
+		{
+		case R.id.reply:
+			// Pass crowdId and sessionTitle on to StartSession2
+			// who in turn passes it on to RecordFragment
+			Session sesh = (Session) v.getTag();
+			
+			int crowdId = sesh.getCrowd().getId();
+			Intent launchRecordFragment = new Intent(mContext, StartSession2.class);
+			launchRecordFragment.putExtra("crowdId", crowdId);
+			launchRecordFragment.putExtra("sessionTitle", sesh.getTitle());
+			((Activity) mContext).startActivity(launchRecordFragment);
+			
+			break;
+		default:
+			break;
+		}
 	}
 	
 

@@ -10,7 +10,17 @@
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
         android:layout_alignParentTop="true"
-        android:text="Next" />
+        android:text="Next"
+        android:visibility="invisible" />
+    
+    <Button 
+        android:id="@+id/send_clip_btn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentTop="true"
+        android:text="Send"
+        android:visibility="invisible" />
     
     <Button
         android:id="@+id/btnStart"

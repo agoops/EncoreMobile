@@ -258,8 +258,6 @@ public class APIService extends IntentService {
 	}
 
 	private void createSession(Bundle data) {
-
-		
 	    MultipartEntityBuilder multipartEntity = MultipartEntityBuilder.create();   
 	    multipartEntity.setMode(HttpMultipartMode.BROWSER_COMPATIBLE);
 	    
@@ -277,10 +275,6 @@ public class APIService extends IntentService {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
-		
-		
-		
 	}
 	
 	// GET all crowds
@@ -320,7 +314,7 @@ public class APIService extends IntentService {
 		}
 	}
 
-private void getSessions() {
+	private void getSessions() {
 		Log.d(TAG, "getSessions called");
 
 		try {
