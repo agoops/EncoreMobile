@@ -85,8 +85,8 @@ public class InboxViewAdapter extends BaseAdapter implements OnClickListener {
 		switch(v.getId())
 		{
 		case R.id.reply:
-			// TODO: GET crowd_id and session_title from sessions
-			// Pass on to StartSession2
+			// Pass crowdId and sessionTitle on to StartSession2
+			// who in turn passes it on to RecordFragment
 			Session sesh = (Session) v.getTag();
 			
 			int crowdId = sesh.getCrowd().getId();
