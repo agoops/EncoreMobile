@@ -30,9 +30,9 @@ import android.view.ViewGroup;
 import android.widget.Button;
 
 import com.encore.R;
+import com.encore.RecMicToMp3;
 import com.encore.API.APIService;
 import com.encore.views.HomeActivity;
-import com.encore.RecMicToMp3;
 
 public class RecordSessionFragment extends Fragment implements OnClickListener {
 	private static final String TAG = "RecordSessionFragment";
@@ -51,22 +51,26 @@ public class RecordSessionFragment extends Fragment implements OnClickListener {
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		Log.d(TAG, "RecordSessionFragment successfully launched");
 		v = inflater.inflate(R.layout.record_session_fragment, container, false);
+//		recorder = new RecMicToMp3(path,8000);
 		
 		crowdId = getArguments().getInt("crowdId");
 		sessionTitle = getArguments().getString("sessionTitle");
+		Log.d(TAG, "crowdId, sessionTitle: " + crowdId + ", " + sessionTitle);
 		if(crowdId == -1) {
 			// No crowdId - the user must be creating a new session
-			// This is the default, so nothing changes
+			// Hide the send button, show the next button
+			((Button) v.findViewById(R.id.next_button)).setVisibility(View.VISIBLE);
+			((Button) v.findViewById(R.id.send_clip_btn)).setVisibility(View.INVISIBLE);
 		} else {
 			// crowdId has already been set - the user must be replying
 			// Show the send button, hide the next button
-			((Button) v.findViewById(R.id.next_button)).setVisibility(0);
-			((Button) v.findViewById(R.id.send_clip_btn)).setVisibility(1);
+			Log.d(TAG, "About to switch button visibilities");
+			((Button) v.findViewById(R.id.next_button)).setVisibility(View.INVISIBLE);
+			((Button) v.findViewById(R.id.send_clip_btn)).setVisibility(View.VISIBLE);
 		}
 		
 		setButtonHandlers();
 		enableButtons(false);
-		Log.d(TAG, "noth");
 		return v;                 
 	}
 	

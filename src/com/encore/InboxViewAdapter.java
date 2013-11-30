@@ -20,7 +20,7 @@ import com.encore.API.models.Session;
 
 public class InboxViewAdapter extends BaseAdapter implements OnClickListener {
 	
-	private static String tag = "InboxViewAdapter";
+	private static final String TAG = "InboxViewAdapter";
 	private Context mContext;
     private List<Session> mSessionList;
     
@@ -51,7 +51,7 @@ public class InboxViewAdapter extends BaseAdapter implements OnClickListener {
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
 		// get the selected entry
-		Log.d(tag, "populating position: " + position);
+		Log.d(TAG, "populating position: " + position);
 		//this shouldn't be an applicationInfo object
         Session entry = (Session) mSessionList.get(position);
  
@@ -93,7 +93,8 @@ public class InboxViewAdapter extends BaseAdapter implements OnClickListener {
 			Intent launchRecordFragment = new Intent(mContext, StartSession2.class);
 			launchRecordFragment.putExtra("crowdId", crowdId);
 			launchRecordFragment.putExtra("sessionTitle", sesh.getTitle());
-			((Activity)mContext).startActivity(new Intent(mContext, StartSession2.class));
+			((Activity) mContext).startActivity(launchRecordFragment);
+			
 			break;
 		default:
 			break;
