@@ -326,7 +326,5 @@ public class APIService extends IntentService {
 			e.printStackTrace();
 			resultReceiver.send(0,null);
 		}
-		
 	}
-
 }
