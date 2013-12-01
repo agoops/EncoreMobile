@@ -89,17 +89,28 @@ public class InboxViewAdapter extends BaseAdapter {
 		TextView likesTextView = (TextView) v.findViewById(R.id.likes);
 		TextView commentsTextView = (TextView) v.findViewById(R.id.comments);
 
-		// set data to display
+		// set session title
 		titleTextView.setText(entry.getTitle());
+		
+		// set comment string and views for comments, and click listener
 		List<Comment> comments = entry.getComments();
 		commentsTextView.setText(comments.size() + " comments");
 		for (int i = 0; i < comments.size(); ++i){
 			TextView oneComment = new TextView(mContext);
 			Log.d(tag, comments.get(i).toString());
 			oneComment.setText(comments.get(i).getText());
-			v.addView(new TextView(mContext));
-			
+			oneComment.setVisibility(TextView.GONE);
+			v.addCommentView(oneComment);
+			v.addView(oneComment);
 		}
+		commentsTextView.setOnClickListener(new OnClickListener(){
+			@Override
+			public void onClick(View v) {
+				SessionView sv = (SessionView) v.getParent().getParent();
+				sv.toggleCommentsVisible();
+			}
+		});
+		
 		// return view
 		return v;
 	}
