@@ -85,9 +85,10 @@ public class APIService extends IntentService {
 			acceptFriendRequest(intent.getExtras());
 			break;
 		case T.GET_SESSIONS:
-			// Not implemented currently
 			getSessions();
 			break;
+		case T.CREATE_COMMENT:
+			createComment(intent.getExtras());
 		default:
 			break;
 		}
@@ -326,6 +327,19 @@ public class APIService extends IntentService {
 		} catch (Exception e) {
 			e.printStackTrace();
 			resultReceiver.send(0,null);
+		}
+	}
+	
+	private void createComment(Bundle data) {
+		Log.d(TAG, "createComment called");
+		
+		try {
+			// TODO: Add Comment should launch either a dialog
+			// TODO: The dialog should trigger createComment
+			// TODO: Create api.createComment();
+			// TODO: Determine what options to pass in
+		} catch (Exception e) {
+			Log.e(TAG, e.getMessage() + " ");
 		}
 	}
 }

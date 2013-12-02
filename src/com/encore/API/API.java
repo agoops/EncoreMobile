@@ -96,6 +96,9 @@ public class API {
 	// private static final String GET_CROWD = CROWDS + "%s";
 	// private static final String UPDATE_CROWD = CROWDS + "%s";
 	// private static final String DELETE_CROWD = CROWDS + "%s";
+	
+	// Comments
+	private static final String CREATE_COMMENT = SESSIONS + "comments/";
 
 	public API(OkHttpClient client, Context context) {
 		this.client = client;

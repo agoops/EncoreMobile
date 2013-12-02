@@ -2,6 +2,7 @@ package com.encore;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import android.app.Activity;
 import android.content.Context;
@@ -11,11 +12,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.view.ViewGroup.LayoutParams;
 import android.widget.BaseAdapter;
 import android.widget.Button;
-import android.widget.CheckBox;
-import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.encore.API.models.Comment;
 import com.encore.API.models.Session;
@@ -26,6 +28,7 @@ public class InboxViewAdapter extends BaseAdapter implements OnClickListener {
 	private Context mContext;
 	private List<Session> mSessionList;
 	private static LayoutInflater inflater = null;
+	private static int id = 1;
 
 	public InboxViewAdapter(Context c, ArrayList<Session> list) {
 		mContext = c;
@@ -96,9 +99,18 @@ public class InboxViewAdapter extends BaseAdapter implements OnClickListener {
         	oneComment.setText(comments.get(i).getText());
         	oneComment.setVisibility(TextView.GONE);
         	rowView.addCommentView(oneComment);
-        	// Add the comment as a child to v
+        	// Add the comment as a child to rowView
         	rowView.addView(oneComment);
         }
+        Button addComment = new Button(mContext);
+        addComment.setText("Add Comment");
+        addComment.setVisibility(Button.GONE);
+        addComment.setId(999); // Randomly chosen id.
+        addComment.setOnClickListener((OnClickListener) this);
+
+        rowView.addCommentButton(addComment);
+        rowView.addView(addComment);
+        
         viewHolder.commentsTextView.setOnClickListener((OnClickListener) this);
         
         // return view
@@ -124,9 +136,28 @@ public class InboxViewAdapter extends BaseAdapter implements OnClickListener {
 			SessionView sv = (SessionView) v.getParent().getParent();
 			sv.toggleCommentsVisible();
 			break;
+		case 999:
+			Log.d(TAG, "Add comment button clicked.");
 		default:
 			break;
 		}
+	}
+	
+	private static final AtomicInteger sNextGeneratedId = new AtomicInteger(1);
+	/**
+	 * This value will not collide with ID values generated at build time by aapt for R.id.
+	 * @return a generated ID value
+	 */
+	public static int generateViewId() {
+	    for (;;) {
+	        final int result = sNextGeneratedId.get();
+	        // aapt-generated IDs have the high byte nonzero; clamp to the range under that.
+	        int newValue = result + 1;
+	        if (newValue > 0x00FFFFFF) newValue = 1; // Roll over to 1, not 0.
+	        if (sNextGeneratedId.compareAndSet(result, newValue)) {
+	            return result;
+	        }
+	    }
 	}
 	
 	static class SessionHolder {

@@ -5,10 +5,10 @@ import java.util.ArrayList;
 import android.content.Context;
 import android.util.AttributeSet;
 import android.view.View;
+import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.encore.API.models.Comment;
 import com.encore.API.models.Session;
 
 public class SessionView extends LinearLayout {
@@ -16,6 +16,7 @@ public class SessionView extends LinearLayout {
 	String uri;
 	ArrayList<View> commentViews;
 	boolean commentsVisible;
+	Button commentButton;
 	
 	public SessionView(Context context, AttributeSet attrs) {
 		super(context, attrs);
@@ -33,14 +34,21 @@ public class SessionView extends LinearLayout {
 	}
 	
 	public void toggleCommentsVisible(){
+		// Toggle comment TVs and Buttons
 		for (View cv: commentViews){
 			cv.setVisibility(this.areCommentsVisible() ? TextView.GONE : TextView.VISIBLE);
 		}
+		commentButton.setVisibility(this.areCommentsVisible() ? Button.GONE : Button.VISIBLE);
+		
 		this.setCommentsVisible(!this.areCommentsVisible());
 	}
 	
 	public void addCommentView(View commentView) {
 		commentViews.add(commentView);
+	}
+	
+	public void addCommentButton(View commentButton) {
+		this.commentButton = (Button) commentButton;
 	}
 	
 	public ArrayList<View> getCommentViews(){
