@@ -1,14 +1,12 @@
 package com.encore.API;
 
 import java.io.File;
-import java.io.UnsupportedEncodingException;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.entity.mime.HttpMultipartMode;
 import org.apache.http.entity.mime.MultipartEntityBuilder;
 import org.apache.http.entity.mime.content.FileBody;
-import org.apache.http.entity.mime.content.StringBody;
 import org.json.JSONObject;
 
 import util.T;
@@ -19,9 +17,11 @@ import android.os.ResultReceiver;
 import android.util.Log;
 
 import com.encore.TokenHelper;
+import com.encore.API.models.Comment;
 import com.encore.API.models.Crowd;
-import com.encore.API.models.User;
+import com.encore.API.models.PostComment;
 import com.encore.API.models.PostCrowd;
+import com.encore.API.models.User;
 import com.google.gson.Gson;
 import com.squareup.okhttp.OkHttpClient;
 
@@ -89,6 +89,7 @@ public class APIService extends IntentService {
 			break;
 		case T.CREATE_COMMENT:
 			createComment(intent.getExtras());
+			break;
 		default:
 			break;
 		}
@@ -333,11 +334,15 @@ public class APIService extends IntentService {
 	private void createComment(Bundle data) {
 		Log.d(TAG, "createComment called");
 		
+		int sessionId = data.getInt(T.SESSION_ID);
+		String commentText = data.getString(T.COMMENT_TEXT);
+		String resultJSON = null;
+		
+		PostComment pComment = new PostComment(sessionId, commentText);
 		try {
-			// TODO: Add Comment should launch either a dialog
-			// TODO: The dialog should trigger createComment
-			// TODO: Create api.createComment();
-			// TODO: Determine what options to pass in
+			resultJSON = api.createComment(pComment, TokenHelper.getToken(this));
+			Log.d(TAG, "createComment result: " + resultJSON);
+			
 		} catch (Exception e) {
 			Log.e(TAG, e.getMessage() + " ");
 		}

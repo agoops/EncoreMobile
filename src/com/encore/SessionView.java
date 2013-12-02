@@ -38,17 +38,12 @@ public class SessionView extends LinearLayout {
 		for (View cv: commentViews){
 			cv.setVisibility(this.areCommentsVisible() ? TextView.GONE : TextView.VISIBLE);
 		}
-		commentButton.setVisibility(this.areCommentsVisible() ? Button.GONE : Button.VISIBLE);
 		
 		this.setCommentsVisible(!this.areCommentsVisible());
 	}
 	
 	public void addCommentView(View commentView) {
 		commentViews.add(commentView);
-	}
-	
-	public void addCommentButton(View commentButton) {
-		this.commentButton = (Button) commentButton;
 	}
 	
 	public ArrayList<View> getCommentViews(){

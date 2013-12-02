@@ -1,9 +1,6 @@
 package com.encore.API;
 
 import java.io.BufferedReader;
-import java.io.DataOutputStream;
-import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -25,10 +22,12 @@ import android.content.Context;
 import android.util.Log;
 
 import com.encore.TokenHelper;
+import com.encore.API.models.Comment;
 import com.encore.API.models.Crowd;
 import com.encore.API.models.Crowds;
-import com.encore.API.models.User;
+import com.encore.API.models.PostComment;
 import com.encore.API.models.PostCrowd;
+import com.encore.API.models.User;
 import com.google.gson.Gson;
 import com.squareup.okhttp.OkHttpClient;
 //import com.encore.API.models.Crowds;
@@ -504,5 +503,22 @@ public class API {
 			throw e;
 		}
 		return result;
+	}
+	
+	public String createComment(PostComment pComment, String token) throws Exception {
+		Log.d(TAG, "createComment called");
+		ACCESS_TOKEN = "Token " + token;
+		String url = CREATE_COMMENT;
+		String resultJSON = null;
+		
+		try {
+			String JSON = getGson().toJson(pComment);
+			Log.d(TAG, "Posting JSON: " + JSON);
+			resultJSON = post(url, new StringEntity(JSON), String.class);
+		} catch (Exception e) {
+			Log.e(TAG, "createComment() error");
+			throw e;
+		}
+		return resultJSON;
 	}
 }

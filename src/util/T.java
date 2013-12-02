@@ -34,6 +34,7 @@ public class T {
 	
 	// Column names for newsfeed query
 	public static final String SESSION_TITLE = "title";
+	public static final String SESSION_ID = "id";
 	public static final String SESSION_USE_EXISTING_CROWD = "use_existing_crowd";
 	public static final String SESSION_CROWD_TITLE = "crowd_title";
 	public static final String SESSION_CROWD_MEMBERS = "crowd_members";
@@ -41,5 +42,7 @@ public class T {
 	
 	public static final String CROWD_TITLE = "title";
 	public static final String CROWD_MEMBERS = "members";
+	
+	public static final String COMMENT_TEXT = "comment_text";
 	
 }

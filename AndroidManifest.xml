@@ -45,8 +45,6 @@
         </activity>
         <activity android:name="com.encore.AndroidVideoCapture" >
         </activity>
-        <activity android:name="com.encore.views.HomeActivity" >
-        </activity>
        
         <activity android:name="com.encore.VideoPlayback" >
         </activity>
@@ -58,7 +56,8 @@
         </activity>
         <activity android:name="com.encore.views.NewsfeedActivity" >
         </activity>
-        <activity android:name="com.encore.views.HomeActivity" >
+        <activity android:name="com.encore.views.HomeActivity" 
+            android:windowSoftInputMode="adjustPan">
         </activity>
 
         <service android:name="UploadService2" >
