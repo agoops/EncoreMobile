@@ -17,8 +17,9 @@ import android.os.ResultReceiver;
 import android.util.Log;
 
 import com.encore.TokenHelper;
-import com.encore.API.models.Comment;
 import com.encore.API.models.Crowd;
+import com.encore.API.models.Favorite;
+import com.encore.API.models.Like;
 import com.encore.API.models.PostComment;
 import com.encore.API.models.PostCrowd;
 import com.encore.API.models.User;
@@ -343,6 +344,36 @@ public class APIService extends IntentService {
 			resultJSON = api.createComment(pComment, TokenHelper.getToken(this));
 			Log.d(TAG, "createComment result: " + resultJSON);
 			
+		} catch (Exception e) {
+			Log.e(TAG, e.getMessage() + " ");
+		}
+	}
+	
+	private void createLike(Bundle data) {
+		Log.d(TAG, "createLike called");
+		int sessionId = data.getInt(T.SESSION_ID);
+		String token = TokenHelper.getToken(this);
+		String resultJSON = null;
+		
+		try {
+			Like like = new Like(sessionId);
+			resultJSON = api.createLike(like, token);
+			Log.d(TAG, "createLike result: " + resultJSON);
+		} catch (Exception e) {
+			Log.e(TAG, e.getMessage() + " ");
+		}
+	}
+	
+	private void createFavorite(Bundle data) {
+		Log.d(TAG, "createFavorite called");
+		int sessionId = data.getInt(T.SESSION_ID);
+		String token = TokenHelper.getToken(this);
+		String resultJSON = null;
+		
+		try {
+			Favorite fav = new Favorite(sessionId);
+			resultJSON = api.createFavorite(fav, token);
+			Log.d(TAG, "createFavorite result: " + resultJSON);
 		} catch (Exception e) {
 			Log.e(TAG, e.getMessage() + " ");
 		}

@@ -22,9 +22,10 @@ import android.content.Context;
 import android.util.Log;
 
 import com.encore.TokenHelper;
-import com.encore.API.models.Comment;
 import com.encore.API.models.Crowd;
 import com.encore.API.models.Crowds;
+import com.encore.API.models.Favorite;
+import com.encore.API.models.Like;
 import com.encore.API.models.PostComment;
 import com.encore.API.models.PostCrowd;
 import com.encore.API.models.User;
@@ -98,6 +99,12 @@ public class API {
 	
 	// Comments
 	private static final String CREATE_COMMENT = SESSIONS + "comments/";
+	
+	//	Likes --- ENDPOINT IS NOT UP YET ---
+	private static final String CREATE_LIKE = BASE_URL + "/likes/";
+	
+	// Favorites --- ENDPOINT IS NOT UP YET ---
+	private static final String CREATE_FAVORITE = BASE_URL + "/favorites/";
 
 	public API(OkHttpClient client, Context context) {
 		this.client = client;
@@ -516,6 +523,40 @@ public class API {
 			Log.d(TAG, "Posting JSON: " + JSON);
 			resultJSON = post(url, new StringEntity(JSON), String.class);
 		} catch (Exception e) {
+			Log.e(TAG, "createComment() error");
+			throw e;
+		}
+		return resultJSON;
+	}
+	
+	// -- Endpoint for likes is not up yet ---
+	public String createLike(Like like, String token) throws Exception {
+		Log.d(TAG, "createLike called");
+		ACCESS_TOKEN = "Token " + token;
+		String url = CREATE_LIKE;
+		String resultJSON = null;
+		
+		try {
+			String JSON = getGson().toJson(like);
+			resultJSON = post(url, new StringEntity(JSON), String.class);
+		} catch (Exception e) {
+			Log.e(TAG, "createLike() error");
+			throw e;
+		}
+		return resultJSON;
+	}
+	
+	// -- Endpoint for favorites is not up yet ---
+	public String createFavorite(Favorite fav, String token) throws Exception {
+		Log.d(TAG, "createFavorite called");
+		ACCESS_TOKEN = "Token " + token;
+		String url = CREATE_FAVORITE;
+		String resultJSON = null;
+		
+		try {
+			String JSON = getGson().toJson(fav);
+			resultJSON = post(url, new StringEntity(JSON), String.class);
+		} catch(Exception e) {
 			Log.e(TAG, "createComment() error");
 			throw e;
 		}

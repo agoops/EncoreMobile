@@ -31,6 +31,8 @@ public class T {
 	public static final int ACCEPT_FRIEND_REQUEST = 10;
 	public static final int GET_SESSIONS = 11;
 	public static final int CREATE_COMMENT = 12;
+	public static final int CREATE_LIKE = 13;
+	public static final int CREATE_FAVORITE = 14;
 	
 	// Column names for newsfeed query
 	public static final String SESSION_TITLE = "title";
@@ -44,5 +46,4 @@ public class T {
 	public static final String CROWD_MEMBERS = "members";
 	
 	public static final String COMMENT_TEXT = "comment_text";
-	
 }
