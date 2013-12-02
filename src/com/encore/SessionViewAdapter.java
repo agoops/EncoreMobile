@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -56,8 +57,10 @@ public class SessionViewAdapter extends BaseAdapter{
         }
  
         // load controls from layout resources
-        ImageView ivAppIcon = (ImageView)v.findViewById(R.id.ivIcon);
-        TextView tvAppName = (TextView)v.findViewById(R.id.tvName);
+        ImageView ivAppIcon = (ImageView) v.findViewById(R.id.ivIcon);
+        TextView tvAppName = (TextView) v.findViewById(R.id.tvName);
+        Button likeBtn = (Button) v.findViewById(R.id.likeBtn);
+        Button favBtn = (Button) v.findViewById(R.id.favoriteBtn);
  
         // set data to display
 //        ivAppIcon.setImageDrawable(entry.loadIcon());

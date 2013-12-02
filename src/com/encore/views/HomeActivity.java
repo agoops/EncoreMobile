@@ -51,7 +51,6 @@ public class HomeActivity extends FragmentActivity {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-
 		// check if custom title is supported BEFORE setting the content view!
 		// TODO doesn't work. do later;
 		// customTitleSupported =
@@ -82,7 +81,6 @@ public class HomeActivity extends FragmentActivity {
 	}
 
 	public void customTitleBar() {
-
 		// set up custom title
 		if (customTitleSupported) {
 			getWindow().setFeatureInt(Window.FEATURE_CUSTOM_TITLE,
@@ -245,7 +243,6 @@ public class HomeActivity extends FragmentActivity {
             protected void onReceiveResult(int resultCode, Bundle resultData) {
                     if (resultCode == 1) {
                             Log.d(TAG, "APISerivce returned successful with sessions");
-                            
                             
                             String result = resultData.getString("result");
                             ArrayList<ArrayList<Session>> sessions = convertJsonToListOfSession(result);
