@@ -59,8 +59,6 @@ public class SessionViewAdapter extends BaseAdapter{
         // load controls from layout resources
         ImageView ivAppIcon = (ImageView) v.findViewById(R.id.ivIcon);
         TextView tvAppName = (TextView) v.findViewById(R.id.tvName);
-        Button likeBtn = (Button) v.findViewById(R.id.likeBtn);
-        Button favBtn = (Button) v.findViewById(R.id.favoriteBtn);
  
         // set data to display
 //        ivAppIcon.setImageDrawable(entry.loadIcon());

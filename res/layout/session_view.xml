@@ -18,19 +18,5 @@
         android:layout_weight="1"
         android:gravity="center_vertical"
         android:text="Session Title" />
-    
-    <Button
-        android:id="@+id/likeBtn"
-        android:layout_width="wrap_content"
-        android:layout_height="match_parent"
-        android:text="Like" />
-    
-    <Button
-        android:id="@+id/favoriteBtn"
-        android:layout_width="wrap_content"
-        android:layout_height="match_parent"
-        android:text="Favorite" />
-
-    
 
 </com.encore.SessionView>
