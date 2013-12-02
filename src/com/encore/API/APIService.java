@@ -86,6 +86,7 @@ public class APIService extends IntentService {
 			break;
 		case T.GET_SESSIONS:
 			// Not implemented currently
+			getSessions();
 			break;
 		default:
 			break;

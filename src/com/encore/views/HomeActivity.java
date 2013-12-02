@@ -264,6 +264,7 @@ public class HomeActivity extends FragmentActivity {
     }
     
     private ArrayList<ArrayList<Session>> convertJsonToListOfSession(String json) {
+    	
             ArrayList<ArrayList<Session>> sessions = new ArrayList<ArrayList<Session>>();
             
             Gson gson = new Gson();
@@ -274,9 +275,11 @@ public class HomeActivity extends FragmentActivity {
             JsonParser jsonParser = new JsonParser();
             JsonArray sessionsJson = new JsonArray();
             
+            // Convert Sessions String to JSON
             sessionsJson = jsonParser.parse(json).getAsJsonObject()
                             .getAsJsonArray("sessions");
             for (JsonElement j : sessionsJson) {
+            		// Convert JSON to Session object
                     Session session = gson.fromJson(j, Session.class);
                     if (session.isComplete()) {
                             newsfeed.add(session);
@@ -286,6 +289,5 @@ public class HomeActivity extends FragmentActivity {
             }
             
             return sessions;
-            
     }
 }

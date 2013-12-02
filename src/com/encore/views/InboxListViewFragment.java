@@ -43,7 +43,7 @@ public class InboxListViewFragment extends Fragment{
 		View view = inflater.inflate(R.layout.video_list_fragment, container, false);
 		
 	    ListView lv = (ListView) view.findViewById(R.id.video_list_view2);
-	    adapter = new InboxViewAdapter(container.getContext(), new ArrayList<Session>());
+	    adapter = new InboxViewAdapter(getActivity(), new ArrayList<Session>());
 	    lv.setAdapter(adapter);
 	    lv.setOnItemClickListener(new ResponseListener());
 	    
