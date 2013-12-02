@@ -101,10 +101,10 @@ public class API {
 	private static final String CREATE_COMMENT = SESSIONS + "comments/";
 	
 	//	Likes --- ENDPOINT IS NOT UP YET ---
-	private static final String CREATE_LIKE = BASE_URL + "/likes/";
+	private static final String CREATE_LIKE = SESSIONS + "likes/";
 	
 	// Favorites --- ENDPOINT IS NOT UP YET ---
-	private static final String CREATE_FAVORITE = BASE_URL + "/favorites/";
+	private static final String CREATE_FAVORITE = SESSIONS + "favorites/";
 
 	public API(OkHttpClient client, Context context) {
 		this.client = client;
