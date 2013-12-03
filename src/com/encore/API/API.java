@@ -464,6 +464,7 @@ public class API {
 
 		try {
 			json = get(url, Crowds.class);
+			Log.d(TAG, "get crowds JSON: " + json);
 			result  = getGson().fromJson(json, Crowds.class);
 		} catch(Exception e) {
 			Log.e(TAG, "getCrowds() error");
