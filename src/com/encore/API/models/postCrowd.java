@@ -7,14 +7,14 @@ public class PostCrowd {
 	private String title;
 	
 	@SerializedName("members")
-	private String[] members;
+	private int[] members;
 	
 	public PostCrowd() {
 		this.title = null;
 		this.members = null;
 	}
 	
-	public PostCrowd(String title, String[] members) {
+	public PostCrowd(String title, int[] members) {
 		this.title = title;
 		this.members = members;
 	}
@@ -23,7 +23,7 @@ public class PostCrowd {
 		this.title = title;
 	}
 
-	public void setMembers(String[] members) {
+	public void setMembers(int[] members) {
 		this.members = members;
 	}
 }

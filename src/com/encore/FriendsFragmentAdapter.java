@@ -22,7 +22,7 @@ public class FriendsFragmentAdapter extends ArrayAdapter<User> implements OnChec
 	
 	private Context mContext;
 	private List<User> mFriendList;
-	private List<String> selectedFriendsList;
+	private List<Integer> selectedFriendsList;
 	private String tag = "FriendsFragmentAdapter";
 	private static LayoutInflater inflater = null;
 
@@ -31,7 +31,7 @@ public class FriendsFragmentAdapter extends ArrayAdapter<User> implements OnChec
 		super(context, resource, objects);
 		mContext = context;
 		mFriendList = objects;
-		selectedFriendsList = new ArrayList<String>();
+		selectedFriendsList = new ArrayList<Integer>();
 	}
 
 	// public FriendsFragmentAdapter(Context context, List<Profile> list) {
@@ -100,13 +100,13 @@ public class FriendsFragmentAdapter extends ArrayAdapter<User> implements OnChec
 			boolean isChecked) {
 		int position = (Integer) buttonView.getTag();
 		if(isChecked) {
-			selectedFriendsList.add(mFriendList.get(position).getUsername());
+			selectedFriendsList.add(mFriendList.get(position).getUserId());
 		} else {
-			selectedFriendsList.remove(mFriendList.get(position).getUsername());
+			selectedFriendsList.remove(mFriendList.get(position).getUserId());
 		}
 	}
 	
-	public List<String> getSelectedFriends() {
+	public List<Integer> getSelectedFriends() {
 		Log.d(TAG, "getting selected friends: " + selectedFriendsList.toString());
 		return selectedFriendsList;
 	}

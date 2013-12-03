@@ -321,7 +321,7 @@ public class APIService extends IntentService {
 		Crowd resultCrowd = null;
 		
 		String crowdTitle = data.getString(T.CROWD_TITLE);
-		String[] members = data.getStringArray(T.CROWD_MEMBERS);
+		int[] members = data.getIntArray(T.CROWD_MEMBERS);
 		
 		PostCrowd pCrowd = new PostCrowd(crowdTitle, members);
 		

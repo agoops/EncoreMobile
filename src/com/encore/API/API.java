@@ -317,7 +317,7 @@ public class API {
 
 	public String acceptFriendRequest(StringEntity entity) throws IOException {
 		String url = REPLY;
-		String result = "emptyreuslt_failed";
+		String result = "emptyresult_failed";
 
 		try {
 			result = post(url, entity, String.class);
