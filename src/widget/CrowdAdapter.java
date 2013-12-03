@@ -42,7 +42,7 @@ public class CrowdAdapter extends ArrayAdapter<Crowd> implements OnCheckedChange
     	final CrowdHolder viewHolder;
     	
     	// Get the crowd_list_row
-		if (convertView == null) {
+		if (rowView == null) {
 			rowView = inflater.inflate(R.layout.crowd_list_row, null);
 			viewHolder = new CrowdHolder();
 			

@@ -18,6 +18,7 @@ public class Crowd {
 		id = -1;
 	}
 
+//	public Crowd(String title, DjangoUser[] members, int id) { // Make sure DjangoUser can be ridden
 	public Crowd(String title, Profile[] members) {
 		this.title = title;
 		this.members = members;
