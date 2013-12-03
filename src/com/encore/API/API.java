@@ -100,10 +100,10 @@ public class API {
 	// Comments
 	private static final String CREATE_COMMENT = SESSIONS + "comments/";
 	
-	//	Likes --- ENDPOINT IS NOT UP YET ---
+	//	Likes
 	private static final String CREATE_LIKE = SESSIONS + "likes/";
 	
-	// Favorites --- ENDPOINT IS NOT UP YET ---
+	// Favorites --- FAVORITES WILL ONLY BE ON NODE, NOT ON DJANGO ---
 	private static final String CREATE_FAVORITE = SESSIONS + "favorites/";
 
 	public API(OkHttpClient client, Context context) {
@@ -529,7 +529,6 @@ public class API {
 		return resultJSON;
 	}
 	
-	// -- Endpoint for likes is not up yet ---
 	public String createLike(Like like, String token) throws Exception {
 		Log.d(TAG, "createLike called");
 		ACCESS_TOKEN = "Token " + token;
@@ -538,6 +537,7 @@ public class API {
 		
 		try {
 			String JSON = getGson().toJson(like);
+			Log.d(TAG, "Posting JSON: " + JSON);
 			resultJSON = post(url, new StringEntity(JSON), String.class);
 		} catch (Exception e) {
 			Log.e(TAG, "createLike() error");
@@ -555,6 +555,7 @@ public class API {
 		
 		try {
 			String JSON = getGson().toJson(fav);
+			Log.d(TAG, "Posting JSON: " + JSON);
 			resultJSON = post(url, new StringEntity(JSON), String.class);
 		} catch(Exception e) {
 			Log.e(TAG, "createComment() error");

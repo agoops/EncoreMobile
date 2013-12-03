@@ -2,11 +2,13 @@ package com.encore;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.atomic.AtomicInteger;
 
 import util.T;
+import widget.CommentsAdapter;
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -16,7 +18,10 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
+import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.encore.API.APIService;
 import com.encore.API.models.Comment;
@@ -29,7 +34,8 @@ public class InboxViewAdapter extends BaseAdapter implements OnClickListener {
 	private List<Session> mSessionList;
 	private static LayoutInflater inflater = null;
 	private SessionView rowView;
-
+	private EditText commentField;
+	
 	public InboxViewAdapter(Context c, ArrayList<Session> list) {
 		mContext = c;
 		mSessionList = list;
@@ -61,16 +67,15 @@ public class InboxViewAdapter extends BaseAdapter implements OnClickListener {
 		final SessionHolder viewHolder;
 		
 		// Get the inbox_view
-		if(convertView == null) {
+		if(rowView == null) {
 			rowView = (SessionView) inflater.inflate(R.layout.inbox_view, parent, false);
 			viewHolder = new SessionHolder();
 			
 			viewHolder.titleTextView = (TextView) rowView.findViewById(R.id.tvName);
-			viewHolder.likesTextView = (TextView) rowView.findViewById(R.id.likes);
-			viewHolder.commentsTextView = (TextView) rowView.findViewById(R.id.comments);
 			viewHolder.reply = (Button) rowView.findViewById(R.id.reply);
-			
-			rowView.setTag(viewHolder);
+			viewHolder.likesBtn = (Button) rowView.findViewById(R.id.likes);
+			viewHolder.favoritesBtn = (Button) rowView.findViewById(R.id.favorites);
+			viewHolder.commentsBtn = (Button) rowView.findViewById(R.id.comments);
 			
 			// get the selected entry
 			Log.d(TAG, "populating position: " + position);
@@ -78,7 +83,14 @@ public class InboxViewAdapter extends BaseAdapter implements OnClickListener {
 			
 			// For each listview, store the session
 			viewHolder.reply.setTag(entry);
+			viewHolder.likesBtn.setTag(entry);
+			viewHolder.favoritesBtn.setTag(entry);
+			viewHolder.commentsBtn.setTag(entry);
 			viewHolder.reply.setOnClickListener((OnClickListener) this);
+			viewHolder.likesBtn.setOnClickListener((OnClickListener) this);
+			viewHolder.favoritesBtn.setOnClickListener((OnClickListener) this);
+			viewHolder.commentsBtn.setOnClickListener((OnClickListener) this);
+			
 			rowView.setSession(entry);
 			
 			// set session title
@@ -87,38 +99,9 @@ public class InboxViewAdapter extends BaseAdapter implements OnClickListener {
 			// set comment string and views for comments, and click listener
 			// Get a list of comments from the session
 			List<Comment> comments = entry.getComments();
-			viewHolder.commentsTextView.setText(comments.size() + " comments");
-			for (int i = 0; i < comments.size(); ++i) {
-				// And construct a TextView to represent the Comment
-				TextView oneComment = new TextView(mContext);
-				Log.d(TAG, comments.get(i).toString());
-				oneComment.setText(comments.get(i).getText());
-				oneComment.setVisibility(TextView.GONE);
-				rowView.addCommentView(oneComment);
-				// Add the comment as a child to rowView
-				rowView.addView(oneComment);
-			}
+			viewHolder.commentsBtn.setText(comments.size() + " comments");
 			
-			// Add Comment button
-			Button addComment = new Button(mContext);
-			addComment.setText("Add Comment");
-			addComment.setVisibility(Button.GONE);
-			addComment.setId(999); // Randomly chosen id.
-			addComment.setTag(entry);
-			addComment.setOnClickListener((OnClickListener) this);
-			
-			// Comment Field ET
-			EditText commentField = new EditText(mContext);
-			commentField.setHint("What's on your mind?");
-			commentField.setVisibility(EditText.GONE);
-			commentField.setId(1234); // Randomly chosen id.
-			
-			rowView.addCommentView(commentField);
-			rowView.addView(commentField);
-			rowView.addCommentView(addComment);
-			rowView.addView(addComment);
-			
-			viewHolder.commentsTextView.setOnClickListener((OnClickListener) this);
+			rowView.setTag(viewHolder);
 		} else {
 			// Avoids calling v.findViewById on resource every time
 			viewHolder = ((SessionHolder) rowView.getTag());
@@ -130,13 +113,12 @@ public class InboxViewAdapter extends BaseAdapter implements OnClickListener {
 	
 	@Override
 	public void onClick(View v) {
+		final Session sesh = (Session) v.getTag();
 		switch(v.getId())
 		{
 		case R.id.reply:
 			// Pass crowdId and sessionTitle on to StartSession2
 			// who in turn passes it on to RecordFragment
-			Session sesh = (Session) v.getTag();
-			
 			int crowdId = sesh.getCrowd().getId();
 			Intent launchRecordFragment = new Intent(mContext, StartSession2.class);
 			launchRecordFragment.putExtra("crowdId", crowdId);
@@ -144,47 +126,72 @@ public class InboxViewAdapter extends BaseAdapter implements OnClickListener {
 			((Activity) mContext).startActivity(launchRecordFragment);
 			break;
 		case R.id.comments:
+			// Open an AlertDialog that holds a listview of current comments, as well as the ability to create your own comments
+			// TODO: Either spiffy up the dialog or make a new activity. The activity is probably easier to do.
+			
+			// Instantiate an AlertDialog.Builder with its constructor
+			AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
+			
+			// Create the dialog's layout
+			LinearLayout layout = new LinearLayout(mContext);
+			ListView commentsLV = new ListView(mContext);
+			final EditText commentField = new EditText(mContext);
+			// Get a list of comments
+			List<Comment> comments = sesh.getComments();
+			// Create a CommentsAdapter instance and setAdapter
+			CommentsAdapter adapter = new CommentsAdapter(mContext, R.layout.comment_list_row, comments);
+			commentsLV.setAdapter(adapter);
+			
+			// Add the views to the layout
+			layout.addView(commentField);
+			layout.addView(commentsLV);
+			builder.setView(layout);
+			
+			// Set the dialog characteristics
+			builder.setTitle("Create a comment")
+				.setPositiveButton("Post Comment", new DialogInterface.OnClickListener() {
+					public void onClick(DialogInterface dialog, int id) {
+						// Post
+						Toast.makeText(mContext, "Posting: " + commentField.getText().toString(), Toast.LENGTH_SHORT).show();
+						Intent api = new Intent(mContext, APIService.class);
+						api.putExtra(T.API_TYPE, T.CREATE_COMMENT);
+						api.putExtra(T.SESSION_ID, sesh.getId());
+						api.putExtra(T.COMMENT_TEXT, commentField.getText().toString());
+						mContext.startService(api);
+					}
+				})
+				.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+					public void onClick(DialogInterface dialog, int id) {
+						// Cancel
+					}
+				});
+			
+			
+			AlertDialog dialog = builder.create();
+			dialog.show();
+			
 			SessionView sv = (SessionView) v.getParent().getParent();
 			sv.toggleCommentsVisible();
 			break;
-		case 999:
-			Log.d(TAG, "Add comment button clicked.");
-			
-			Session currentSession = (Session) v.getTag();
-			// TODO: commentText is always empty argghhh 
-			String commentText = ((EditText) rowView.findViewById(1234)).getText().toString();
-			Log.d(TAG, "EditText is: " + ((EditText)rowView.findViewById(1234)).toString());
-			
-			Intent api = new Intent(mContext, APIService.class);
-			api.putExtra(T.API_TYPE, T.CREATE_COMMENT);
-			api.putExtra(T.SESSION_ID, currentSession.getId());
-			api.putExtra(T.COMMENT_TEXT, commentText);
-			mContext.startService(api);
+		case R.id.likes:
+			// TODO: Toggle between "Like" and "Unlike". Currently it only increments
+			Intent likesApi = new Intent(mContext, APIService.class);
+			likesApi.putExtra(T.API_TYPE, T.CREATE_LIKE);
+			likesApi.putExtra(T.SESSION_ID, sesh.getId());
+			mContext.startService(likesApi);
 			break;
+		case R.id.favorites:
+			Intent favApi = new Intent(mContext, APIService.class);
+			favApi.putExtra(T.API_TYPE, T.CREATE_FAVORITE);
+			favApi.putExtra(T.SESSION_ID, sesh.getId());
+			mContext.startService(favApi);
 		default:
 			break;
 		}
 	}
 	
-	private static final AtomicInteger sNextGeneratedId = new AtomicInteger(1);
-	/**
-	 * This value will not collide with ID values generated at build time by aapt for R.id.
-	 * @return a generated ID value
-	 */
-	public static int generateViewId() {
-	    for (;;) {
-	        final int result = sNextGeneratedId.get();
-	        // aapt-generated IDs have the high byte nonzero; clamp to the range under that.
-	        int newValue = result + 1;
-	        if (newValue > 0x00FFFFFF) newValue = 1; // Roll over to 1, not 0.
-	        if (sNextGeneratedId.compareAndSet(result, newValue)) {
-	            return result;
-	        }
-	    }
-	}
-	
 	static class SessionHolder {
-		TextView titleTextView, likesTextView, commentsTextView;
-		Button reply, addComment;
+		TextView titleTextView;
+		Button reply, likesBtn, commentsBtn, favoritesBtn;
 	}
 }

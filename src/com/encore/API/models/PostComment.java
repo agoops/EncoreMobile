@@ -3,7 +3,7 @@ package com.encore.API.models;
 import com.google.gson.annotations.SerializedName;
 
 public class PostComment {
-	@SerializedName("id")
+	@SerializedName("session")
 	private int sessionId;
 	
 	@SerializedName("comment_text")

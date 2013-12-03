@@ -91,6 +91,12 @@ public class APIService extends IntentService {
 		case T.CREATE_COMMENT:
 			createComment(intent.getExtras());
 			break;
+		case T.CREATE_LIKE:
+			createLike(intent.getExtras());
+			break;
+		case T.CREATE_FAVORITE:
+			createFavorite(intent.getExtras());
+			break;
 		default:
 			break;
 		}

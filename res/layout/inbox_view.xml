@@ -32,17 +32,28 @@
         android:id="@+id/comments_wrapper" >
 
 
-        <TextView
+        <Button
             android:id="@+id/likes"
+            style="?android:attr/buttonStyleSmall"
             android:layout_width="0dip"
             android:layout_height="fill_parent"
             android:layout_weight="1"
             android:gravity="center_vertical"
-            android:text="0 likes" 
+            android:text="Likes" 
             android:paddingLeft="8dip"/>
         
-        <TextView
+        <Button 
+            android:id="@+id/favorites"
+            style="?android:attr/buttonStyleSmall"
+            android:layout_width="0dip"
+            android:layout_height="fill_parent"
+            android:layout_weight="1"
+            android:gravity="center_vertical"
+            android:text="Favorites" />
+        
+        <Button
             android:id="@+id/comments"
+            style="?android:attr/buttonStyleSmall"
             android:layout_width="0dip"
             android:layout_height="fill_parent"
             android:layout_weight="1"
