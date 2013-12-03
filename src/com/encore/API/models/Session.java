@@ -13,8 +13,11 @@ public class Session {
 	@SerializedName("title")
 	private String title;
 	
-	@SerializedName("crowd")
-	private Crowd crowd;
+	@SerializedName("crowd_title")
+	private String crowdTitle;
+	
+	@SerializedName("crowd_id")
+	private int crowdId;
 	
 	@SerializedName("is_complete")
 	private int complete;
@@ -25,12 +28,14 @@ public class Session {
 	// GET only, use PostSession for POST
 	public Session() {
 		this.title = null;
-		this.crowd = null;
+		this.crowdTitle = null;
+		this.crowdId = -1;
 	}
 	
-	public Session(String title, Crowd crowd) {
+	public Session(String title, String crowdTitle, int crowdId) {
 		this.title = title;
-		this.crowd = crowd;
+		this.crowdTitle = crowdTitle;
+		this.crowdId = crowdId;
 	}
 
 	public int getId() {
@@ -48,13 +53,13 @@ public class Session {
 	public void setTitle(String title) {
 		this.title = title;
 	}
-
-	public Crowd getCrowd() {
-		return crowd;
+	
+	public String getCrowdTitle() {
+		return this.crowdTitle;
 	}
-
-	public void setCrowd(Crowd crowd) {
-		this.crowd = crowd;
+	
+	public int getCrowdId() {
+		return this.id;
 	}
 
 	public int isComplete() {
@@ -71,5 +76,9 @@ public class Session {
 
 	public void setComments(List<Comment> comments) {
 		this.comments = comments;
+	}
+	
+	public String toString() {
+		return "[" + "Title: " + this.title + ", Crowd Title" + this.crowdTitle + ", Crowd ID: " + this.crowdId + "]";
 	}
 }

@@ -119,11 +119,13 @@ public class InboxViewAdapter extends BaseAdapter implements OnClickListener {
 		case R.id.reply:
 			// Pass crowdId and sessionTitle on to StartSession2
 			// who in turn passes it on to RecordFragment
-			int crowdId = sesh.getCrowd().getId();
+			int crowdId = sesh.getCrowdId();
 			Intent launchRecordFragment = new Intent(mContext, StartSession2.class);
 			launchRecordFragment.putExtra("crowdId", crowdId);
 			launchRecordFragment.putExtra("sessionTitle", sesh.getTitle());
+			launchRecordFragment.putExtra("sessionId", sesh.getId());
 			((Activity) mContext).startActivity(launchRecordFragment);
+			
 			break;
 		case R.id.comments:
 			// Open an AlertDialog that holds a listview of current comments, as well as the ability to create your own comments

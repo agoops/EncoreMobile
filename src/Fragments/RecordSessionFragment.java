@@ -124,17 +124,25 @@ public class RecordSessionFragment extends Fragment implements OnClickListener {
 		{
 			// Only one crowd will be picked at any given time
 			// Make a "POST sessions" to create a new session
-			Intent apiIntent = new Intent(getActivity(),
-					APIService.class);
-			apiIntent.putExtra(T.API_TYPE, T.CREATE_SESSION);
-			apiIntent.putExtra(T.SESSION_TITLE, sessionTitle);
-			apiIntent.putExtra(T.SESSION_USE_EXISTING_CROWD, true);
-			apiIntent.putExtra(T.SESSION_CROWD_TITLE, "");
-			apiIntent.putExtra(T.SESSION_CROWD_MEMBERS, "");
-			apiIntent.putExtra(T.SESSION_CROWD_ID, "" + crowdId); 
-			Log.d(TAG, "crowdId: " + crowdId);
+//			Intent apiIntent = new Intent(getActivity(),
+//					APIService.class);
+//			apiIntent.putExtra(T.API_TYPE, T.CREATE_SESSION);
+//			apiIntent.putExtra(T.SESSION_TITLE, sessionTitle);
+//			apiIntent.putExtra(T.SESSION_USE_EXISTING_CROWD, true);
+//			apiIntent.putExtra(T.SESSION_CROWD_TITLE, "");
+//			apiIntent.putExtra(T.SESSION_CROWD_MEMBERS, "");
+//			apiIntent.putExtra(T.SESSION_CROWD_ID, "" + crowdId); 
+//			Log.d(TAG, "crowdId: " + crowdId);
+//			
+//			getActivity().startService(apiIntent);
+			// Add clip to the existing session
+			int sessionId = getArguments().getInt("sessionId");
 			
-			getActivity().startService(apiIntent);
+			Intent addClipIntent = new Intent(getActivity(), APIService.class);
+			addClipIntent.putExtra(T.API_TYPE, T.ADD_CLIP);
+			addClipIntent.putExtra(T.SESSION_ID, sessionId);
+			addClipIntent.putExtra(T.FILEPATH, path); 
+			getActivity().startService(addClipIntent);
 			
 			Intent launchHome = new Intent(getActivity(), HomeActivity.class);
 			startActivity(launchHome);

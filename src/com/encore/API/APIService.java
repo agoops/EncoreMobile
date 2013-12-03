@@ -123,10 +123,6 @@ public class APIService extends IntentService {
 	}
 	
 	
-	/***
-	 * TODO: DOESN"T WORK FUCKKKKKKKKK
-	 * @param data
-	 */
 	private void addClip(Bundle data) {
 
 		MultipartEntityBuilder multipartEntity = MultipartEntityBuilder
@@ -134,8 +130,8 @@ public class APIService extends IntentService {
 		multipartEntity.setMode(HttpMultipartMode.BROWSER_COMPATIBLE);
 
 		multipartEntity.setBoundary("---*******");
-		multipartEntity.addPart("clip",new FileBody(new File(data.getString(T.FILEPATH))));
-		multipartEntity.addTextBody("session", data.getString(T.SESSION));
+		multipartEntity.addPart("clip", new FileBody(new File(data.getString(T.FILEPATH))));
+		multipartEntity.addTextBody("session", Integer.toString(data.getInt(T.SESSION_ID)));
 		HttpEntity entity = multipartEntity.build();
 		try {
 			String result = api.addClip(entity);

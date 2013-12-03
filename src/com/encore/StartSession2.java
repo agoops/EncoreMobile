@@ -28,6 +28,7 @@ public class StartSession2 extends FragmentActivity {
 		Bundle bundle = new Bundle();
 		bundle.putInt("crowdId", crowdId);
 		bundle.putString("sessionTitle", intent.getStringExtra("sessionTitle"));
+		bundle.putInt("sessionId", intent.getIntExtra("sessionId", -1));
 		Log.d(TAG, "crowdId, sessionTitle: " + crowdId + ", " + intent.getStringExtra("sessionTitle"));
 		recordFragment.setArguments(bundle);
 		
