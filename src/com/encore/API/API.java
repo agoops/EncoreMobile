@@ -49,7 +49,7 @@ public class API {
 	private static String ACCESS_TOKEN = "invalidacecsstoken";
 	private static final String PROD = "http://rapchat-django.herokuapp.com";
 	private static final String QA = "http://rapchat-django.herokuapp.com";
-	private static final String BASE_URL = "http://192.168.1.182:3000";
+	private static final String BASE_URL = "http://172.27.123.89:3000";
 
 	// Common URLs
 	private static final String USERS = BASE_URL + "/users/";
@@ -104,7 +104,7 @@ public class API {
 	private static final String CREATE_LIKE = SESSIONS + "likes/";
 	
 	// Favorites --- FAVORITES WILL ONLY BE ON NODE, NOT ON DJANGO ---
-	private static final String CREATE_FAVORITE = SESSIONS + "favorites/";
+	private static final String CREATE_FAVORITE = BASE_URL + "/favorites/";
 
 	public API(OkHttpClient client, Context context) {
 		this.client = client;
@@ -505,6 +505,7 @@ public class API {
 		String result = "emptyresult";
 		try {
 			result = get(url, String.class);
+			Log.d(TAG, "getSessions resulting JSON: " + result);
 		} catch (IOException e) {
 			Log.d(TAG, "getSessions() error");
 			throw e;

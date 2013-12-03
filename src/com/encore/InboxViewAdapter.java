@@ -98,8 +98,8 @@ public class InboxViewAdapter extends BaseAdapter implements OnClickListener {
 			
 			// set comment string and views for comments, and click listener
 			// Get a list of comments from the session
-			List<Comment> comments = entry.getComments();
-			viewHolder.commentsBtn.setText(comments.size() + " comments");
+//			List<Comment> comments = entry.getComments();
+//			viewHolder.commentsBtn.setText(comments.size() + " comments");
 			
 			rowView.setTag(viewHolder);
 		} else {
