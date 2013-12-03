@@ -166,7 +166,6 @@ public class InboxViewAdapter extends BaseAdapter implements OnClickListener {
 					}
 				});
 			
-			
 			AlertDialog dialog = builder.create();
 			dialog.show();
 			

@@ -103,7 +103,7 @@ public class API {
 	//	Likes
 	private static final String CREATE_LIKE = SESSIONS + "likes/";
 	
-	// Favorites --- FAVORITES WILL ONLY BE ON NODE, NOT ON DJANGO ---
+	// Favorites 
 	private static final String CREATE_FAVORITE = BASE_URL + "/favorites/";
 
 	public API(OkHttpClient client, Context context) {
