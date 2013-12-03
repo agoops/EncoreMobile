@@ -1,6 +1,7 @@
 package com.encore.views;
 
 import java.util.ArrayList;
+
 import util.T;
 import android.content.Intent;
 import android.os.Bundle;
@@ -17,6 +18,7 @@ import com.encore.FriendsFragmentAdapter;
 import com.encore.R;
 import com.encore.API.APIService;
 import com.encore.API.models.Profile;
+import com.encore.API.models.User;
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
@@ -78,7 +80,7 @@ public class FriendsFragment extends Fragment {
 				 * that it is seperate), and update UI with Handler given.
 				 */
 				String result = resultData.getString("result");
-				ArrayList<Profile> profiles = convertJsonToListOfProfile(result);
+				ArrayList<User> profiles = convertJsonToListOfUser(result);
 				adapter.setItemList(profiles);
 				adapter.notifyDataSetChanged();
 			} else {
@@ -89,17 +91,17 @@ public class FriendsFragment extends Fragment {
 	}
 
 	// TODO: Use GSON instead?
-	public ArrayList<Profile> convertJsonToListOfProfile(String json) {
+	public ArrayList<User> convertJsonToListOfUser(String json) {
 		Log.d(tag, "CONVERT TO OBJECT STARTED");
 		Gson gson = new Gson();
-		ArrayList<Profile> profiles = new ArrayList<Profile>();
+		ArrayList<User> profiles = new ArrayList<User>();
 		JsonParser jsonParser = new JsonParser();
 
 		JsonArray profilesJson = jsonParser.parse(json).getAsJsonObject()
 				.getAsJsonArray("friends");
 
 		for (JsonElement j : profilesJson) {
-			Profile profile = gson.fromJson(j, Profile.class);
+			User profile = gson.fromJson(j, User.class);
 			profiles.add(profile);
 			Log.d(tag, profile.toString());
 		}
