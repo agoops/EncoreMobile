@@ -255,16 +255,28 @@ public class APIService extends IntentService {
 
 	private void signUp(Bundle data) {
 		Log.d(TAG, "signUp called");
+		String result = "FAILED";
 		try {
-//			User user = new User(data.getString(T.USERNAME),
-//					data.getString(T.PASSWORD), data.getString(T.FIRST_NAME),
-//					data.getString(T.LAST_NAME), data.getString(T.EMAIL),
-//					data.getString(T.PHONE_NUMBER));
-			User user = new User();
-			api.signUp(user);
+			JSONObject json = new JSONObject();
+			json.put("username", data.get(T.USERNAME));
+			json.put("password", data.get(T.PASSWORD));
+			json.put("first_name", data.get(T.FIRST_NAME));
+			json.put("last_name", data.get(T.LAST_NAME));
+			json.put("email", data.get(T.EMAIL));
+			json.put("phone_number", data.get(T.PHONE_NUMBER));
+			StringEntity entity = new StringEntity(json.toString());
+			result = api.signUp(entity);
+			String token = (new JSONObject(result)).getString("access_token");
+			
+			TokenHelper.updateToken(this, token);
+			Bundle bundle = new Bundle();
+			bundle.putString("token", token);
+			resultReceiver.send(1, bundle);
 		} catch (Exception e) {
 			Log.e(TAG, e.getMessage() + " ");
+			resultReceiver.send(0,null);
 		}
+		
 	}
 
 	private void createSession(Bundle data) {

@@ -345,15 +345,13 @@ public class API {
 		}
 	}
 
-	public String signUp(User user) throws Exception {
-		Log.d(TAG, "signUp called, body: " + getGson().toJson(user).toString());
+	public String signUp(StringEntity entity) throws Exception {
+		Log.d(TAG, "signUp called, body: ");
 
 		String url = SIGN_UP;
-		User mUser = post(url, new StringEntity(getGson().toJson(user)),
-				User.class);
+		String result = post(url, entity, String.class);
 
-		// Access Token!
-		return "accessToken to be";
+		return result;
 	}
 
 	public String signIn(StringEntity entity) throws Exception {
