@@ -8,27 +8,37 @@ import java.io.OutputStream;
 import java.lang.reflect.Type;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.List;
 
+import org.apache.http.HttpEntity;
+import org.apache.http.HttpResponse;
+import org.apache.http.client.ClientProtocolException;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.StringEntity;
+import org.apache.http.impl.client.DefaultHttpClient;
 
 import util.Constants;
+import android.content.Context;
 import android.util.Log;
 
-import com.encore.API.models.PostSession;
-import com.encore.API.models.Session;
+import com.encore.TokenHelper;
+import com.encore.API.models.Crowd;
+import com.encore.API.models.Crowds;
+import com.encore.API.models.Favorite;
+import com.encore.API.models.Like;
+import com.encore.API.models.PostComment;
+import com.encore.API.models.PostCrowd;
 import com.encore.API.models.User;
 import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
 import com.squareup.okhttp.OkHttpClient;
+//import com.encore.API.models.Crowds;
 
 public class API {
 	OkHttpClient client;
 	private static Gson mGson;
 
 	private static final String TAG = "API";
-	
+
 	/***************************************
 	 * 
 	 * Different endpoints the client can hit
@@ -36,7 +46,7 @@ public class API {
 	 * *****************************************
 	 */
 	private static final String AUTHORIZATION = "Authorization";
-	private static String ACCESS_TOKEN = "result+from+creating+user+and+storing+access+token"; // send on every request
+	private static String ACCESS_TOKEN = "invalidacecsstoken";
 	private static final String PROD = "http://rapchat-django.herokuapp.com";
 	private static final String QA = "http://rapchat-django.herokuapp.com";
 	private static final String BASE_URL = (Constants.DEBUG) ? QA : PROD;
@@ -60,12 +70,10 @@ public class API {
 	private static final String DELETE_USER = USERS + "%s";
 
 	// Sessions
-	// private static final String ALL_SESSIONS = SESSIONS;
 	private static final String CREATE_SESSION = SESSIONS;
 	private static final String GET_SESSION = SESSIONS + "%s";
 	private static final String GET_SESSIONS = SESSIONS;
-
-	// private static final String ADD_CLIP = SESSIONS + "%s/addClip";
+	private static final String ADD_CLIP = SESSIONS + "addclip/";
 
 	// Clips
 	// private static final String ALL_CLIPS = CLIPS;
@@ -79,17 +87,28 @@ public class API {
 	private static final String GET_FRIEND = FRIENDS + "%s"; // untested
 	private static final String GET_FRIEND_REQUEST = FRIENDS + "requests";
 	private static final String SEND_FRIEND_REQUEST = FRIENDS + "requests/";
-	private static final String CREATE_FRIEND_REQUEST_REPLY = FRIENDS + "requests/reply";
-	
+	private static final String CREATE_FRIEND_REQUEST_REPLY = FRIENDS
+			+ "requests/reply";
+
 	// Crowds
-	// private static final String ALL_CROWDS = CROWDS;
-	// private static final String CREATE_CROWD = CROWDS + "create/";
+	private static final String GET_CROWDS = CROWDS;
+	private static final String CREATE_CROWD = CROWDS;
 	// private static final String GET_CROWD = CROWDS + "%s";
 	// private static final String UPDATE_CROWD = CROWDS + "%s";
 	// private static final String DELETE_CROWD = CROWDS + "%s";
+	
+	// Comments
+	private static final String CREATE_COMMENT = SESSIONS + "comments/";
+	
+	//	Likes
+	private static final String CREATE_LIKE = SESSIONS + "likes/";
+	
+	// Favorites --- FAVORITES WILL ONLY BE ON NODE, NOT ON DJANGO ---
+	private static final String CREATE_FAVORITE = SESSIONS + "favorites/";
 
-	public API(OkHttpClient client) {
+	public API(OkHttpClient client, Context context) {
 		this.client = client;
+		this.ACCESS_TOKEN = "Token " + TokenHelper.getToken(context);
 
 	}
 
@@ -99,28 +118,25 @@ public class API {
 		}
 		return mGson;
 	}
-	
-	
+
 	/**********************************************
 	 * 
 	 * GET, POST, PUT, DELETE api service call methods
 	 * 
 	 * *********************************************
 	 */
-	
+
 	// ----------- GET ------------
 	private <T> T get(String url, Type type) throws IOException {
 		URL getUrl = new URL(url);
 		HttpURLConnection connection = client.open(getUrl);
-//		connection.setDoInput(true);
-//		connection.setRequestProperty("Content-Type", "application/json");
 		connection.setRequestProperty(AUTHORIZATION, ACCESS_TOKEN);
 		InputStream in = null;
 		try {
 			connection.setRequestMethod("GET");
-			Log.d(TAG, connection.toString());
+			Log.d(TAG, "connection: " + connection.toString());
 			in = connection.getInputStream();
-			Log.d(TAG, in.toString());
+			Log.d(TAG, "input stream: " + in.toString());
 			// return getGson().fromJson(new InputStreamReader(in), type);
 
 			/* Adding this section to see response */
@@ -134,7 +150,7 @@ public class API {
 
 		} catch (Exception e) {
 			e.printStackTrace();
-			Log.e("API", "" + e.getMessage());
+			Log.e("API", e.getMessage() + " ");
 			return null;
 		} finally {
 			if (in != null)
@@ -143,7 +159,7 @@ public class API {
 	}
 
 	// ------------- POST -----------
-	private <T> T post(String url, StringEntity entity, Type type)
+	private <T> T post(String url, HttpEntity entity, Type type)
 			throws IOException {
 		URL postUrl = new URL(url);
 		HttpURLConnection connection = client.open(postUrl);
@@ -158,10 +174,6 @@ public class API {
 			// Write entity to the output stream
 			out = connection.getOutputStream();
 			entity.writeTo(out);
-			Log.d(TAG,
-					"POST'ing with auth: "
-							+ connection.getRequestProperty(AUTHORIZATION)
-							+ " and header " + entity);
 			out.close();
 
 			// Read the response code
@@ -193,6 +205,36 @@ public class API {
 			if (in != null)
 				in.close();
 		}
+	}
+
+	// ---------------------POST CLIP----------------------
+
+	private String postClip(HttpEntity entity, String url) throws Exception {
+		
+		HttpClient client = new DefaultHttpClient();
+	    HttpPost post = new HttpPost(url);
+	    post.addHeader(AUTHORIZATION, ACCESS_TOKEN);
+	    post.setEntity(entity);
+	    
+	    HttpResponse response;
+		try {
+			response = client.execute(post);
+		} catch (ClientProtocolException e) {
+//			e.printStackTrace();
+			throw e;
+		} catch (IOException e) {
+//			e.printStackTrace();
+			throw e;
+		}
+		
+	    entity = response.getEntity();
+	    BufferedReader r = new BufferedReader(new InputStreamReader(entity.getContent()));
+		StringBuilder total = new StringBuilder();
+		String line;
+		while ((line = r.readLine()) != null) {
+			total.append(line);
+		}
+		return total.toString();
 	}
 
 	// ------------- PUT -----------
@@ -260,17 +302,49 @@ public class API {
 				in.close();
 		}
 	}
-	
-	
-	
+
 	/*************************************************************
 	 * 
-	 * Helper methods to take in the kind of request occurring, and execute the proper method above.
+	 * Helper methods to take in the kind of request occurring, and execute the
+	 * proper method above.
 	 * 
-	 * ***************************************************************
+	 * *
+	 * 
+	 * @throws IOException
+	 *             *************************************************************
+	 *             *
 	 */
-	
-	
+
+	public String acceptFriendRequest(StringEntity entity) throws IOException {
+		String url = REPLY;
+		String result = "emptyreuslt_failed";
+
+		try {
+			result = post(url, entity, String.class);
+		} catch (IOException e) {
+			throw e;
+		}
+		return result;
+	}
+
+	public String addClip(HttpEntity entity)
+			throws Exception {
+
+		// String url, StringEntity entity, Type type, String path
+
+		String url = ADD_CLIP;
+		
+		String result = "emptyresult_failed";
+		try {
+			result = postClip(entity, url);
+			return result;
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			throw e;
+		}
+	}
+
 	public String signUp(User user) throws Exception {
 		Log.d(TAG, "signUp called, body: " + getGson().toJson(user).toString());
 
@@ -291,14 +365,16 @@ public class API {
 		} catch (Exception e) {
 			throw e;
 		}
+		Log.d(TAG, "Result is " + result);
 		return result;
 	}
-	
-	public String sendFriendRequest(String token, StringEntity entity) throws Exception {
+
+	public String sendFriendRequest(String token, StringEntity entity)
+			throws Exception {
 		ACCESS_TOKEN = "Token " + token;
 		String url = SEND_FRIEND_REQUEST;
 		String result = "emptystirngdawg-sendfriendrequest probably didn't work";
-		
+
 		try {
 			result = post(url, entity, String.class);
 		} catch (Exception e) {
@@ -306,7 +382,21 @@ public class API {
 		}
 		return result;
 	}
-	
+
+	public String getPendingFriendRequests(String token) throws Exception {
+		ACCESS_TOKEN = "Token " + token;
+		String url = REQUESTS;
+		String result = "emptystringiffailed??";
+
+		try {
+			result = get(url, String.class);
+			return result;
+		} catch (Exception e) {
+			Log.d(TAG, "API.getPendingFriendRequests() error");
+			throw e;
+		}
+	}
+
 	public String getUsers(String token) throws Exception {
 		Log.d(TAG, "getUsers called");
 		ACCESS_TOKEN = "Token " + token;
@@ -316,11 +406,11 @@ public class API {
 			result = get(url, String.class);
 			return result;
 		} catch (Exception e) {
-			Log.d(TAG,"API.getUsers error");
+			Log.d(TAG, "API.getUsers error");
 			throw e;
 		}
 	}
-	
+
 	public String getFriends(String token) throws Exception {
 		Log.d(TAG, "getFriends called");
 		ACCESS_TOKEN = "Token " + token;
@@ -330,55 +420,147 @@ public class API {
 			result = get(url, String.class);
 			return result;
 		} catch (Exception e) {
-			Log.d(TAG,"API.getFriends error");
+			Log.d(TAG, "API.getFriends error");
 			throw e;
 		}
-		
-	}
 
-	public Session createSession(PostSession pSession, String token) throws Exception {
+	}
+	
+	// POST to sessions/
+	// Creates a new session
+	public String createSession(HttpEntity entity) throws Exception {
+		
 		Log.d(TAG, "createSession() called");
 		String url = CREATE_SESSION;
 		String postResult = null;
-		Session result = null;
-		ACCESS_TOKEN = "Token " + token;
+		String result = null;
 		try {
-			String JSON = getGson().toJson(pSession);
-			Log.d(TAG, "JSON: " + JSON);
-			
-			postResult = post(url, new StringEntity(getGson().toJson(pSession)),
-					String.class);
-			result = getGson().fromJson(postResult, Session.class);
-			
+			postResult = postClip(entity, url);
+			result = postResult;
+			Log.d(TAG, "POST result: " + postResult);
+//			result = getGson().fromJson(postResult, String.class);
+
 		} catch (Exception e) {
 			Log.e(TAG, "createSession() error");
 			throw e;
 		}
 		return result;
 	}
+	
+	// GET crowds/
+	// Returns all crowds
+	public String getCrowds(String token) throws Exception {
+		Log.d(TAG, "getCrowds called");
+		ACCESS_TOKEN = "Token " + token;
+		String url = GET_CROWDS;
+		String json = "";
+		 Crowds result = null;
 
-	public Session getSession(String id) throws Exception {
-		Log.d(TAG, "getSession called with body: "
-				+ getGson().toJson(id).toString());
+		// try {
+		// json = get(url, Crowds.class);
+		// result = getGson().fromJson(json, Crowds.class);
+		// } catch(Exception e) {
+		// Log.e(TAG, "getCrowds() error");
+		// throw e;
+		// }
 
-		String url = String.format(GET_SESSION, id);
-		return get(url, Session.class);
+		try {
+			json = get(url, Crowds.class);
+			result  = getGson().fromJson(json, Crowds.class);
+		} catch(Exception e) {
+			Log.e(TAG, "getCrowds() error");
+			throw e;
+		}
+		
+		return json;
 	}
-
-	// NEEDS TO BE TESTED
-	public List<Session> getSessions() throws Exception {
+	
+	// POST crowds/
+	// Creates a new crowd
+	public Crowd createCrowd(PostCrowd pCrowd, String token) throws Exception {
+		Log.d(TAG, "createCrowd called");
+		ACCESS_TOKEN = "Token " + token;
+		String url = CREATE_CROWD;
+		String postResult = null;
+		Crowd resultCrowd = null;
+		
+		try {
+			String JSON = getGson().toJson(pCrowd);
+			Log.d(TAG, "Posting JSON: " + JSON);
+			
+			postResult = post(url, new StringEntity(JSON), String.class);
+			
+			resultCrowd = getGson().fromJson(postResult, Crowd.class);
+		} catch (Exception e) {
+			Log.e(TAG, "createCrowd() error");
+			throw e;
+		}
+		return resultCrowd;
+	}
+	
+	public String getSessions() throws IOException {
 		Log.d(TAG, "getSessions called");
 
 		String url = GET_SESSIONS;
-		Type listType = new TypeToken<List<Session>>() {
-		}.getType();
-
-		// Query doesn't work, using dummy data for now.
-		List<Session> dummy = new ArrayList<Session>();
-		dummy.add(new Session());
-		dummy.add(new Session());
-		dummy.add(new Session());
-		return dummy;
-		// return get(url, listType);
+		String result = "emptyresult";
+		try {
+			result = get(url, String.class);
+		} catch (IOException e) {
+			Log.d(TAG, "getSessions() error");
+			throw e;
+		}
+		return result;
+	}
+	
+	public String createComment(PostComment pComment, String token) throws Exception {
+		Log.d(TAG, "createComment called");
+		ACCESS_TOKEN = "Token " + token;
+		String url = CREATE_COMMENT;
+		String resultJSON = null;
+		
+		try {
+			String JSON = getGson().toJson(pComment);
+			Log.d(TAG, "Posting JSON: " + JSON);
+			resultJSON = post(url, new StringEntity(JSON), String.class);
+		} catch (Exception e) {
+			Log.e(TAG, "createComment() error");
+			throw e;
+		}
+		return resultJSON;
+	}
+	
+	public String createLike(Like like, String token) throws Exception {
+		Log.d(TAG, "createLike called");
+		ACCESS_TOKEN = "Token " + token;
+		String url = CREATE_LIKE;
+		String resultJSON = null;
+		
+		try {
+			String JSON = getGson().toJson(like);
+			Log.d(TAG, "Posting JSON: " + JSON);
+			resultJSON = post(url, new StringEntity(JSON), String.class);
+		} catch (Exception e) {
+			Log.e(TAG, "createLike() error");
+			throw e;
+		}
+		return resultJSON;
+	}
+	
+	// -- Endpoint for favorites is not up yet ---
+	public String createFavorite(Favorite fav, String token) throws Exception {
+		Log.d(TAG, "createFavorite called");
+		ACCESS_TOKEN = "Token " + token;
+		String url = CREATE_FAVORITE;
+		String resultJSON = null;
+		
+		try {
+			String JSON = getGson().toJson(fav);
+			Log.d(TAG, "Posting JSON: " + JSON);
+			resultJSON = post(url, new StringEntity(JSON), String.class);
+		} catch(Exception e) {
+			Log.e(TAG, "createComment() error");
+			throw e;
+		}
+		return resultJSON;
 	}
 }

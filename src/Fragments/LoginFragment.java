@@ -76,9 +76,26 @@ public class LoginFragment extends Fragment implements OnClickListener {
     }
 
     public void skip(View view) {
-        startActivity(new Intent(getActivity(), HomeActivity.class));
+        goToHomeScreen();
     }
     
+    private class LoginReceiver extends ResultReceiver {
+    	public LoginReceiver(Handler handler) {
+    		super(handler);
+    		// TODO Auto-generated constructor stub
+    	}
+    	
+    	@Override
+    	protected void onReceiveResult(int resultCode, Bundle resultData) {
+    		if (resultCode == 1) {
+    			Log.d(TAG, "APIService returned successful");
+    			goToHomeScreen();
+    		}
+    		else {
+    			showLoginFailed();
+    		}
+    	}
+    }
     private void goToHomeScreen() {
         Intent i =  new Intent(getActivity(), HomeActivity.class);
         startActivity(i);
@@ -87,22 +104,5 @@ public class LoginFragment extends Fragment implements OnClickListener {
         Toast.makeText(getActivity(), "Login Failed", Toast.LENGTH_SHORT).show();
     }
     
-    private class LoginReceiver extends ResultReceiver {
-        public LoginReceiver(Handler handler) {
-                super(handler);
-                // TODO Auto-generated constructor stub
-        }
-        
-        @Override
-        protected void onReceiveResult(int resultCode, Bundle resultData) {
-                if (resultCode == 1) {
-                        Log.d(TAG, "APIService returned successful");
-                        goToHomeScreen();
-                }
-                else {
-                        showLoginFailed();
-                }
-        }
-    }
 	
 }

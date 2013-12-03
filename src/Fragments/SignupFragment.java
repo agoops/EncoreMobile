@@ -13,7 +13,7 @@ import android.widget.EditText;
 
 import com.encore.R;
 import com.encore.API.APIService;
-import com.encore.views.HomeActivity;
+import com.encore.views.NewsfeedActivity;
 
 public class SignupFragment extends Fragment implements OnClickListener {
 	EditText username, password, first_name, 
@@ -71,7 +71,7 @@ public class SignupFragment extends Fragment implements OnClickListener {
 		
 		getActivity().startService(apiIntent);
 		
-		Intent launchHome = new Intent(getActivity(), HomeActivity.class);
+		Intent launchHome = new Intent(getActivity(), NewsfeedActivity.class);
 		startActivity(launchHome);
 	}
 }

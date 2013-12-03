@@ -14,6 +14,8 @@ public class PostSession {
 	@SerializedName("use_existing_crowd")
 	private boolean useExistingCrowd;
 	
+	private String filepath;
+	
 	// POST only, use Session for GET
 	public PostSession() {
 		this.title = null;
@@ -24,14 +26,18 @@ public class PostSession {
 	}
 
 	public PostSession(String title, boolean useExistingCrowd, String crowdTitle, String[] crowdMembers,
-			int crowdId) {
+			int crowdId, String filepath) {
 		this.title = title;
 		this.crowdTitle = crowdTitle;
 		this.crowdMembers = crowdMembers;
 		this.crowd = crowdId;
 		this.useExistingCrowd = useExistingCrowd;
+		this.filepath=filepath;
 	}
-
+	
+	public String getFilepath() {
+		return filepath;
+	}
 	public void setTitle(String title) {
 		this.title = title;
 	}

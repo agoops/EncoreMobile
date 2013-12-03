@@ -87,8 +87,7 @@ public class UploadService2 extends Service {
 		try {
 			//Toast.makeText(this, "Uploading File", Toast.LENGTH_LONG).show();
 
-			FileInputStream fileInputStream = new FileInputStream(new File(
-					pathToOurFile));
+			
 
 			URL url = new URL(urlServer);
 			connection = (HttpURLConnection) url.openConnection();
@@ -112,7 +111,11 @@ public class UploadService2 extends Service {
 					.writeBytes("Content-Disposition: form-data; name=\"clip\";filename=\""
 							+ pathToOurFile + "\"" + lineEnd);
 			outputStream.writeBytes(lineEnd);
-
+			
+			String pathToOurFile = "path/to/file";
+			int maxBufferSize = 1 * 1024 * 1024;
+			FileInputStream fileInputStream = new FileInputStream(new File(
+					pathToOurFile));
 			bytesAvailable = fileInputStream.available();
 			bufferSize = Math.min(bytesAvailable, maxBufferSize);
 			buffer = new byte[bufferSize];

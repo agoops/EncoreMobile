@@ -9,27 +9,29 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.BaseAdapter;
 import android.widget.CheckBox;
+import android.widget.CompoundButton;
+import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.TextView;
 
 import com.encore.API.models.Profile;
-import com.encore.API.models.User;
+import com.google.gson.Gson;
 
-public class FriendsFragmentAdapter extends ArrayAdapter<Profile> {
-
+public class FriendsFragmentAdapter extends ArrayAdapter<Profile> implements OnCheckedChangeListener {
+	private static final String TAG = "FriendsFragment";
+	
 	private Context mContext;
 	private List<Profile> mFriendList;
+	private List<String> selectedFriendsList;
 	private String tag = "FriendsFragmentAdapter";
+	private static LayoutInflater inflater = null;
 
 	public FriendsFragmentAdapter(Context context, int resource,
 			List<Profile> objects) {
 		super(context, resource, objects);
 		mContext = context;
 		mFriendList = objects;
-		
-		
-		
+		selectedFriendsList = new ArrayList<String>();
 	}
 
 	// public FriendsFragmentAdapter(Context context, List<Profile> list) {
@@ -61,34 +63,56 @@ public class FriendsFragmentAdapter extends ArrayAdapter<Profile> {
 
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
-		Log.d(tag, "Populating position: " + position);
-		// reference to convertView
-		FriendView v = (FriendView) convertView;
-		User user = mFriendList.get(position).getUser();
-		Log.d(tag, "User for this view is: " + user.getUsername());
-
-		// inflate new layout if null
-		if (v == null) {
-			LayoutInflater inflater = LayoutInflater.from(mContext);
-			v = (FriendView) inflater.inflate(R.layout.friend_view, parent,
-					false);
+		inflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+		View rowView = convertView;
+		final FriendsHolder viewHolder;
+		
+		// Inflate the friends_view if null
+		if(convertView == null) {
+			rowView = inflater.inflate(R.layout.friend_view, null);
+			viewHolder = new FriendsHolder();
+			
+			viewHolder.username = (TextView) rowView.findViewById(R.id.username_friend_view);
+			viewHolder.checkBox = (CheckBox) rowView.findViewById(R.id.checkbox_friend_view);
+			
+			rowView.setTag(viewHolder);
+		} else {
+			// Avoids calling findViewById() on resource every time.
+			viewHolder = (FriendsHolder) rowView.getTag();
 		}
-
-		// load controls from layout resources
-		TextView username = (TextView) v
-				.findViewById(R.id.username_friend_view);
-		CheckBox checkbox = (CheckBox) v
-				.findViewById(R.id.checkbox_friend_view);
-
-		// set data to display
-		username.setText(user.getUsername());
-		checkbox.setChecked(false);
-
-		// return view
-		return v;
+		
+		// And update its title (which will happen for all crowds)
+		Profile profile = mFriendList.get(position);
+		viewHolder.username.setText(profile.getUser().getUsername());
+		viewHolder.checkBox.setTag(position);
+		viewHolder.checkBox.setChecked(false);
+		viewHolder.checkBox.setOnCheckedChangeListener(this);
+		
+    	return rowView;
 	}
 
 	public void setItemList(ArrayList<Profile> profiles) {
 		this.mFriendList = profiles;
+	}
+	
+	@Override
+	public void onCheckedChanged(CompoundButton buttonView, 
+			boolean isChecked) {
+		int position = (Integer) buttonView.getTag();
+		if(isChecked) {
+			selectedFriendsList.add(mFriendList.get(position).getUser().getUsername());
+		} else {
+			selectedFriendsList.remove(mFriendList.get(position).getUser().getUsername());
+		}
+	}
+	
+	public List<String> getSelectedFriends() {
+		Log.d(TAG, "getting selected friends: " + selectedFriendsList.toString());
+		return selectedFriendsList;
+	}
+	
+	static class FriendsHolder {
+		TextView username;
+		CheckBox checkBox;
 	}
 }

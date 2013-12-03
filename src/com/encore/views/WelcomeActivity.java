@@ -18,14 +18,12 @@ public class WelcomeActivity extends FragmentActivity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.placeholder);
 		
-		// Create new transaction and welcome screen fragment
+		// Create a new transaction and welcome screen fragment
 		FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
 		IntroFragment introFragment = new IntroFragment();
 		
-		// Add fragment and commit transaction
-		ft.add(R.id.welcome_fragment_placeholder, introFragment);
+		// Add the fragment to and commit the transaction
+		ft.add(R.id.fragment_placeholder, introFragment);
 		ft.commit();
 	}
-	
 }
-// Sessions & Comments accurately reflect Django models. createSession() endpoint works. LoginActivity converted to fragment. SignupActivity still needs to get converted to fragments

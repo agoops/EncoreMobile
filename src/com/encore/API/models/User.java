@@ -4,7 +4,7 @@ import java.sql.Date;
 
 import com.google.gson.annotations.SerializedName;
 
-public class User {
+public class User implements UserInfo{
 
 	/*
 	 *{"friends": [

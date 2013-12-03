@@ -67,7 +67,7 @@ public class FriendsFragment extends Fragment {
 		@Override
 		protected void onReceiveResult(int resultCode, Bundle resultData) {
 			if (resultCode == 1) {
-				Log.d(tag, "APISerivce returned successful with friends");
+				Log.d(tag, "APIService returned successful with friends");
 				/*
 				 * TODO:WARNING This conversion of json to List<Profile> might
 				 * be running on UI thread and that might be bad. EDIT:
@@ -88,6 +88,7 @@ public class FriendsFragment extends Fragment {
 		}
 	}
 
+	// TODO: Use GSON instead?
 	public ArrayList<Profile> convertJsonToListOfProfile(String json) {
 		Log.d(tag, "CONVERT TO OBJECT STARTED");
 		Gson gson = new Gson();

@@ -2,7 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent" >
-	
+        
     
     <Button
         android:id="@+id/send_session"
@@ -29,20 +29,20 @@
         android:layout_below="@id/existing_crowd"
         android:layout_centerHorizontal="true"
         android:orientation="horizontal">
-	    <RadioButton 
-	        android:id="@+id/yes_radio"
-	        android:layout_width="wrap_content"
-	        android:layout_height="wrap_content"
-	        android:text="Yes"
-	        android:checked="true"
-	        android:onClick="onRadioButtonClicked" />
-	    
-	    <RadioButton 
-	        android:id="@+id/no_radio"
-	        android:layout_width="wrap_content"
-	        android:layout_height="wrap_content"
-	        android:text="No"
-	        android:onClick="onRadioButtonClicked" />
+            <RadioButton 
+                android:id="@+id/yes_radio"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Yes"
+                android:checked="true"
+                android:onClick="onRadioButtonClicked" />
+            
+            <RadioButton 
+                android:id="@+id/no_radio"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="No"
+                android:onClick="onRadioButtonClicked" />
     </RadioGroup>
 
     
@@ -83,8 +83,8 @@
         android:id="@+id/btnStart"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
         android:layout_alignParentLeft="true"
+        android:layout_below="@id/crowd_id"
         android:onClick="record"
         android:text="REC" />
 
@@ -92,7 +92,7 @@
         android:id="@+id/btnStop"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
+        android:layout_below="@id/crowd_id"
         android:layout_alignParentRight="true"
         android:text="STOP" />
 
@@ -100,9 +100,31 @@
         android:id="@+id/btnPlayback"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
+        android:layout_below="@id/crowd_id"
         android:layout_centerHorizontal="true"
         android:text="Play" />
+
+    <Button
+        android:id="@+id/get_sessions"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:text="GetSessions" />
     
+    
+    <ListView
+        android:id="@+id/crowds_lv"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/btnStop" />
+
+    <Button
+        android:id="@+id/add_clip"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/btnPlayback"
+        android:layout_alignParentTop="true"
+        android:text="Add Clip" />
 
 </RelativeLayout>
