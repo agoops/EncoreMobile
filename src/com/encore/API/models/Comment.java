@@ -5,10 +5,10 @@ import android.util.Log;
 import com.google.gson.annotations.SerializedName;
 
 public class Comment {
-	@SerializedName("creator")
+	@SerializedName("user_id")
 	private int creator;
 	
-	@SerializedName("session")
+	@SerializedName("session_id")
 	private int session;
 	
 	@SerializedName("text")

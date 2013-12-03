@@ -76,8 +76,6 @@ public class SignupFragment extends Fragment implements OnClickListener {
 		apiIntent.putExtra(T.PHONE_NUMBER, phone_number.getText().toString());
 		
 		getActivity().startService(apiIntent);
-		
-		
 	}
 	
 	private class SignUpReceiver extends ResultReceiver{
