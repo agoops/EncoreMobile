@@ -15,19 +15,19 @@ import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.TextView;
 
 import com.encore.API.models.Profile;
-import com.google.gson.Gson;
+import com.encore.API.models.User;
 
-public class FriendsFragmentAdapter extends ArrayAdapter<Profile> implements OnCheckedChangeListener {
+public class FriendsFragmentAdapter extends ArrayAdapter<User> implements OnCheckedChangeListener {
 	private static final String TAG = "FriendsFragment";
 	
 	private Context mContext;
-	private List<Profile> mFriendList;
+	private List<User> mFriendList;
 	private List<String> selectedFriendsList;
 	private String tag = "FriendsFragmentAdapter";
 	private static LayoutInflater inflater = null;
 
 	public FriendsFragmentAdapter(Context context, int resource,
-			List<Profile> objects) {
+			List<User> objects) {
 		super(context, resource, objects);
 		mContext = context;
 		mFriendList = objects;
@@ -49,7 +49,7 @@ public class FriendsFragmentAdapter extends ArrayAdapter<Profile> implements OnC
 	}
 
 	@Override
-	public Profile getItem(int arg0) {
+	public User getItem(int arg0) {
 		if (mFriendList != null) {
 			return mFriendList.get(arg0);
 		}
@@ -82,8 +82,8 @@ public class FriendsFragmentAdapter extends ArrayAdapter<Profile> implements OnC
 		}
 		
 		// And update its title (which will happen for all crowds)
-		Profile profile = mFriendList.get(position);
-		viewHolder.username.setText(profile.getUser().getUsername());
+		User user = mFriendList.get(position);
+		viewHolder.username.setText(user.getUsername());
 		viewHolder.checkBox.setTag(position);
 		viewHolder.checkBox.setChecked(false);
 		viewHolder.checkBox.setOnCheckedChangeListener(this);
@@ -91,8 +91,8 @@ public class FriendsFragmentAdapter extends ArrayAdapter<Profile> implements OnC
     	return rowView;
 	}
 
-	public void setItemList(ArrayList<Profile> profiles) {
-		this.mFriendList = profiles;
+	public void setItemList(ArrayList<User> users) {
+		this.mFriendList = users;
 	}
 	
 	@Override
@@ -100,9 +100,9 @@ public class FriendsFragmentAdapter extends ArrayAdapter<Profile> implements OnC
 			boolean isChecked) {
 		int position = (Integer) buttonView.getTag();
 		if(isChecked) {
-			selectedFriendsList.add(mFriendList.get(position).getUser().getUsername());
+			selectedFriendsList.add(mFriendList.get(position).getUsername());
 		} else {
-			selectedFriendsList.remove(mFriendList.get(position).getUser().getUsername());
+			selectedFriendsList.remove(mFriendList.get(position).getUsername());
 		}
 	}
 	

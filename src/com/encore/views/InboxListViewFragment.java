@@ -83,15 +83,21 @@ public class InboxListViewFragment extends Fragment{
 
 		@Override
 		public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-			Log.d(TAG, "parent = " + parent.toString() );
-			Log.d(TAG, "view = " + view.toString());
-			SessionView element = (SessionView) view;
-			Uri uri = Uri.parse(element.getUri());
-			Log.d(TAG, "uri = " + uri.toString());
+//			Log.d(TAG, "parent = " + parent.toString() );
+//			Log.d(TAG, "view = " + view.toString());
+//			SessionView element = (SessionView) view;
+//			Uri uri = Uri.parse(element.getUri());
+//			Log.d(TAG, "uri = " + uri.toString());
+//			
+//			showVideoDialog(uri);
 			
-			showVideoDialog(uri);
+			SessionView sv = (SessionView) view;
+			Session session = sv.getSession();
+			int sessionId = session.getId();
 		}
 	}
+	
+	
 	
 	private void showVideoDialog(Uri uri) {
 

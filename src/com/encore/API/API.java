@@ -49,7 +49,7 @@ public class API {
 	private static String ACCESS_TOKEN = "invalidacecsstoken";
 	private static final String PROD = "http://rapchat-django.herokuapp.com";
 	private static final String QA = "http://rapchat-django.herokuapp.com";
-	private static final String BASE_URL = "http://192.168.1.182:3000";
+	private static final String BASE_URL = "http://172.27.123.89:3000";
 
 	// Common URLs
 	private static final String USERS = BASE_URL + "/users/";
@@ -345,15 +345,13 @@ public class API {
 		}
 	}
 
-	public String signUp(User user) throws Exception {
-		Log.d(TAG, "signUp called, body: " + getGson().toJson(user).toString());
+	public String signUp(StringEntity entity) throws Exception {
+		Log.d(TAG, "signUp called, body: ");
 
 		String url = SIGN_UP;
-		User mUser = post(url, new StringEntity(getGson().toJson(user)),
-				User.class);
+		String result = post(url, entity, String.class);
 
-		// Access Token!
-		return "accessToken to be";
+		return result;
 	}
 
 	public String signIn(StringEntity entity) throws Exception {

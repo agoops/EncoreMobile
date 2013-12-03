@@ -1,8 +1,11 @@
 package Fragments;
 
 import util.T;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.ResultReceiver;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,6 +13,7 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.encore.R;
 import com.encore.API.APIService;
@@ -20,13 +24,14 @@ public class SignupFragment extends Fragment implements OnClickListener {
 		last_name, email, phone_number;
 	Button next_step;
 	APIService api;
+	Context mContext;
 	
 	// Provides a layout for the fragment when it's first drawn.
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, 
 			Bundle savedInstanceState) {
 		View view = inflater.inflate(R.layout.signup_fragment, container, false);
-		
+		mContext = getActivity();
 		username = (EditText) view.findViewById(R.id.username);
 		password = (EditText) view.findViewById(R.id.password);
 		first_name = (EditText) view.findViewById(R.id.first_name);
@@ -60,9 +65,9 @@ public class SignupFragment extends Fragment implements OnClickListener {
 		
 		// This should be moved into APIService, and an APIService instance should be instantiated on top
 		Intent apiIntent = new Intent(getActivity(), APIService.class);
-		
+		SignUpReceiver receiver = new SignUpReceiver(new Handler()); 
 		apiIntent.putExtra(T.API_TYPE, T.SIGN_UP);
-		
+		apiIntent.putExtra(T.RECEIVER, receiver);
 		apiIntent.putExtra(T.USERNAME, username.getText().toString());
 		apiIntent.putExtra(T.PASSWORD, password.getText().toString());
 		apiIntent.putExtra(T.FIRST_NAME, first_name.getText().toString());
@@ -72,7 +77,28 @@ public class SignupFragment extends Fragment implements OnClickListener {
 		
 		getActivity().startService(apiIntent);
 		
-		Intent launchHome = new Intent(getActivity(), HomeActivity.class);
-		startActivity(launchHome);
+		
+	}
+	
+	private class SignUpReceiver extends ResultReceiver{
+
+		public SignUpReceiver(Handler handler) {
+			super(handler);
+			// TODO Auto-generated constructor stub
+		}
+		
+		@Override
+        protected void onReceiveResult(int resultCode, Bundle resultData) {
+                if (resultCode == 1) {
+                	Intent launchHome = new Intent(getActivity(), HomeActivity.class);
+            		startActivity(launchHome);
+                }
+                else{
+                	Toast.makeText(mContext, "Sign up didn't work. Try again.", Toast.LENGTH_SHORT).show();
+                	return;
+                }
+		
+		}
+		
 	}
 }
