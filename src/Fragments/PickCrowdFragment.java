@@ -59,10 +59,12 @@ public class PickCrowdFragment extends Fragment implements OnClickListener {
 		apiIntent.putExtra(T.API_TYPE, T.GET_CROWDS);
 		apiIntent.putExtra("receiver", receiver);
 		getActivity().startService(apiIntent);
+		
+		// Set click listeners
 		((Button) v.findViewById(R.id.send_button))
-			.setOnClickListener((OnClickListener)this);
+			.setOnClickListener((OnClickListener) this);
 		((Button) v.findViewById(R.id.create_new_crowd_button))
-		.setOnClickListener((OnClickListener)this);
+		.setOnClickListener((OnClickListener) this);
 		
 		return v;
 	}
@@ -79,17 +81,19 @@ public class PickCrowdFragment extends Fragment implements OnClickListener {
 			
 			if(seshTitle == null || seshTitle.equals("")) {
 				Toast.makeText(getActivity(), "Forgetting a session title?", Toast.LENGTH_LONG).show();
+				
 			} else if(selectedCrowds.size() <= 0) { 
 				Toast.makeText(getActivity(), "Yo! Pick a crowd.", Toast.LENGTH_LONG).show();
+				
 			} else {
-				// ONLY THE FIRST SELECTED CROWD IS PICKED.
+				// Only one crowd will ever be picked.
 				int crowdId = selectedCrowds.get(0).getId();
 				
 				// Make a "POST sessions" to create a new session
 				Intent apiIntent = new Intent(getActivity(),
 						APIService.class);
 				apiIntent.putExtra(T.API_TYPE, T.CREATE_SESSION);
-				apiIntent.putExtra(T.FILEPATH,this.path);
+				apiIntent.putExtra(T.FILEPATH, this.path);
 				apiIntent.putExtra(T.SESSION_TITLE, seshTitle);
 				apiIntent.putExtra(T.SESSION_USE_EXISTING_CROWD, true);
 				apiIntent.putExtra(T.SESSION_CROWD_TITLE, "");
@@ -99,8 +103,9 @@ public class PickCrowdFragment extends Fragment implements OnClickListener {
 				
 				getActivity().startService(apiIntent);
 				
-//				Intent launchHome = new Intent(getActivity(), HomeActivity.class);
-//				startActivity(launchHome);
+				// Once sent, go back home
+				Intent launchHome = new Intent(getActivity(), HomeActivity.class);
+				startActivity(launchHome);
 			}
 			break;
 		case R.id.create_new_crowd_button:
@@ -125,7 +130,6 @@ public class PickCrowdFragment extends Fragment implements OnClickListener {
 		    public void onItemClick(AdapterView<?> parent, android.view.View view,
 		            int position, long id) {
 		    	// Do something if a lv item is clicked? Could be useful...
-		    	
 		    }
 		});
 	}

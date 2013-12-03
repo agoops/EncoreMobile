@@ -1,14 +1,12 @@
 package com.encore.API;
 
 import java.io.File;
-import java.io.UnsupportedEncodingException;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.entity.mime.HttpMultipartMode;
 import org.apache.http.entity.mime.MultipartEntityBuilder;
 import org.apache.http.entity.mime.content.FileBody;
-import org.apache.http.entity.mime.content.StringBody;
 import org.json.JSONObject;
 
 import util.T;
@@ -20,8 +18,11 @@ import android.util.Log;
 
 import com.encore.TokenHelper;
 import com.encore.API.models.Crowd;
+import com.encore.API.models.Favorite;
+import com.encore.API.models.Like;
+import com.encore.API.models.PostComment;
+import com.encore.API.models.PostCrowd;
 import com.encore.API.models.User;
-import com.encore.API.models.postCrowd;
 import com.google.gson.Gson;
 import com.squareup.okhttp.OkHttpClient;
 
@@ -86,6 +87,15 @@ public class APIService extends IntentService {
 			break;
 		case T.GET_SESSIONS:
 			getSessions();
+			break;
+		case T.CREATE_COMMENT:
+			createComment(intent.getExtras());
+			break;
+		case T.CREATE_LIKE:
+			createLike(intent.getExtras());
+			break;
+		case T.CREATE_FAVORITE:
+			createFavorite(intent.getExtras());
 			break;
 		default:
 			break;
@@ -258,8 +268,6 @@ public class APIService extends IntentService {
 	}
 
 	private void createSession(Bundle data) {
-
-		
 	    MultipartEntityBuilder multipartEntity = MultipartEntityBuilder.create();   
 	    multipartEntity.setMode(HttpMultipartMode.BROWSER_COMPATIBLE);
 	    
@@ -279,10 +287,6 @@ public class APIService extends IntentService {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
-		
-		
-		
 	}
 	
 	// GET all crowds
@@ -311,7 +315,7 @@ public class APIService extends IntentService {
 		String crowdTitle = data.getString(T.CROWD_TITLE);
 		String[] members = data.getStringArray(T.CROWD_MEMBERS);
 		
-		postCrowd pCrowd = new postCrowd(crowdTitle, members);
+		PostCrowd pCrowd = new PostCrowd(crowdTitle, members);
 		
 		try {
 			resultCrowd = api.createCrowd(pCrowd, token);
@@ -322,7 +326,7 @@ public class APIService extends IntentService {
 		}
 	}
 
-private void getSessions() {
+	private void getSessions() {
 		Log.d(TAG, "getSessions called");
 
 		try {
@@ -334,7 +338,52 @@ private void getSessions() {
 			e.printStackTrace();
 			resultReceiver.send(0,null);
 		}
-		
 	}
-
+	
+	private void createComment(Bundle data) {
+		Log.d(TAG, "createComment called");
+		
+		int sessionId = data.getInt(T.SESSION_ID);
+		String commentText = data.getString(T.COMMENT_TEXT);
+		String resultJSON = null;
+		
+		PostComment pComment = new PostComment(sessionId, commentText);
+		try {
+			resultJSON = api.createComment(pComment, TokenHelper.getToken(this));
+			Log.d(TAG, "createComment result: " + resultJSON);
+			
+		} catch (Exception e) {
+			Log.e(TAG, e.getMessage() + " ");
+		}
+	}
+	
+	private void createLike(Bundle data) {
+		Log.d(TAG, "createLike called");
+		int sessionId = data.getInt(T.SESSION_ID);
+		String token = TokenHelper.getToken(this);
+		String resultJSON = null;
+		
+		try {
+			Like like = new Like(sessionId);
+			resultJSON = api.createLike(like, token);
+			Log.d(TAG, "createLike result: " + resultJSON);
+		} catch (Exception e) {
+			Log.e(TAG, e.getMessage() + " ");
+		}
+	}
+	
+	private void createFavorite(Bundle data) {
+		Log.d(TAG, "createFavorite called");
+		int sessionId = data.getInt(T.SESSION_ID);
+		String token = TokenHelper.getToken(this);
+		String resultJSON = null;
+		
+		try {
+			Favorite fav = new Favorite(sessionId);
+			resultJSON = api.createFavorite(fav, token);
+			Log.d(TAG, "createFavorite result: " + resultJSON);
+		} catch (Exception e) {
+			Log.e(TAG, e.getMessage() + " ");
+		}
+	}
 }

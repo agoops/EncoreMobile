@@ -51,7 +51,6 @@ public class HomeActivity extends FragmentActivity {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-
 		// check if custom title is supported BEFORE setting the content view!
 		// TODO doesn't work. do later;
 		// customTitleSupported =
@@ -82,7 +81,6 @@ public class HomeActivity extends FragmentActivity {
 	}
 
 	public void customTitleBar() {
-
 		// set up custom title
 		if (customTitleSupported) {
 			getWindow().setFeatureInt(Window.FEATURE_CUSTOM_TITLE,
@@ -246,7 +244,6 @@ public class HomeActivity extends FragmentActivity {
                     if (resultCode == 1) {
                             Log.d(TAG, "APISerivce returned successful with sessions");
                             
-                            
                             String result = resultData.getString("result");
                             ArrayList<ArrayList<Session>> sessions = convertJsonToListOfSession(result);
                             
@@ -267,6 +264,7 @@ public class HomeActivity extends FragmentActivity {
     }
     
     private ArrayList<ArrayList<Session>> convertJsonToListOfSession(String json) {
+    	
             ArrayList<ArrayList<Session>> sessions = new ArrayList<ArrayList<Session>>();
             
             Gson gson = new Gson();
@@ -277,9 +275,11 @@ public class HomeActivity extends FragmentActivity {
             JsonParser jsonParser = new JsonParser();
             JsonArray sessionsJson = new JsonArray();
             
+            // Convert Sessions String to JSON
             sessionsJson = jsonParser.parse(json).getAsJsonObject()
                             .getAsJsonArray("sessions");
             for (JsonElement j : sessionsJson) {
+            		// Convert JSON to Session object
                     Session session = gson.fromJson(j, Session.class);
                     if (session.isComplete() == 1) {
                             newsfeed.add(session);
@@ -289,7 +289,5 @@ public class HomeActivity extends FragmentActivity {
             }
             
             return sessions;
-            
     }
-
 }

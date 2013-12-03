@@ -2,19 +2,19 @@ package com.encore.API.models;
 
 import com.google.gson.annotations.SerializedName;
 
-public class postCrowd {
+public class PostCrowd {
 	@SerializedName("title")
 	private String title;
 	
 	@SerializedName("members")
 	private String[] members;
 	
-	public postCrowd() {
+	public PostCrowd() {
 		this.title = null;
 		this.members = null;
 	}
 	
-	public postCrowd(String title, String[] members) {
+	public PostCrowd(String title, String[] members) {
 		this.title = title;
 		this.members = members;
 	}

@@ -229,9 +229,6 @@ public class NewsfeedActivity extends FragmentActivity {
 		}
 	}
 	
-	
-	
-
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu items in the action bar

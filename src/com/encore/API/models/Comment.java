@@ -1,6 +1,6 @@
 package com.encore.API.models;
 
-import java.sql.Date;
+import android.util.Log;
 
 import com.google.gson.annotations.SerializedName;
 
@@ -36,5 +36,18 @@ public class Comment {
 
 	public void setText(String text) {
 		this.text = text;
+	}
+	
+	public String getText() {
+		return text;
+	}
+	
+	public int getCreator() {
+		return this.creator;
+	}
+	
+	@Override 
+	public String toString() {
+		return "[Creator: "+creator+" Session: "+session+" Text: "+text+"]";
 	}
 }

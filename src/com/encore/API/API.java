@@ -1,9 +1,6 @@
 package com.encore.API;
 
 import java.io.BufferedReader;
-import java.io.DataOutputStream;
-import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -27,8 +24,11 @@ import android.util.Log;
 import com.encore.TokenHelper;
 import com.encore.API.models.Crowd;
 import com.encore.API.models.Crowds;
+import com.encore.API.models.Favorite;
+import com.encore.API.models.Like;
+import com.encore.API.models.PostComment;
+import com.encore.API.models.PostCrowd;
 import com.encore.API.models.User;
-import com.encore.API.models.postCrowd;
 import com.google.gson.Gson;
 import com.squareup.okhttp.OkHttpClient;
 //import com.encore.API.models.Crowds;
@@ -96,6 +96,15 @@ public class API {
 	// private static final String GET_CROWD = CROWDS + "%s";
 	// private static final String UPDATE_CROWD = CROWDS + "%s";
 	// private static final String DELETE_CROWD = CROWDS + "%s";
+	
+	// Comments
+	private static final String CREATE_COMMENT = SESSIONS + "comments/";
+	
+	//	Likes
+	private static final String CREATE_LIKE = SESSIONS + "likes/";
+	
+	// Favorites --- FAVORITES WILL ONLY BE ON NODE, NOT ON DJANGO ---
+	private static final String CREATE_FAVORITE = SESSIONS + "favorites/";
 
 	public API(OkHttpClient client, Context context) {
 		this.client = client;
@@ -468,7 +477,7 @@ public class API {
 	
 	// POST crowds/
 	// Creates a new crowd
-	public Crowd createCrowd(postCrowd pCrowd, String token) throws Exception {
+	public Crowd createCrowd(PostCrowd pCrowd, String token) throws Exception {
 		Log.d(TAG, "createCrowd called");
 		ACCESS_TOKEN = "Token " + token;
 		String url = CREATE_CROWD;
@@ -488,7 +497,7 @@ public class API {
 		}
 		return resultCrowd;
 	}
-// NEEDS TO BE TESTED
+	
 	public String getSessions() throws IOException {
 		Log.d(TAG, "getSessions called");
 
@@ -501,6 +510,57 @@ public class API {
 			throw e;
 		}
 		return result;
-
+	}
+	
+	public String createComment(PostComment pComment, String token) throws Exception {
+		Log.d(TAG, "createComment called");
+		ACCESS_TOKEN = "Token " + token;
+		String url = CREATE_COMMENT;
+		String resultJSON = null;
+		
+		try {
+			String JSON = getGson().toJson(pComment);
+			Log.d(TAG, "Posting JSON: " + JSON);
+			resultJSON = post(url, new StringEntity(JSON), String.class);
+		} catch (Exception e) {
+			Log.e(TAG, "createComment() error");
+			throw e;
+		}
+		return resultJSON;
+	}
+	
+	public String createLike(Like like, String token) throws Exception {
+		Log.d(TAG, "createLike called");
+		ACCESS_TOKEN = "Token " + token;
+		String url = CREATE_LIKE;
+		String resultJSON = null;
+		
+		try {
+			String JSON = getGson().toJson(like);
+			Log.d(TAG, "Posting JSON: " + JSON);
+			resultJSON = post(url, new StringEntity(JSON), String.class);
+		} catch (Exception e) {
+			Log.e(TAG, "createLike() error");
+			throw e;
+		}
+		return resultJSON;
+	}
+	
+	// -- Endpoint for favorites is not up yet ---
+	public String createFavorite(Favorite fav, String token) throws Exception {
+		Log.d(TAG, "createFavorite called");
+		ACCESS_TOKEN = "Token " + token;
+		String url = CREATE_FAVORITE;
+		String resultJSON = null;
+		
+		try {
+			String JSON = getGson().toJson(fav);
+			Log.d(TAG, "Posting JSON: " + JSON);
+			resultJSON = post(url, new StringEntity(JSON), String.class);
+		} catch(Exception e) {
+			Log.e(TAG, "createComment() error");
+			throw e;
+		}
+		return resultJSON;
 	}
 }

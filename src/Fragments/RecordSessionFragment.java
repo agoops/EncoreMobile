@@ -11,6 +11,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 
+import util.T;
+import android.content.Intent;
 import android.media.AudioFormat;
 import android.media.AudioManager;
 import android.media.AudioRecord;
@@ -29,12 +31,16 @@ import android.widget.Button;
 
 import com.encore.R;
 import com.encore.RecMicToMp3;
+import com.encore.API.APIService;
+import com.encore.views.HomeActivity;
 
 public class RecordSessionFragment extends Fragment implements OnClickListener {
 	private static final String TAG = "RecordSessionFragment";
 	private View v;
 	boolean isRecording = false;
 	int sampleRateInHz = 11025;
+	int crowdId;
+	String sessionTitle = null;
 	String tag = "StartSession2";
 	Thread recordThread = null;
 	String path = Environment.getExternalStorageDirectory()
@@ -46,9 +52,25 @@ public class RecordSessionFragment extends Fragment implements OnClickListener {
 		Log.d(TAG, "RecordSessionFragment successfully launched");
 		v = inflater.inflate(R.layout.record_session_fragment, container, false);
 //		recorder = new RecMicToMp3(path,8000);
+		
+		crowdId = getArguments().getInt("crowdId");
+		sessionTitle = getArguments().getString("sessionTitle");
+		Log.d(TAG, "crowdId, sessionTitle: " + crowdId + ", " + sessionTitle);
+		if(crowdId == -1) {
+			// No crowdId - the user must be creating a new session
+			// Hide the send button, show the next button
+			((Button) v.findViewById(R.id.next_button)).setVisibility(View.VISIBLE);
+			((Button) v.findViewById(R.id.send_clip_btn)).setVisibility(View.INVISIBLE);
+		} else {
+			// crowdId has already been set - the user must be replying
+			// Show the send button, hide the next button
+			Log.d(TAG, "About to switch button visibilities");
+			((Button) v.findViewById(R.id.next_button)).setVisibility(View.INVISIBLE);
+			((Button) v.findViewById(R.id.send_clip_btn)).setVisibility(View.VISIBLE);
+		}
+		
 		setButtonHandlers();
 		enableButtons(false);
-		Log.d(TAG, "noth");
 		return v;                 
 	}
 	
@@ -87,7 +109,6 @@ public class RecordSessionFragment extends Fragment implements OnClickListener {
 		}
 		case R.id.next_button: {
 			// TODO: First check if a recording has been made!
-			
 			// Create a new fragment transaction and PickCrowdFragment
 			FragmentTransaction ft = getFragmentManager().beginTransaction();
 			ft.setCustomAnimations(R.anim.enter, R.anim.exit, R.anim.pop_enter, R.anim.pop_exit);
@@ -98,6 +119,25 @@ public class RecordSessionFragment extends Fragment implements OnClickListener {
 			ft.addToBackStack(null);
 			ft.commit();
 			break;
+		}
+		case R.id.send_clip_btn:
+		{
+			// Only one crowd will be picked at any given time
+			// Make a "POST sessions" to create a new session
+			Intent apiIntent = new Intent(getActivity(),
+					APIService.class);
+			apiIntent.putExtra(T.API_TYPE, T.CREATE_SESSION);
+			apiIntent.putExtra(T.SESSION_TITLE, sessionTitle);
+			apiIntent.putExtra(T.SESSION_USE_EXISTING_CROWD, true);
+			apiIntent.putExtra(T.SESSION_CROWD_TITLE, "");
+			apiIntent.putExtra(T.SESSION_CROWD_MEMBERS, "");
+			apiIntent.putExtra(T.SESSION_CROWD_ID, "" + crowdId); 
+			Log.d(TAG, "crowdId: " + crowdId);
+			
+			getActivity().startService(apiIntent);
+			
+			Intent launchHome = new Intent(getActivity(), HomeActivity.class);
+			startActivity(launchHome);
 		}
 		default: {
 			break;
@@ -225,6 +265,8 @@ public class RecordSessionFragment extends Fragment implements OnClickListener {
 		((Button) v.findViewById(R.id.btnPlayback))
 				.setOnClickListener((OnClickListener) this);
 		((Button) v.findViewById(R.id.next_button))
+				.setOnClickListener((OnClickListener) this);
+		((Button) v.findViewById(R.id.send_clip_btn))
 				.setOnClickListener((OnClickListener) this);
 	}
 
