@@ -49,7 +49,7 @@ public class API {
 	private static String ACCESS_TOKEN = "invalidacecsstoken";
 	private static final String PROD = "http://rapchat-django.herokuapp.com";
 	private static final String QA = "http://rapchat-django.herokuapp.com";
-	private static final String BASE_URL = "http://172.27.123.89:3000";
+	private static final String BASE_URL = "http://172.27.122.251:3000";
 
 	// Common URLs
 	private static final String USERS = BASE_URL + "/users/";
@@ -105,6 +105,9 @@ public class API {
 	
 	// Favorites 
 	private static final String CREATE_FAVORITE = BASE_URL + "/favorites/";
+	
+	// Clip stream
+	private static final String GET_CLIP_STREAM = SESSIONS + "clip/";
 
 	public API(OkHttpClient client, Context context) {
 		this.client = client;
@@ -557,6 +560,22 @@ public class API {
 			String JSON = getGson().toJson(fav);
 			Log.d(TAG, "Posting JSON: " + JSON);
 			resultJSON = post(url, new StringEntity(JSON), String.class);
+		} catch(Exception e) {
+			Log.e(TAG, "createComment() error");
+			throw e;
+		}
+		return resultJSON;
+	}
+	
+	public String getClipStream(int sessionId, String token) throws Exception {
+		Log.d(TAG, "getClipStream called");
+		ACCESS_TOKEN = "Token " + token;
+		String url = GET_CLIP_STREAM + sessionId;
+		String resultJSON = null;
+		
+		try {
+			resultJSON = get(url, String.class);
+			Log.d(TAG, "getClipStream result: " + resultJSON);
 		} catch(Exception e) {
 			Log.e(TAG, "createComment() error");
 			throw e;

@@ -22,7 +22,7 @@ import com.encore.API.models.Favorite;
 import com.encore.API.models.Like;
 import com.encore.API.models.PostComment;
 import com.encore.API.models.PostCrowd;
-import com.encore.API.models.User;
+import com.encore.API.models.Sessions;
 import com.google.gson.Gson;
 import com.squareup.okhttp.OkHttpClient;
 
@@ -97,6 +97,8 @@ public class APIService extends IntentService {
 		case T.CREATE_FAVORITE:
 			createFavorite(intent.getExtras());
 			break;
+		case T.GET_CLIP_STREAM:
+			getClipStream(intent.getExtras());
 		default:
 			break;
 		}
@@ -390,6 +392,24 @@ public class APIService extends IntentService {
 			Favorite fav = new Favorite(sessionId);
 			resultJSON = api.createFavorite(fav, token);
 			Log.d(TAG, "createFavorite result: " + resultJSON);
+		} catch (Exception e) {
+			Log.e(TAG, e.getMessage() + " ");
+		}
+	}
+	
+	private void getClipStream(Bundle data) {
+		Log.d(TAG, "getClipStream called");
+		int sessionId = data.getInt(T.SESSION_ID);
+		String token = TokenHelper.getToken(this);
+		String resultJSON = null;
+		
+		try {
+			resultJSON = api.getClipStream(sessionId, token);
+			Log.d(TAG, "getClipStream result: " + resultJSON);
+			
+			Bundle b = new Bundle();
+			b.putString("result", resultJSON);
+			resultReceiver.send(T.GET_CLIP_STREAM, b);
 		} catch (Exception e) {
 			Log.e(TAG, e.getMessage() + " ");
 		}

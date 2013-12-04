@@ -33,6 +33,7 @@ public class T {
 	public static final int CREATE_COMMENT = 12;
 	public static final int CREATE_LIKE = 13;
 	public static final int CREATE_FAVORITE = 14;
+	public static final int GET_CLIP_STREAM = 15;
 	
 	// Column names for newsfeed query
 	public static final String SESSION_TITLE = "title";

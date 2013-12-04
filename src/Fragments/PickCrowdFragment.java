@@ -41,12 +41,11 @@ public class PickCrowdFragment extends Fragment implements OnClickListener {
 	private Crowd[] crowds = null;
 	private List<Crowd> selectedCrowds;
 	String path = Environment.getExternalStorageDirectory()
-			.getAbsolutePath() + "/testaudio.pcm";
+			.getAbsolutePath() + "/testaudio.mp4";
 	
 	public void setPath(String path) {
 		this.path = path;
 	}
-	
 	
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		Log.d(TAG, "PickCrowdFragment successfully launched");
