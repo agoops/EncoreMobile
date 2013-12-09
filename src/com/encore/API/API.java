@@ -45,8 +45,9 @@ public class API {
 	 * 
 	 * *****************************************
 	 */
+	private boolean isSigningIn = false;
 	private static final String AUTHORIZATION = "Authorization";
-	private static String ACCESS_TOKEN = "invalidacecsstoken";
+	private static String ACCESS_TOKEN = "invalidaccesstoken";
 	private static final String PROD = "http://rapchat-django.herokuapp.com";
 	private static final String QA = "http://rapchat-django.herokuapp.com";
 	private static final String BASE_URL = Constants.DEBUG ? QA:PROD;
@@ -166,7 +167,10 @@ public class API {
 			throws IOException {
 		URL postUrl = new URL(url);
 		HttpURLConnection connection = client.open(postUrl);
-		connection.setRequestProperty(AUTHORIZATION, ACCESS_TOKEN);
+		if(!isSigningIn) {
+			connection.setRequestProperty(AUTHORIZATION, ACCESS_TOKEN);
+		}
+		isSigningIn = false; // Reset to !isSigningIn
 		connection.setRequestProperty("Content-Type", "application/json");
 		connection.setDoOutput(true);
 		OutputStream out = null;
@@ -213,7 +217,6 @@ public class API {
 	// ---------------------POST CLIP----------------------
 
 	private String postClip(HttpEntity entity, String url) throws Exception {
-		
 		HttpClient client = new DefaultHttpClient();
 	    HttpPost post = new HttpPost(url);
 	    post.addHeader(AUTHORIZATION, ACCESS_TOKEN);
@@ -360,6 +363,7 @@ public class API {
 	public String signIn(StringEntity entity) throws Exception {
 		Log.d(TAG, "signIn called with entity: " + entity.toString());
 		String url = SIGN_IN;
+		isSigningIn = true;
 		String result = "emptystringdawg-API.signin worked?";
 		try {
 			result = post(url, entity, String.class);

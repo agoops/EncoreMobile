@@ -9,11 +9,14 @@ public class Profile implements UserInfo {
 	private User user;
 	@SerializedName("phone_number")
 	private String phoneNumber;
+	@SerializedName("friends")
+	private int[] friends;
 	
 	public Profile() {
 		this.profileId =  -1;
 		this.user = new User();
 		this.phoneNumber = null;
+		this.friends = null;
 	}
 	
 	public int getProfileId() {
@@ -33,6 +36,14 @@ public class Profile implements UserInfo {
 	}
 	public void setPhoneNumber(String phoneNumber) {
 		this.phoneNumber = phoneNumber;
+	}
+	
+	public void setFriends(int[] friends) {
+		this.friends = friends;
+	}
+	
+	public int[] getFriends() {
+		return friends;
 	}
 	
 	@Override

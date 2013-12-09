@@ -16,32 +16,33 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.encore.API.APIService;
+import com.encore.API.models.Profile;
 import com.encore.API.models.User;
 
-public class UsersFragmentAdapter extends ArrayAdapter<User> {
+public class UsersFragmentAdapter extends ArrayAdapter<Profile> {
 	private Context mContext;
-	private List<User> mUserList;
+	private List<Profile> mProfileList;
 	private String tag = "UsersFragmentAdapter";
 
 	public UsersFragmentAdapter(Context context, int resource,
-			List<User> objects) {
-		super(context, resource, objects);
+			List<Profile> profiles) {
+		super(context, resource, profiles);
 		mContext = context;
-		mUserList = objects;
+		mProfileList = profiles;
 	}
 
 	@Override
 	public int getCount() {
-		if (mUserList != null) {
-			return mUserList.size();
+		if (mProfileList != null) {
+			return mProfileList.size();
 		}
 		return 0;
 	}
 
 	@Override
-	public User getItem(int arg0) {
-		if (mUserList != null) {
-			return mUserList.get(arg0);
+	public Profile getItem(int arg0) {
+		if (mProfileList != null) {
+			return mProfileList.get(arg0);
 		}
 		return null;
 	}
@@ -56,8 +57,8 @@ public class UsersFragmentAdapter extends ArrayAdapter<User> {
 
 		// reference to convertView
 		FriendView v = (FriendView) convertView;
-		User user = mUserList.get(position);
-		Log.d(tag, "User for this view is: " + user.getUsername());
+		Profile profile = mProfileList.get(position);
+		Log.d(tag, "User for this view is: " + profile.getUsername());
 
 		// inflate new layout if null
 		if (v == null) {
@@ -93,14 +94,14 @@ public class UsersFragmentAdapter extends ArrayAdapter<User> {
 //				.findViewById(R.id.checkbox_user_view);
 
 		// set data to display and store
-		username.setText(user.getUsername());
-		v.setUser(user);
+		username.setText(profile.getUsername());
+		v.setProfile(profile);
 		// return view
 		return v;
 	}
 	
 	
-	public void setItemList(ArrayList<User> Users) {
-		this.mUserList = Users;
+	public void setItemList(ArrayList<Profile> Profiles) {
+		this.mProfileList = Profiles;
 	}
 }
