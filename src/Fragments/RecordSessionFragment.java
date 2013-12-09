@@ -173,7 +173,7 @@ public class RecordSessionFragment extends Fragment implements OnClickListener {
 	    final MediaRecorder recorder = new MediaRecorder();
 	    ContentValues values = new ContentValues(3);
 	    values.put(MediaStore.MediaColumns.TITLE, "mpegAudio");
-	    recorder.setAudioSource(MediaRecorder.AudioSource.MIC);
+	    recorder.setAudioSource(MediaRecorder.AudioSource.MIC); // VideoSource.CAMERA, eh?
 	    recorder.setOutputFormat(MediaRecorder.OutputFormat.MPEG_4);
 	    recorder.setAudioEncoder(MediaRecorder.AudioEncoder.DEFAULT);
 	    recorder.setOutputFile(path);

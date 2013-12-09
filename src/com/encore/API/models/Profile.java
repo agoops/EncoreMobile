@@ -2,8 +2,7 @@ package com.encore.API.models;
 
 import com.google.gson.annotations.SerializedName;
 
-public class Profile implements UserInfo{
-
+public class Profile implements UserInfo {
 	@SerializedName("id")
 	private int profileId;
 	@SerializedName("user")
@@ -16,7 +15,6 @@ public class Profile implements UserInfo{
 		this.user = new User();
 		this.phoneNumber = null;
 	}
-	
 	
 	public int getProfileId() {
 		return profileId;

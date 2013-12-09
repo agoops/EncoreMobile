@@ -229,6 +229,7 @@ public class APIService extends IntentService {
 		try {
 			String username = data.getString(T.USERNAME);
 			String password = data.getString(T.PASSWORD);
+			Log.d(TAG, "username, pass: " + username + ", " + password);
 			JSONObject json = new JSONObject();
 			json.put(T.USERNAME, username);
 			json.put(T.PASSWORD, password);

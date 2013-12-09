@@ -3,7 +3,7 @@ package com.encore.API.models;
 import com.google.gson.annotations.SerializedName;
 
 public class Crowd {
-	@SerializedName("crowd_id")
+	@SerializedName("id")
 	private int id;
 	
 	@SerializedName("title")

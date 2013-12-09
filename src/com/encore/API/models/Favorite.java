@@ -3,6 +3,11 @@ package com.encore.API.models;
 import com.google.gson.annotations.SerializedName;
 
 public class Favorite {
+	
+	
+	// ======== Unused in Django ==========
+	
+	
 	@SerializedName("session")
 	private int sessionId;
 	

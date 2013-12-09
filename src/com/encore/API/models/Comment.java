@@ -5,24 +5,24 @@ import android.util.Log;
 import com.google.gson.annotations.SerializedName;
 
 public class Comment {
-	@SerializedName("user_id")
+	@SerializedName("creator")
 	private int creator;
 	
-	@SerializedName("session_id")
-	private int session;
+	@SerializedName("session")
+	private int sessionID;
 	
 	@SerializedName("text")
 	private String text;
 	
 	public Comment() {
 		this.creator = 0;
-		this.session = 0;
+		this.sessionID = 0;
 		this.text = null;
 	}
 	
 	public Comment(int creator, int session, String text) {
 		this.creator = creator;
-		this.session = session;
+		this.sessionID = session;
 		this.text = text;
 	}
 
@@ -31,7 +31,7 @@ public class Comment {
 	}
 
 	public void setSession(int session) {
-		this.session = session;
+		this.sessionID = session;
 	}
 
 	public void setText(String text) {
@@ -48,6 +48,6 @@ public class Comment {
 	
 	@Override 
 	public String toString() {
-		return "[Creator: "+creator+" Session: "+session+" Text: "+text+"]";
+		return "[Creator: "+creator+" Session: "+sessionID+" Text: "+text+"]";
 	}
 }

@@ -49,7 +49,7 @@ public class API {
 	private static String ACCESS_TOKEN = "invalidacecsstoken";
 	private static final String PROD = "http://rapchat-django.herokuapp.com";
 	private static final String QA = "http://rapchat-django.herokuapp.com";
-	private static final String BASE_URL = "http://172.27.122.251:3000";
+	private static final String BASE_URL = Constants.DEBUG ? QA:PROD;
 
 	// Common URLs
 	private static final String USERS = BASE_URL + "/users/";

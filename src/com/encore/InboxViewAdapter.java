@@ -1,7 +1,6 @@
 package com.encore;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 
 import util.T;
@@ -22,7 +21,6 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
@@ -33,12 +31,6 @@ import android.widget.Toast;
 import com.encore.API.APIService;
 import com.encore.API.models.Comment;
 import com.encore.API.models.Session;
-import com.encore.views.InboxListViewFragment;
-import com.encore.views.VideoListViewFragment;
-import com.google.gson.Gson;
-import com.google.gson.JsonArray;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonParser;
 
 public class InboxViewAdapter extends ArrayAdapter implements OnClickListener {
 	
@@ -53,29 +45,7 @@ public class InboxViewAdapter extends ArrayAdapter implements OnClickListener {
 		super(c, textViewResourceId, sessions);
 		mContext = c;
 		mSessionList = sessions;
-		for(Session s: mSessionList) {
-			Log.d(TAG, s.getTitle());
-		}
 	}
-//
-//	@Override
-//	public int getCount() {
-//		return mSessionList.size();
-//	}
-//
-//	@Override
-//	public Object getItem(int arg0) {
-//		return mSessionList.get(arg0);
-//	}
-//
-//	@Override
-//	public long getItemId(int arg0) {
-//		return arg0;
-//	}
-//
-//	public void setItemList(ArrayList<Session> list) {
-//		this.mSessionList = list;
-//	}
 
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
@@ -96,7 +66,6 @@ public class InboxViewAdapter extends ArrayAdapter implements OnClickListener {
 			viewHolder.commentsBtn = (Button) rowView.findViewById(R.id.comments);
 			
 			// get the selected entry
-			Log.d(TAG, "populating position: " + position);
 			Session entry = (Session) mSessionList.get(position);
 			
 			// For each listview, store the session
@@ -116,9 +85,7 @@ public class InboxViewAdapter extends ArrayAdapter implements OnClickListener {
 			
 			// set session title
 			viewHolder.titleTextView.setText(entry.getTitle());
-			Log.d(TAG, entry.getTitle());
 			
-			// set comment string and views for comments, and click listener
 			// Get a list of comments from the session
 			List<Comment> comments = entry.getComments();
 			viewHolder.commentsBtn.setText(comments.size() + " comments");
