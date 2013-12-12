@@ -39,13 +39,13 @@ public class HomeActivity extends FragmentActivity {
 	ListView listView;
 	ActionBar actionBar;
 	Fragment[] fragments;
-	private static int NEWSFEED = 0;
-	private static int INBOX = 1;
-	private static int PENDING_REQUESTS = 2;
-	private static int USERS = 3;
+//	private static int NEWSFEED = 0;
+	private static int INBOX = 0;
+	private static int PENDING_REQUESTS = 1;
+	private static int USERS = 2;
 
 	// Change this to take out tabs from HomeActivity
-	private static int NUM_TABS = 4;
+	private static int NUM_TABS = 3;
 	boolean customTitleSupported;
 
 	@Override
@@ -67,7 +67,7 @@ public class HomeActivity extends FragmentActivity {
 		viewPager.setAdapter(new PagerAdapter(getSupportFragmentManager()));
 		setupActionBar(actionBar);
 		Log.d(TAG, "maybe got here?");
-		viewPager.setOffscreenPageLimit(NUM_TABS - 1);
+		viewPager.setOffscreenPageLimit(0);
 		viewPager
 				.setOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {
 					@Override
@@ -77,7 +77,7 @@ public class HomeActivity extends FragmentActivity {
 						getActionBar().setSelectedNavigationItem(position);
 					}
 				});
-		getAllSessions();
+//		getAllSessions();
 	}
 
 	public void customTitleBar() {
@@ -124,19 +124,19 @@ public class HomeActivity extends FragmentActivity {
 		// Add title to tabs
 		for (int i = 0; i < NUM_TABS; i++) {
 			switch (i) {
+//			case 0:
+//				actionBar.addTab(actionBar.newTab().setText("Newsfeed")
+//						.setTabListener(tabListener));
+//				break;
 			case 0:
-				actionBar.addTab(actionBar.newTab().setText("Newsfeed")
-						.setTabListener(tabListener));
-				break;
-			case 1:
 				actionBar.addTab(actionBar.newTab().setText("Inbox")
 						.setTabListener(tabListener));
 				break;
-			case 2:
+			case 1:
 				actionBar.addTab(actionBar.newTab().setText("Requests")
 						.setTabListener(tabListener));
 				break;
-			case 3:
+			case 2:
 				actionBar.addTab(actionBar.newTab().setText("Users")
 						.setTabListener(tabListener));
 
@@ -155,21 +155,21 @@ public class HomeActivity extends FragmentActivity {
 			Log.d(TAG, "getItem() called with " + i);
 			
 			switch (i) {
+//			case 0:
+//				Fragment fragment1 = new VideoListViewFragment();
+//				Bundle args = new Bundle();
+//				fragment1.setArguments(args);
+//				fragments[NEWSFEED] = fragment1;
+//				return fragment1;
 			case 0:
-				Fragment fragment1 = new VideoListViewFragment();
-				Bundle args = new Bundle();
-				fragment1.setArguments(args);
-				fragments[NEWSFEED] = fragment1;
-				return fragment1;
-			case 1:
 				Fragment fragment2 = new InboxListViewFragment();
 				fragments[INBOX] = fragment2;
 				return fragment2;
-			case 2:
+			case 1:
 				Fragment fragment3 = new FriendRequestsFragment();
 				fragments[PENDING_REQUESTS] = fragment3;
 				return fragment3;
-			case 3:
+			case 2:
 				Fragment fragment4 = new UsersFragment();
 				fragments[USERS] = fragment4;
 				return fragment4;
@@ -186,13 +186,13 @@ public class HomeActivity extends FragmentActivity {
 		@Override
 		public CharSequence getPageTitle(int position) {
 			switch (position) {
+//			case 0:
+//				return "Home page";
 			case 0:
-				return "Home page";
-			case 1:
 				return "Inbox";
-			case 2:
+			case 1:
 				return "Requests";
-			case 3:
+			case 2:
 				return "Users";
 			default:
 				return null;
@@ -223,71 +223,4 @@ public class HomeActivity extends FragmentActivity {
 			return super.onOptionsItemSelected(item);
 		}
 	}
-	
-	 
-    private void getAllSessions() {
-            Intent apiIntent = new Intent(this, APIService.class);
-            apiIntent.putExtra(T.API_TYPE, T.GET_SESSIONS);
-            SessionListReceiver mReceiver = new SessionListReceiver(new Handler());
-            apiIntent.putExtra(T.RECEIVER, mReceiver);
-            startService(apiIntent);
-    }
-    
-    private class SessionListReceiver extends ResultReceiver {
-            public SessionListReceiver(Handler handler) {
-                    super(handler);
-                    // TODO Auto-generated constructor stub
-            }
-
-            @Override
-            protected void onReceiveResult(int resultCode, Bundle resultData) {
-                    if (resultCode == 1) {
-                            Log.d(TAG, "APISerivce returned successful with sessions");
-                            
-                            String result = resultData.getString("result");
-                            ArrayList<ArrayList<Session>> sessions = convertJsonToListOfSession(result);
-                            
-                            SessionViewAdapter nAdapter = ((VideoListViewFragment) fragments[NEWSFEED])
-                                            .getAdapter();
-                            nAdapter.setItemList(sessions.get(NEWSFEED));
-                            nAdapter.notifyDataSetChanged();
-                            
-                            InboxViewAdapter iAdapter = ((InboxListViewFragment) fragments[INBOX]).getAdapter();
-                            iAdapter.setItemList(sessions.get(INBOX));
-                            iAdapter.notifyDataSetChanged();
-                            
-                    } else {
-                            Log.d(TAG, "APIService get session failed?");
-
-                    }
-            }
-    }
-    
-    private ArrayList<ArrayList<Session>> convertJsonToListOfSession(String json) {
-    	
-            ArrayList<ArrayList<Session>> sessions = new ArrayList<ArrayList<Session>>();
-            
-            Gson gson = new Gson();
-            ArrayList<Session> inbox = new ArrayList<Session>();
-            ArrayList<Session> newsfeed = new ArrayList<Session>();
-            sessions.add(NEWSFEED, newsfeed);
-            sessions.add(INBOX, inbox);
-            JsonParser jsonParser = new JsonParser();
-            JsonArray sessionsJson = new JsonArray();
-            
-            // Convert Sessions String to JSON
-            sessionsJson = jsonParser.parse(json).getAsJsonObject()
-                            .getAsJsonArray("sessions");
-            for (JsonElement j : sessionsJson) {
-            		// Convert JSON to Session object
-                    Session session = gson.fromJson(j, Session.class);
-                    if (session.isComplete()) {
-                            newsfeed.add(session);
-                    } else{
-                            inbox.add(session);
-                    }
-            }
-            
-            return sessions;
-    }
 }

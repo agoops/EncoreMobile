@@ -22,7 +22,7 @@ import com.encore.API.models.Favorite;
 import com.encore.API.models.Like;
 import com.encore.API.models.PostComment;
 import com.encore.API.models.PostCrowd;
-import com.encore.API.models.User;
+import com.encore.API.models.Sessions;
 import com.google.gson.Gson;
 import com.squareup.okhttp.OkHttpClient;
 
@@ -97,6 +97,8 @@ public class APIService extends IntentService {
 		case T.CREATE_FAVORITE:
 			createFavorite(intent.getExtras());
 			break;
+		case T.GET_CLIP_STREAM:
+			getClipStream(intent.getExtras());
 		default:
 			break;
 		}
@@ -123,10 +125,6 @@ public class APIService extends IntentService {
 	}
 	
 	
-	/***
-	 * TODO: DOESN"T WORK FUCKKKKKKKKK
-	 * @param data
-	 */
 	private void addClip(Bundle data) {
 
 		MultipartEntityBuilder multipartEntity = MultipartEntityBuilder
@@ -134,8 +132,8 @@ public class APIService extends IntentService {
 		multipartEntity.setMode(HttpMultipartMode.BROWSER_COMPATIBLE);
 
 		multipartEntity.setBoundary("---*******");
-		multipartEntity.addPart("clip",new FileBody(new File(data.getString(T.FILEPATH))));
-		multipartEntity.addTextBody("session", data.getString(T.SESSION));
+		multipartEntity.addPart("clip", new FileBody(new File(data.getString(T.FILEPATH))));
+		multipartEntity.addTextBody("session", Integer.toString(data.getInt(T.SESSION_ID)));
 		HttpEntity entity = multipartEntity.build();
 		try {
 			String result = api.addClip(entity);
@@ -231,6 +229,7 @@ public class APIService extends IntentService {
 		try {
 			String username = data.getString(T.USERNAME);
 			String password = data.getString(T.PASSWORD);
+			Log.d(TAG, "username, pass: " + username + ", " + password);
 			JSONObject json = new JSONObject();
 			json.put(T.USERNAME, username);
 			json.put(T.PASSWORD, password);
@@ -255,16 +254,28 @@ public class APIService extends IntentService {
 
 	private void signUp(Bundle data) {
 		Log.d(TAG, "signUp called");
+		String result = "FAILED";
 		try {
-//			User user = new User(data.getString(T.USERNAME),
-//					data.getString(T.PASSWORD), data.getString(T.FIRST_NAME),
-//					data.getString(T.LAST_NAME), data.getString(T.EMAIL),
-//					data.getString(T.PHONE_NUMBER));
-			User user = new User();
-			api.signUp(user);
+			JSONObject json = new JSONObject();
+			json.put("username", data.get(T.USERNAME));
+			json.put("password", data.get(T.PASSWORD));
+			json.put("first_name", data.get(T.FIRST_NAME));
+			json.put("last_name", data.get(T.LAST_NAME));
+			json.put("email", data.get(T.EMAIL));
+			json.put("phone_number", data.get(T.PHONE_NUMBER));
+			StringEntity entity = new StringEntity(json.toString());
+			result = api.signUp(entity);
+			String token = (new JSONObject(result)).getString("access_token");
+			
+			TokenHelper.updateToken(this, token);
+			Bundle bundle = new Bundle();
+			bundle.putString("token", token);
+			resultReceiver.send(1, bundle);
 		} catch (Exception e) {
 			Log.e(TAG, e.getMessage() + " ");
+			resultReceiver.send(0,null);
 		}
+		
 	}
 
 	private void createSession(Bundle data) {
@@ -274,7 +285,9 @@ public class APIService extends IntentService {
 	    multipartEntity.setBoundary("---*******");
 	    multipartEntity.addPart("clip", new FileBody(new File(data.getString(T.FILEPATH))));
 	    multipartEntity.addTextBody("title", data.getString(T.SESSION_TITLE));
-		multipartEntity.addTextBody("crowd", data.getString(T.SESSION_CROWD_ID));
+	    Log.d(TAG, "CrOwd ID being sent: " + data.getString(T.SESSION_CROWD_ID));
+		multipartEntity.addTextBody("crowd_id", data.getString(T.SESSION_CROWD_ID));
+		
 		multipartEntity.addTextBody("use_existing_crowd", data.getBoolean(T.SESSION_USE_EXISTING_CROWD) ? "True": "False");
 	    
 	    HttpEntity entity = multipartEntity.build();
@@ -311,7 +324,7 @@ public class APIService extends IntentService {
 		Crowd resultCrowd = null;
 		
 		String crowdTitle = data.getString(T.CROWD_TITLE);
-		String[] members = data.getStringArray(T.CROWD_MEMBERS);
+		int[] members = data.getIntArray(T.CROWD_MEMBERS);
 		
 		PostCrowd pCrowd = new PostCrowd(crowdTitle, members);
 		
@@ -380,6 +393,24 @@ public class APIService extends IntentService {
 			Favorite fav = new Favorite(sessionId);
 			resultJSON = api.createFavorite(fav, token);
 			Log.d(TAG, "createFavorite result: " + resultJSON);
+		} catch (Exception e) {
+			Log.e(TAG, e.getMessage() + " ");
+		}
+	}
+	
+	private void getClipStream(Bundle data) {
+		Log.d(TAG, "getClipStream called");
+		int sessionId = data.getInt(T.SESSION_ID);
+		String token = TokenHelper.getToken(this);
+		String resultJSON = null;
+		
+		try {
+			resultJSON = api.getClipStream(sessionId, token);
+			Log.d(TAG, "getClipStream result: " + resultJSON);
+			
+			Bundle b = new Bundle();
+			b.putString("result", resultJSON);
+			resultReceiver.send(T.GET_CLIP_STREAM, b);
 		} catch (Exception e) {
 			Log.e(TAG, e.getMessage() + " ");
 		}

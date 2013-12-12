@@ -45,11 +45,12 @@ public class API {
 	 * 
 	 * *****************************************
 	 */
+	private boolean isSigningIn = false;
 	private static final String AUTHORIZATION = "Authorization";
-	private static String ACCESS_TOKEN = "invalidacecsstoken";
+	private static String ACCESS_TOKEN = "invalidaccesstoken";
 	private static final String PROD = "http://rapchat-django.herokuapp.com";
 	private static final String QA = "http://rapchat-django.herokuapp.com";
-	private static final String BASE_URL = (Constants.DEBUG) ? QA : PROD;
+	private static final String BASE_URL = Constants.DEBUG ? QA:PROD;
 
 	// Common URLs
 	private static final String USERS = BASE_URL + "/users/";
@@ -103,8 +104,11 @@ public class API {
 	//	Likes
 	private static final String CREATE_LIKE = SESSIONS + "likes/";
 	
-	// Favorites --- FAVORITES WILL ONLY BE ON NODE, NOT ON DJANGO ---
-	private static final String CREATE_FAVORITE = SESSIONS + "favorites/";
+	// Favorites 
+	private static final String CREATE_FAVORITE = BASE_URL + "/favorites/";
+	
+	// Clip stream
+	private static final String GET_CLIP_STREAM = SESSIONS + "clip/";
 
 	public API(OkHttpClient client, Context context) {
 		this.client = client;
@@ -163,7 +167,10 @@ public class API {
 			throws IOException {
 		URL postUrl = new URL(url);
 		HttpURLConnection connection = client.open(postUrl);
-		connection.setRequestProperty(AUTHORIZATION, ACCESS_TOKEN);
+		if(!isSigningIn) {
+			connection.setRequestProperty(AUTHORIZATION, ACCESS_TOKEN);
+		}
+		isSigningIn = false; // Reset to !isSigningIn
 		connection.setRequestProperty("Content-Type", "application/json");
 		connection.setDoOutput(true);
 		OutputStream out = null;
@@ -210,7 +217,6 @@ public class API {
 	// ---------------------POST CLIP----------------------
 
 	private String postClip(HttpEntity entity, String url) throws Exception {
-		
 		HttpClient client = new DefaultHttpClient();
 	    HttpPost post = new HttpPost(url);
 	    post.addHeader(AUTHORIZATION, ACCESS_TOKEN);
@@ -317,7 +323,7 @@ public class API {
 
 	public String acceptFriendRequest(StringEntity entity) throws IOException {
 		String url = REPLY;
-		String result = "emptyreuslt_failed";
+		String result = "emptyresult_failed";
 
 		try {
 			result = post(url, entity, String.class);
@@ -345,20 +351,19 @@ public class API {
 		}
 	}
 
-	public String signUp(User user) throws Exception {
-		Log.d(TAG, "signUp called, body: " + getGson().toJson(user).toString());
+	public String signUp(StringEntity entity) throws Exception {
+		Log.d(TAG, "signUp called, body: ");
 
 		String url = SIGN_UP;
-		User mUser = post(url, new StringEntity(getGson().toJson(user)),
-				User.class);
+		String result = post(url, entity, String.class);
 
-		// Access Token!
-		return "accessToken to be";
+		return result;
 	}
 
 	public String signIn(StringEntity entity) throws Exception {
 		Log.d(TAG, "signIn called with entity: " + entity.toString());
 		String url = SIGN_IN;
+		isSigningIn = true;
 		String result = "emptystringdawg-API.signin worked?";
 		try {
 			result = post(url, entity, String.class);
@@ -466,6 +471,7 @@ public class API {
 
 		try {
 			json = get(url, Crowds.class);
+			Log.d(TAG, "get crowds JSON: " + json);
 			result  = getGson().fromJson(json, Crowds.class);
 		} catch(Exception e) {
 			Log.e(TAG, "getCrowds() error");
@@ -505,6 +511,7 @@ public class API {
 		String result = "emptyresult";
 		try {
 			result = get(url, String.class);
+			Log.d(TAG, "getSessions resulting JSON: " + result);
 		} catch (IOException e) {
 			Log.d(TAG, "getSessions() error");
 			throw e;
@@ -557,6 +564,22 @@ public class API {
 			String JSON = getGson().toJson(fav);
 			Log.d(TAG, "Posting JSON: " + JSON);
 			resultJSON = post(url, new StringEntity(JSON), String.class);
+		} catch(Exception e) {
+			Log.e(TAG, "createComment() error");
+			throw e;
+		}
+		return resultJSON;
+	}
+	
+	public String getClipStream(int sessionId, String token) throws Exception {
+		Log.d(TAG, "getClipStream called");
+		ACCESS_TOKEN = "Token " + token;
+		String url = GET_CLIP_STREAM + sessionId;
+		String resultJSON = null;
+		
+		try {
+			resultJSON = get(url, String.class);
+			Log.d(TAG, "getClipStream result: " + resultJSON);
 		} catch(Exception e) {
 			Log.e(TAG, "createComment() error");
 			throw e;

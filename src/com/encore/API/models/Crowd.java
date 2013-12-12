@@ -10,7 +10,7 @@ public class Crowd {
 	private String title;
 	
 	@SerializedName("members")
-	private Profile[] members;
+	private User[] members;
 	
 	public Crowd() {
 		title = null;;
@@ -18,8 +18,7 @@ public class Crowd {
 		id = -1;
 	}
 
-//	public Crowd(String title, DjangoUser[] members, int id) { // Make sure DjangoUser can be ridden
-	public Crowd(String title, Profile[] members) {
+	public Crowd(String title, User[] members) {
 		this.title = title;
 		this.members = members;
 		this.id = id;
@@ -29,7 +28,7 @@ public class Crowd {
 		return this.title;
 	}
 	
-	public Profile[] getMembers() {
+	public User[] getMembers() {
 		return this.members;
 	}
 	

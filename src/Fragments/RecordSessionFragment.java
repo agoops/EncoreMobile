@@ -5,6 +5,7 @@ import java.io.BufferedOutputStream;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.File;
+import java.io.FileDescriptor;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -12,14 +13,15 @@ import java.io.InputStream;
 import java.io.OutputStream;
 
 import util.T;
+import android.content.ContentValues;
 import android.content.Intent;
 import android.media.AudioFormat;
-import android.media.AudioManager;
 import android.media.AudioRecord;
-import android.media.AudioTrack;
+import android.media.MediaPlayer;
 import android.media.MediaRecorder;
 import android.os.Bundle;
 import android.os.Environment;
+import android.provider.MediaStore;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
@@ -44,7 +46,7 @@ public class RecordSessionFragment extends Fragment implements OnClickListener {
 	String tag = "StartSession2";
 	Thread recordThread = null;
 	String path = Environment.getExternalStorageDirectory()
-			.getAbsolutePath() + "/testaudio.pcm";
+			.getAbsolutePath() + "/testaudio.mp4";
 	
 	RecMicToMp3 recorder;
 	@Override
@@ -83,8 +85,7 @@ public class RecordSessionFragment extends Fragment implements OnClickListener {
 			isRecording = true;
 			recordThread = new Thread(new Runnable() {
 				public void run() {
-					record();
-//					recorder.start();
+					recordAudio();
 				}
 			});
 			recordThread.start();
@@ -94,7 +95,6 @@ public class RecordSessionFragment extends Fragment implements OnClickListener {
 			Log.d(TAG, "stop clicked");
 			enableButtons(false);
 			isRecording = false;
-//			recorder.stop();
 			break;
 		}
 		case R.id.btnPlayback: {
@@ -123,18 +123,14 @@ public class RecordSessionFragment extends Fragment implements OnClickListener {
 		case R.id.send_clip_btn:
 		{
 			// Only one crowd will be picked at any given time
-			// Make a "POST sessions" to create a new session
-			Intent apiIntent = new Intent(getActivity(),
-					APIService.class);
-			apiIntent.putExtra(T.API_TYPE, T.CREATE_SESSION);
-			apiIntent.putExtra(T.SESSION_TITLE, sessionTitle);
-			apiIntent.putExtra(T.SESSION_USE_EXISTING_CROWD, true);
-			apiIntent.putExtra(T.SESSION_CROWD_TITLE, "");
-			apiIntent.putExtra(T.SESSION_CROWD_MEMBERS, "");
-			apiIntent.putExtra(T.SESSION_CROWD_ID, "" + crowdId); 
-			Log.d(TAG, "crowdId: " + crowdId);
+			// Add clip to the existing session
+			int sessionId = getArguments().getInt("sessionId");
 			
-			getActivity().startService(apiIntent);
+			Intent addClipIntent = new Intent(getActivity(), APIService.class);
+			addClipIntent.putExtra(T.API_TYPE, T.ADD_CLIP);
+			addClipIntent.putExtra(T.SESSION_ID, sessionId);
+			addClipIntent.putExtra(T.FILEPATH, path); 
+			getActivity().startService(addClipIntent);
 			
 			Intent launchHome = new Intent(getActivity(), HomeActivity.class);
 			startActivity(launchHome);
@@ -157,16 +153,15 @@ public class RecordSessionFragment extends Fragment implements OnClickListener {
 	 * 
 	 * 
 	 */
-	public void record() {
-		Long time1 = System.currentTimeMillis();
-		int channelConfiguration = AudioFormat.CHANNEL_CONFIGURATION_MONO;
-		int audioEncoding = AudioFormat.ENCODING_PCM_16BIT;
+	
+	public void recordAudio() {
+		Log.d(TAG, "recordAudio called");
 		File file = new File(path);
 
 		// Delete any previous recording.
-		if (file.exists())
+		if (file.exists()) {
 			file.delete();
-
+		}
 		// Create the new file.
 		try {
 			file.createNewFile();
@@ -174,82 +169,45 @@ public class RecordSessionFragment extends Fragment implements OnClickListener {
 			throw new IllegalStateException("Failed to create "
 					+ file.toString());
 		}
+		
+	    final MediaRecorder recorder = new MediaRecorder();
+	    ContentValues values = new ContentValues(3);
+	    values.put(MediaStore.MediaColumns.TITLE, "mpegAudio");
+	    recorder.setAudioSource(MediaRecorder.AudioSource.MIC); // VideoSource.CAMERA, eh?
+	    recorder.setOutputFormat(MediaRecorder.OutputFormat.MPEG_4);
+	    recorder.setAudioEncoder(MediaRecorder.AudioEncoder.DEFAULT);
+	    recorder.setOutputFile(path);
+	    try {
+	      recorder.prepare();
+	    } catch (Exception e){
+	        e.printStackTrace();
+	    }
 
-		try {
-			// Create a DataOuputStream to write the audio data into the saved
-			// file.
-			OutputStream os = new FileOutputStream(file);
-			BufferedOutputStream bos = new BufferedOutputStream(os);
-			DataOutputStream dos = new DataOutputStream(bos);
-
-			// Create a new AudioRecord object to record the audio.
-			int bufferSize = AudioRecord.getMinBufferSize(sampleRateInHz,
-					channelConfiguration, audioEncoding);
-			AudioRecord audioRecord = new AudioRecord(
-					MediaRecorder.AudioSource.MIC, sampleRateInHz,
-					channelConfiguration, audioEncoding, bufferSize);
-
-			short[] buffer = new short[bufferSize];
-			Long time2 = System.currentTimeMillis();
-			audioRecord.startRecording();
-			Long time3 = System.currentTimeMillis();
-			Log.d(tag, "Time to set up audiorecord: " + (time2 - time1));
-			Log.d(tag, "Time from startRecording() to while loop: "
-					+ (time3 - time2));
-
-			while (isRecording) {
-				int bufferReadResult = audioRecord.read(buffer, 0, bufferSize);
-				for (int i = 0; i < bufferReadResult; i++)
-					dos.writeShort(buffer[i]);
-			}
-
-			audioRecord.stop();
-			dos.close();
-
-		} catch (Throwable t) {
-			Log.e("AudioRecord", "Recording Failed");
-		}
+	    recorder.start();
+	    while(isRecording) {
+	    	continue;
+	    }
+	    recorder.stop();
 	}
 
 	public void play() {
 		// Get the file we want to playback.
 		File file = new File(path);
-		// Get the length of the audio stored in the file (16 bit so 2 bytes per
-		// short)
-		// and create a short array to store the recorded audio.
-		int musicLength = (int) (file.length() / 2);
-		short[] music = new short[musicLength];
 		Log.d(tag, "size of file: " + file.length());
 
 		try {
-			// Create a DataInputStream to read the audio data back from the
-			// saved file.
-			InputStream is = new FileInputStream(file);
-			BufferedInputStream bis = new BufferedInputStream(is);
-			DataInputStream dis = new DataInputStream(bis);
-
-			// Read the file into the music array.
-			int i = 0;
-			while (dis.available() > 0) {
-				music[i] = dis.readShort();
-				i++;
+			FileInputStream is = new FileInputStream(file);
+			MediaPlayer player = new MediaPlayer();
+			try {
+				// MediaPlayer can only play a FileDescriptor,
+				// so we convert our path into one
+				player.setDataSource(is.getFD());
+				is.close();
+				player.prepare();
+				player.start();
+			} catch (IOException e) {
+				Log.e(TAG, "prepare() failed");
 			}
-
-			// Close the input streams.
-			dis.close();
-
-			// Create a new AudioTrack object using the same parameters as the
-			// AudioRecord
-			// object used to create the file.
-			AudioTrack audioTrack = new AudioTrack(AudioManager.STREAM_MUSIC,
-					sampleRateInHz, AudioFormat.CHANNEL_CONFIGURATION_MONO,
-					AudioFormat.ENCODING_PCM_16BIT, musicLength,
-					AudioTrack.MODE_STREAM);
-			// Start playback
-			audioTrack.play();
-
-			// Write the music buffer to the AudioTrack object
-			audioTrack.write(music, 0, musicLength);
 
 		} catch (Throwable t) {
 			Log.e("AudioTrack", "Playback Failed");

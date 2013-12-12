@@ -43,7 +43,8 @@ public class User implements UserInfo{
 	private transient Date dateJoined;
 	
 	private boolean isAdmin;
-	
+	@SerializedName("phone_number")
+	private String phoneNumber;
 
 	public User() {
 		username = null;

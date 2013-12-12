@@ -7,6 +7,7 @@ import util.T;
 import widget.CrowdAdapter;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Environment;
 import android.os.Handler;
 import android.os.ResultReceiver;
 import android.support.v4.app.Fragment;
@@ -39,13 +40,12 @@ public class PickCrowdFragment extends Fragment implements OnClickListener {
 	private String jsonResult = "";
 	private Crowd[] crowds = null;
 	private List<Crowd> selectedCrowds;
-	
-	private String path;
+	String path = Environment.getExternalStorageDirectory()
+			.getAbsolutePath() + "/testaudio.mp4";
 	
 	public void setPath(String path) {
 		this.path = path;
 	}
-	
 	
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		Log.d(TAG, "PickCrowdFragment successfully launched");

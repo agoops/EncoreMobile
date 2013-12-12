@@ -1,6 +1,8 @@
 package com.encore.views;
 
+import java.lang.reflect.Type;
 import java.util.ArrayList;
+import java.util.List;
 
 import util.T;
 import android.content.Intent;
@@ -24,9 +26,10 @@ import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;
+import com.google.gson.reflect.TypeToken;
 
 public class UsersFragment extends Fragment{
-	private static String tag = "UsersFragment";
+	private static final String TAG = "UsersFragment";
 	private ListView listView;
 	public Button sendRequests;
 	UsersFragmentAdapter adapter;
@@ -57,9 +60,6 @@ public class UsersFragment extends Fragment{
 		return view;
 	}
 	
-	
-	
-	
 	public void getPendingFriendRequests(ResultReceiver receiver) {
 		Intent apiIntent = new Intent(getActivity(), APIService.class);
 		apiIntent.putExtra("receiver", receiver);
@@ -69,7 +69,6 @@ public class UsersFragment extends Fragment{
 		return;
 	}
 	
-	
 	public void getUsers(ResultReceiver receiver) {
 		Intent apiIntent = new Intent(getActivity(), APIService.class);
 		apiIntent.putExtra("receiver", receiver);
@@ -78,7 +77,6 @@ public class UsersFragment extends Fragment{
 		getActivity().startService(apiIntent);
 		return;
 	}
-	
 
 	private class UsersListReceiver extends ResultReceiver {
 		public UsersListReceiver(Handler handler) {
@@ -89,7 +87,7 @@ public class UsersFragment extends Fragment{
 		@Override
 		protected void onReceiveResult(int resultCode, Bundle resultData) {
 			if (resultCode == 1) {
-				Log.d(tag, "APISerivce returned successful with friends");
+				Log.d(TAG, "APIService returned successful with friends");
 				/*
 				 * TODO:WARNING This conversion of json to List<Profile> might
 				 * be running on UI thread and that might be bad. EDIT:
@@ -100,36 +98,39 @@ public class UsersFragment extends Fragment{
 				 * that it is seperate), and update UI with Handler given.
 				 */
 				String result = resultData.getString("result");
-				ArrayList<Profile> profiles = convertJsonToListOfProfile(result);
+				Log.d(TAG, "Friends: \n" + result);
+				Type listType = new TypeToken<List<Profile>>(){}.getType();
+				ArrayList<Profile> profiles2 = (new Gson()).fromJson(result, listType);
+				Log.d(TAG, "Num user: " + profiles2.size() + ", 0: " + profiles2.get(0).getFirstName());
+				
+				ArrayList<Profile> profiles = convertJsonToListOfUser(result);
 				adapter.setItemList(profiles);
 				adapter.notifyDataSetChanged();
 			} else {
-				Log.d(tag, "APIService get friends failed?");
-
+				Log.d(TAG, "APIService get friends failed?");
 			}
 		}
 	}
 	
-	public ArrayList<User> convertJsonToListOfUser(String json) {
-		Log.d(tag, "CONVERT TO OBJECT STARTED");
+	public ArrayList<Profile> convertJsonToListOfUser(String json) {
+		Log.d(TAG, "CONVERT TO OBJECT STARTED");
 		Gson gson = new Gson();
-		ArrayList<User> users = new ArrayList<User>();
-		JsonParser jsonParser = new JsonParser();
+		ArrayList<Profile> profiles = new ArrayList<Profile>();
 		
+		JsonParser jsonParser = new JsonParser();
 		JsonArray usersJson = new JsonArray();
 		
-		usersJson = jsonParser.parse(json).getAsJsonObject()
-				.getAsJsonArray(JSON_REQUESTS_KEY);
+		usersJson = jsonParser.parse(json).getAsJsonArray();
 		for (JsonElement j : usersJson) {
-			User user = gson.fromJson(j, User.class);
-			users.add(user);
-			Log.d(tag, user.toString());
+			Profile profile = gson.fromJson(j, Profile.class);
+			profiles.add(profile);
+			Log.d(TAG, profile.toString());
 		}
-		return users;
+		return profiles;
 		
 	}
 	public ArrayList<Profile> convertJsonToListOfProfile(String json) {
-		Log.d(tag, "CONVERT TO OBJECT STARTED");
+		Log.d(TAG, "CONVERT TO OBJECT STARTED");
 		Gson gson = new Gson();
 		ArrayList<Profile> profiles = new ArrayList<Profile>();
 		JsonParser jsonParser = new JsonParser();
@@ -140,7 +141,7 @@ public class UsersFragment extends Fragment{
 		for (JsonElement j : profilesJson) {
 			Profile profile = gson.fromJson(j, Profile.class);
 			profiles.add(profile);
-			Log.d(tag, profile.toString());
+			Log.d(TAG, profile.toString());
 		}
 
 		return profiles;
