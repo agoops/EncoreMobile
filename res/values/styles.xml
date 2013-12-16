@@ -17,6 +17,8 @@
     <style name="AppTheme" parent="AppBaseTheme">
         <!-- All customizations that are NOT specific to a particular API-level can go here. -->
         <item name="android:actionBarStyle">@style/RapchatActionBar</item>
+        <item name="android:actionBarTabTextStyle">@style/RapchatTabs</item>
+        <item name="android:buttonStyle">@style/RapchatButtons</item>
     </style>
     
     <style name="RapchatActionBar" parent="@style/Widget.AppCompat.ActionBar">
@@ -26,6 +28,17 @@
         <!-- Support library compatibility -->
         <item name="titleTextStyle">@style/TitleTextStyle</item>
         <item name="background">@color/flat_red</item>
+    </style>
+    
+    <style name="RapchatTabs" parent="@style/Widget.AppCompat.ActionBar.TabText">
+        <item name="android:textColor">@color/dark_grey</item>
+    </style>
+    
+    <style name="RapchatButtons" parent="@android:Widget.Holo.Button">
+        <item name="android:background">@drawable/button_style</item>
+        <item name="android:fontFamily">sans-serif-light</item>
+        <item name="android:textStyle">italic</item>
+        <item name="android:textColor">#fff</item>
     </style>
     
     <style name="TitleTextStyle" parent="@style/TextAppearance.AppCompat.Widget.ActionBar.Title">

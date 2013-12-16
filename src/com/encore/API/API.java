@@ -56,7 +56,7 @@ public class API {
 	private static final String USERS = BASE_URL + "/users/";
 	private static final String SESSIONS = BASE_URL + "/sessions/";
 	private static final String CLIPS = BASE_URL + "/clips/";
-	private static final String FRIENDS = BASE_URL + "/friends/";
+	private static final String FRIENDS = BASE_URL + "/users/friends/";
 	private static final String CROWDS = BASE_URL + "/crowds/";
 	private static final String REQUESTS = FRIENDS + "requests/";
 	private static final String REPLY = REQUESTS + "reply/";

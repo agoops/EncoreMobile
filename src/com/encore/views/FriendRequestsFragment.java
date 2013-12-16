@@ -1,6 +1,8 @@
 package com.encore.views;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 import util.T;
 import android.content.Intent;
@@ -17,7 +19,7 @@ import android.widget.ListView;
 import com.encore.FriendRequestFragmentAdapter;
 import com.encore.R;
 import com.encore.API.APIService;
-import com.encore.API.models.Profile;
+import com.encore.API.models.FriendRequest;
 import com.encore.API.models.User;
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
@@ -26,7 +28,7 @@ import com.google.gson.JsonParser;
 
 public class FriendRequestsFragment extends Fragment {
 
-	private static String tag = "FriendRequestsFragment";
+	private static final String TAG = "FriendRequestsFragment";
 	private ListView listView;
 	private FriendRequestFragmentAdapter adapter;
 	private String JSON_REQUESTS_KEY = "pending_me";
@@ -71,16 +73,18 @@ public class FriendRequestsFragment extends Fragment {
 		@Override
 		protected void onReceiveResult(int resultCode, Bundle resultData) {
 			if (resultCode == 1) {
-				Log.d(tag, "APISerivce returned successful with friends");
+				Log.d(TAG, "APIService returned successful with friends");
 				String result = resultData.getString("result");
-				ArrayList<User> list = convertJsonToListOfUsers(result);
+//				ArrayList<User> list = convertJsonToListOfUsers(result);
+				
+				FriendRequest fq = new Gson().fromJson(result, FriendRequest.class);
+				ArrayList<User> pendingMe = new ArrayList(Arrays.asList(fq.getPendingMe())); 
+				Log.d(TAG, "FRIENDREQUEST TOSTRING" + fq.toString());
 
-				adapter.setItemList(list);
+				adapter.setItemList(pendingMe);
 				adapter.notifyDataSetChanged();
-				Log.d(tag, "Pending friend requests: /n" +result);
 			} else {
-				Log.d(tag, "APIService get friends failed?");
-
+				Log.d(TAG, "APIService get friends failed?");
 			}
 		}
 		
@@ -99,7 +103,7 @@ public class FriendRequestsFragment extends Fragment {
 		for (JsonElement j : usersJson) {
 			User user = gson.fromJson(j, User.class);
 			users.add(user);
-			Log.d(tag, user.toString());
+			Log.d(TAG, user.toString());
 		}
 		
 		return users;
