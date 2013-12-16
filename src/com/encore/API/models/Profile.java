@@ -10,7 +10,7 @@ public class Profile implements UserInfo {
 	@SerializedName("phone_number")
 	private String phoneNumber;
 	@SerializedName("friends")
-	private int[] friends;
+	private User[] friends;
 	
 	public Profile() {
 		this.profileId =  -1;
@@ -38,11 +38,11 @@ public class Profile implements UserInfo {
 		this.phoneNumber = phoneNumber;
 	}
 	
-	public void setFriends(int[] friends) {
+	public void setFriends(User[] friends) {
 		this.friends = friends;
 	}
 	
-	public int[] getFriends() {
+	public User[] getFriends() {
 		return friends;
 	}
 	

@@ -47,18 +47,23 @@ public class InboxListViewFragment extends Fragment{
 		View view = inflater.inflate(R.layout.video_list_fragment, container, false);
 		sessionsLV = (ListView) view.findViewById(R.id.video_list_view2);
 		
+		adapter = new InboxViewAdapter(getActivity(), R.layout.inbox_view, null);
+		sessionsLV.setAdapter(adapter);
+		
+	    ResultReceiver receiver = new SessionListReceiver(new Handler());
+	    getRaps(receiver);
+		
+//	    lv.setOnItemClickListener(new ResponseListener());
+	    return view;
+    }
+	
+	public void getRaps(ResultReceiver receiver) {
 		Intent api = new Intent(getActivity(), APIService.class);
 		api.putExtra(T.API_TYPE, T.GET_SESSIONS);
-		
-		ResultReceiver receiver = new SessionListReceiver(new Handler());
 		api.putExtra(T.RECEIVER, receiver);
 		
 		getActivity().startService(api);
-		
-//	    lv.setOnItemClickListener(new ResponseListener());
-	    
-	    return view;
-    }
+	}
 	
 	public InboxViewAdapter getAdapter () {
 		return adapter;
@@ -114,9 +119,6 @@ public class InboxListViewFragment extends Fragment{
 	}
 	
 	private void populateListView() {
-		adapter = new InboxViewAdapter(getActivity(), R.layout.inbox_view, Arrays.asList(sessions));
-	    sessionsLV.setAdapter(adapter);
-		
 		sessionsLV.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 		    @Override
 		    public void onItemClick(AdapterView<?> parent, android.view.View view,
@@ -135,16 +137,14 @@ public class InboxListViewFragment extends Fragment{
         @Override
         protected void onReceiveResult(int resultCode, Bundle resultData) {
                 if (resultCode == 1) {
-                        Log.d(TAG, "APIService returned successful with sessions");
+                        Log.d(TAG, "APIService returned successfully with sessions");
                         
                         String result = resultData.getString("result");
                         sessions = (new Gson()).fromJson(result, Sessions.class).getSessions();
-                        populateListView();
+//                        populateListView();
                         // TODO: Use the async calls below
-//                        nAdapter.setItemList(sessions.get(NEWSFEED));
-//                        nAdapter.notifyDataSetChanged();
-                        
-                        
+                        adapter.setItemList(Arrays.asList(sessions));
+                        adapter.notifyDataSetChanged();
                 } else {
                         Log.d(TAG, "APIService get session failed?");
                 }

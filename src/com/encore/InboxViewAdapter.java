@@ -32,7 +32,7 @@ import com.encore.API.APIService;
 import com.encore.API.models.Comment;
 import com.encore.API.models.Session;
 
-public class InboxViewAdapter extends ArrayAdapter implements OnClickListener {
+public class InboxViewAdapter extends ArrayAdapter<Session> implements OnClickListener {
 	
 	private static final String TAG = "InboxViewAdapter";
 	private Context mContext;
@@ -221,6 +221,15 @@ public class InboxViewAdapter extends ArrayAdapter implements OnClickListener {
 		}
 	}
 	
+	@Override
+	public int getCount() {
+		if(mSessionList != null) {
+			return mSessionList.size();
+		}
+		
+		return 0;
+	}
+	
 	static class SessionHolder {
 		TextView titleTextView;
 		Button play, reply, likesBtn, commentsBtn, favoritesBtn;
@@ -264,5 +273,9 @@ public class InboxViewAdapter extends ArrayAdapter implements OnClickListener {
                         Log.d(TAG, "APIService get session failed?");
                 }
         }
+	}
+	
+	public void setItemList(List<Session> sessions) {
+		this.mSessionList = sessions;
 	}
 }
