@@ -16,28 +16,25 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 
 import com.encore.R;
 import com.encore.UsersFragmentAdapter;
 import com.encore.API.APIService;
 import com.encore.API.models.Profile;
-import com.encore.API.models.User;
 import com.google.gson.Gson;
-import com.google.gson.JsonArray;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonParser;
 import com.google.gson.reflect.TypeToken;
 
 public class UsersFragment extends Fragment{
 	private static final String TAG = "UsersFragment";
 	private ListView listView;
+	private UsersFragmentAdapter adapter;
+	private ProgressBar progressBar;
 	public Button sendRequests;
-	UsersFragmentAdapter adapter;
 	
 	private final static int REQUESTS = 0;
 	private final static int USERS = 1;
 	private final static String JSON_REQUESTS_KEY = "pending_me";
-	
 	
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -46,6 +43,11 @@ public class UsersFragment extends Fragment{
 		// Inflate the layout for this fragment
 		View view = inflater.inflate(R.layout.users_fragment, container,
 				false); 
+		
+		// Setup progress bar
+		progressBar = (ProgressBar) view.findViewById(R.id.progress_users);
+		progressBar.setVisibility(View.VISIBLE);
+		
 		listView = (ListView) view.findViewById(R.id.users_list_view);
 		adapter = new UsersFragmentAdapter(container.getContext(), 0, null);
 		listView.setAdapter(adapter);
@@ -88,6 +90,9 @@ public class UsersFragment extends Fragment{
 				 * seems that the code will run on the service's thread (given
 				 * that it is seperate), and update UI with Handler given.
 				 */
+				// Hide progress bar
+				progressBar.setVisibility(View.GONE);
+				
 				String result = resultData.getString("result");
 				Log.d(TAG, "Users: \n" + result);
 				Type listType = new TypeToken<List<Profile>>(){}.getType();

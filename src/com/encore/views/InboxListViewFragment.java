@@ -1,6 +1,5 @@
 package com.encore.views;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 
 import util.T;
@@ -21,6 +20,7 @@ import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 import android.widget.VideoView;
 
@@ -39,12 +39,18 @@ public class InboxListViewFragment extends Fragment{
 	private InboxViewAdapter adapter;
 	private Session[] sessions;
 	private ListView sessionsLV;
+	private ProgressBar progressBar;
 	
 	@Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
         Bundle savedInstanceState) {
         // Inflate the layout for this fragment
 		View view = inflater.inflate(R.layout.video_list_fragment, container, false);
+		
+		// Show Progress Bar
+		progressBar = (ProgressBar) view.findViewById(R.id.progress_inbox);
+		progressBar.setVisibility(View.VISIBLE);
+		
 		sessionsLV = (ListView) view.findViewById(R.id.video_list_view2);
 		
 		adapter = new InboxViewAdapter(getActivity(), R.layout.inbox_view, null);
@@ -118,16 +124,6 @@ public class InboxListViewFragment extends Fragment{
         dialog.show();
 	}
 	
-	private void populateListView() {
-		sessionsLV.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-		    @Override
-		    public void onItemClick(AdapterView<?> parent, android.view.View view,
-		            int position, long id) {
-		    	// Do something if a lv item is clicked? Could be useful...
-		    }
-		});
-	}
-	
 	private class SessionListReceiver extends ResultReceiver {
         public SessionListReceiver(Handler handler) {
                 super(handler);
@@ -139,10 +135,11 @@ public class InboxListViewFragment extends Fragment{
                 if (resultCode == 1) {
                         Log.d(TAG, "APIService returned successfully with sessions");
                         
+                        // hide progress bar
+                        progressBar.setVisibility(View.GONE);
+                        
                         String result = resultData.getString("result");
                         sessions = (new Gson()).fromJson(result, Sessions.class).getSessions();
-//                        populateListView();
-                        // TODO: Use the async calls below
                         adapter.setItemList(Arrays.asList(sessions));
                         adapter.notifyDataSetChanged();
                 } else {

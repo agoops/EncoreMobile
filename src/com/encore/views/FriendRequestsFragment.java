@@ -2,7 +2,6 @@ package com.encore.views;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
 
 import util.T;
 import android.content.Intent;
@@ -15,6 +14,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 
 import com.encore.FriendRequestFragmentAdapter;
 import com.encore.R;
@@ -32,6 +32,7 @@ public class FriendRequestsFragment extends Fragment {
 	private ListView listView;
 	private FriendRequestFragmentAdapter adapter;
 	private String JSON_REQUESTS_KEY = "pending_me";
+	private ProgressBar progressBar;
 	
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -40,9 +41,11 @@ public class FriendRequestsFragment extends Fragment {
 		// Inflate the layout for this fragment
 		View view = inflater.inflate(R.layout.users_fragment, container,
 				false);
-		listView = (ListView) view.findViewById(R.id.users_list_view);
-
 		
+		progressBar = (ProgressBar) view.findViewById(R.id.progress_users);
+		progressBar.setVisibility(View.VISIBLE);
+		
+		listView = (ListView) view.findViewById(R.id.users_list_view);
 		adapter = new FriendRequestFragmentAdapter(container.getContext(), 0, new ArrayList<User>());
 		listView.setAdapter(adapter);
 
@@ -75,7 +78,8 @@ public class FriendRequestsFragment extends Fragment {
 			if (resultCode == 1) {
 				Log.d(TAG, "APIService returned successful with friends");
 				String result = resultData.getString("result");
-//				ArrayList<User> list = convertJsonToListOfUsers(result);
+				
+				progressBar.setVisibility(View.GONE);
 				
 				FriendRequest fq = new Gson().fromJson(result, FriendRequest.class);
 				ArrayList<User> pendingMe = new ArrayList(Arrays.asList(fq.getPendingMe())); 
@@ -89,25 +93,4 @@ public class FriendRequestsFragment extends Fragment {
 		}
 		
 	}
-	
-	private ArrayList<User> convertJsonToListOfUsers(String json) {
-		ArrayList<User> users = new ArrayList<User>();
-		
-		Gson gson = new Gson();
-		
-		JsonParser jsonParser = new JsonParser();
-		JsonArray usersJson = new JsonArray();
-		
-		usersJson = jsonParser.parse(json).getAsJsonObject()
-				.getAsJsonArray(JSON_REQUESTS_KEY);
-		for (JsonElement j : usersJson) {
-			User user = gson.fromJson(j, User.class);
-			users.add(user);
-			Log.d(TAG, user.toString());
-		}
-		
-		return users;
-	}
-	
-	
 }
