@@ -22,6 +22,7 @@ import android.view.Window;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.encore.CameraActivity;
 import com.encore.InboxViewAdapter;
 import com.encore.R;
 import com.encore.SessionViewAdapter;
@@ -75,6 +76,7 @@ public class HomeActivity extends FragmentActivity {
 						getActionBar().setSelectedNavigationItem(position);
 					}
 				});
+		
 //		getAllSessions();
 	}
 
@@ -214,7 +216,8 @@ public class HomeActivity extends FragmentActivity {
 		case R.id.action_video:
 			// Launch a new session
 			Log.d(TAG, "Launching StartSession2");
-			Intent intent = new Intent(this, StartSession2.class);
+//			Intent intent = new Intent(this, StartSession2.class);
+			Intent intent = new Intent(this, CameraActivity.class);
 			startActivity(intent);
 			return true;
 		default:

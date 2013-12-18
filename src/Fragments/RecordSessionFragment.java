@@ -114,6 +114,7 @@ public class RecordSessionFragment extends Fragment implements OnClickListener {
 			ft.setCustomAnimations(R.anim.enter, R.anim.exit, R.anim.pop_enter, R.anim.pop_exit);
 			PickCrowdFragment pickCrowdFragment = new PickCrowdFragment();
 			pickCrowdFragment.setPath(path);
+			
 			// Replace the RecordSessionFragment with a PickCrowdFragment
 			ft.replace(R.id.fragment_placeholder, pickCrowdFragment);
 			ft.addToBackStack(null);
@@ -140,19 +141,6 @@ public class RecordSessionFragment extends Fragment implements OnClickListener {
 		}
 		}
 	}
-	/**
-	 * 
-	 * 
-	 * 
-	 * TODO
-	 * 
-	 * REPLACE THIS WITH RECORDING MP3
-	 * 
-	 * 
-	 * 
-	 * 
-	 * 
-	 */
 	
 	public void recordAudio() {
 		Log.d(TAG, "recordAudio called");
