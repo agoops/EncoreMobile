@@ -10,6 +10,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
+import android.hardware.Camera;
 import android.hardware.Camera.CameraInfo;
 import android.media.CamcorderProfile;
 import android.media.MediaMetadataRetriever;
@@ -41,6 +42,7 @@ public class AndroidVideoCapture extends Activity implements
 	Button send;
 	MediaRecorder mediaRecorder;
 	SurfaceHolder surfaceHolder;
+	Camera camera;
 	boolean recording;
 	
 	TextView three;
@@ -65,13 +67,23 @@ public class AndroidVideoCapture extends Activity implements
 
 		mHandler = new Handler();
 		mediaRecorder = new MediaRecorder();
-		initMediaRecorder();
 		
 		
 		SurfaceView myVideoView = (SurfaceView) findViewById(R.id.videoview);
 		surfaceHolder = myVideoView.getHolder();
 		surfaceHolder.addCallback(this);
 		surfaceHolder.setType(SurfaceHolder.SURFACE_TYPE_PUSH_BUFFERS);
+		camera = Camera.open(1);
+		camera.setDisplayOrientation(90);
+		camera.unlock();
+		try {
+			camera.setPreviewDisplay(surfaceHolder);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		camera.startPreview();
+		initMediaRecorder();
 
 		restart = (Button) findViewById(R.id.restart);
 		restart.setOnClickListener(restartListener);
@@ -198,10 +210,20 @@ public class AndroidVideoCapture extends Activity implements
 	}
 
 	private void initMediaRecorder() {
+//		camera = Camera.open(1);
+//		camera.setDisplayOrientation(90);
+//		camera.unlock();
+//		try {
+//			camera.setPreviewDisplay(surfaceHolder);
+//		} catch (IOException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
+		mediaRecorder.setCamera(camera);
 		mediaRecorder.setAudioSource(MediaRecorder.AudioSource.DEFAULT);
-		mediaRecorder.setVideoSource(MediaRecorder.VideoSource.DEFAULT);
+		mediaRecorder.setVideoSource(MediaRecorder.VideoSource.CAMERA);
 		CamcorderProfile camcorderProfile_LQ = CamcorderProfile
-				.get(CameraInfo.CAMERA_FACING_FRONT, CamcorderProfile.QUALITY_LOW);
+				.get(CamcorderProfile.QUALITY_LOW);
 		mediaRecorder.setProfile(camcorderProfile_LQ);
 		mediaRecorder.setOutputFile(OUTPUT);
 		mediaRecorder.setMaxDuration(8000);
@@ -212,6 +234,14 @@ public class AndroidVideoCapture extends Activity implements
 		            mediaRecorder.stop();
 		            mediaRecorder.reset();
 		            mediaRecorder.release();
+		            try {
+						camera.reconnect();
+					} catch (IOException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+		            camera.stopPreview();
+		            camera.release();
 		            audio.cancel(true);
 		        }          
 		    }

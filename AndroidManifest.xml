@@ -53,6 +53,8 @@
        
         <activity android:name="com.encore.VideoPlayback" >
         </activity>
+        <activity android:name="com.encore.CameraActivity2" >
+        </activity>
         <activity android:name="com.encore.StartSession" >
         </activity>
           <activity android:name="com.encore.StartSession2" >
