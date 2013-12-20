@@ -57,10 +57,10 @@ public class AndroidVideoCapture extends Activity implements
 		Log.d(tag, "onCreate() AndroidVideoCapture");
 		setContentView(R.layout.capture_video);
 		recording = false;
-		three = (TextView)findViewById(R.id.three);
-		two = (TextView)findViewById(R.id.two);
-		one = (TextView)findViewById(R.id.one);
-		go = (TextView)findViewById(R.id.go);
+//		three = (TextView)findViewById(R.id.three);
+//		two = (TextView)findViewById(R.id.two);
+//		one = (TextView)findViewById(R.id.one);
+//		go = (TextView)findViewById(R.id.go);
 		                                            
 		List<TextView> views = new ArrayList<TextView>(Arrays.asList(three,two,one,go));
 		iter = views.iterator();
@@ -85,7 +85,7 @@ public class AndroidVideoCapture extends Activity implements
 		camera.startPreview();
 		initMediaRecorder();
 
-		restart = (Button) findViewById(R.id.restart);
+		restart = (Button) findViewById(R.id.record);
 		restart.setOnClickListener(restartListener);
 		send = (Button) findViewById(R.id.send);
 		send.setOnClickListener(sendListener);
