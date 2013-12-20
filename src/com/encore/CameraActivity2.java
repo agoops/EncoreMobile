@@ -170,7 +170,7 @@ public class CameraActivity2 extends Activity implements
 			camera.setPreviewDisplay(surfaceHolder);
 			camera.startPreview();
 			
-			setUpMediaRecorder();
+//			setUpMediaRecorder();
 			setUpButtons();
 			// mediaRecorder.setPreviewDisplay(surfaceHolder.getSurface());
 			// mediaRecorder.prepare();
@@ -217,6 +217,7 @@ public class CameraActivity2 extends Activity implements
 				try {
 					// camera.stopPreview();
 					// mediaRecorder.setPreviewDisplay(surfaceHolder.getSurface());
+					setUpMediaRecorder();
 					mediaRecorder.prepare();
 					mediaRecorder.start();
 					isRecording = true;
