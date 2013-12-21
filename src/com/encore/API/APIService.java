@@ -126,18 +126,17 @@ public class APIService extends IntentService {
 	
 	
 	private void addClip(Bundle data) {
-
+		int sessionId = data.getInt(T.SESSION_ID);
 		MultipartEntityBuilder multipartEntity = MultipartEntityBuilder
 				.create();
 		multipartEntity.setMode(HttpMultipartMode.BROWSER_COMPATIBLE);
 
 		multipartEntity.setBoundary("---*******");
 		multipartEntity.addPart("clip", new FileBody(new File(data.getString(T.FILEPATH))));
-		multipartEntity.addTextBody("session", Integer.toString(data.getInt(T.SESSION_ID)));
 		HttpEntity entity = multipartEntity.build();
 		try {
-			String result = api.addClip(entity);
-			Log.d(TAG, "FROM createSessions() apiservice" + result);
+			String result = api.addClip(entity, sessionId);
+			Log.d(TAG, "FROM addClip() apiservice" + result);
 		} 
 		catch (Exception e) {
 			e.printStackTrace();
@@ -401,18 +400,19 @@ public class APIService extends IntentService {
 	private void getClipStream(Bundle data) {
 		Log.d(TAG, "getClipStream called");
 		int sessionId = data.getInt(T.SESSION_ID);
-		String token = TokenHelper.getToken(this);
 		String resultJSON = null;
 		
 		try {
-			resultJSON = api.getClipStream(sessionId, token);
+			resultJSON = api.getClipStream(sessionId);
 			Log.d(TAG, "getClipStream result: " + resultJSON);
 			
 			Bundle b = new Bundle();
 			b.putString("result", resultJSON);
-			resultReceiver.send(T.GET_CLIP_STREAM, b);
+			resultReceiver.send(1, b);
 		} catch (Exception e) {
 			Log.e(TAG, e.getMessage() + " ");
+			e.printStackTrace();
+			resultReceiver.send(0,null);
 		}
 	}
 }

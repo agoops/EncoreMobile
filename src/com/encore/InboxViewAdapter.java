@@ -1,15 +1,15 @@
 package com.encore;
 
-import java.io.IOException;
 import java.util.List;
 
 import util.T;
 import widget.CommentDialog;
 import android.app.Activity;
+import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
-import android.media.AudioManager;
 import android.media.MediaPlayer;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.ResultReceiver;
@@ -18,15 +18,19 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.VideoView;
 
 import com.encore.API.APIService;
 import com.encore.API.models.Comment;
 import com.encore.API.models.Session;
 import com.google.gson.Gson;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonParser;
 
 public class InboxViewAdapter extends ArrayAdapter<Session> implements OnClickListener {
 	
@@ -106,7 +110,7 @@ public class InboxViewAdapter extends ArrayAdapter<Session> implements OnClickLi
 			// Pass crowdId and sessionTitle on to StartSession2
 			// who in turn passes it on to RecordFragment
 			int crowdId = sesh.getCrowdId();
-			Intent launchRecordFragment = new Intent(mContext, StartSession2.class);
+			Intent launchRecordFragment = new Intent(mContext, CameraActivity2.class);
 			launchRecordFragment.putExtra("crowdId", crowdId);
 			launchRecordFragment.putExtra("sessionTitle", sesh.getTitle());
 			launchRecordFragment.putExtra("sessionId", sesh.getId());
@@ -138,36 +142,38 @@ public class InboxViewAdapter extends ArrayAdapter<Session> implements OnClickLi
 			favApi.putExtra(T.API_TYPE, T.CREATE_FAVORITE);
 			favApi.putExtra(T.SESSION_ID, sesh.getId());
 			mContext.startService(favApi);
+			break;
 		case R.id.stream_clip:
 			// TODO: Make GET for url
-//			Intent clipApi = new Intent(mContext, APIService.class);
-//			clipApi.putExtra(T.API_TYPE, T.GET_CLIP_STREAM);
-//			clipApi.putExtra(T.SESSION_ID, sesh.getId());
-//			ResultReceiver receiver = new ClipStreamReceiver(new Handler());
-//			clipApi.putExtra(T.RECEIVER, receiver);
-//			mContext.startService(clipApi);
-
-			Log.d(TAG, "APIService returned successful with clip stream");
-            Log.d(TAG, "Attempting to play clip");
-            MediaPlayer mp = new MediaPlayer();
-			mp.setAudioStreamType(AudioManager.STREAM_MUSIC);
-			try {
-				mp.setDataSource("http://172.27.122.251:3000/sessions/clip/"+sesh.getId());
-				mp.prepare();
-				mp.start();
-			} catch (IllegalArgumentException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (SecurityException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (IllegalStateException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
+			Intent clipApi = new Intent(mContext, APIService.class);
+			clipApi.putExtra(T.API_TYPE, T.GET_CLIP_STREAM);
+			int sessionId = sesh.getId();
+			clipApi.putExtra(T.SESSION_ID, sessionId);
+			ResultReceiver receiver = new ClipStreamReceiver(new Handler());
+			clipApi.putExtra(T.RECEIVER, receiver);
+			mContext.startService(clipApi);
+			
+			
+			//The ClipStreamReceiver will get result and take care of displaying a dialog
+//            MediaPlayer mp = new MediaPlayer();
+//			mp.setAudioStreamType(AudioManager.STREAM_MUSIC);
+//			try {
+//				mp.setDataSource("http://172.27.122.251:3000/sessions/clip/"+sesh.getId());
+//				mp.prepare();
+//				mp.start();
+//			} catch (IllegalArgumentException e) {
+//				// TODO Auto-generated catch block
+//				e.printStackTrace();
+//			} catch (SecurityException e) {
+//				// TODO Auto-generated catch block
+//				e.printStackTrace();
+//			} catch (IllegalStateException e) {
+//				// TODO Auto-generated catch block
+//				e.printStackTrace();
+//			} catch (IOException e) {
+//				// TODO Auto-generated catch block
+//				e.printStackTrace();
+//			}
 			
 //            Thread thread = new Thread();
 //            Log.d(TAG, "Button licked");
@@ -205,38 +211,55 @@ public class InboxViewAdapter extends ArrayAdapter<Session> implements OnClickLi
 
         @Override
         protected void onReceiveResult(int resultCode, Bundle resultData) {
-                if (resultCode == T.GET_CLIP_STREAM) {
+                if (resultCode == 1) {
                         Log.d(TAG, "APIService returned successful with clip stream");
                         Log.d(TAG, "Attempting to play clip");
-                        MediaPlayer mp = new MediaPlayer();
-            			mp.setAudioStreamType(AudioManager.STREAM_MUSIC);
-            			try {
-							mp.setDataSource("http://172.27.122.251:3000/sessions/clip/");
-							mp.prepare();
-							mp.start();
-						} catch (IllegalArgumentException e) {
-							// TODO Auto-generated catch block
-							e.printStackTrace();
-						} catch (SecurityException e) {
-							// TODO Auto-generated catch block
-							e.printStackTrace();
-						} catch (IllegalStateException e) {
-							// TODO Auto-generated catch block
-							e.printStackTrace();
-						} catch (IOException e) {
-							// TODO Auto-generated catch block
-							e.printStackTrace();
-						}
-    
                         String result = resultData.getString("result");
-                        Log.d(TAG, "result is: " + result);
+                        Log.d(TAG, "result from apiservice is: " + result);
+                        JsonParser jsonParser = new JsonParser();
+                		JsonArray jsonClipsArray = jsonParser.parse(result).getAsJsonArray();
+                		
+                		int numClipsInSession = jsonClipsArray.size();
+                		
+                		//Get last clipElement, get clip url
+                		String url = jsonClipsArray.get(0).getAsJsonObject().get("url").getAsString();
+                		Log.d(TAG, "url is: " + url);
+                		Uri uri = Uri.parse(url);
+                		
+                		//this link works. it's asian people playing ping pong CLASSIC
+                		Uri hardcodeUri = Uri.parse("http://students.mimuw.edu.pl/~nh209484/Video000.3gp");
+                		
+                		//Problems: can stream back a video from android, but not from what michael made. 
+                		//I know android records in mpeg4.
+                		showVideoDialog(uri);
+    
                         
                 } else {
-                        Log.d(TAG, "APIService get session failed?");
+                        Log.d(TAG, "APIService get session clip url failed?");
                 }
         }
 	}
 	
+	private void showVideoDialog(Uri uri) {
+
+		final Dialog dialog = new Dialog(mContext);
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.setContentView(R.layout.video_dialog);
+        dialog.setCancelable(true);
+
+        VideoView videoView = (VideoView) dialog.findViewById(R.id.video_dialog_video_view);
+        videoView.setZOrderOnTop(true);
+        videoView.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+			
+			@Override
+			public void onCompletion(MediaPlayer mp) {
+				dialog.cancel();
+			}
+		});
+        VideoPlayer vp = new VideoPlayer(videoView, mContext);
+        vp.playVideo(uri);
+        dialog.show();
+	}
 	public void setItemList(List<Session> sessions) {
 		this.mSessionList = sessions;
 	}

@@ -32,13 +32,15 @@ import com.encore.API.APIService;
 import com.encore.API.models.Session;
 import com.encore.API.models.Sessions;
 import com.google.gson.Gson;
+import com.markupartist.android.widget.PullToRefreshListView;
+import com.markupartist.android.widget.PullToRefreshListView.OnRefreshListener;
 
 public class InboxListViewFragment extends Fragment {
 	private static final String TAG = "InboxListViewFragment";
 	private VideoView videoView;
 	private InboxViewAdapter adapter;
 	private Session[] sessions;
-	private ListView sessionsLV;
+	private PullToRefreshListView pullToRefreshLV;
 	private ProgressBar progressBar;
 	private static ResultReceiver receiver;
 //	private PullToRefreshLayout pullToRefreshLayout;
@@ -60,14 +62,22 @@ public class InboxListViewFragment extends Fragment {
 //			.listener(this)
 //			.setup(pullToRefreshLayout);
 		
-		sessionsLV = (ListView) view.findViewById(R.id.video_list_view2);
+		pullToRefreshLV = (PullToRefreshListView) view.findViewById(R.id.video_list_view2);
 		
 		// Populate inbox
 		adapter = new InboxViewAdapter(getActivity(), R.layout.inbox_view, null);
-		sessionsLV.setAdapter(adapter);
+		pullToRefreshLV.setAdapter(adapter);
 		
 	    receiver = new SessionListReceiver(new Handler());
 	    getRaps(receiver);
+	    
+	    pullToRefreshLV.setOnRefreshListener(new OnRefreshListener() {
+	        @Override
+	        public void onRefresh() {
+	            // Do work to refresh the list here.
+	            getRaps(receiver);
+	        }
+	    });
 		
 //	    lv.setOnItemClickListener(new ResponseListener());
 	    return view;
@@ -79,6 +89,7 @@ public class InboxListViewFragment extends Fragment {
 		api.putExtra(T.RECEIVER, receiver);
 		
 		getActivity().startService(api);
+		pullToRefreshLV.onRefreshComplete();
 	}
 	
 //	@Override
