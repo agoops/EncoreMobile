@@ -19,7 +19,6 @@ import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
-import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 import android.widget.VideoView;
@@ -89,7 +88,6 @@ public class InboxListViewFragment extends Fragment {
 		api.putExtra(T.RECEIVER, receiver);
 		
 		getActivity().startService(api);
-		pullToRefreshLV.onRefreshComplete();
 	}
 	
 //	@Override
@@ -160,7 +158,7 @@ public class InboxListViewFragment extends Fragment {
         protected void onReceiveResult(int resultCode, Bundle resultData) {
                 if (resultCode == 1) {
                         Log.d(TAG, "APIService returned successfully with sessions");
-                        
+                        pullToRefreshLV.onRefreshComplete();
                         // hide progress bar
                         progressBar.setVisibility(View.GONE);
                         
