@@ -89,7 +89,7 @@ public class CameraActivity extends Activity {
 	public static Camera getCameraInstance() {
 		Camera c = null;
 		try {
-			c = Camera.open(0); // 0 = rear, 1 = front
+			c = Camera.open(1); // 0 = rear, 1 = front
 		} catch(Exception e) {
 			// TODO: Fail gracefully... 
 			Log.d(TAG, "Camera is in use...");
@@ -118,7 +118,7 @@ public class CameraActivity extends Activity {
 		mMediaRecorder.setOutputFile(getOutputMediaFile().toString());
 		
 		// Step 5. Set the preview output
-		mMediaRecorder.setPreviewDisplay(mPreview.getHolder().getSurface());
+//		mMediaRecorder.setPreviewDisplay(mPreview.getHolder().getSurface());
 		
 		// Step 6. Prepare configured MediaRecorder
 		try {
@@ -158,7 +158,7 @@ public class CameraActivity extends Activity {
 			Log.d(TAG, "mediarecorder stopped");
 		} catch(RuntimeException e) {
 			mediaFile.delete();
-			Log.d(TAG, "sucessfully deleted file");
+			Log.d(TAG, "successfully deleted file");
 		}
 	}
 	
