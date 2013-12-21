@@ -3,11 +3,11 @@ package com.encore;
 import java.io.File;
 import java.io.IOException;
 
+import util.T;
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.hardware.Camera;
-import android.hardware.Camera.CameraInfo;
-import android.media.CamcorderProfile;
 import android.media.MediaRecorder;
 import android.os.Bundle;
 import android.os.Environment;
@@ -17,6 +17,8 @@ import android.view.SurfaceView;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
+
+import com.encore.API.APIService;
 
 public class CameraActivity2 extends Activity implements
 		SurfaceHolder.Callback, OnClickListener {
@@ -29,14 +31,28 @@ public class CameraActivity2 extends Activity implements
 	private Button record;
 	private Button send;
 
-	private String OUTPUT = "/sdcard/myvideo.mp4";
+	private File mediaFile;
 	boolean isRecording;
+	boolean oneRecorded;
+	int sessionId;
 	private static String tag = "CameraActivity2";
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-
+		
+		//Get sessionId. -1 means need to create a new session
+		Bundle extras = getIntent().getExtras();
+		sessionId = -1;
+		try{
+			sessionId = extras.getInt("sessionId",-1);
+			Log.d(tag, "this session id is: " + sessionId);
+		} catch( NullPointerException e) {
+			Log.d(tag, "No passed in sessionId in extras. Have to create new session");
+			Log.d(tag, "this session id is: " + sessionId);
+		}
+		
+		
 		setContentView(R.layout.capture_video);
 
 		surfaceView = (SurfaceView) findViewById(R.id.videoview);
@@ -45,6 +61,7 @@ public class CameraActivity2 extends Activity implements
 		surfaceHolder.addCallback(this);
 		Log.d(tag, "surface is holder null: " + (surfaceHolder == null));
 		isRecording = false;
+		oneRecorded = false;
 		camera = setUpCamera();
 		// try {
 		// camera.setPreviewDisplay(surfaceHolder);
@@ -80,15 +97,102 @@ public class CameraActivity2 extends Activity implements
 		return c;
 	}
 
-	private final int maxDurationInMs = 20000;
+	private final int maxDurationInMs = 900000;
 	private final long maxFileSizeInBytes = 500000;
 	private final int videoFramesPerSecond = 20;
+	
+	
+
+	@Override
+	public void surfaceChanged(SurfaceHolder holder, int format, int width,
+			int height) {
+		camera.stopPreview();
+		Log.d(tag, "surfaceChanged()");
+		try {
+			Log.d(tag, "surfaceHolder null in surfaceCreated: "
+					+ (surfaceHolder == null));
+			Log.d(tag, "is camera null = " + (camera == null));
+			camera.setPreviewDisplay(surfaceHolder);
+			camera.startPreview();
+			
+			setUpButtons();
+
+		} catch (IllegalStateException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+
+	@Override
+	public void surfaceCreated(SurfaceHolder holder) {
+		Log.d(tag, "surfaceCreated()");
+
+	}
+
+	@Override
+	public void surfaceDestroyed(SurfaceHolder holder) {
+
+	}
+
+	private void setUpButtons() {
+		record = (Button) findViewById(R.id.record);
+		send = (Button) findViewById(R.id.send);
+
+		record.setOnClickListener(this);
+		send.setOnClickListener(this);
+	}
+
+	@Override
+	public void onClick(View v) {
+		Log.d(tag, "Something clicked");
+		switch (v.getId()) {
+		case R.id.record:
+			Log.d(tag, "record clicked");
+			if (isRecording) {
+				mediaRecorder.stop();
+				isRecording = false;
+				oneRecorded = true;
+			} else {
+				try {
+					setUpMediaRecorder();
+					mediaRecorder.prepare();
+					mediaRecorder.start();
+					isRecording = true;
+				} catch (IllegalStateException e) {
+					e.printStackTrace();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			}
+			break;
+
+		case R.id.send:
+			Log.d(tag, "send clicked");
+			if (isRecording || !oneRecorded || !mediaFile.exists()) {
+				return;
+			}
+			if (sessionId == -1) {
+				//take to screen to collect new information
+				Log.d(tag, "create new session with recorded clip...not implemented yet");
+			}
+			else {
+				//add recorded clip to current session
+				Intent addClipIntent = new Intent(this, APIService.class);
+				addClipIntent.putExtra(T.API_TYPE, T.ADD_CLIP);
+				addClipIntent.putExtra(T.SESSION_ID, sessionId);
+				addClipIntent.putExtra(T.FILEPATH, mediaFile.getAbsolutePath());
+				startService(addClipIntent);
+				
+			}
+		
+			break;
+		}
+	}
 	
 	private void setUpMediaRecorder() {
 		Log.d(tag, "setUpMediaRecorder()");
 		 mediaRecorder = new MediaRecorder();
-//		camera.stopPreview();
-//		mediaRecorder.setPreviewDisplay(surfaceHolder.getSurface());
 		camera.stopPreview();
 		 camera.unlock();
 		mediaRecorder.setCamera(camera);
@@ -97,12 +201,8 @@ public class CameraActivity2 extends Activity implements
 		mediaRecorder.setVideoSource(MediaRecorder.VideoSource.CAMERA);
 		
 		mediaRecorder.setOutputFormat(MediaRecorder.OutputFormat.MPEG_4);
-		mediaRecorder.setMaxDuration(900000);
+		mediaRecorder.setMaxDuration(maxDurationInMs);
 		mediaRecorder.setOutputFile(getOutputMediaFile().getAbsolutePath());
-//		CamcorderProfile camcorderProfile_LQ = CamcorderProfile
-//				.get(CameraInfo.CAMERA_FACING_FRONT,CamcorderProfile.QUALITY_LOW);
-//		mediaRecorder.setProfile(camcorderProfile_LQ);
-//		mediaRecorder.setOrientationHint(90);
 		mediaRecorder.setVideoFrameRate(videoFramesPerSecond);
 		mediaRecorder.setVideoSize(surfaceView.getWidth(), surfaceView.getHeight());
 
@@ -118,7 +218,7 @@ public class CameraActivity2 extends Activity implements
 
 	}
 	
-	private static File getOutputMediaFile(){
+	private  File getOutputMediaFile(){
 		Log.d(tag, "getOutputMediaFile called");
 	    // TODO: To be safe, you should check that the SDCard is mounted
 	    // using Environment.getExternalStorageState() before doing this.
@@ -148,93 +248,13 @@ public class CameraActivity2 extends Activity implements
 	    	}
 			mediaFile.createNewFile();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			Log.d(tag, "Failed to create new file");
 			e.printStackTrace();
 		}
 	    
 	    Log.d(tag, "getOutputMediaFile successful");
+	    this.mediaFile = mediaFile;
 	    return mediaFile;
-	}
-
-	@Override
-	public void surfaceChanged(SurfaceHolder holder, int format, int width,
-			int height) {
-		camera.stopPreview();
-		Log.d(tag, "surfaceChanged()");
-		try {
-			// setPreviewDisplay needs to be called after surfaceCreated returns
-			Log.d(tag, "surfaceHolder null in surfaceCreated: "
-					+ (surfaceHolder == null));
-			Log.d(tag, "is camera null = " + (camera == null));
-			camera.setPreviewDisplay(surfaceHolder);
-			camera.startPreview();
-			
-//			setUpMediaRecorder();
-			setUpButtons();
-			// mediaRecorder.setPreviewDisplay(surfaceHolder.getSurface());
-			// mediaRecorder.prepare();
-			// mediaRecorder.start();
-
-		} catch (IllegalStateException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-	}
-
-	@Override
-	public void surfaceCreated(SurfaceHolder holder) {
-		// TODO Auto-generated method stub
-		Log.d(tag, "surfaceCreated()");
-
-	}
-
-	@Override
-	public void surfaceDestroyed(SurfaceHolder holder) {
-		// TODO Auto-generated method stub
-
-	}
-
-	private void setUpButtons() {
-		record = (Button) findViewById(R.id.record);
-		send = (Button) findViewById(R.id.send);
-
-		record.setOnClickListener(this);
-		send.setOnClickListener(this);
-	}
-
-	@Override
-	public void onClick(View v) {
-		Log.d(tag, "Something clicked");
-		switch (v.getId()) {
-		case R.id.record:
-			Log.d(tag, "record clicked");
-			if (isRecording) {
-				mediaRecorder.stop();
-				isRecording = false;
-			} else {
-				try {
-					// camera.stopPreview();
-					// mediaRecorder.setPreviewDisplay(surfaceHolder.getSurface());
-					setUpMediaRecorder();
-					mediaRecorder.prepare();
-					mediaRecorder.start();
-					isRecording = true;
-				} catch (IllegalStateException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				} catch (IOException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-			}
-			break;
-
-		case R.id.send:
-			Log.d(tag, "send clicked");
-			break;
-		}
 	}
 
 }

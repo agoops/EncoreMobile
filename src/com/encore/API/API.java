@@ -74,7 +74,7 @@ public class API {
 	private static final String CREATE_SESSION = SESSIONS;
 	private static final String GET_SESSION = SESSIONS + "%s";
 	private static final String GET_SESSIONS = SESSIONS;
-	private static final String ADD_CLIP = SESSIONS + "addclip/";
+	private static final String ADD_CLIP = SESSIONS + "%s/clips/";
 
 	// Clips
 	// private static final String ALL_CLIPS = CLIPS;
@@ -333,12 +333,12 @@ public class API {
 		return result;
 	}
 
-	public String addClip(HttpEntity entity)
+	public String addClip(HttpEntity entity, int sessionId)
 			throws Exception {
 
 		// String url, StringEntity entity, Type type, String path
 
-		String url = ADD_CLIP;
+		String url = String.format(ADD_CLIP, Integer.toString(sessionId));
 		
 		String result = "emptyresult_failed";
 		try {
@@ -571,10 +571,9 @@ public class API {
 		return resultJSON;
 	}
 	
-	public String getClipStream(int sessionId, String token) throws Exception {
+	public String getClipStream(int sessionId) throws Exception {
 		Log.d(TAG, "getClipStream called");
-		ACCESS_TOKEN = "Token " + token;
-		String url = GET_CLIP_STREAM + sessionId;
+		String url = SESSIONS + sessionId+ "/clips/";
 		String resultJSON = null;
 		
 		try {
