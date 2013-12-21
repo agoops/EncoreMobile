@@ -523,7 +523,6 @@ public class API {
 		Log.d(TAG, "createComment called");
 		ACCESS_TOKEN = "Token " + token;
 		String url = String.format(CREATE_COMMENT, String.valueOf(sessionId));
-		Log.d(TAG, "create comment url is: " + url); 
 		String resultJSON = null;
 		
 		try {

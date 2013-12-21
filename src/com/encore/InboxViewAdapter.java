@@ -120,8 +120,8 @@ public class InboxViewAdapter extends ArrayAdapter<Session> implements OnClickLi
 			
 			break;
 		case R.id.comments:
-			// Open an AlertDialog that holds a listview of current comments, as well as the ability to create your own comments
-			// TODO: Either spiffy up the dialog or make a new activity. The activity is probably easier to do.
+			// Open an AlertDialog that shows a session's comments,
+			// and allows a user to post a new comment
 			
 			CommentDialog cDialog = new CommentDialog(mContext);
 			Bundle dArgs = new Bundle();
@@ -131,48 +131,6 @@ public class InboxViewAdapter extends ArrayAdapter<Session> implements OnClickLi
 			cDialog.setDialogArgs(dArgs);
 			cDialog.show();
 			
-			// Instantiate an AlertDialog.Builder with its constructor
-//			AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
-//			
-//			// Create the dialog's layout
-//			LinearLayout layout = new LinearLayout(mContext);
-//			ListView commentsLV = new ListView(mContext);
-//			final EditText commentField = new EditText(mContext);
-//			// Get a list of comments
-//			List<Comment> comments = sesh.getComments();
-//			// Create a CommentsAdapter instance and setAdapter
-//			CommentsAdapter adapter = new CommentsAdapter(mContext, R.layout.comment_list_row, comments);
-//			commentsLV.setAdapter(adapter);
-//			
-//			// Add the views to the layout
-//			layout.addView(commentField);
-//			layout.addView(commentsLV);
-//			builder.setView(layout);
-//			
-//			// Set the dialog characteristics
-//			builder.setTitle("Create a comment")
-//				.setPositiveButton("Post Comment", new DialogInterface.OnClickListener() {
-//					public void onClick(DialogInterface dialog, int id) {
-//						// Post
-//						Toast.makeText(mContext, "Posting: " + commentField.getText().toString(), Toast.LENGTH_SHORT).show();
-//						Intent api = new Intent(mContext, APIService.class);
-//						api.putExtra(T.API_TYPE, T.CREATE_COMMENT);
-//						api.putExtra(T.SESSION_ID, sesh.getId());
-//						api.putExtra(T.COMMENT_TEXT, commentField.getText().toString());
-//						mContext.startService(api);
-//					}
-//				})
-//				.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-//					public void onClick(DialogInterface dialog, int id) {
-//						// Cancel
-//					}
-//				});
-//			
-//			AlertDialog dialog = builder.create();
-//			dialog.show();
-			
-//			SessionView sv = (SessionView) v.getParent().getParent();
-//			sv.toggleCommentsVisible();
 			break;
 		case R.id.likes:
 			// TODO: Toggle between "Like" and "Unlike". Currently it only increments

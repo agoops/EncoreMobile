@@ -16,7 +16,7 @@ import android.view.MenuItem;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import com.encore.CameraActivity2;
+import com.encore.CameraActivity;
 import com.encore.R;
 
 public class HomeActivity extends FragmentActivity {
@@ -202,7 +202,7 @@ public class HomeActivity extends FragmentActivity {
 			// Launch a new session
 			Log.d(TAG, "Launching StartSession2");
 //			Intent intent = new Intent(this, StartSession2.class);
-			Intent intent = new Intent(this, CameraActivity2.class);
+			Intent intent = new Intent(this, CameraActivity.class);
 			startActivity(intent);
 			return true;
 		default:
