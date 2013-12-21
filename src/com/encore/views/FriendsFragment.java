@@ -80,7 +80,7 @@ public class FriendsFragment extends Fragment {
 				 * that it is seperate), and update UI with Handler given.
 				 */
 				String result = resultData.getString("result");
-				ArrayList<User> profiles = convertJsonToListOfUser(result);
+				ArrayList<Profile> profiles = convertJsonToListOfProfile(result);
 				adapter.setItemList(profiles);
 				adapter.notifyDataSetChanged();
 			} else {
@@ -91,17 +91,17 @@ public class FriendsFragment extends Fragment {
 	}
 
 	// TODO: Use GSON instead?
-	public ArrayList<User> convertJsonToListOfUser(String json) {
+	public ArrayList<Profile> convertJsonToListOfProfile(String json) {
 		Log.d(tag, "CONVERT TO OBJECT STARTED");
 		Gson gson = new Gson();
-		ArrayList<User> profiles = new ArrayList<User>();
+		ArrayList<Profile> profiles = new ArrayList<Profile>();
 		JsonParser jsonParser = new JsonParser();
 
 		JsonArray profilesJson = jsonParser.parse(json).getAsJsonObject()
 				.getAsJsonArray("friends");
 
 		for (JsonElement j : profilesJson) {
-			User profile = gson.fromJson(j, User.class);
+			Profile profile = gson.fromJson(j, Profile.class);
 			profiles.add(profile);
 			Log.d(tag, profile.toString());
 		}

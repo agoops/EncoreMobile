@@ -284,11 +284,16 @@ public class APIService extends IntentService {
 	    multipartEntity.setBoundary("---*******");
 	    multipartEntity.addPart("clip", new FileBody(new File(data.getString(T.FILEPATH))));
 	    multipartEntity.addTextBody("title", data.getString(T.SESSION_TITLE));
-	    Log.d(TAG, "CrOwd ID being sent: " + data.getString(T.SESSION_CROWD_ID));
-		multipartEntity.addTextBody("crowd_id", data.getString(T.SESSION_CROWD_ID));
-		
+	    Log.d(TAG, "Crowd ID being sent: " + data.getString(T.CROWD));
+		multipartEntity.addTextBody("crowd", data.getString(T.CROWD));
 		multipartEntity.addTextBody("use_existing_crowd", data.getBoolean(T.SESSION_USE_EXISTING_CROWD) ? "True": "False");
 	    
+		Log.d(TAG, "clip: " + data.getString(T.FILEPATH));
+		Log.d(TAG, "title: " + data.getString(T.SESSION_TITLE));
+		Log.d(TAG, "crowd: " + data.getString(T.CROWD));
+		Log.d(TAG, "use_existing_crowd: " + (data.getBoolean(T.SESSION_USE_EXISTING_CROWD) ? "True": "False"));
+		
+		
 	    HttpEntity entity = multipartEntity.build();
 		try {
 			String result = api.createSession(entity);

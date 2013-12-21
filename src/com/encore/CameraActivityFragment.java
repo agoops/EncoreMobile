@@ -7,6 +7,7 @@ import util.T;
 
 import com.encore.API.APIService;
 
+import Fragments.PickCrowdFragment;
 import android.content.Intent;
 import android.graphics.Color;
 import android.hardware.Camera;
@@ -14,6 +15,7 @@ import android.media.MediaRecorder;
 import android.os.Bundle;
 import android.os.Environment;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.SurfaceHolder;
@@ -176,6 +178,15 @@ SurfaceHolder.Callback, OnClickListener{
 			if (sessionId == -1) {
 				//take to screen to collect new information
 				Log.d(tag, "create new session with recorded clip...not implemented yet");
+				FragmentTransaction ft = getFragmentManager().beginTransaction();
+				ft.setCustomAnimations(R.anim.enter, R.anim.exit, R.anim.pop_enter, R.anim.pop_exit);
+				PickCrowdFragment pickCrowdFragment = new PickCrowdFragment();
+				pickCrowdFragment.setPath(mediaFile.getAbsolutePath());
+				
+				// Replace the RecordSessionFragment with a PickCrowdFragment
+				ft.replace(R.id.fragment_placeholder, pickCrowdFragment);
+				ft.addToBackStack(null);
+				ft.commit();
 				
 			}
 			else {

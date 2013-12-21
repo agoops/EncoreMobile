@@ -43,6 +43,8 @@ public class T {
 	public static final String SESSION_CROWD_MEMBERS = "crowd_members";
 	public static final String SESSION_CROWD_ID = "crowd_id";
 	
+	public static final String CROWD = "crowd"; 
+	
 	public static final String CROWD_TITLE = "title";
 	public static final String CROWD_MEMBERS = "members";
 	

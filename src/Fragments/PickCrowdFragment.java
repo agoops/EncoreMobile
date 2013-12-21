@@ -98,7 +98,7 @@ public class PickCrowdFragment extends Fragment implements OnClickListener {
 				apiIntent.putExtra(T.SESSION_USE_EXISTING_CROWD, true);
 				apiIntent.putExtra(T.SESSION_CROWD_TITLE, "");
 				apiIntent.putExtra(T.SESSION_CROWD_MEMBERS, "");
-				apiIntent.putExtra(T.SESSION_CROWD_ID, "" + crowdId); 
+				apiIntent.putExtra(T.CROWD, "" + crowdId); 
 				Log.d(TAG, "crowdId: " + crowdId);
 				
 				getActivity().startService(apiIntent);
