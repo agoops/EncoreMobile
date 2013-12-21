@@ -1,5 +1,6 @@
 package com.encore.views;
 
+import Fragments.ProfileFragment;
 import android.app.ActionBar;
 import android.app.ActionBar.Tab;
 import android.content.Intent;
@@ -29,9 +30,10 @@ public class HomeActivity extends FragmentActivity {
 	private static int INBOX = 0;
 //	private static int PENDING_REQUESTS = 1;
 	private static int USERS = 1;
+	private static int PROFILE = 2;
 
 	// Change this to take out tabs from HomeActivity
-	private static int NUM_TABS = 2;
+	private static int NUM_TABS = 3;
 	boolean customTitleSupported;
 
 	@Override
@@ -121,6 +123,10 @@ public class HomeActivity extends FragmentActivity {
 				actionBar.addTab(actionBar.newTab().setText("Users")
 						.setTabListener(tabListener));
 				break;
+			case 2:
+				actionBar.addTab(actionBar.newTab().setText("Profile")
+						.setTabListener(tabListener));
+				break;
 //			case 2:
 //				actionBar.addTab(actionBar.newTab().setText("Users")
 //						.setTabListener(tabListener));
@@ -158,6 +164,10 @@ public class HomeActivity extends FragmentActivity {
 				Fragment fragment4 = new UsersFragment();
 				fragments[USERS] = fragment4;
 				return fragment4;
+			case 2:
+				Fragment profileFragment = new ProfileFragment();
+				fragments[PROFILE] = profileFragment;
+				return profileFragment;
 			}
 
 			return null;

@@ -99,6 +99,8 @@ public class APIService extends IntentService {
 			break;
 		case T.GET_CLIP_STREAM:
 			getClipStream(intent.getExtras());
+		case T.GET_ME:
+			getMe(intent.getExtras());
 		default:
 			break;
 		}
@@ -412,7 +414,25 @@ public class APIService extends IntentService {
 		} catch (Exception e) {
 			Log.e(TAG, e.getMessage() + " ");
 			e.printStackTrace();
-			resultReceiver.send(0,null);
+			resultReceiver.send(0, null);
+		}
+	}
+	
+	private void getMe(Bundle data) {
+		Log.d(TAG, "getMe called");
+		String token = TokenHelper.getToken(this);
+		String resultJSON = null;
+		
+		try {
+			resultJSON = api.getMe(token);
+			
+			Bundle b = new Bundle();
+			b.putString("result", resultJSON);
+			resultReceiver.send(1, b);
+		} catch(Exception e) {
+			Log.e(TAG, e.getMessage() + " ");
+			e.printStackTrace();
+			resultReceiver.send(0, null);
 		}
 	}
 }

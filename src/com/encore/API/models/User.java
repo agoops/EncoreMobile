@@ -39,19 +39,15 @@ public class User implements UserInfo{
 	@SerializedName("username")
 	private String username;
 	
-	//@SerializedName("date_joined")
+	@SerializedName("date_joined")
 	private transient Date dateJoined;
 	
-	private boolean isAdmin;
-	@SerializedName("phone_number")
-	private String phoneNumber;
 
 	public User() {
 		username = null;
 		email = null;
 		firstName = null;
 		lastName = null;
-		isAdmin = false;
 		userId = -1;
 		dateJoined = null;
 	}
@@ -63,7 +59,6 @@ public class User implements UserInfo{
 		this.firstName = firstName;
 		this.lastName = lastName;
 		this.email = email;
-		this.isAdmin = false;
 		this.dateJoined = null;
 	}
 	
@@ -113,14 +108,6 @@ public class User implements UserInfo{
 
 	public void setDateJoined(Date dateJoined) {
 		this.dateJoined = dateJoined;
-	}
-	
-	public boolean isAdmin() {
-		return isAdmin;
-	}
-
-	public void setAdmin(boolean isAdmin) {
-		this.isAdmin = isAdmin;
 	}
 	
 	@Override

@@ -54,10 +54,7 @@ public class UsersFragment extends Fragment{
 		
 		
 		UsersListReceiver uReceiver = new UsersListReceiver(new Handler());
-		/* This is the receiver and method that hits the endpoint for list of friends
-		 */
 		getUsers(uReceiver);
-		
 		
 		return view;
 	}

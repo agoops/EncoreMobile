@@ -66,7 +66,7 @@ public class API {
 	private static final String ALL_USERS = USERS;
 	private static final String GET_USER = USERS + "/find/%s";
 	private static final String SIGN_UP = USERS;
-	private static final String USER_ME = USERS + "/me";
+	private static final String USER_ME = USERS + "me/";
 	private static final String UPDATE_USER = USERS + "%s";
 	private static final String DELETE_USER = USERS + "%s";
 
@@ -109,7 +109,7 @@ public class API {
 	
 	// Clip stream
 	private static final String GET_CLIP_STREAM = SESSIONS + "clip/";
-
+	
 	public API(OkHttpClient client, Context context) {
 		this.client = client;
 		this.ACCESS_TOKEN = "Token " + TokenHelper.getToken(context);
@@ -581,6 +581,22 @@ public class API {
 			Log.d(TAG, "getClipStream result: " + resultJSON);
 		} catch(Exception e) {
 			Log.e(TAG, "createComment() error");
+			throw e;
+		}
+		return resultJSON;
+	}
+	
+	public String getMe(String token) throws Exception {
+		Log.d(TAG, "getMe called");
+		String url = USER_ME;
+		ACCESS_TOKEN = "Token " + token;
+		String resultJSON = null;
+		
+		try {
+			resultJSON = get(url, String.class);
+			Log.d(TAG, "getMe result: " + resultJSON);
+		} catch(Exception e) {
+			Log.d(TAG, "getMe() error");
 			throw e;
 		}
 		return resultJSON;
