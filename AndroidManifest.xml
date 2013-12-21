@@ -47,8 +47,11 @@
         <activity android:name="com.encore.AndroidVideoCapture" >
         </activity>
         <activity
-            android:name=".CameraActivity"
-            android:screenOrientation="portrait" >
+            android:name=".CameraActivity" >
+        </activity>
+        <activity
+            android:name=".CameraActivity2"
+            android:screenOrientation="portrait">
         </activity>
        
         <activity android:name="com.encore.VideoPlayback" >

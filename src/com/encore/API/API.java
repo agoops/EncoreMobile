@@ -99,7 +99,7 @@ public class API {
 	// private static final String DELETE_CROWD = CROWDS + "%s";
 	
 	// Comments
-	private static final String CREATE_COMMENT = SESSIONS + "comments/";
+	private static final String CREATE_COMMENT = SESSIONS + "%s/comments/";
 	
 	//	Likes
 	private static final String CREATE_LIKE = SESSIONS + "likes/";
@@ -519,10 +519,10 @@ public class API {
 		return result;
 	}
 	
-	public String createComment(PostComment pComment, String token) throws Exception {
+	public String createComment(PostComment pComment, String token, int sessionId) throws Exception {
 		Log.d(TAG, "createComment called");
 		ACCESS_TOKEN = "Token " + token;
-		String url = CREATE_COMMENT;
+		String url = String.format(CREATE_COMMENT, String.valueOf(sessionId));
 		String resultJSON = null;
 		
 		try {

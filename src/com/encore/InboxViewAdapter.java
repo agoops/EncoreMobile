@@ -3,12 +3,10 @@ package com.encore;
 import java.util.List;
 
 import util.T;
-import widget.CommentsAdapter;
+import widget.CommentDialog;
 import android.app.Activity;
-import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.media.MediaPlayer;
 import android.net.Uri;
@@ -24,15 +22,13 @@ import android.view.Window;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.LinearLayout;
-import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 import android.widget.VideoView;
 
 import com.encore.API.APIService;
 import com.encore.API.models.Comment;
 import com.encore.API.models.Session;
+import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonParser;
 
@@ -122,51 +118,17 @@ public class InboxViewAdapter extends ArrayAdapter<Session> implements OnClickLi
 			
 			break;
 		case R.id.comments:
-			// Open an AlertDialog that holds a listview of current comments, as well as the ability to create your own comments
-			// TODO: Either spiffy up the dialog or make a new activity. The activity is probably easier to do.
+			// Open an AlertDialog that shows a session's comments,
+			// and allows a user to post a new comment
 			
-			// Instantiate an AlertDialog.Builder with its constructor
-			AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
+			CommentDialog cDialog = new CommentDialog(mContext);
+			Bundle dArgs = new Bundle();
+			String json = (new Gson()).toJson(sesh.getComments());
+			dArgs.putInt("sessionId", sesh.getId());
+			dArgs.putString("comments", json);
+			cDialog.setDialogArgs(dArgs);
+			cDialog.show();
 			
-			// Create the dialog's layout
-			LinearLayout layout = new LinearLayout(mContext);
-			ListView commentsLV = new ListView(mContext);
-			final EditText commentField = new EditText(mContext);
-			// Get a list of comments
-			List<Comment> comments = sesh.getComments();
-			// Create a CommentsAdapter instance and setAdapter
-			CommentsAdapter adapter = new CommentsAdapter(mContext, R.layout.comment_list_row, comments);
-			commentsLV.setAdapter(adapter);
-			
-			// Add the views to the layout
-			layout.addView(commentField);
-			layout.addView(commentsLV);
-			builder.setView(layout);
-			
-			// Set the dialog characteristics
-			builder.setTitle("Create a comment")
-				.setPositiveButton("Post Comment", new DialogInterface.OnClickListener() {
-					public void onClick(DialogInterface dialog, int id) {
-						// Post
-						Toast.makeText(mContext, "Posting: " + commentField.getText().toString(), Toast.LENGTH_SHORT).show();
-						Intent api = new Intent(mContext, APIService.class);
-						api.putExtra(T.API_TYPE, T.CREATE_COMMENT);
-						api.putExtra(T.SESSION_ID, sesh.getId());
-						api.putExtra(T.COMMENT_TEXT, commentField.getText().toString());
-						mContext.startService(api);
-					}
-				})
-				.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-					public void onClick(DialogInterface dialog, int id) {
-						// Cancel
-					}
-				});
-			
-			AlertDialog dialog = builder.create();
-			dialog.show();
-			
-			SessionView sv = (SessionView) v.getParent().getParent();
-			sv.toggleCommentsVisible();
 			break;
 		case R.id.likes:
 			// TODO: Toggle between "Like" and "Unlike". Currently it only increments

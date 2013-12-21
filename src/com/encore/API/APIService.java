@@ -359,7 +359,7 @@ public class APIService extends IntentService {
 		
 		PostComment pComment = new PostComment(sessionId, commentText);
 		try {
-			resultJSON = api.createComment(pComment, TokenHelper.getToken(this));
+			resultJSON = api.createComment(pComment, TokenHelper.getToken(this), sessionId);
 			Log.d(TAG, "createComment result: " + resultJSON);
 			
 		} catch (Exception e) {

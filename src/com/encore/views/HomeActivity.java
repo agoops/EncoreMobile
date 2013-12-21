@@ -19,7 +19,6 @@ import android.widget.TextView;
 import com.encore.CameraActivity2;
 import com.encore.R;
 
-
 public class HomeActivity extends FragmentActivity {
 	private static final String TAG = "HomeActivity";
 	ViewPager viewPager;
@@ -30,7 +29,7 @@ public class HomeActivity extends FragmentActivity {
 	private static int INBOX = 0;
 	private static int PENDING_REQUESTS = 1;
 	private static int USERS = 2;
-//
+
 	// Change this to take out tabs from HomeActivity
 	private static int NUM_TABS = 3;
 	boolean customTitleSupported;
@@ -203,9 +202,7 @@ public class HomeActivity extends FragmentActivity {
 			// Launch a new session
 			Log.d(TAG, "Launching StartSession2");
 //			Intent intent = new Intent(this, StartSession2.class);
-//			Intent intent = new Intent(this, CameraActivity.class);
 			Intent intent = new Intent(this, CameraActivity2.class);
-//			Intent intent = new Intent(this, AndroidVideoCapture.class);
 			startActivity(intent);
 			return true;
 		default:

@@ -20,6 +20,7 @@
         <item name="android:actionBarTabTextStyle">@style/RapchatTabs</item>
         <item name="actionBarTabTextStyle">@style/RapchatTabs</item>
         <item name="android:buttonStyle">@style/RapchatButtons</item>
+        <item name="android:dialogTheme">@style/CustomDialogTheme</item>
     </style>
     
     
@@ -55,5 +56,10 @@
         <item name="android:textColor">#fff</item>
     </style>
     
+    <!-- ========= Dialogs ========= -->
+    <style name="CustomDialogTheme" parent="@android:style/Theme.Dialog">
+        <item name="@android:background">#fff</item>
+        <item name="@android:buttonStyle">@style/RapchatButtons</item>        
+    </style>
 
 </resources>
