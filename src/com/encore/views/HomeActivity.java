@@ -1,14 +1,9 @@
 package com.encore.views;
 
-import java.util.ArrayList;
-
-import util.T;
 import android.app.ActionBar;
 import android.app.ActionBar.Tab;
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.ResultReceiver;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
@@ -18,21 +13,11 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.view.Window;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import com.encore.CameraActivity;
-import com.encore.InboxViewAdapter;
+import com.encore.CameraActivity2;
 import com.encore.R;
-import com.encore.SessionViewAdapter;
-import com.encore.StartSession2;
-import com.encore.API.APIService;
-import com.encore.API.models.Session;
-import com.google.gson.Gson;
-import com.google.gson.JsonArray;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonParser;
 
 public class HomeActivity extends FragmentActivity {
 	private static final String TAG = "HomeActivity";
@@ -217,7 +202,7 @@ public class HomeActivity extends FragmentActivity {
 			// Launch a new session
 			Log.d(TAG, "Launching StartSession2");
 //			Intent intent = new Intent(this, StartSession2.class);
-			Intent intent = new Intent(this, CameraActivity.class);
+			Intent intent = new Intent(this, CameraActivity2.class);
 			startActivity(intent);
 			return true;
 		default:

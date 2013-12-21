@@ -25,6 +25,7 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
         // underlying surface is created and destroyed.
         mHolder = getHolder();
         mHolder.addCallback(this);
+        mHolder.setType(SurfaceHolder.SURFACE_TYPE_PUSH_BUFFERS);
     }
     
     public void surfaceCreated(SurfaceHolder holder) {
@@ -39,19 +40,16 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
     }
 
     public void surfaceDestroyed(SurfaceHolder holder) {
-        // empty. Take care of releasing the Camera preview in your activity.
+    	// empty. Take care of releasing the Camera preview in your activity.
     }
     
     public void surfaceChanged(SurfaceHolder holder, int format, int w, int h) {
-        // If your preview can change or rotate, take care of those events here.
-        // Make sure to stop the preview before resizing or reformatting it.
+    	// Surface changed, so we reset the preview
     	Log.d(TAG, "surfaceChanged");
     	
-        if (mHolder.getSurface() == null){
-          // preview surface does not exist
+        if (mHolder.getSurface() == null) {
           return;
         }
-
         // stop preview before making changes
         try {
             mCamera.stopPreview();

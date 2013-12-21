@@ -44,8 +44,8 @@ public class CameraActivity extends Activity {
 		
 		// Set our custom CameraPreview as the content
 		mPreview = new CameraPreview(mContext, mCamera);
-		FrameLayout preview = (FrameLayout) findViewById(R.id.camera_preview_frame);
-		preview.addView(mPreview);
+		FrameLayout previewContainer = (FrameLayout) findViewById(R.id.camera_preview_frame);
+		previewContainer.addView(mPreview);
 		
 		// Add a listener to the Capture button
 		captureButton = (Button) findViewById(R.id.capture_button);
@@ -55,20 +55,18 @@ public class CameraActivity extends Activity {
 				Log.d(TAG, "Capture button clicked");
 				if(isRecording) {
 					// stop recording and release camera
-					Log.d(TAG, "Stopping, releasing MediaRecorder now");
+					Log.d(TAG, "Attempting to stop recording.");
 					stopMediaRecorder();
 					releaseMediaRecorder();
 					
 					setCaptureButtonText("Capture");
 					isRecording = false;
-//					mCamera.stopPreview();
-//					releaseCamera();
 				} else {
 					// initialize video camera
 					if(prepareVideoRecorder()) {
 						// Camera is available and unlocked, MediaRecorder is prepared,
 						// start recording!
-						Log.d(TAG, "Starting MediaRecorder now");
+						Log.d(TAG, "Attempting to start recording.");
 						startMediaRecorder();
 						setCaptureButtonText("Stop");
 						isRecording = true;
@@ -84,9 +82,7 @@ public class CameraActivity extends Activity {
 	@Override
 	public void onPause() {
 		super.onPause();
-		Log.d(TAG, "releasing MediaRecorder");
 		releaseMediaRecorder();
-		Log.d(TAG, "releasing camera");
 		releaseCamera();
 	}
 	
@@ -103,8 +99,8 @@ public class CameraActivity extends Activity {
 	}
 	
 	private boolean prepareVideoRecorder() {
-		Log.d(TAG, "prepareVideoRecorder called");
-		mCamera.lock();
+		Log.d(TAG, "prepareVideoRecorder");
+		// SO said locking & unlocking fixes some errors
 		mCamera.unlock();
 		mMediaRecorder = new MediaRecorder();
 		
@@ -116,7 +112,7 @@ public class CameraActivity extends Activity {
 		mMediaRecorder.setVideoSource(MediaRecorder.VideoSource.CAMERA);
 		
 		// Step 3. Set a Camcorder profile
-		mMediaRecorder.setProfile(CamcorderProfile.get(CamcorderProfile.QUALITY_LOW));
+		mMediaRecorder.setProfile(CamcorderProfile.get(CamcorderProfile.QUALITY_HIGH));
 		
 		// Step 4. Set the output file
 		mMediaRecorder.setOutputFile(getOutputMediaFile().toString());
@@ -143,9 +139,10 @@ public class CameraActivity extends Activity {
 	
 	private void startMediaRecorder() {
 		try {
+			Log.d(TAG, "Starting mediarecorder");
             mMediaRecorder.start();
+            Log.d(TAG, "mediarecorder started");
         } catch (IllegalStateException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
             releaseMediaRecorder();
         } catch(Exception e){
@@ -156,8 +153,9 @@ public class CameraActivity extends Activity {
 	
 	private void stopMediaRecorder() {
 		try {
+			Log.d(TAG, "stopping mediarecorder");
 			mMediaRecorder.stop();
-			Log.d(TAG, "MediaRecorder stopped");
+			Log.d(TAG, "mediarecorder stopped");
 		} catch(RuntimeException e) {
 			mediaFile.delete();
 			Log.d(TAG, "sucessfully deleted file");
@@ -165,7 +163,6 @@ public class CameraActivity extends Activity {
 	}
 	
 	/** Create a File for saving an image or video */
-	// TODO: Look over and tweak this
 	private static File getOutputMediaFile(){
 		Log.d(TAG, "getOutputMediaFile called");
 	    // TODO: To be safe, you should check that the SDCard is mounted
@@ -207,17 +204,21 @@ public class CameraActivity extends Activity {
 	
 	private void releaseMediaRecorder() {
 		if(mMediaRecorder != null) {
+			mCamera.lock();
+			Log.d(TAG, "releasing mediarecorder");
 			mMediaRecorder.reset(); 	// Clear recorder configuration
 			mMediaRecorder.release(); 	// Release the recorder object
 			mMediaRecorder = null;
-			mCamera.lock();
+			Log.d(TAG, "mediarecorder released");
 		}
 	}
 	
 	private void releaseCamera() {
 		if(mCamera != null) {
-			mCamera.release();	// Release camera for other applications
+			Log.d(TAG, "releasing camera");
+			mCamera.release();	
 			mCamera = null;
+			Log.d(TAG, "camera released");
 		}
 	}
 	
