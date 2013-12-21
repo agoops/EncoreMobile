@@ -102,10 +102,7 @@ public class API {
 	private static final String CREATE_COMMENT = SESSIONS + "%s/comments/";
 	
 	//	Likes
-	private static final String CREATE_LIKE = SESSIONS + "likes/";
-	
-	// Favorites 
-	private static final String CREATE_FAVORITE = BASE_URL + "/favorites/";
+	private static final String CREATE_LIKE = USER_ME + "likes/";
 	
 	// Clip stream
 	private static final String GET_CLIP_STREAM = SESSIONS + "clip/";
@@ -548,24 +545,6 @@ public class API {
 			resultJSON = post(url, new StringEntity(JSON), String.class);
 		} catch (Exception e) {
 			Log.e(TAG, "createLike() error");
-			throw e;
-		}
-		return resultJSON;
-	}
-	
-	// -- Endpoint for favorites is not up yet ---
-	public String createFavorite(Favorite fav, String token) throws Exception {
-		Log.d(TAG, "createFavorite called");
-		ACCESS_TOKEN = "Token " + token;
-		String url = CREATE_FAVORITE;
-		String resultJSON = null;
-		
-		try {
-			String JSON = getGson().toJson(fav);
-			Log.d(TAG, "Posting JSON: " + JSON);
-			resultJSON = post(url, new StringEntity(JSON), String.class);
-		} catch(Exception e) {
-			Log.e(TAG, "createComment() error");
 			throw e;
 		}
 		return resultJSON;

@@ -62,7 +62,6 @@ public class InboxViewAdapter extends ArrayAdapter<Session> implements OnClickLi
 			viewHolder.play = (Button) rowView.findViewById(R.id.stream_clip);
 			viewHolder.reply = (Button) rowView.findViewById(R.id.reply);
 			viewHolder.likesBtn = (Button) rowView.findViewById(R.id.likes);
-			viewHolder.favoritesBtn = (Button) rowView.findViewById(R.id.favorites);
 			viewHolder.commentsBtn = (Button) rowView.findViewById(R.id.comments);
 			
 			// get the selected entry
@@ -72,12 +71,10 @@ public class InboxViewAdapter extends ArrayAdapter<Session> implements OnClickLi
 			viewHolder.reply.setTag(entry);
 			viewHolder.play.setTag(entry);
 			viewHolder.likesBtn.setTag(entry);
-			viewHolder.favoritesBtn.setTag(entry);
 			viewHolder.commentsBtn.setTag(entry);
 			
 			viewHolder.reply.setOnClickListener((OnClickListener) this);
 			viewHolder.likesBtn.setOnClickListener((OnClickListener) this);
-			viewHolder.favoritesBtn.setOnClickListener((OnClickListener) this);
 			viewHolder.commentsBtn.setOnClickListener((OnClickListener) this);
 			viewHolder.play.setOnClickListener((OnClickListener) this);
 			
@@ -88,7 +85,18 @@ public class InboxViewAdapter extends ArrayAdapter<Session> implements OnClickLi
 			
 			// Get a list of comments from the session
 			List<Comment> comments = entry.getComments();
-			viewHolder.commentsBtn.setText(comments.size() + " comments");
+			if(comments.size() == 1) {
+				viewHolder.commentsBtn.setText(comments.size() + " comment");
+			} else {
+				viewHolder.commentsBtn.setText(comments.size() + " comments");
+			}
+			
+			int numLikes = entry.getLikes();
+			if(numLikes == 1) {
+				viewHolder.likesBtn.setText(numLikes + " like");
+			} else {
+				viewHolder.likesBtn.setText(numLikes + " likes");
+			}
 			
 			rowView.setTag(viewHolder);
 //		} 
@@ -136,12 +144,6 @@ public class InboxViewAdapter extends ArrayAdapter<Session> implements OnClickLi
 			likesApi.putExtra(T.API_TYPE, T.CREATE_LIKE);
 			likesApi.putExtra(T.SESSION_ID, sesh.getId());
 			mContext.startService(likesApi);
-			break;
-		case R.id.favorites:
-			Intent favApi = new Intent(mContext, APIService.class);
-			favApi.putExtra(T.API_TYPE, T.CREATE_FAVORITE);
-			favApi.putExtra(T.SESSION_ID, sesh.getId());
-			mContext.startService(favApi);
 			break;
 		case R.id.stream_clip:
 			// TODO: Make GET for url
@@ -200,7 +202,7 @@ public class InboxViewAdapter extends ArrayAdapter<Session> implements OnClickLi
 	
 	static class SessionHolder {
 		TextView titleTextView;
-		Button play, reply, likesBtn, commentsBtn, favoritesBtn;
+		Button play, reply, likesBtn, commentsBtn;
 	}
 	
 	private class ClipStreamReceiver extends ResultReceiver {

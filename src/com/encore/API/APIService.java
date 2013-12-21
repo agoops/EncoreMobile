@@ -94,9 +94,6 @@ public class APIService extends IntentService {
 		case T.CREATE_LIKE:
 			createLike(intent.getExtras());
 			break;
-		case T.CREATE_FAVORITE:
-			createFavorite(intent.getExtras());
-			break;
 		case T.GET_CLIP_STREAM:
 			getClipStream(intent.getExtras());
 		case T.GET_ME:
@@ -379,21 +376,6 @@ public class APIService extends IntentService {
 			Like like = new Like(sessionId);
 			resultJSON = api.createLike(like, token);
 			Log.d(TAG, "createLike result: " + resultJSON);
-		} catch (Exception e) {
-			Log.e(TAG, e.getMessage() + " ");
-		}
-	}
-	
-	private void createFavorite(Bundle data) {
-		Log.d(TAG, "createFavorite called");
-		int sessionId = data.getInt(T.SESSION_ID);
-		String token = TokenHelper.getToken(this);
-		String resultJSON = null;
-		
-		try {
-			Favorite fav = new Favorite(sessionId);
-			resultJSON = api.createFavorite(fav, token);
-			Log.d(TAG, "createFavorite result: " + resultJSON);
 		} catch (Exception e) {
 			Log.e(TAG, e.getMessage() + " ");
 		}

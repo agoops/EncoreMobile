@@ -22,12 +22,16 @@ public class Session {
 	@SerializedName("comments")
 	private List<Comment> comments = new ArrayList<Comment>();
 	
+	@SerializedName("likes")
+	private int numLikes;
+	
 	// GET only, use PostSession for POST
 	public Session() {
 		this.title = null;
 		this.crowd = null;
 		this.complete = false;
 		this.comments = null;
+		this.numLikes = 0;
 	}
 	
 	public Session(String title, Crowd crowd) {
@@ -73,6 +77,14 @@ public class Session {
 
 	public void setComments(List<Comment> comments) {
 		this.comments = comments;
+	}
+	
+	public int getLikes() {
+		return numLikes;
+	}
+	
+	public void setLikes(int numLikes) {
+		this.numLikes = numLikes;
 	}
 	
 	public String toString() {
