@@ -59,7 +59,7 @@
     <!-- ========= Dialogs ========= -->
     <style name="CustomDialogTheme" parent="@android:style/Theme.Dialog">
         <item name="@android:background">#fff</item>
-        <item name="@android:buttonStyle">@style/RapchatButtons</item>        
+        <item name="@android:buttonStyle">@style/RapchatButtons</item>
     </style>
 
 </resources>

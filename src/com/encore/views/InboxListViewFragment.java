@@ -33,13 +33,15 @@ import com.encore.API.models.Session;
 import com.encore.API.models.Sessions;
 import com.google.gson.Gson;
 
-public class InboxListViewFragment extends Fragment{
+public class InboxListViewFragment extends Fragment {
 	private static final String TAG = "InboxListViewFragment";
 	private VideoView videoView;
 	private InboxViewAdapter adapter;
 	private Session[] sessions;
 	private ListView sessionsLV;
 	private ProgressBar progressBar;
+	private static ResultReceiver receiver;
+//	private PullToRefreshLayout pullToRefreshLayout;
 	
 	@Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -51,12 +53,20 @@ public class InboxListViewFragment extends Fragment{
 		progressBar = (ProgressBar) view.findViewById(R.id.progress_inbox);
 		progressBar.setVisibility(View.VISIBLE);
 		
+		// Setup pull to refresh
+//		pullToRefreshLayout = (PullToRefreshLayout) view.findViewById(R.id.pulltorefresh_inbox);
+//		ActionBarPullToRefresh.from(getActivity())
+//			.allChildrenArePullable()
+//			.listener(this)
+//			.setup(pullToRefreshLayout);
+		
 		sessionsLV = (ListView) view.findViewById(R.id.video_list_view2);
 		
+		// Populate inbox
 		adapter = new InboxViewAdapter(getActivity(), R.layout.inbox_view, null);
 		sessionsLV.setAdapter(adapter);
 		
-	    ResultReceiver receiver = new SessionListReceiver(new Handler());
+	    receiver = new SessionListReceiver(new Handler());
 	    getRaps(receiver);
 		
 //	    lv.setOnItemClickListener(new ResponseListener());
@@ -70,6 +80,11 @@ public class InboxListViewFragment extends Fragment{
 		
 		getActivity().startService(api);
 	}
+	
+//	@Override
+//	public void onRefreshStarted(View view) {
+//		getRaps(receiver);
+//	}
 	
 	public InboxViewAdapter getAdapter () {
 		return adapter;
@@ -147,4 +162,5 @@ public class InboxListViewFragment extends Fragment{
                 }
         }
 	}
+
 }

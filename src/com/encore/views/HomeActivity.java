@@ -27,11 +27,11 @@ public class HomeActivity extends FragmentActivity {
 	Fragment[] fragments;
 //	private static int NEWSFEED = 0;
 	private static int INBOX = 0;
-	private static int PENDING_REQUESTS = 1;
-	private static int USERS = 2;
+//	private static int PENDING_REQUESTS = 1;
+	private static int USERS = 1;
 
 	// Change this to take out tabs from HomeActivity
-	private static int NUM_TABS = 3;
+	private static int NUM_TABS = 2;
 	boolean customTitleSupported;
 
 	@Override
@@ -118,12 +118,12 @@ public class HomeActivity extends FragmentActivity {
 						.setTabListener(tabListener));
 				break;
 			case 1:
-				actionBar.addTab(actionBar.newTab().setText("Requests")
-						.setTabListener(tabListener));
-				break;
-			case 2:
 				actionBar.addTab(actionBar.newTab().setText("Users")
 						.setTabListener(tabListener));
+				break;
+//			case 2:
+//				actionBar.addTab(actionBar.newTab().setText("Users")
+//						.setTabListener(tabListener));
 
 			}
 		}
@@ -150,11 +150,11 @@ public class HomeActivity extends FragmentActivity {
 				Fragment fragment2 = new InboxListViewFragment();
 				fragments[INBOX] = fragment2;
 				return fragment2;
+//			case 1:
+//				Fragment fragment3 = new FriendRequestsFragment();
+//				fragments[PENDING_REQUESTS] = fragment3;
+//				return fragment3;
 			case 1:
-				Fragment fragment3 = new FriendRequestsFragment();
-				fragments[PENDING_REQUESTS] = fragment3;
-				return fragment3;
-			case 2:
 				Fragment fragment4 = new UsersFragment();
 				fragments[USERS] = fragment4;
 				return fragment4;
@@ -175,9 +175,9 @@ public class HomeActivity extends FragmentActivity {
 //				return "Home page";
 			case 0:
 				return "Inbox";
+//			case 1:
+//				return "Requests";
 			case 1:
-				return "Requests";
-			case 2:
 				return "Users";
 			default:
 				return null;
