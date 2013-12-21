@@ -7,6 +7,7 @@ import util.T;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.hardware.Camera;
 import android.media.MediaRecorder;
 import android.os.Bundle;
@@ -153,12 +154,18 @@ public class CameraActivity2 extends Activity implements
 				mediaRecorder.stop();
 				isRecording = false;
 				oneRecorded = true;
+				Button button = (Button) v;
+				button.setText("Record");
+				button.setTextColor(Color.WHITE);
 			} else {
 				try {
 					setUpMediaRecorder();
 					mediaRecorder.prepare();
 					mediaRecorder.start();
 					isRecording = true;
+					Button button = (Button) v;
+					button.setText("Stop");
+					button.setTextColor(Color.RED);
 				} catch (IllegalStateException e) {
 					e.printStackTrace();
 				} catch (IOException e) {
@@ -183,6 +190,7 @@ public class CameraActivity2 extends Activity implements
 				addClipIntent.putExtra(T.SESSION_ID, sessionId);
 				addClipIntent.putExtra(T.FILEPATH, mediaFile.getAbsolutePath());
 				startService(addClipIntent);
+				finish();
 				
 			}
 		
