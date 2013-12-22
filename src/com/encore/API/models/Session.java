@@ -1,5 +1,6 @@
 package com.encore.API.models;
 
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -25,6 +26,9 @@ public class Session {
 	@SerializedName("likes")
 	private int numLikes;
 	
+	@SerializedName("thumbnail_url")
+	private String thumbnailUrl;
+	
 	// GET only, use PostSession for POST
 	public Session() {
 		this.title = null;
@@ -32,6 +36,7 @@ public class Session {
 		this.complete = false;
 		this.comments = null;
 		this.numLikes = 0;
+		this.thumbnailUrl = null;
 	}
 	
 	public Session(String title, Crowd crowd) {
@@ -87,7 +92,16 @@ public class Session {
 		this.numLikes = numLikes;
 	}
 	
+	public String getThumbnailUrl() {
+		return this.thumbnailUrl;
+	}
+	
+	public void setThumbnailUrl(String url) {
+		this.thumbnailUrl = url;
+	}
+	
 	public String toString() {
-		return "[" + "Title: " + this.title + ", Crowd Title" + this.crowd.getTitle() + ", Crowd ID: " + this.crowd.getId() + "]";
+		return "[" + "Title: " + this.title + ", \nCrowd Title" + this.crowd.getTitle() + ", \nCrowd ID: " + this.crowd.getId() +
+				", \nThumbnail URL: " + this.thumbnailUrl + "]";
 	}
 }

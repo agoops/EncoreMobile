@@ -1,5 +1,7 @@
 package com.encore;
 
+import java.io.InputStream;
+import java.net.URL;
 import java.util.List;
 
 import util.T;
@@ -8,8 +10,11 @@ import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.media.MediaPlayer;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.ResultReceiver;
@@ -22,6 +27,7 @@ import android.view.Window;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.VideoView;
 
@@ -40,6 +46,7 @@ public class InboxViewAdapter extends ArrayAdapter<Session> implements OnClickLi
 	private static LayoutInflater inflater = null;
 	private SessionView rowView;
 	private EditText commentField;
+	private Bitmap mIcon;
 	
 	public InboxViewAdapter(Context c, int textViewResourceId, List<Session> sessions) {
 		super(c, textViewResourceId, sessions);
@@ -83,8 +90,10 @@ public class InboxViewAdapter extends ArrayAdapter<Session> implements OnClickLi
 			// set session title
 			viewHolder.titleTextView.setText(entry.getTitle());
 			
-			// Get a list of comments from the session
+			// Get the session's comments
 			List<Comment> comments = entry.getComments();
+			
+			// Set comment and like numbers
 			if(comments.size() == 1) {
 				viewHolder.commentsBtn.setText(comments.size() + " comment");
 			} else {
@@ -96,6 +105,13 @@ public class InboxViewAdapter extends ArrayAdapter<Session> implements OnClickLi
 				viewHolder.likesBtn.setText(numLikes + " like");
 			} else {
 				viewHolder.likesBtn.setText(numLikes + " likes");
+			}
+			
+			// Set the thumbnail
+			if(entry.getThumbnailUrl() != null) {
+				URL url;
+				new DownloadImageTask((widget.AspectRatioImageView) rowView.findViewById(R.id.inboxImageView))
+	            	.execute(entry.getThumbnailUrl());
 			}
 			
 			rowView.setTag(viewHolder);
@@ -146,7 +162,6 @@ public class InboxViewAdapter extends ArrayAdapter<Session> implements OnClickLi
 			mContext.startService(likesApi);
 			break;
 		case R.id.stream_clip:
-			// TODO: Make GET for url
 			Intent clipApi = new Intent(mContext, APIService.class);
 			clipApi.putExtra(T.API_TYPE, T.GET_CLIP_STREAM);
 			int sessionId = sesh.getId();
@@ -155,36 +170,6 @@ public class InboxViewAdapter extends ArrayAdapter<Session> implements OnClickLi
 			clipApi.putExtra(T.RECEIVER, receiver);
 			mContext.startService(clipApi);
 			
-			
-			//The ClipStreamReceiver will get result and take care of displaying a dialog
-//            MediaPlayer mp = new MediaPlayer();
-//			mp.setAudioStreamType(AudioManager.STREAM_MUSIC);
-//			try {
-//				mp.setDataSource("http://172.27.122.251:3000/sessions/clip/"+sesh.getId());
-//				mp.prepare();
-//				mp.start();
-//			} catch (IllegalArgumentException e) {
-//				// TODO Auto-generated catch block
-//				e.printStackTrace();
-//			} catch (SecurityException e) {
-//				// TODO Auto-generated catch block
-//				e.printStackTrace();
-//			} catch (IllegalStateException e) {
-//				// TODO Auto-generated catch block
-//				e.printStackTrace();
-//			} catch (IOException e) {
-//				// TODO Auto-generated catch block
-//				e.printStackTrace();
-//			}
-			
-//            Thread thread = new Thread();
-//            Log.d(TAG, "Button licked");
-            
-//            int sessionId = sesh.getId();
-//            Log.d(TAG, "sessionId:" + sessionId);
-//            
-//            StreamTask stream= new StreamTask();
-//            stream.execute(new Void[3]);
             break;
 		default:
 			break;
@@ -208,7 +193,6 @@ public class InboxViewAdapter extends ArrayAdapter<Session> implements OnClickLi
 	private class ClipStreamReceiver extends ResultReceiver {
         public ClipStreamReceiver(Handler handler) {
                 super(handler);
-                // TODO Auto-generated constructor stub
         }
 
         @Override
@@ -240,6 +224,32 @@ public class InboxViewAdapter extends ArrayAdapter<Session> implements OnClickLi
                         Log.d(TAG, "APIService get session clip url failed?");
                 }
         }
+	}
+	
+	// Asynchronously downloads the thumbnail and displays it
+	private class DownloadImageTask extends AsyncTask<String, Void, Bitmap> {
+		widget.AspectRatioImageView thumbnailIv;
+
+	    public DownloadImageTask(widget.AspectRatioImageView bmImage) {
+	        this.thumbnailIv = bmImage;
+	    }
+
+	    protected Bitmap doInBackground(String... urls) {
+	        String urldisplay = urls[0];
+	        Bitmap thumbnail = null;
+	        try {
+	            InputStream in = new java.net.URL(urldisplay).openStream();
+	            thumbnail = BitmapFactory.decodeStream(in);
+	        } catch (Exception e) {
+	            Log.e("Error", e.getMessage());
+	            e.printStackTrace();
+	        }
+	        return thumbnail;
+	    }
+
+	    protected void onPostExecute(Bitmap result) {
+	        thumbnailIv.setImageBitmap(result);
+	    }
 	}
 	
 	private void showVideoDialog(Uri uri) {

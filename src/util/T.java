@@ -14,9 +14,8 @@ public class T {
 	public static final String DURATION = "duration";
 	public static final String FILEPATH = "filepath";
 	public static final String ACCEPTED = "accepted";
+	public static final String THUMBNAIL_FILEPATH = "thumbnail_filepath"; 
 
-	public static final int NUM_VIEWS = 3;
-	
 	// API call types
 	public static final int SIGN_IN = 0;
 	public static final int SIGN_UP = 1;

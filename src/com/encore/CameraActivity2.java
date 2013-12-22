@@ -1,17 +1,23 @@
 package com.encore;
 
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
 
 import util.T;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.hardware.Camera;
 import android.media.MediaRecorder;
+import android.media.ThumbnailUtils;
 import android.os.Bundle;
 import android.os.Environment;
+import android.provider.MediaStore;
+import android.util.Base64;
 import android.util.Log;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
@@ -23,7 +29,8 @@ import com.encore.API.APIService;
 
 public class CameraActivity2 extends Activity implements
 		SurfaceHolder.Callback, OnClickListener {
-
+	
+	private static final String TAG = "CameraActivity2";
 	private Context context = this;
 	private MediaRecorder mediaRecorder;
 	private SurfaceView surfaceView;
@@ -36,7 +43,7 @@ public class CameraActivity2 extends Activity implements
 	boolean isRecording;
 	boolean oneRecorded;
 	int sessionId;
-	private static String tag = "CameraActivity2";
+	private String thumbnailFilepath;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -47,10 +54,10 @@ public class CameraActivity2 extends Activity implements
 		sessionId = -1;
 		try{
 			sessionId = extras.getInt("sessionId",-1);
-			Log.d(tag, "this session id is: " + sessionId);
+			Log.d(TAG, "this session id is: " + sessionId);
 		} catch( NullPointerException e) {
-			Log.d(tag, "No passed in sessionId in extras. Have to create new session");
-			Log.d(tag, "this session id is: " + sessionId);
+			Log.d(TAG, "No passed in sessionId in extras. Have to create new session");
+			Log.d(TAG, "this session id is: " + sessionId);
 		}
 		
 		
@@ -60,7 +67,7 @@ public class CameraActivity2 extends Activity implements
 		surfaceHolder = surfaceView.getHolder();
 		surfaceHolder.setType(SurfaceHolder.SURFACE_TYPE_PUSH_BUFFERS);
 		surfaceHolder.addCallback(this);
-		Log.d(tag, "surface is holder null: " + (surfaceHolder == null));
+		Log.d(TAG, "surface is holder null: " + (surfaceHolder == null));
 		isRecording = false;
 		oneRecorded = false;
 		camera = setUpCamera();
@@ -79,7 +86,7 @@ public class CameraActivity2 extends Activity implements
 	@Override
 	protected void onPause() {
 		super.onPause();
-		Log.d(tag, "onPause()");
+		Log.d(TAG, "onPause()");
 		try {
 			camera.reconnect();
 			camera.stopPreview();
@@ -108,11 +115,11 @@ public class CameraActivity2 extends Activity implements
 	public void surfaceChanged(SurfaceHolder holder, int format, int width,
 			int height) {
 		camera.stopPreview();
-		Log.d(tag, "surfaceChanged()");
+		Log.d(TAG, "surfaceChanged()");
 		try {
-			Log.d(tag, "surfaceHolder null in surfaceCreated: "
+			Log.d(TAG, "surfaceHolder null in surfaceCreated: "
 					+ (surfaceHolder == null));
-			Log.d(tag, "is camera null = " + (camera == null));
+			Log.d(TAG, "is camera null = " + (camera == null));
 			camera.setPreviewDisplay(surfaceHolder);
 			camera.startPreview();
 			
@@ -127,7 +134,7 @@ public class CameraActivity2 extends Activity implements
 
 	@Override
 	public void surfaceCreated(SurfaceHolder holder) {
-		Log.d(tag, "surfaceCreated()");
+		Log.d(TAG, "surfaceCreated()");
 
 	}
 
@@ -146,10 +153,10 @@ public class CameraActivity2 extends Activity implements
 
 	@Override
 	public void onClick(View v) {
-		Log.d(tag, "Something clicked");
+		Log.d(TAG, "Something clicked");
 		switch (v.getId()) {
 		case R.id.record:
-			Log.d(tag, "record clicked");
+			Log.d(TAG, "record clicked");
 			if (isRecording) {
 				mediaRecorder.stop();
 				isRecording = false;
@@ -175,31 +182,47 @@ public class CameraActivity2 extends Activity implements
 			break;
 
 		case R.id.send:
-			Log.d(tag, "send clicked");
+			Log.d(TAG, "send clicked");
 			if (isRecording || !oneRecorded || !mediaFile.exists()) {
 				return;
 			}
 			if (sessionId == -1) {
 				//take to screen to collect new information
-				Log.d(tag, "create new session with recorded clip...not implemented yet");
+				Log.d(TAG, "create new session with recorded clip...not implemented yet");
 			}
 			else {
 				//add recorded clip to current session
+				generateThumbnail();
+				
 				Intent addClipIntent = new Intent(this, APIService.class);
 				addClipIntent.putExtra(T.API_TYPE, T.ADD_CLIP);
 				addClipIntent.putExtra(T.SESSION_ID, sessionId);
 				addClipIntent.putExtra(T.FILEPATH, mediaFile.getAbsolutePath());
+				addClipIntent.putExtra(T.THUMBNAIL_FILEPATH, thumbnailFilepath);
 				startService(addClipIntent);
 				finish();
-				
 			}
 		
 			break;
 		}
 	}
 	
+	// Creates a thumbnail from a user's recording
+	private void generateThumbnail() {
+		FileOutputStream stream;
+		try {
+			stream = new FileOutputStream(thumbnailFilepath);
+			Bitmap bitmap = ThumbnailUtils.createVideoThumbnail(mediaFile.getAbsolutePath(), MediaStore.Video.Thumbnails.MINI_KIND);
+			bitmap.compress(Bitmap.CompressFormat.JPEG, 100, stream); // 100 is highest quality
+			Log.d(TAG, "jpeg generated!!!");
+		} catch (FileNotFoundException e) {
+			Log.d(TAG, "Error creating FileOutputStream.");
+			e.printStackTrace();
+		}
+	}
+	
 	private void setUpMediaRecorder() {
-		Log.d(tag, "setUpMediaRecorder()");
+		Log.d(TAG, "setUpMediaRecorder()");
 		 mediaRecorder = new MediaRecorder();
 		camera.stopPreview();
 		 camera.unlock();
@@ -227,7 +250,7 @@ public class CameraActivity2 extends Activity implements
 	}
 	
 	private  File getOutputMediaFile(){
-		Log.d(tag, "getOutputMediaFile called");
+		Log.d(TAG, "getOutputMediaFile called");
 	    // TODO: To be safe, you should check that the SDCard is mounted
 	    // using Environment.getExternalStorageState() before doing this.
 		
@@ -237,30 +260,33 @@ public class CameraActivity2 extends Activity implements
 	    
 	    // Create the storage directory if it does not exist
 	    if (!mediaStorageDir.exists()){
-	    	Log.d(tag, "The following directory doesn't exist: " + mediaStorageDir);
+	    	Log.d(TAG, "The following directory doesn't exist: " + mediaStorageDir);
 	        if (!mediaStorageDir.mkdirs()) {
-	            Log.d(tag, "failed to create directory");
+	            Log.d(TAG, "failed to create directory");
 	            return null;
 	        }
 	    }
 	    
 	    String path = mediaStorageDir.getPath() + File.separator +
 	    		"VID_TempRapchat.mp4";
+	    thumbnailFilepath = mediaStorageDir.getPath() + File.separator
+	    		+ "VID_TempRapchat_Thumbnail.jpg";
+	    
 	    File mediaFile = new File(path);
-	    Log.d(tag, "File path: " + path);
+	    Log.d(TAG, "File path: " + path);
 	    try {
 	    	// Delete any previous recording
 	    	if(mediaFile.exists()) {
 	    		mediaFile.delete();
-	    		Log.d(tag, "Previously existing file deleted.");
+	    		Log.d(TAG, "Previously existing file deleted.");
 	    	}
 			mediaFile.createNewFile();
 		} catch (IOException e) {
-			Log.d(tag, "Failed to create new file");
+			Log.d(TAG, "Failed to create new file");
 			e.printStackTrace();
 		}
 	    
-	    Log.d(tag, "getOutputMediaFile successful");
+	    Log.d(TAG, "getOutputMediaFile successful");
 	    this.mediaFile = mediaFile;
 	    return mediaFile;
 	}

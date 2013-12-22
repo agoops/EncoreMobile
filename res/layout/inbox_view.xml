@@ -32,7 +32,7 @@
 	        android:text="Reply" />
     </LinearLayout>
 
-    <widget.AspectRatioImageView
+    <widget.AspectRatioImageView 
         android:id="@+id/inboxImageView"
         android:layout_width="wrap_content"
         android:layout_height="200dp"
@@ -65,7 +65,4 @@
             android:text="0 comments"
              /> <!-- style="?android:attr/buttonStyleSmall" -->
     </LinearLayout>
-    
-    
-
 </com.encore.SessionView>

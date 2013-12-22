@@ -2,10 +2,10 @@ package widget;
 
 import android.content.Context;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.widget.ImageView;
 
 public class AspectRatioImageView extends ImageView {
-
     public AspectRatioImageView(Context context) {
         super(context);
     }
@@ -22,6 +22,6 @@ public class AspectRatioImageView extends ImageView {
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
         int width = MeasureSpec.getSize(widthMeasureSpec);
         int height = width * getDrawable().getIntrinsicHeight() / getDrawable().getIntrinsicWidth();
-        setMeasuredDimension(width, height);
+        setMeasuredDimension(width, width/2);
     }
 }

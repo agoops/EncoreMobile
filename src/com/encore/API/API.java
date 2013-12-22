@@ -552,7 +552,7 @@ public class API {
 	
 	public String getClipStream(int sessionId) throws Exception {
 		Log.d(TAG, "getClipStream called");
-		String url = SESSIONS + sessionId+ "/clips/";
+		String url = SESSIONS + sessionId + "/clips/";
 		String resultJSON = null;
 		
 		try {

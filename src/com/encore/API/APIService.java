@@ -132,6 +132,7 @@ public class APIService extends IntentService {
 
 		multipartEntity.setBoundary("---*******");
 		multipartEntity.addPart("clip", new FileBody(new File(data.getString(T.FILEPATH))));
+		multipartEntity.addPart("thumbnail", new FileBody(new File(data.getString(T.THUMBNAIL_FILEPATH))));
 		HttpEntity entity = multipartEntity.build();
 		try {
 			String result = api.addClip(entity, sessionId);
