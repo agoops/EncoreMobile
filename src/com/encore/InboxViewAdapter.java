@@ -28,6 +28,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.ImageView.ScaleType;
 import android.widget.TextView;
 import android.widget.VideoView;
 
@@ -66,24 +67,24 @@ public class InboxViewAdapter extends ArrayAdapter<Session> implements OnClickLi
 			viewHolder = new SessionHolder();
 			
 			viewHolder.titleTextView = (TextView) rowView.findViewById(R.id.tvName);
-			viewHolder.play = (Button) rowView.findViewById(R.id.stream_clip);
 			viewHolder.reply = (Button) rowView.findViewById(R.id.reply);
 			viewHolder.likesBtn = (Button) rowView.findViewById(R.id.likes);
 			viewHolder.commentsBtn = (Button) rowView.findViewById(R.id.comments);
+			viewHolder.thumbnailIv = (widget.AspectRatioImageView) rowView.findViewById(R.id.inboxImageView);
 			
 			// get the selected entry
 			Session entry = (Session) mSessionList.get(position);
 			
 			// For each listview, store the session
 			viewHolder.reply.setTag(entry);
-			viewHolder.play.setTag(entry);
 			viewHolder.likesBtn.setTag(entry);
 			viewHolder.commentsBtn.setTag(entry);
+			viewHolder.thumbnailIv.setTag(entry);
 			
 			viewHolder.reply.setOnClickListener((OnClickListener) this);
 			viewHolder.likesBtn.setOnClickListener((OnClickListener) this);
 			viewHolder.commentsBtn.setOnClickListener((OnClickListener) this);
-			viewHolder.play.setOnClickListener((OnClickListener) this);
+			viewHolder.thumbnailIv.setOnClickListener((OnClickListener) this);
 			
 			rowView.setSession(entry);
 			
@@ -161,7 +162,9 @@ public class InboxViewAdapter extends ArrayAdapter<Session> implements OnClickLi
 			likesApi.putExtra(T.SESSION_ID, sesh.getId());
 			mContext.startService(likesApi);
 			break;
-		case R.id.stream_clip:
+//		case R.id.stream_clip:
+		case R.id.inboxImageView:
+			// Clicking the thumbnail will play the video
 			Intent clipApi = new Intent(mContext, APIService.class);
 			clipApi.putExtra(T.API_TYPE, T.GET_CLIP_STREAM);
 			int sessionId = sesh.getId();
@@ -187,7 +190,8 @@ public class InboxViewAdapter extends ArrayAdapter<Session> implements OnClickLi
 	
 	static class SessionHolder {
 		TextView titleTextView;
-		Button play, reply, likesBtn, commentsBtn;
+		Button reply, likesBtn, commentsBtn;
+		widget.AspectRatioImageView thumbnailIv;
 	}
 	
 	private class ClipStreamReceiver extends ResultReceiver {
@@ -240,6 +244,7 @@ public class InboxViewAdapter extends ArrayAdapter<Session> implements OnClickLi
 	        try {
 	            InputStream in = new java.net.URL(urldisplay).openStream();
 	            thumbnail = BitmapFactory.decodeStream(in);
+	            thumbnailIv.setScaleType(ScaleType.FIT_XY);
 	        } catch (Exception e) {
 	            Log.e("Error", e.getMessage());
 	            e.printStackTrace();
