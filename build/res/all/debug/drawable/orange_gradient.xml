@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<shape xmlns:android="http://schemas.android.com/apk/res/android" >
+    <!--  Gradient Bg for login/signup -->
+   <gradient
+      android:startColor="#fe5906"
+      android:centerColor="#fe6214"
+      android:endColor="#fe7028"
+      android:angle="90" />
+
+</shape>
+<!-- From: file:/Users/babakpourkazemi/Documents/Coding%20Projects/Github/EncoreMobile/res/drawable/orange_gradient.xml -->

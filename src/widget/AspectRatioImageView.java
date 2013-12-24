@@ -20,9 +20,6 @@ public class AspectRatioImageView extends ImageView {
 
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
-    	// This class was originially intended to display any image at screen-width,
-    	// and maintain aspect ratio. But we changed it to display any image at
-    	// screen-width but become square (we distort the image).
         int width = MeasureSpec.getSize(widthMeasureSpec);
 //        int height = width * getDrawable().getIntrinsicHeight() / getDrawable().getIntrinsicWidth();
         setMeasuredDimension(width, width);

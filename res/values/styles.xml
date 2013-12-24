@@ -29,7 +29,7 @@
     <style name="RapchatActionBar" parent="@style/Widget.AppCompat.ActionBar">
         <item name="android:titleTextStyle">@style/TitleTextStyle</item>
         <item name="android:background">@color/flat_red</item>
-        
+
         <!-- Support library compatibility -->
         <item name="titleTextStyle">@style/TitleTextStyle</item>
         <item name="background">@color/flat_red</item>
@@ -53,12 +53,12 @@
         <item name="android:background">@drawable/button_style</item>
         <item name="android:fontFamily">sans-serif-light</item>
         <item name="android:textStyle">italic</item>
-        <item name="android:textColor">#fff</item>
+        <item name="android:textColor">@color/button_text_color</item>
     </style>
     
     <!-- ========= Dialogs ========= -->
     <style name="CustomDialogTheme" parent="@android:style/Theme.Dialog">
-        <item name="@android:background">#fff</item>
+        <item name="@android:background">@color/off_white</item>
         <item name="@android:buttonStyle">@style/RapchatButtons</item>
     </style>
 

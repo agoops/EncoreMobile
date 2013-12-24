@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merger>
+
+    <dataSet config="ComGithubCastorflexSmoothprogressbarLibrary020.aar" >
+        <source path="/Users/babakpourkazemi/Documents/Coding Projects/Github/EncoreMobile/build/exploded-bundles/ComGithubCastorflexSmoothprogressbarLibrary020.aar/assets" />
+    </dataSet>
+    <dataSet config="ComGithubChrisbanesActionbarpulltorefreshLibrary093.aar" >
+        <source path="/Users/babakpourkazemi/Documents/Coding Projects/Github/EncoreMobile/build/exploded-bundles/ComGithubChrisbanesActionbarpulltorefreshLibrary093.aar/assets" />
+    </dataSet>
+    <dataSet config="ComAndroidSupportAppcompatV71800.aar" >
+        <source path="/Users/babakpourkazemi/Documents/Coding Projects/Github/EncoreMobile/build/exploded-bundles/ComAndroidSupportAppcompatV71800.aar/assets" />
+    </dataSet>
+    <dataSet config="main" >
+        <source path="/Users/babakpourkazemi/Documents/Coding Projects/Github/EncoreMobile/assets" />
+    </dataSet>
+    <dataSet config="debug" >
+        <source path="/Users/babakpourkazemi/Documents/Coding Projects/Github/EncoreMobile/build-types/debug/assets" />
+    </dataSet>
+
+</merger>

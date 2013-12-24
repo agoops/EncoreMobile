@@ -14,12 +14,26 @@
         android:textStyle="bold"
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:text="Session Title" />
-
-    <widget.AspectRatioImageView 
-        android:id="@+id/inboxImageView"
+	
+    <FrameLayout
+        android:id="@+id/thumbnail_container"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:src="@drawable/jay" />
+        android:layout_height="wrap_content" >
+        
+	    <widget.AspectRatioImageView 
+	        android:id="@+id/inboxImageView"
+	        android:layout_width="match_parent"
+	        android:layout_height="wrap_content"
+	        android:src="@drawable/jay" />
+        
+	    <!-- <ImageView
+	        android:id="@+id/play_symbol_button"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:layout_gravity="center_vertical|center_horizontal"
+	        android:src="@drawable/play_64x64" /> -->
+    </FrameLayout>
+    
 
     
     <LinearLayout android:orientation="horizontal" 
@@ -29,7 +43,7 @@
 
         <Button
             android:id="@+id/likes"
-            android:layout_width="0dip"
+            android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:gravity="center"
@@ -46,7 +60,7 @@
              
 		<Button
 	        android:id="@+id/reply"
-	        android:layout_width="0dp"
+	        android:layout_width="wrap_content"
 	        android:layout_height="match_parent"
 	        android:layout_weight="1"
 	        android:gravity="center"

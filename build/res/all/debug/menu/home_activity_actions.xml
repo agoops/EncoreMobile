@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android" >
+
+    <item
+        android:id="@+id/action_video"
+        android:icon="@drawable/ic_action_video"
+        android:showAsAction="always"/>
+
+</menu><!-- From: file:/Users/babakpourkazemi/Documents/Coding%20Projects/Github/EncoreMobile/res/menu/home_activity_actions.xml -->

@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@color/off_white" >
+    
+    <ProgressBar
+        android:id="@+id/progress_profile"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_gravity="center"
+        style="?android:attr/progressBarStyleLarge" />
+    
+    <TextView
+        android:id="@+id/profile_name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="First Name"
+        android:textSize="30sp"
+        android:textStyle="bold"
+        android:padding="5dp"
+        android:gravity="center" />
+    
+    <TextView
+        android:id="@+id/profile_username"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="Username"
+        android:textSize="15sp"
+        android:padding="5dp"
+        android:gravity="center" />
+    
+    <TextView
+        android:id="@+id/profile_email"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="Email"
+        android:textSize="15sp"
+        android:padding="5dp"
+        android:gravity="center" />
+    
+    <ListView
+        android:id="@+id/profile_friends_lv"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1" />
+
+</LinearLayout>
+<!-- From: file:/Users/babakpourkazemi/Documents/Coding%20Projects/Github/EncoreMobile/res/layout/profile_fragment.xml -->

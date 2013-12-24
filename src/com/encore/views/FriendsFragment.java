@@ -94,6 +94,7 @@ public class FriendsFragment extends Fragment {
 	public ArrayList<User> convertJsonToListOfUser(String json) {
 		Log.d(tag, "CONVERT TO OBJECT STARTED");
 		Gson gson = new Gson();
+
 		ArrayList<User> profiles = new ArrayList<User>();
 		JsonParser jsonParser = new JsonParser();
 
