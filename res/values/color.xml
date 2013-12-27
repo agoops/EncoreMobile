@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="flat_red">#e74c3c</color>
+    <color name="darker_flat_red">#d0362c</color>
+    <color name="off_white">#e9e9e9</color>
+    <color name="dark_grey">#252525</color>
+    <color name="android_blue">#33B5E5</color>
+    <color name="android_blue_pressed">#0099CC</color>
+    
+    <color name="button_pressed">#55c892</color>
+    <color name="button_focused">#55c892</color>
+    <color name="button_default">#6a89ae</color>
+</resources>

@@ -9,10 +9,10 @@ public class FriendRequest {
 	private String username;
 	
 	@SerializedName("pending_me")
-	private String[] pendingMe;
+	private User[] pendingMe;
 	
 	@SerializedName("pending_them")
-	private String[] pendingThem;
+	private User[] pendingThem;
 	
 	// GET: Use "username" field, others null
 	// POST: Use pendingMe and pendingThem, username null;
@@ -22,9 +22,21 @@ public class FriendRequest {
 		this.pendingThem = null;
 	}
 
-	public FriendRequest(String username, String[] pendingMe, String[] pendingThem) {
+	public FriendRequest(String username, User[] pendingMe, User[] pendingThem) {
 		this.username = username;
 		this.pendingMe = pendingMe;
 		this.pendingThem = pendingThem;
+	}
+	
+	public User[] getPendingMe() {
+		return this.pendingMe;
+	}
+	
+	public User[] getPendingThem() {
+		return this.pendingThem;
+	}
+	
+	public String toString() {
+		return "username: " + username + ", pendingMe: " + pendingMe.toString() + ", pendingThem: " + pendingThem.toString(); 
 	}
 }

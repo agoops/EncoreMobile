@@ -1,6 +1,7 @@
 package com.encore.views;
 
 import java.util.ArrayList;
+
 import util.T;
 import android.content.Intent;
 import android.os.Bundle;
@@ -17,6 +18,7 @@ import com.encore.FriendsFragmentAdapter;
 import com.encore.R;
 import com.encore.API.APIService;
 import com.encore.API.models.Profile;
+import com.encore.API.models.User;
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;

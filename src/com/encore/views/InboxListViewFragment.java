@@ -1,12 +1,11 @@
 package com.encore.views;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Arrays;
 
 import util.T;
 import android.app.Dialog;
 import android.content.Intent;
-import android.graphics.drawable.Drawable;
+import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Bundle;
@@ -21,6 +20,8 @@ import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
+import android.widget.ProgressBar;
+import android.widget.Toast;
 import android.widget.VideoView;
 
 import com.encore.InboxViewAdapter;
@@ -29,12 +30,16 @@ import com.encore.SessionView;
 import com.encore.VideoPlayer;
 import com.encore.API.APIService;
 import com.encore.API.models.Session;
+import com.encore.API.models.Sessions;
+import com.google.gson.Gson;
 
 public class InboxListViewFragment extends Fragment{
 	private static final String TAG = "InboxListViewFragment";
 	private VideoView videoView;
 	private InboxViewAdapter adapter;
-	APIService api;
+	private Session[] sessions;
+	private ListView sessionsLV;
+	private ProgressBar progressBar;
 	
 	@Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -42,54 +47,49 @@ public class InboxListViewFragment extends Fragment{
         // Inflate the layout for this fragment
 		View view = inflater.inflate(R.layout.video_list_fragment, container, false);
 		
-	    ListView lv = (ListView) view.findViewById(R.id.video_list_view2);
-	    adapter = new InboxViewAdapter(getActivity(), new ArrayList<Session>());
-	    lv.setAdapter(adapter);
-	    lv.setOnItemClickListener(new ResponseListener());
-	    
-	    api = new APIService();
+		// Show Progress Bar
+		progressBar = (ProgressBar) view.findViewById(R.id.progress_inbox);
+		progressBar.setVisibility(View.VISIBLE);
+		
+		sessionsLV = (ListView) view.findViewById(R.id.video_list_view2);
+		
+		adapter = new InboxViewAdapter(getActivity(), R.layout.inbox_view, null);
+		sessionsLV.setAdapter(adapter);
+		
+	    ResultReceiver receiver = new SessionListReceiver(new Handler());
+	    getRaps(receiver);
+		
+//	    lv.setOnItemClickListener(new ResponseListener());
 	    return view;
     }
 	
+	public void getRaps(ResultReceiver receiver) {
+		Intent api = new Intent(getActivity(), APIService.class);
+		api.putExtra(T.API_TYPE, T.GET_SESSIONS);
+		api.putExtra(T.RECEIVER, receiver);
+		
+		getActivity().startService(api);
+	}
+	
 	public InboxViewAdapter getAdapter () {
 		return adapter;
-	}
-	
-	private String getSessionsTest(ResultReceiver receiver) {
-		String result = "";
-		
-		Intent apiIntent = new Intent(getActivity(), APIService.class);
-		apiIntent.putExtra(T.API_TYPE, T.GET_SESSIONS);
-		
-		getActivity().startService(apiIntent);
-		
-		return result;
-	}
-	
-	private List<Session> getTempResponseList() {
-		Drawable icon = getResources().getDrawable(R.drawable.action_people);
-		List<Session> temp = new ArrayList<Session>();
-		
-//		for (int i = 0; i < 10; ++i) {
-//			Session entry = new Session("Respond to clip " + i+"!", icon);
-//			entry.setUri(Uri.parse("/storage/sdcard0/DCIM/Camera/20130923_224141.mp4"));
-//			temp.add(entry);
-//		}
-		
-		return temp;
 	}
 	
 	public class ResponseListener implements OnItemClickListener {
 
 		@Override
 		public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-			Log.d(TAG, "parent = " + parent.toString() );
-			Log.d(TAG, "view = " + view.toString());
-			SessionView element = (SessionView) view;
-			Uri uri = Uri.parse(element.getUri());
-			Log.d(TAG, "uri = " + uri.toString());
-			
-			showVideoDialog(uri);
+			SessionView sv = (SessionView) view;
+			Session session = sv.getSession();
+			int sessionId = session.getId();
+			Toast.makeText(getActivity(), "sessionId: " + sessionId, Toast.LENGTH_SHORT);
+			// TODO: Make request to last clip with session id
+			// TODO: Play locally using url
+			MediaPlayer mp = new MediaPlayer();
+			mp.setAudioStreamType(AudioManager.STREAM_MUSIC);
+//			mp.setDataSource(url);
+//			mp.prepare();
+//			mp.start();
 		}
 	}
 	
@@ -124,17 +124,27 @@ public class InboxListViewFragment extends Fragment{
         dialog.show();
 	}
 	
-	private class SessionsReceiver extends ResultReceiver {
-		public SessionsReceiver(Handler handler) {
-			super(handler);
-		}
-		
-		@Override
-		public void onReceiveResult(int resultCode, Bundle resultData) {
-			if(resultCode == T.GET_SESSIONS) {
-				Log.d(TAG, "APIService successfully returned with sessions");
-				String result = resultData.getString("result");
-			}
-		}
+	private class SessionListReceiver extends ResultReceiver {
+        public SessionListReceiver(Handler handler) {
+                super(handler);
+                // TODO Auto-generated constructor stub
+        }
+
+        @Override
+        protected void onReceiveResult(int resultCode, Bundle resultData) {
+                if (resultCode == 1) {
+                        Log.d(TAG, "APIService returned successfully with sessions");
+                        
+                        // hide progress bar
+                        progressBar.setVisibility(View.GONE);
+                        
+                        String result = resultData.getString("result");
+                        sessions = (new Gson()).fromJson(result, Sessions.class).getSessions();
+                        adapter.setItemList(Arrays.asList(sessions));
+                        adapter.notifyDataSetChanged();
+                } else {
+                        Log.d(TAG, "APIService get session failed?");
+                }
+        }
 	}
 }

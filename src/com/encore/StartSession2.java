@@ -19,15 +19,14 @@ public class StartSession2 extends FragmentActivity {
 		Log.d(TAG, "About to launch a RecordSessionFragment");
 		// Create a new transaction and RecordSessionFragment
 		FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-		RecordSessionFragment recordFragment = new RecordSessionFragment();
 		
-		// Pass the crowdId to the recordFragment
-		// If it doesn't exist, crowdId == -1
+		RecordSessionFragment recordFragment = new RecordSessionFragment();
 		Intent intent = getIntent();
 		int crowdId = intent.getIntExtra("crowdId", -1);
 		Bundle bundle = new Bundle();
 		bundle.putInt("crowdId", crowdId);
 		bundle.putString("sessionTitle", intent.getStringExtra("sessionTitle"));
+		bundle.putInt("sessionId", intent.getIntExtra("sessionId", -1));
 		Log.d(TAG, "crowdId, sessionTitle: " + crowdId + ", " + intent.getStringExtra("sessionTitle"));
 		recordFragment.setArguments(bundle);
 		

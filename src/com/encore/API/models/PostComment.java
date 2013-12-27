@@ -6,7 +6,7 @@ public class PostComment {
 	@SerializedName("session")
 	private int sessionId;
 	
-	@SerializedName("comment_text")
+	@SerializedName("text")
 	private String commentText;
 	
 	public PostComment() {

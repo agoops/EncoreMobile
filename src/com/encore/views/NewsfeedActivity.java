@@ -71,74 +71,74 @@ public class NewsfeedActivity extends FragmentActivity {
 					}
 				});
 		
-		getAllSessions();
+//		getAllSessions();
 	}
 	
 	
-	private void getAllSessions() {
-		Intent apiIntent = new Intent(this, APIService.class);
-		apiIntent.putExtra(T.API_TYPE, T.GET_SESSIONS);
-		SessionListReceiver mReceiver = new SessionListReceiver(new Handler());
-		apiIntent.putExtra(T.RECEIVER, mReceiver);
-		startService(apiIntent);
-	}
-	
-	private class SessionListReceiver extends ResultReceiver {
-		public SessionListReceiver(Handler handler) {
-			super(handler);
-			// TODO Auto-generated constructor stub
-		}
-
-		@Override
-		protected void onReceiveResult(int resultCode, Bundle resultData) {
-			if (resultCode == 1) {
-				Log.d(tag, "APISerivce returned successful with sessions");
-				
-				
-				String result = resultData.getString("result");
-				ArrayList<ArrayList<Session>> sessions = convertJsonToListOfSession(result);
-				
-				SessionViewAdapter nAdapter = ((VideoListViewFragment) fragments[NEWSFEED])
-						.getAdapter();
-				nAdapter.setItemList(sessions.get(NEWSFEED));
-				nAdapter.notifyDataSetChanged();
-				
-				InboxViewAdapter iAdapter = ((InboxListViewFragment) fragments[INBOX]).getAdapter();
-				iAdapter.setItemList(sessions.get(INBOX));
-				iAdapter.notifyDataSetChanged();
-				
-			} else {
-				Log.d(tag, "APIService get session failed?");
-
-			}
-		}
-	}
-	
-	private ArrayList<ArrayList<Session>> convertJsonToListOfSession(String json) {
-		ArrayList<ArrayList<Session>> sessions = new ArrayList<ArrayList<Session>>();
-		
-		Gson gson = new Gson();
-		ArrayList<Session> inbox = new ArrayList<Session>();
-		ArrayList<Session> newsfeed = new ArrayList<Session>();
-		sessions.add(newsfeed);
-		sessions.add(inbox);
-		JsonParser jsonParser = new JsonParser();
-		JsonArray sessionsJson = new JsonArray();
-		
-		sessionsJson = jsonParser.parse(json).getAsJsonObject()
-				.getAsJsonArray("sessions");
-		for (JsonElement j : sessionsJson) {
-			Session session = gson.fromJson(j, Session.class);
-			if (session.isComplete()) {
-				newsfeed.add(session);
-			} else{
-				inbox.add(session);
-			}
-		}
-		
-		return sessions;
-		
-	}
+//	private void getAllSessions() {
+//		Intent apiIntent = new Intent(this, APIService.class);
+//		apiIntent.putExtra(T.API_TYPE, T.GET_SESSIONS);
+//		SessionListReceiver mReceiver = new SessionListReceiver(new Handler());
+//		apiIntent.putExtra(T.RECEIVER, mReceiver);
+//		startService(apiIntent);
+//	}
+//	
+//	private class SessionListReceiver extends ResultReceiver {
+//		public SessionListReceiver(Handler handler) {
+//			super(handler);
+//			// TODO Auto-generated constructor stub
+//		}
+//
+//		@Override
+//		protected void onReceiveResult(int resultCode, Bundle resultData) {
+//			if (resultCode == 1) {
+//				Log.d(tag, "APISerivce returned successful with sessions");
+//				
+//				
+//				String result = resultData.getString("result");
+//				ArrayList<ArrayList<Session>> sessions = convertJsonToListOfSession(result);
+//				
+//				SessionViewAdapter nAdapter = ((VideoListViewFragment) fragments[NEWSFEED])
+//						.getAdapter();
+//				nAdapter.setItemList(sessions.get(NEWSFEED));
+//				nAdapter.notifyDataSetChanged();
+//				
+//				InboxViewAdapter iAdapter = ((InboxListViewFragment) fragments[INBOX]).getAdapter();
+//				iAdapter.setItemList(sessions.get(INBOX));
+//				iAdapter.notifyDataSetChanged();
+//				
+//			} else {
+//				Log.d(tag, "APIService get session failed?");
+//
+//			}
+//		}
+//	}
+//	
+//	private ArrayList<ArrayList<Session>> convertJsonToListOfSession(String json) {
+//		ArrayList<ArrayList<Session>> sessions = new ArrayList<ArrayList<Session>>();
+//		
+//		Gson gson = new Gson();
+//		ArrayList<Session> inbox = new ArrayList<Session>();
+//		ArrayList<Session> newsfeed = new ArrayList<Session>();
+//		sessions.add(newsfeed);
+//		sessions.add(inbox);
+//		JsonParser jsonParser = new JsonParser();
+//		JsonArray sessionsJson = new JsonArray();
+//		
+//		sessionsJson = jsonParser.parse(json).getAsJsonObject()
+//				.getAsJsonArray("sessions");
+//		for (JsonElement j : sessionsJson) {
+//			Session session = gson.fromJson(j, Session.class);
+//			if (session.isComplete()==1) {
+//				newsfeed.add(session);
+//			} else{
+//				inbox.add(session);
+//			}
+//		}
+//		
+//		return sessions;
+//		
+//	}
 	
 	
 	

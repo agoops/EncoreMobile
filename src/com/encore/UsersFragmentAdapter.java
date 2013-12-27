@@ -21,28 +21,28 @@ import com.encore.API.models.User;
 
 public class UsersFragmentAdapter extends ArrayAdapter<Profile> {
 	private Context mContext;
-	private List<Profile> mUserList;
+	private List<Profile> mProfileList;
 	private String tag = "UsersFragmentAdapter";
 
 	public UsersFragmentAdapter(Context context, int resource,
-			List<Profile> objects) {
-		super(context, resource, objects);
+			List<Profile> profiles) {
+		super(context, resource, profiles);
 		mContext = context;
-		mUserList = objects;
+		mProfileList = profiles;
 	}
 
 	@Override
 	public int getCount() {
-		if (mUserList != null) {
-			return mUserList.size();
+		if (mProfileList != null) {
+			return mProfileList.size();
 		}
 		return 0;
 	}
 
 	@Override
 	public Profile getItem(int arg0) {
-		if (mUserList != null) {
-			return mUserList.get(arg0);
+		if (mProfileList != null) {
+			return mProfileList.get(arg0);
 		}
 		return null;
 	}
@@ -57,9 +57,8 @@ public class UsersFragmentAdapter extends ArrayAdapter<Profile> {
 
 		// reference to convertView
 		FriendView v = (FriendView) convertView;
-		Profile profile = mUserList.get(position);
-		User user = profile.getUser();
-		Log.d(tag, "User for this view is: " + user.getUsername());
+		Profile profile = mProfileList.get(position);
+		Log.d(tag, "User for this view is: " + profile.getUsername());
 
 		// inflate new layout if null
 		if (v == null) {
@@ -79,7 +78,7 @@ public class UsersFragmentAdapter extends ArrayAdapter<Profile> {
 			public void onClick(View v) {
 				FriendView fv = (FriendView) v.getParent();
 				Button button = (Button) v;
-				String username = fv.getProfile().getUser().getUsername();
+				String username = fv.getUser().getUsername();
 				Log.d(tag, "username in adapter: " + username);
 				Intent apiIntent = new Intent(mContext, APIService.class);
 				apiIntent.putExtra(T.API_TYPE, T.FRIEND_REQUEST);
@@ -95,14 +94,14 @@ public class UsersFragmentAdapter extends ArrayAdapter<Profile> {
 //				.findViewById(R.id.checkbox_user_view);
 
 		// set data to display and store
-		username.setText(user.getUsername());
+		username.setText(profile.getUsername());
 		v.setProfile(profile);
 		// return view
 		return v;
 	}
 	
 	
-	public void setItemList(ArrayList<Profile> profiles) {
-		this.mUserList = profiles;
+	public void setItemList(ArrayList<Profile> Profiles) {
+		this.mProfileList = Profiles;
 	}
 }

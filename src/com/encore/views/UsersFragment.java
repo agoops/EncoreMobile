@@ -1,6 +1,8 @@
 package com.encore.views;
 
+import java.lang.reflect.Type;
 import java.util.ArrayList;
+import java.util.List;
 
 import util.T;
 import android.content.Intent;
@@ -14,27 +16,25 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 
 import com.encore.R;
 import com.encore.UsersFragmentAdapter;
 import com.encore.API.APIService;
 import com.encore.API.models.Profile;
-import com.encore.API.models.User;
 import com.google.gson.Gson;
-import com.google.gson.JsonArray;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonParser;
+import com.google.gson.reflect.TypeToken;
 
 public class UsersFragment extends Fragment{
-	private static String tag = "UsersFragment";
+	private static final String TAG = "UsersFragment";
 	private ListView listView;
+	private UsersFragmentAdapter adapter;
+	private ProgressBar progressBar;
 	public Button sendRequests;
-	UsersFragmentAdapter adapter;
 	
 	private final static int REQUESTS = 0;
 	private final static int USERS = 1;
 	private final static String JSON_REQUESTS_KEY = "pending_me";
-	
 	
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -43,6 +43,11 @@ public class UsersFragment extends Fragment{
 		// Inflate the layout for this fragment
 		View view = inflater.inflate(R.layout.users_fragment, container,
 				false); 
+		
+		// Setup progress bar
+		progressBar = (ProgressBar) view.findViewById(R.id.progress_users);
+		progressBar.setVisibility(View.VISIBLE);
+		
 		listView = (ListView) view.findViewById(R.id.users_list_view);
 		adapter = new UsersFragmentAdapter(container.getContext(), 0, null);
 		listView.setAdapter(adapter);
@@ -57,19 +62,6 @@ public class UsersFragment extends Fragment{
 		return view;
 	}
 	
-	
-	
-	
-	public void getPendingFriendRequests(ResultReceiver receiver) {
-		Intent apiIntent = new Intent(getActivity(), APIService.class);
-		apiIntent.putExtra("receiver", receiver);
-		apiIntent.putExtra(T.API_TYPE, T.FRIEND_REQUESTS_PENDING);
-		
-		getActivity().startService(apiIntent);
-		return;
-	}
-	
-	
 	public void getUsers(ResultReceiver receiver) {
 		Intent apiIntent = new Intent(getActivity(), APIService.class);
 		apiIntent.putExtra("receiver", receiver);
@@ -78,7 +70,6 @@ public class UsersFragment extends Fragment{
 		getActivity().startService(apiIntent);
 		return;
 	}
-	
 
 	private class UsersListReceiver extends ResultReceiver {
 		public UsersListReceiver(Handler handler) {
@@ -89,7 +80,7 @@ public class UsersFragment extends Fragment{
 		@Override
 		protected void onReceiveResult(int resultCode, Bundle resultData) {
 			if (resultCode == 1) {
-				Log.d(tag, "APISerivce returned successful with friends");
+				Log.d(TAG, "APIService returned successfully with users");
 				/*
 				 * TODO:WARNING This conversion of json to List<Profile> might
 				 * be running on UI thread and that might be bad. EDIT:
@@ -99,50 +90,19 @@ public class UsersFragment extends Fragment{
 				 * seems that the code will run on the service's thread (given
 				 * that it is seperate), and update UI with Handler given.
 				 */
+				// Hide progress bar
+				progressBar.setVisibility(View.GONE);
+				
 				String result = resultData.getString("result");
-				ArrayList<Profile> profiles = convertJsonToListOfProfile(result);
+				Log.d(TAG, "Users: \n" + result);
+				Type listType = new TypeToken<List<Profile>>(){}.getType();
+				ArrayList<Profile> profiles = (new Gson()).fromJson(result, listType);
+				
 				adapter.setItemList(profiles);
 				adapter.notifyDataSetChanged();
 			} else {
-				Log.d(tag, "APIService get friends failed?");
-
+				Log.d(TAG, "APIService get friends failed?");
 			}
 		}
-	}
-	
-	public ArrayList<User> convertJsonToListOfUser(String json) {
-		Log.d(tag, "CONVERT TO OBJECT STARTED");
-		Gson gson = new Gson();
-		ArrayList<User> users = new ArrayList<User>();
-		JsonParser jsonParser = new JsonParser();
-		
-		JsonArray usersJson = new JsonArray();
-		
-		usersJson = jsonParser.parse(json).getAsJsonObject()
-				.getAsJsonArray(JSON_REQUESTS_KEY);
-		for (JsonElement j : usersJson) {
-			User user = gson.fromJson(j, User.class);
-			users.add(user);
-			Log.d(tag, user.toString());
-		}
-		return users;
-		
-	}
-	public ArrayList<Profile> convertJsonToListOfProfile(String json) {
-		Log.d(tag, "CONVERT TO OBJECT STARTED");
-		Gson gson = new Gson();
-		ArrayList<Profile> profiles = new ArrayList<Profile>();
-		JsonParser jsonParser = new JsonParser();
-
-		JsonArray profilesJson = new JsonArray();
-
-		profilesJson = jsonParser.parse(json).getAsJsonArray();
-		for (JsonElement j : profilesJson) {
-			Profile profile = gson.fromJson(j, Profile.class);
-			profiles.add(profile);
-			Log.d(tag, profile.toString());
-		}
-
-		return profiles;
 	}
 }

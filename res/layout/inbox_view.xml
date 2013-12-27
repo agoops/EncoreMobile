@@ -4,27 +4,41 @@
     android:layout_height="wrap_content"
     android:orientation="vertical"
     android:padding="5dip" >
-
+    
     <LinearLayout android:orientation="horizontal" 
         android:layout_width="fill_parent"
         android:layout_height="wrap_content">
 
         <TextView
             android:id="@+id/tvName"
-            android:layout_width="5dip"
-            android:layout_height="fill_parent"
-            android:layout_weight="1"
-            android:gravity="center_vertical"
-            android:text="Session Title" />
-
-        <Button
-            android:id="@+id/reply"
-            style="?android:attr/buttonStyleSmall"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:focusable="false"
-            android:text="Reply" />
+            android:layout_height="fill_parent"
+            android:gravity="center_vertical"
+            android:layout_weight="1"
+            android:text="Session Title" />
+        
+	    <Button
+	        android:id="@+id/stream_clip"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:focusable="false"
+	        android:text="Play" />
+	
+	    <Button
+	        android:id="@+id/reply"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:focusable="false"
+	        android:text="Reply" />
     </LinearLayout>
+
+    <widget.AspectRatioImageView
+        android:id="@+id/inboxImageView"
+        android:layout_width="wrap_content"
+        android:layout_height="200dp"
+        android:adjustViewBounds="true"
+        android:src="@drawable/jay" />
+
     
     <LinearLayout android:orientation="horizontal" 
         android:layout_width="fill_parent"
@@ -34,31 +48,31 @@
 
         <Button
             android:id="@+id/likes"
-            style="?android:attr/buttonStyleSmall"
             android:layout_width="0dip"
             android:layout_height="fill_parent"
             android:layout_weight="1"
             android:gravity="center_vertical"
             android:text="Likes" 
-            android:paddingLeft="8dip"/>
+            android:paddingLeft="8dip"
+             />
         
         <Button 
             android:id="@+id/favorites"
-            style="?android:attr/buttonStyleSmall"
             android:layout_width="0dip"
             android:layout_height="fill_parent"
             android:layout_weight="1"
             android:gravity="center_vertical"
-            android:text="Favorites" />
+            android:text="Favorites"
+             />
         
         <Button
             android:id="@+id/comments"
-            style="?android:attr/buttonStyleSmall"
             android:layout_width="0dip"
             android:layout_height="fill_parent"
             android:layout_weight="1"
             android:gravity="center_vertical"
-            android:text="0 comments" />
+            android:text="0 comments"
+             /> <!-- style="?android:attr/buttonStyleSmall" -->
     </LinearLayout>
     
     

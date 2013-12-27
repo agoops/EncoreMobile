@@ -10,10 +10,11 @@
 
     <uses-feature android:name="android.hardware.camera" />
     <uses-feature android:name="android.hardware.camera.front" />
+	<uses-feature android:name="android.hardware.camera.autofocus" />
 
     <uses-permission android:name="android.permission.CAMERA" />
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.RECORD_AUDIO" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.READ_PHONE_STATE"/>
 
@@ -45,8 +46,17 @@
         </activity>
         <activity android:name="com.encore.AndroidVideoCapture" >
         </activity>
+        <activity
+            android:name=".CameraActivity" >
+        </activity>
+        <activity
+            android:name=".CameraActivity2"
+            android:screenOrientation="portrait">
+        </activity>
        
         <activity android:name="com.encore.VideoPlayback" >
+        </activity>
+        <activity android:name="com.encore.CameraActivity2" >
         </activity>
         <activity android:name="com.encore.StartSession" >
         </activity>

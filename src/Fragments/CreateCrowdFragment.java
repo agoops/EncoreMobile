@@ -24,6 +24,7 @@ import com.encore.FriendsFragmentAdapter;
 import com.encore.R;
 import com.encore.API.APIService;
 import com.encore.API.models.Profile;
+import com.encore.API.models.User;
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
@@ -35,7 +36,7 @@ public class CreateCrowdFragment extends Fragment implements OnClickListener {
 	ListView listview;
 	FriendsFragmentAdapter adapter;
 	APIService api;
-	String[] selectedFriends;
+	int[] selectedFriends;
 	
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -67,8 +68,8 @@ public class CreateCrowdFragment extends Fragment implements OnClickListener {
 		switch(v.getId()) {
 		case R.id.createCrowdBtn:
 			// Get the String array of selected usernames to add as crowd members
-			List<String> selectedFriendsList = adapter.getSelectedFriends();
-			selectedFriends = new String[selectedFriendsList.size()];
+			List<Integer> selectedFriendsList = adapter.getSelectedFriends();
+			selectedFriends = new int[selectedFriendsList.size()];
 			for(int i=0; i<selectedFriendsList.size(); i++) {
 				selectedFriends[i] = selectedFriendsList.get(i);
 			}

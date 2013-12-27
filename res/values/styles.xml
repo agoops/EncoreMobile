@@ -1,4 +1,4 @@
-<resources>
+<resources xmlns:android="http://schemas.android.com/apk/res/android">
 
     <!--
         Base application theme, dependent on API level. This theme is replaced
@@ -16,6 +16,50 @@
     <!-- Application theme. -->
     <style name="AppTheme" parent="AppBaseTheme">
         <!-- All customizations that are NOT specific to a particular API-level can go here. -->
+        <item name="android:actionBarStyle">@style/RapchatActionBar</item>
+        <item name="android:actionBarTabTextStyle">@style/RapchatTabs</item>
+        <item name="actionBarTabTextStyle">@style/RapchatTabs</item>
+        <item name="android:buttonStyle">@style/RapchatButtons</item>
+        <item name="android:dialogTheme">@style/CustomDialogTheme</item>
+    </style>
+    
+    
+    <!--  ========= Action Bar =========  -->
+    
+    <style name="RapchatActionBar" parent="@style/Widget.AppCompat.ActionBar">
+        <item name="android:titleTextStyle">@style/TitleTextStyle</item>
+        <item name="android:background">@color/flat_red</item>
+        
+        <!-- Support library compatibility -->
+        <item name="titleTextStyle">@style/TitleTextStyle</item>
+        <item name="background">@color/flat_red</item>
+    </style>
+    
+    <style name="TitleTextStyle" parent="@style/TextAppearance.AppCompat.Widget.ActionBar.Title">
+        <item name="android:textSize">25sp</item>
+        <item name="android:textColor">@color/off_white</item>
+    </style>
+    
+    <!-- ========= Tabs ========= -->
+    
+    <style name="RapchatTabs" parent="@style/Widget.AppCompat.ActionBar.TabText">
+        <item name="android:textColor">@color/dark_grey</item>
+    </style>
+    
+    
+    <!-- ========= Buttons ========= -->
+    
+    <style name="RapchatButtons" parent="@android:Widget.Holo.Button">
+        <item name="android:background">@drawable/button_style</item>
+        <item name="android:fontFamily">sans-serif-light</item>
+        <item name="android:textStyle">italic</item>
+        <item name="android:textColor">#fff</item>
+    </style>
+    
+    <!-- ========= Dialogs ========= -->
+    <style name="CustomDialogTheme" parent="@android:style/Theme.Dialog">
+        <item name="@android:background">#fff</item>
+        <item name="@android:buttonStyle">@style/RapchatButtons</item>        
     </style>
 
 </resources>

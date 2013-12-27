@@ -6,7 +6,7 @@ import android.content.SharedPreferences;
 public class TokenHelper {
 	private static SharedPreferences prefs;
 	private static SharedPreferences.Editor editor;
-	private static String TOKEN_KEY = "rapchat_token_key_123";
+	private static String TOKEN_KEY = "not set";
 
 	public static void updateToken(Context context, String token) {
 		SharedPreferences prefs = context.getSharedPreferences("com.encore",
