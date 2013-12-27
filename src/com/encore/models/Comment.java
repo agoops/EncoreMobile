@@ -1,0 +1,51 @@
+package com.encore.models;
+
+import com.google.gson.annotations.SerializedName;
+
+public class Comment {
+	@SerializedName("creator")
+	private int creator;
+	
+	@SerializedName("session")
+	private int sessionID;
+	
+	@SerializedName("text")
+	private String text;
+	
+	public Comment() {
+		this.creator = 0;
+		this.sessionID = 0;
+		this.text = null;
+	}
+	
+	public Comment(int creator, int session, String text) {
+		this.creator = creator;
+		this.sessionID = session;
+		this.text = text;
+	}
+
+	public void setCreator(int creator) {
+		this.creator = creator;
+	}
+
+	public void setSession(int session) {
+		this.sessionID = session;
+	}
+
+	public void setText(String text) {
+		this.text = text;
+	}
+	
+	public String getText() {
+		return text;
+	}
+	
+	public int getCreator() {
+		return this.creator;
+	}
+	
+	@Override 
+	public String toString() {
+		return "[Creator: "+creator+" Session: "+sessionID+" Text: "+text+"]";
+	}
+}

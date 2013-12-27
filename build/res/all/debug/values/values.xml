@@ -74,6 +74,13 @@
     <attr name="selectableItemBackground" format="reference" />
     <attr name="spinnerDropDownItemStyle" format="reference" />
     <attr name="spinnerStyle" format="reference" />
+    <!-- From: file:/Users/babakpourkazemi/Documents/Coding%20Projects/Github/EncoreMobile/res/values/attrs.xml -->
+    <eat-comment />
+
+    <attr name="switchStyle" format="reference" />
+    <!-- From: file:/Users/babakpourkazemi/Documents/Coding%20Projects/Github/EncoreMobile/build/exploded-bundles/ComAndroidSupportAppcompatV71800.aar/res/values/values.xml -->
+    <eat-comment />
+
     <attr name="textAppearanceLargePopupMenu" format="reference" />
     <attr name="textAppearanceListItem" format="reference" />
     <attr name="textAppearanceListItemSmall" format="reference" />
@@ -537,6 +544,24 @@
         -->
         <attr name="disableChildrenWhenDisabled" format="boolean" />
     </declare-styleable>
+    <!-- From: file:/Users/babakpourkazemi/Documents/Coding%20Projects/Github/EncoreMobile/res/values/attrs.xml -->
+    <eat-comment />
+
+    <declare-styleable name="Switch">
+        <attr name="textLeft" format="string" />
+        <attr name="textRight" format="string" />
+        <attr name="switchMinWidth" format="dimension" />
+        <attr name="switchPadding" format="dimension" />
+        <attr name="colorUnChecked" format="color" />
+        <attr name="colorChecked" format="color" />
+        <attr name="backgroundDrawable" format="reference" />
+        <attr name="switchDrawable" format="dimension" />
+        <attr name="innerPadding" format="dimension" />
+        <attr name="isChecked" format="boolean" />
+    </declare-styleable>
+    <!-- From: file:/Users/babakpourkazemi/Documents/Coding%20Projects/Github/EncoreMobile/build/exploded-bundles/ComAndroidSupportAppcompatV71800.aar/res/values/values.xml -->
+    <eat-comment />
+
     <declare-styleable name="Theme">
 
         <!-- Default ActionBar dropdown style. -->
@@ -653,12 +678,17 @@
     <string name="app_name">Rapchat</string>
     <string name="drawer_close">Close navigation drawer</string>
     <string name="drawer_open">Open navigation drawer</string>
+    <string name="first_key">1</string>
     <!-- From: file:/Users/babakpourkazemi/Documents/Coding%20Projects/Github/EncoreMobile/build/exploded-bundles/ComGithubChrisbanesActionbarpulltorefreshLibrary093.aar/res/values/values.xml -->
     <eat-comment />
 
     <string name="pull_to_refresh_pull_label">Pull to refresh…</string>
     <string name="pull_to_refresh_refreshing_label">Loading…</string>
     <string name="pull_to_refresh_release_label">Release to refresh…</string>
+    <!-- From: file:/Users/babakpourkazemi/Documents/Coding%20Projects/Github/EncoreMobile/res/values/strings.xml -->
+    <eat-comment />
+
+    <string name="second_key">2</string>
     <!-- From: file:/Users/babakpourkazemi/Documents/Coding%20Projects/Github/EncoreMobile/build/exploded-bundles/ComGithubCastorflexSmoothprogressbarLibrary020.aar/res/values/values.xml -->
     <eat-comment />
 
@@ -683,6 +713,7 @@
         <item name="actionBarTabTextStyle">@style/RapchatTabs</item>
         <item name="android:buttonStyle">@style/RapchatButtons</item>
         <item name="android:dialogTheme">@style/CustomDialogTheme</item>
+        <!-- <item name="de.ankri:switchStyle">@style/switch_light</item> -->
     </style>
 
     <style name="CustomDialogTheme" parent="@android:style/Theme.Dialog">
@@ -1100,7 +1131,6 @@
     <eat-comment />
 
     <style name="TitleTextStyle" parent="@style/TextAppearance.AppCompat.Widget.ActionBar.Title">
-        <item name="android:textSize">25sp</item>
         <item name="android:textColor">@color/off_white</item>
     </style>
     <!-- From: file:/Users/babakpourkazemi/Documents/Coding%20Projects/Github/EncoreMobile/build/exploded-bundles/ComAndroidSupportAppcompatV71800.aar/res/values/values.xml -->

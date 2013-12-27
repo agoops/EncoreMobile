@@ -1,8 +1,5 @@
 package com.encore;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import android.content.Context;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -14,24 +11,28 @@ import android.widget.CompoundButton;
 import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.TextView;
 
-import com.encore.API.models.Profile;
-import com.encore.API.models.User;
+import com.encore.models.Profile;
 
-public class FriendsFragmentAdapter extends ArrayAdapter<User> implements OnCheckedChangeListener {
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+
+public class FriendsFragmentAdapter extends ArrayAdapter<Profile> implements OnCheckedChangeListener {
 	private static final String TAG = "FriendsFragment";
 	
 	private Context mContext;
-	private List<User> mFriendList;
-	private List<Integer> selectedFriendsList;
+	private List<Profile> mFriendList;
 	private String tag = "FriendsFragmentAdapter";
 	private static LayoutInflater inflater = null;
+    private Set<Integer> selectedFriendsSet;
 
 	public FriendsFragmentAdapter(Context context, int resource,
-			List<User> objects) {
+			List<Profile> objects) {
 		super(context, resource, objects);
 		mContext = context;
 		mFriendList = objects;
-		selectedFriendsList = new ArrayList<Integer>();
+        selectedFriendsSet = new HashSet<Integer>();
 	}
 
 	// public FriendsFragmentAdapter(Context context, List<Profile> list) {
@@ -49,7 +50,7 @@ public class FriendsFragmentAdapter extends ArrayAdapter<User> implements OnChec
 	}
 
 	@Override
-	public User getItem(int arg0) {
+	public Profile getItem(int arg0) {
 		if (mFriendList != null) {
 			return mFriendList.get(arg0);
 		}
@@ -82,7 +83,7 @@ public class FriendsFragmentAdapter extends ArrayAdapter<User> implements OnChec
 		}
 		
 		// And update its title (which will happen for all crowds)
-		User user = mFriendList.get(position);
+		Profile user = mFriendList.get(position);
 		viewHolder.username.setText(user.getUsername());
 		viewHolder.checkBox.setTag(position);
 		viewHolder.checkBox.setChecked(false);
@@ -91,26 +92,32 @@ public class FriendsFragmentAdapter extends ArrayAdapter<User> implements OnChec
     	return rowView;
 	}
 
-	public void setItemList(ArrayList<User> users) {
+	public void setItemList(ArrayList<Profile> users) {
 		this.mFriendList = users;
 	}
 	
 	@Override
 	public void onCheckedChanged(CompoundButton buttonView, 
 			boolean isChecked) {
+
+        // TODO: Add user's own id!!!! Otherwise they'll never be in their sessions
 		int position = (Integer) buttonView.getTag();
-		if(isChecked) {
-			selectedFriendsList.add(mFriendList.get(position).getUserId());
+
+        // Get the checked friend's uid
+        int selectedId = mFriendList.get(position).getUser().getUserId();
+
+        if(isChecked) {
+            selectedFriendsSet.add(selectedId);
 		} else {
-			selectedFriendsList.remove(mFriendList.get(position).getUserId());
+            selectedFriendsSet.remove(selectedId);
 		}
 	}
 	
-	public List<Integer> getSelectedFriends() {
-		Log.d(TAG, "getting selected friends: " + selectedFriendsList.toString());
-		return selectedFriendsList;
+	public Set<Integer> getSelectedFriends() {
+		Log.d(TAG, "getting selected friends: " + selectedFriendsSet.toString());
+		return selectedFriendsSet;
 	}
-	
+
 	static class FriendsHolder {
 		TextView username;
 		CheckBox checkBox;

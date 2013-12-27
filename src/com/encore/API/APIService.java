@@ -1,6 +1,19 @@
 package com.encore.API;
 
-import java.io.File;
+import android.app.IntentService;
+import android.content.Intent;
+import android.os.Bundle;
+import android.os.ResultReceiver;
+import android.util.Log;
+
+import com.encore.TokenHelper;
+import com.encore.models.Crowd;
+import com.encore.models.Like;
+import com.encore.models.PostComment;
+import com.encore.models.PostCrowd;
+import com.encore.util.T;
+import com.google.gson.Gson;
+import com.squareup.okhttp.OkHttpClient;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.entity.StringEntity;
@@ -9,22 +22,7 @@ import org.apache.http.entity.mime.MultipartEntityBuilder;
 import org.apache.http.entity.mime.content.FileBody;
 import org.json.JSONObject;
 
-import util.T;
-import android.app.IntentService;
-import android.content.Intent;
-import android.os.Bundle;
-import android.os.ResultReceiver;
-import android.util.Log;
-
-import com.encore.TokenHelper;
-import com.encore.API.models.Crowd;
-import com.encore.API.models.Favorite;
-import com.encore.API.models.Like;
-import com.encore.API.models.PostComment;
-import com.encore.API.models.PostCrowd;
-import com.encore.API.models.Sessions;
-import com.google.gson.Gson;
-import com.squareup.okhttp.OkHttpClient;
+import java.io.File;
 
 public class APIService extends IntentService {
 	public static String TAG = "APIService";
@@ -96,8 +94,13 @@ public class APIService extends IntentService {
 			break;
 		case T.GET_CLIP_STREAM:
 			getClipStream(intent.getExtras());
+            break;
 		case T.GET_ME:
 			getMe(intent.getExtras());
+            break;
+        case T.GET_LIKES:
+            getLikes(intent.getExtras());
+            break;
 		default:
 			break;
 		}
@@ -303,7 +306,6 @@ public class APIService extends IntentService {
 	private void getCrowds(Bundle data) {
 		Log.d(TAG, "getCrowds() called");
 		String token = TokenHelper.getToken(this);
-		Crowd[] result = null;
 		String json = "";
 		try {
 			json = api.getCrowds(token);
@@ -418,4 +420,22 @@ public class APIService extends IntentService {
 			resultReceiver.send(0, null);
 		}
 	}
+
+    private void getLikes(Bundle data) {
+        Log.d(TAG, "getLikes called");
+        String token = TokenHelper.getToken(this);
+        String resultJSON = null;
+
+        try {
+            resultJSON = api.getLikes(token);
+
+            Bundle b = new Bundle();
+            b.putString("result", resultJSON);
+            resultReceiver.send(1, b);
+        } catch(Exception e) {
+            Log.e(TAG, e.getMessage() + " ");
+            e.printStackTrace();
+            resultReceiver.send(0, null);
+        }
+    }
 }

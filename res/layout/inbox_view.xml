@@ -1,70 +1,74 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.encore.SessionView xmlns:android="http://schemas.android.com/apk/res/android"
+    <com.encore.SessionView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
     android:padding="5dip" >
-    
-    <TextView
-        android:id="@+id/tvName"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_weight="1"
-        android:gravity="center"
-        android:textStyle="bold"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="Session Title" />
-	
+
     <FrameLayout
         android:id="@+id/thumbnail_container"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" >
-        
-	    <widget.AspectRatioImageView 
-	        android:id="@+id/inboxImageView"
-	        android:layout_width="match_parent"
-	        android:layout_height="wrap_content"
-	        android:src="@drawable/jay" />
-        
-	    <!-- <ImageView
-	        android:id="@+id/play_symbol_button"
-	        android:layout_width="wrap_content"
-	        android:layout_height="wrap_content"
-	        android:layout_gravity="center_vertical|center_horizontal"
-	        android:src="@drawable/play_64x64" /> -->
-    </FrameLayout>
-    
 
-    
-    <LinearLayout android:orientation="horizontal" 
+        <com.encore.widget.AspectRatioImageView
+            android:id="@+id/inboxImageView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:src="@drawable/jay" />
+
+        <!-- <ImageView
+            android:id="@+id/play_symbol_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical|center_horizontal"
+            android:src="@drawable/play_64x64" /> -->
+    </FrameLayout>
+
+    <TextView
+        android:id="@+id/tvName"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center_vertical"
+        android:textStyle="bold"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="Session Title"
+        android:padding="10dp"/>
+
+    <TextView
+        android:id="@+id/crowd_members_tv"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:text="Member 1, Member 2, Member 3"
+        android:padding="10dp"/>
+
+    <LinearLayout android:orientation="horizontal"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/comments_wrapper" >
 
         <Button
             android:id="@+id/likes"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:gravity="center"
-            android:text="0 likes" 
-            android:paddingLeft="8dip" />
-        
+            android:text="0 likes"
+            android:drawableLeft="@drawable/like_black_border" />
+
         <Button
             android:id="@+id/comments"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="match_parent"
+            android:layout_weight="1"
             android:gravity="center"
             android:text="0 comments"
-             /> <!-- style="?android:attr/buttonStyleSmall" -->
-             
-		<Button
-	        android:id="@+id/reply"
-	        android:layout_width="wrap_content"
-	        android:layout_height="match_parent"
-	        android:layout_weight="1"
-	        android:gravity="center"
-	        android:focusable="false"
-	        android:text="Reply" />
+            android:drawableLeft="@drawable/comment_black" />
     </LinearLayout>
+
+    <Button
+        android:id="@+id/reply"
+        android:layout_gravity="center"
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:text="Reply" />
 </com.encore.SessionView>

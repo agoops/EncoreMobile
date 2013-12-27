@@ -8,27 +8,27 @@ package uk.co.senab.actionbarpulltorefresh.library;
 
 public final class R {
 	public static final class attr {
-		public static final int ptrHeaderBackground = 0x7f01005d;
-		public static final int ptrHeaderHeight = 0x7f01005e;
+		public static final int ptrHeaderBackground = 0x7f01005e;
+		public static final int ptrHeaderHeight = 0x7f01005f;
 		public static final int ptrHeaderStyle = 0x7f010029;
-		public static final int ptrHeaderTitleTextAppearance = 0x7f01005f;
-		public static final int ptrProgressBarColor = 0x7f010060;
-		public static final int ptrProgressBarHeight = 0x7f010062;
-		public static final int ptrProgressBarStyle = 0x7f010061;
-		public static final int ptrPullText = 0x7f010063;
-		public static final int ptrRefreshingText = 0x7f010064;
-		public static final int ptrReleaseText = 0x7f010065;
-		public static final int ptrViewDelegateClass = 0x7f010066;
-		public static final int spbStyle = 0x7f010069;
-		public static final int spb_color = 0x7f01006a;
-		public static final int spb_colors = 0x7f010072;
-		public static final int spb_interpolator = 0x7f01006f;
-		public static final int spb_mirror_mode = 0x7f010071;
-		public static final int spb_reversed = 0x7f010070;
-		public static final int spb_sections_count = 0x7f01006d;
-		public static final int spb_speed = 0x7f01006e;
-		public static final int spb_stroke_separator_length = 0x7f01006c;
-		public static final int spb_stroke_width = 0x7f01006b;
+		public static final int ptrHeaderTitleTextAppearance = 0x7f010060;
+		public static final int ptrProgressBarColor = 0x7f010061;
+		public static final int ptrProgressBarHeight = 0x7f010063;
+		public static final int ptrProgressBarStyle = 0x7f010062;
+		public static final int ptrPullText = 0x7f010064;
+		public static final int ptrRefreshingText = 0x7f010065;
+		public static final int ptrReleaseText = 0x7f010066;
+		public static final int ptrViewDelegateClass = 0x7f010067;
+		public static final int spbStyle = 0x7f01006a;
+		public static final int spb_color = 0x7f01006b;
+		public static final int spb_colors = 0x7f010073;
+		public static final int spb_interpolator = 0x7f010070;
+		public static final int spb_mirror_mode = 0x7f010072;
+		public static final int spb_reversed = 0x7f010071;
+		public static final int spb_sections_count = 0x7f01006e;
+		public static final int spb_speed = 0x7f01006f;
+		public static final int spb_stroke_separator_length = 0x7f01006d;
+		public static final int spb_stroke_width = 0x7f01006c;
 	}
 	public static final class bool {
 		public static final int spb_default_mirror_mode = 0x7f070006;
@@ -62,10 +62,10 @@ public final class R {
 		public static final int default_header = 0x7f030020;
 	}
 	public static final class string {
-		public static final int pull_to_refresh_pull_label = 0x7f0c0011;
-		public static final int pull_to_refresh_refreshing_label = 0x7f0c0012;
-		public static final int pull_to_refresh_release_label = 0x7f0c0013;
-		public static final int spb_default_speed = 0x7f0c0014;
+		public static final int pull_to_refresh_pull_label = 0x7f0c0012;
+		public static final int pull_to_refresh_refreshing_label = 0x7f0c0013;
+		public static final int pull_to_refresh_release_label = 0x7f0c0014;
+		public static final int spb_default_speed = 0x7f0c0016;
 	}
 	public static final class style {
 		public static final int SmoothProgressBar = 0x7f0d0006;
@@ -73,7 +73,7 @@ public final class R {
 		public static final int Widget_ProgressBar_PullToRefresh = 0x7f0d0088;
 	}
 	public static final class styleable {
-		public static final int[] PullToRefreshHeader = { 0x7f01005d, 0x7f01005e, 0x7f01005f, 0x7f010060, 0x7f010061, 0x7f010062, 0x7f010063, 0x7f010064, 0x7f010065 };
+		public static final int[] PullToRefreshHeader = { 0x7f01005e, 0x7f01005f, 0x7f010060, 0x7f010061, 0x7f010062, 0x7f010063, 0x7f010064, 0x7f010065, 0x7f010066 };
 		public static final int PullToRefreshHeader_ptrHeaderBackground = 0;
 		public static final int PullToRefreshHeader_ptrHeaderHeight = 1;
 		public static final int PullToRefreshHeader_ptrHeaderTitleTextAppearance = 2;
@@ -83,9 +83,9 @@ public final class R {
 		public static final int PullToRefreshHeader_ptrPullText = 6;
 		public static final int PullToRefreshHeader_ptrRefreshingText = 7;
 		public static final int PullToRefreshHeader_ptrReleaseText = 8;
-		public static final int[] PullToRefreshView = { 0x7f010066 };
+		public static final int[] PullToRefreshView = { 0x7f010067 };
 		public static final int PullToRefreshView_ptrViewDelegateClass = 0;
-		public static final int[] SmoothProgressBar = { 0x7f010069, 0x7f01006a, 0x7f01006b, 0x7f01006c, 0x7f01006d, 0x7f01006e, 0x7f01006f, 0x7f010070, 0x7f010071, 0x7f010072 };
+		public static final int[] SmoothProgressBar = { 0x7f01006a, 0x7f01006b, 0x7f01006c, 0x7f01006d, 0x7f01006e, 0x7f01006f, 0x7f010070, 0x7f010071, 0x7f010072, 0x7f010073 };
 		public static final int SmoothProgressBar_spbStyle = 0;
 		public static final int SmoothProgressBar_spb_color = 1;
 		public static final int SmoothProgressBar_spb_colors = 9;

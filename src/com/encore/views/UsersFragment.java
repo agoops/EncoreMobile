@@ -4,7 +4,7 @@ import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 
-import util.T;
+import com.encore.util.T;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
@@ -21,7 +21,7 @@ import android.widget.ProgressBar;
 import com.encore.R;
 import com.encore.UsersFragmentAdapter;
 import com.encore.API.APIService;
-import com.encore.API.models.Profile;
+import com.encore.models.Profile;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 

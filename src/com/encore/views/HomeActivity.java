@@ -1,6 +1,5 @@
 package com.encore.views;
 
-import Fragments.ProfileFragment;
 import android.app.ActionBar;
 import android.app.ActionBar.Tab;
 import android.content.Intent;
@@ -17,8 +16,9 @@ import android.view.MenuItem;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import com.encore.CameraActivity2;
+import com.encore.Fragments.ProfileFragment;
 import com.encore.R;
+import com.encore.StartSession;
 
 public class HomeActivity extends FragmentActivity {
 	private static final String TAG = "HomeActivity";
@@ -189,6 +189,8 @@ public class HomeActivity extends FragmentActivity {
 //				return "Requests";
 			case 1:
 				return "Users";
+            case 2:
+                return "Profile";
 			default:
 				return null;
 			}
@@ -212,7 +214,11 @@ public class HomeActivity extends FragmentActivity {
 			// Launch a new session
 			Log.d(TAG, "Launching StartSession2");
 //			Intent intent = new Intent(this, StartSession2.class);
-			Intent intent = new Intent(this, CameraActivity2.class);
+
+            // TODO: View flow
+            // (new) StartSessionActivity -> CameraActivity2 (fragment) -> (new) NewSessionFragment -> returns to HomeActivity
+//			Intent intent = new Intent(this, CameraActivity2.class);
+            Intent intent = new Intent(this, StartSession.class);
 			startActivity(intent);
 			return true;
 		default:

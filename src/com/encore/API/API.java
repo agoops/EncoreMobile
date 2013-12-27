@@ -1,13 +1,16 @@
 package com.encore.API;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.OutputStream;
-import java.lang.reflect.Type;
-import java.net.HttpURLConnection;
-import java.net.URL;
+import android.content.Context;
+import android.util.Log;
+
+import com.encore.TokenHelper;
+import com.encore.models.Crowd;
+import com.encore.models.Like;
+import com.encore.models.PostComment;
+import com.encore.models.PostCrowd;
+import com.encore.util.Constants;
+import com.google.gson.Gson;
+import com.squareup.okhttp.OkHttpClient;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
@@ -17,21 +20,16 @@ import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.DefaultHttpClient;
 
-import util.Constants;
-import android.content.Context;
-import android.util.Log;
-
-import com.encore.TokenHelper;
-import com.encore.API.models.Crowd;
-import com.encore.API.models.Crowds;
-import com.encore.API.models.Favorite;
-import com.encore.API.models.Like;
-import com.encore.API.models.PostComment;
-import com.encore.API.models.PostCrowd;
-import com.encore.API.models.User;
-import com.google.gson.Gson;
-import com.squareup.okhttp.OkHttpClient;
-//import com.encore.API.models.Crowds;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.OutputStream;
+import java.lang.reflect.Type;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.util.ArrayList;
+//import com.encore.models.Crowds;
 
 public class API {
 	OkHttpClient client;
@@ -54,19 +52,19 @@ public class API {
 
 	// Common URLs
 	private static final String USERS = BASE_URL + "/users/";
-	private static final String SESSIONS = BASE_URL + "/sessions/";
-	private static final String CLIPS = BASE_URL + "/clips/";
-	private static final String FRIENDS = BASE_URL + "/users/friends/";
-	private static final String CROWDS = BASE_URL + "/crowds/";
-	private static final String REQUESTS = FRIENDS + "requests/";
-	private static final String REPLY = REQUESTS + "reply/";
+    private static final String USER_ME = USERS + "me/";
+    private static final String SESSIONS = BASE_URL + "/sessions/";
+    private static final String CLIPS = BASE_URL + "/clips/";
+    private static final String FRIENDS = BASE_URL + "/users/friends/";
+    private static final String CROWDS = USER_ME + "crowds/";
+    private static final String REQUESTS = FRIENDS + "requests/";
 
-	// Users
+	private static final String REPLY = REQUESTS + "reply/";
+    // Users
 	private static final String SIGN_IN = USERS + "obtain-token/";
-	private static final String ALL_USERS = USERS;
-	private static final String GET_USER = USERS + "/find/%s";
-	private static final String SIGN_UP = USERS;
-	private static final String USER_ME = USERS + "me/";
+    private static final String ALL_USERS = USERS;
+    private static final String GET_USER = USERS + "/find/%s";
+    private static final String SIGN_UP = USERS;
 	private static final String UPDATE_USER = USERS + "%s";
 	private static final String DELETE_USER = USERS + "%s";
 
@@ -102,7 +100,7 @@ public class API {
 	private static final String CREATE_COMMENT = SESSIONS + "%s/comments/";
 	
 	//	Likes
-	private static final String CREATE_LIKE = USER_ME + "likes/";
+	private static final String LIKES = USER_ME + "likes/";
 	
 	// Clip stream
 	private static final String GET_CLIP_STREAM = SESSIONS + "clip/";
@@ -135,9 +133,7 @@ public class API {
 		InputStream in = null;
 		try {
 			connection.setRequestMethod("GET");
-			Log.d(TAG, "connection: " + connection.toString());
 			in = connection.getInputStream();
-			Log.d(TAG, "input stream: " + in.toString());
 			// return getGson().fromJson(new InputStreamReader(in), type);
 
 			/* Adding this section to see response */
@@ -456,7 +452,7 @@ public class API {
 		ACCESS_TOKEN = "Token " + token;
 		String url = GET_CROWDS;
 		String json = "";
-		 Crowds result = null;
+        ArrayList<Crowd> result;
 
 		// try {
 		// json = get(url, Crowds.class);
@@ -467,9 +463,8 @@ public class API {
 		// }
 
 		try {
-			json = get(url, Crowds.class);
+			json = get(url, Crowd.class);
 			Log.d(TAG, "get crowds JSON: " + json);
-			result  = getGson().fromJson(json, Crowds.class);
 		} catch(Exception e) {
 			Log.e(TAG, "getCrowds() error");
 			throw e;
@@ -536,7 +531,7 @@ public class API {
 	public String createLike(Like like, String token) throws Exception {
 		Log.d(TAG, "createLike called");
 		ACCESS_TOKEN = "Token " + token;
-		String url = CREATE_LIKE;
+		String url = LIKES;
 		String resultJSON = null;
 		
 		try {
@@ -580,4 +575,20 @@ public class API {
 		}
 		return resultJSON;
 	}
+
+    public String getLikes(String token) throws Exception {
+        Log.d(TAG, "getLikes called");
+        String url = LIKES;
+        ACCESS_TOKEN = "Token " + token;
+        String resultJSON = null;
+
+        try {
+            resultJSON = get(url, String.class);
+            Log.d(TAG, "getLikes result: " + resultJSON);
+        } catch(Exception e) {
+            Log.d(TAG, "getLikes() error");
+            throw e;
+        }
+        return resultJSON;
+    }
 }

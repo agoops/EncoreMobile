@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+
+    <EditText
+        android:id="@+id/new_session_title"
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:hint="Session Title"
+        android:textSize="25sp"
+        android:gravity="center"
+        android:layout_centerHorizontal="true" />
+
+    <!--<com.encore.widget.Switch-->
+    <!--android:id="@+id/crowd_toggle"-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:layout_centerHorizontal="true"-->
+    <!--android:textLeft="New"-->
+    <!--android:textRight="Existing" />-->
+    <Switch
+        android:id="@+id/crowd_toggle_switch"
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@id/new_session_title"
+        android:textOn="New Crowd"
+        android:textOff="Existing Crowd" />
+
+    <EditText
+        android:id="@+id/new_crowd_title"
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:layout_below="@id/crowd_toggle_switch"
+        android:textSize="20sp"
+        android:gravity="center"
+        android:hint="Crowd Title"
+        android:visibility="gone" />
+
+    <ProgressBar
+        android:layout_height="match_parent"
+        android:layout_width="wrap_content"
+        android:id="@+id/new_session_pb"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@id/new_crowd_title"/>
+
+    <Button
+        android:id="@+id/send_button"
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:text="Send"
+        android:layout_alignParentBottom="true"/>
+
+    <ListView
+        android:id="@+id/crowds_and_friends_lv"
+        android:layout_height="match_parent"
+        android:layout_width="match_parent"
+        android:layout_below="@id/new_session_pb"
+        android:layout_above="@id/send_button" />
+
+</RelativeLayout>
