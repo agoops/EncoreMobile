@@ -150,7 +150,6 @@ public class InboxListViewFragment extends Fragment implements OnRefreshListener
 	private class SessionListReceiver extends ResultReceiver {
         public SessionListReceiver(Handler handler) {
                 super(handler);
-                // TODO Auto-generated constructor stub
         }
 
         @Override

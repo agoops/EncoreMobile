@@ -67,7 +67,6 @@ public class CameraFragment extends Fragment implements
         // camera.setPreviewDisplay(surfaceHolder);
         // camera.startPreview();
         // } catch (IOException e) {
-        // // TODO Auto-generated catch block
         // e.printStackTrace();
         // }
         //
@@ -86,7 +85,6 @@ public class CameraFragment extends Fragment implements
             camera.release();
 
         } catch (IOException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         }
     }

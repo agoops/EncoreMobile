@@ -14,7 +14,6 @@ public class FriendView extends LinearLayout {
 	
 	public FriendView(Context context, AttributeSet attrs) {
 		super(context, attrs);
-		// TODO Auto-generated constructor stub
 	}
 
 	public void setUser(User user){

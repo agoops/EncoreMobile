@@ -104,7 +104,6 @@ public class CreateCrowdFragment extends Fragment implements OnClickListener {
 	private class FriendListReceiver extends ResultReceiver {
 		public FriendListReceiver(Handler handler) {
 			super(handler);
-			// TODO Auto-generated constructor stub
 		}
 
 		@Override
@@ -134,7 +133,6 @@ public class CreateCrowdFragment extends Fragment implements OnClickListener {
 		}
 	}
 	
-//	// TODO: Use GSON instead?
 //	public ArrayList<User> convertJsonToListOfUser(String json) {
 //		Log.d(TAG, "CONVERT TO OBJECT STARTED");
 //		Gson gson = new Gson();

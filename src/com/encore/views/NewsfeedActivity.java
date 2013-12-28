@@ -1,7 +1,5 @@
 package com.encore.views;
 
-import java.util.ArrayList;
-
 import android.app.ActionBar;
 import android.app.ActionBar.Tab;
 import android.content.Intent;
@@ -19,6 +17,8 @@ import android.view.MenuItem;
 import com.encore.R;
 import com.encore.SessionTemp;
 import com.encore.StartSession2;
+
+import java.util.ArrayList;
 
 public class NewsfeedActivity extends FragmentActivity {
 	
@@ -74,7 +74,6 @@ public class NewsfeedActivity extends FragmentActivity {
 //	private class SessionListReceiver extends ResultReceiver {
 //		public SessionListReceiver(Handler handler) {
 //			super(handler);
-//			// TODO Auto-generated constructor stub
 //		}
 //
 //		@Override
@@ -140,7 +139,6 @@ public class NewsfeedActivity extends FragmentActivity {
 			@Override
 			public void onTabReselected(Tab tab,
 					android.app.FragmentTransaction ft) {
-				// TODO
 			}
 
 			@Override
@@ -153,7 +151,6 @@ public class NewsfeedActivity extends FragmentActivity {
 			@Override
 			public void onTabUnselected(Tab tab,
 					android.app.FragmentTransaction ft) {
-				// TODO
 			}
 		};
 		// Add title to tabs

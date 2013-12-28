@@ -1,20 +1,6 @@
 package com.encore;
 
-import java.io.DataOutputStream;
-import java.io.File;
-import java.io.FileInputStream;
-import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.URL;
-
-import android.app.ProgressDialog;
 import android.app.Service;
-import android.content.ComponentName;
-import android.content.Intent;
-import android.os.AsyncTask;
-import android.os.IBinder;
-import android.util.Log;
-import android.widget.Toast;
 
 public abstract class UploadService extends Service {
 //	private static String tag = "UploadService";
@@ -45,7 +31,6 @@ public abstract class UploadService extends Service {
 //
 //	@Override
 //	public IBinder onBind(Intent arg0) {
-//		// TODO Auto-generated method stub
 //		return null;
 //	}
 //	

@@ -3,15 +3,26 @@ package com.encore.models;
 import com.google.gson.annotations.SerializedName;
 
 public class Like {
-	// ====== Hasn't been updated from the Node version yet =======
-	@SerializedName("session")
-	private int sessionId;
-	
+    @SerializedName("id")
+    private int userId;
+    @SerializedName("username")
+    private String username;
+    @SerializedName("session")
+    private Session likedSession;
+
 	public Like() {
-		this.sessionId = -1;
+        this.userId = -1;
+        this.username = null;
+        this.likedSession = null;
 	}
-	
-	public Like(int sessionId) {
-		this.sessionId = sessionId;
-	}
+
+    public Like(int userId, String username, Session likedSession) {
+        this.userId = userId;
+        this.username = username;
+        this.likedSession = likedSession;
+    }
+
+    public Session getLikedSession() {
+        return likedSession;
+    }
 }

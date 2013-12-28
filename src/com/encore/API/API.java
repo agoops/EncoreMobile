@@ -5,9 +5,9 @@ import android.util.Log;
 
 import com.encore.TokenHelper;
 import com.encore.models.Crowd;
-import com.encore.models.Like;
 import com.encore.models.PostComment;
 import com.encore.models.PostCrowd;
+import com.encore.models.PostLike;
 import com.encore.util.Constants;
 import com.google.gson.Gson;
 import com.squareup.okhttp.OkHttpClient;
@@ -338,7 +338,6 @@ public class API {
 			result = postClip(entity, url);
 			return result;
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 			throw e;
 		}
@@ -528,7 +527,7 @@ public class API {
 		return resultJSON;
 	}
 	
-	public String createLike(Like like, String token) throws Exception {
+	public String createLike(PostLike like, String token) throws Exception {
 		Log.d(TAG, "createLike called");
 		ACCESS_TOKEN = "Token " + token;
 		String url = LIKES;

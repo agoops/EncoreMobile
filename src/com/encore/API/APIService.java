@@ -8,9 +8,9 @@ import android.util.Log;
 
 import com.encore.TokenHelper;
 import com.encore.models.Crowd;
-import com.encore.models.Like;
 import com.encore.models.PostComment;
 import com.encore.models.PostCrowd;
+import com.encore.models.PostLike;
 import com.encore.util.T;
 import com.google.gson.Gson;
 import com.squareup.okhttp.OkHttpClient;
@@ -297,7 +297,6 @@ public class APIService extends IntentService {
 			String result = api.createSession(entity);
 			Log.d(TAG, "FROM createSessions() apiservice"+result);
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
@@ -376,7 +375,7 @@ public class APIService extends IntentService {
 		String resultJSON = null;
 		
 		try {
-			Like like = new Like(sessionId);
+			PostLike like = new PostLike(sessionId);
 			resultJSON = api.createLike(like, token);
 			Log.d(TAG, "createLike result: " + resultJSON);
 		} catch (Exception e) {

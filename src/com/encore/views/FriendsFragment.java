@@ -18,9 +18,6 @@ import com.encore.models.Friends;
 import com.encore.models.Profile;
 import com.encore.util.T;
 import com.google.gson.Gson;
-import com.google.gson.JsonArray;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonParser;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -64,7 +61,6 @@ public class FriendsFragment extends Fragment {
     private class FriendListReceiver extends ResultReceiver {
         public FriendListReceiver(Handler handler) {
             super(handler);
-            // TODO Auto-generated constructor stub
         }
 
         @Override
@@ -97,7 +93,6 @@ public class FriendsFragment extends Fragment {
 //	private class FriendListReceiver extends ResultReceiver {
 //		public FriendListReceiver(Handler handler) {
 //			super(handler);
-//			// TODO Auto-generated constructor stub
 //		}
 //
 //		@Override
@@ -124,36 +119,22 @@ public class FriendsFragment extends Fragment {
 //		}
 //	}
 
-	// TODO: Use GSON instead?
-	public ArrayList<Profile> convertJsonToListOfUser(String json) {
-		Log.d(TAG, "CONVERT TO OBJECT STARTED");
-		Gson gson = new Gson();
-
-		ArrayList<Profile> profiles = new ArrayList<Profile>();
-		JsonParser jsonParser = new JsonParser();
-
-		JsonArray profilesJson = jsonParser.parse(json).getAsJsonObject()
-				.getAsJsonArray("friends");
-
-		for (JsonElement j : profilesJson) {
-			Profile profile = gson.fromJson(j, Profile.class);
-			profiles.add(profile);
-			Log.d(TAG, profile.toString());
-		}
-
-		return profiles;
-	}
-	
-
-
-//	public ArrayList<User> makeListOfFriends() {
-//		ArrayList<User> list = new ArrayList<User>();
-//		for (int i =0; i < 4; ++i) {
-//			User user = new User();
-//			user.setUsername("yung$$ user "+ i);
-//			list.add(user); 
+//	public ArrayList<Profile> convertJsonToListOfUser(String json) {
+//		Log.d(TAG, "CONVERT TO OBJECT STARTED");
+//		Gson gson = new Gson();
+//
+//		ArrayList<Profile> profiles = new ArrayList<Profile>();
+//		JsonParser jsonParser = new JsonParser();
+//
+//		JsonArray profilesJson = jsonParser.parse(json).getAsJsonObject()
+//				.getAsJsonArray("friends");
+//
+//		for (JsonElement j : profilesJson) {
+//			Profile profile = gson.fromJson(j, Profile.class);
+//			profiles.add(profile);
+//			Log.d(TAG, profile.toString());
 //		}
-//		return list;
+//
+//		return profiles;
 //	}
-	
 }

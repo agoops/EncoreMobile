@@ -1,6 +1,5 @@
 package com.encore.Fragments;
 
-import com.encore.util.T;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -15,8 +14,9 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import com.encore.R;
 import com.encore.API.APIService;
+import com.encore.R;
+import com.encore.util.T;
 import com.encore.views.HomeActivity;
 
 public class SignupFragment extends Fragment implements OnClickListener {
@@ -82,7 +82,6 @@ public class SignupFragment extends Fragment implements OnClickListener {
 
 		public SignUpReceiver(Handler handler) {
 			super(handler);
-			// TODO Auto-generated constructor stub
 		}
 		
 		@Override

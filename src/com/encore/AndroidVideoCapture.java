@@ -1,17 +1,10 @@
 package com.encore;
 
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Iterator;
-import java.util.List;
-
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.hardware.Camera;
-import android.hardware.Camera.CameraInfo;
 import android.media.CamcorderProfile;
 import android.media.MediaMetadataRetriever;
 import android.media.MediaPlayer;
@@ -27,6 +20,12 @@ import android.view.SurfaceView;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Iterator;
+import java.util.List;
 
 public class AndroidVideoCapture extends Activity implements
 		SurfaceHolder.Callback {
@@ -79,7 +78,6 @@ public class AndroidVideoCapture extends Activity implements
 		try {
 			camera.setPreviewDisplay(surfaceHolder);
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		camera.startPreview();
@@ -166,7 +164,6 @@ public class AndroidVideoCapture extends Activity implements
 			Intent i = new Intent(context, UploadService2.class);
 			i.putExtra("path", OUTPUT);
 			context.startService(i);
-			//TODO 
 			//go to some home screen
 		}
 	};
@@ -216,7 +213,6 @@ public class AndroidVideoCapture extends Activity implements
 //		try {
 //			camera.setPreviewDisplay(surfaceHolder);
 //		} catch (IOException e) {
-//			// TODO Auto-generated catch block
 //			e.printStackTrace();
 //		}
 		mediaRecorder.setCamera(camera);
@@ -237,7 +233,6 @@ public class AndroidVideoCapture extends Activity implements
 		            try {
 						camera.reconnect();
 					} catch (IOException e) {
-						// TODO Auto-generated catch block
 						e.printStackTrace();
 					}
 		            camera.stopPreview();

@@ -92,7 +92,6 @@ public class HomeActivity extends FragmentActivity {
 			@Override
 			public void onTabReselected(Tab tab,
 					android.app.FragmentTransaction ft) {
-				// TODO
 			}
 
 			@Override
@@ -105,7 +104,6 @@ public class HomeActivity extends FragmentActivity {
 			@Override
 			public void onTabUnselected(Tab tab,
 					android.app.FragmentTransaction ft) {
-				// TODO
 			}
 		};
 		// Add title to tabs
@@ -215,8 +213,6 @@ public class HomeActivity extends FragmentActivity {
 			Log.d(TAG, "Launching StartSession2");
 //			Intent intent = new Intent(this, StartSession2.class);
 
-            // TODO: View flow
-            // (new) StartSessionActivity -> CameraActivity2 (fragment) -> (new) NewSessionFragment -> returns to HomeActivity
 //			Intent intent = new Intent(this, CameraActivity2.class);
             Intent intent = new Intent(this, StartSession.class);
 			startActivity(intent);

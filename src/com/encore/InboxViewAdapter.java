@@ -6,7 +6,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.drawable.Drawable;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.AsyncTask;
@@ -21,12 +20,14 @@ import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.ImageView.ScaleType;
 import android.widget.TextView;
 import android.widget.VideoView;
 
 import com.encore.API.APIService;
 import com.encore.models.Comment;
+import com.encore.models.Likes;
 import com.encore.models.Session;
 import com.encore.util.T;
 import com.encore.widget.CommentDialog;
@@ -35,7 +36,9 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonParser;
 
 import java.io.InputStream;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class InboxViewAdapter extends ArrayAdapter<Session> implements OnClickListener {
 	
@@ -44,51 +47,59 @@ public class InboxViewAdapter extends ArrayAdapter<Session> implements OnClickLi
 	private List<Session> mSessionList;
 	private static LayoutInflater inflater = null;
 	private SessionView rowView;
-    private boolean liked;
-    private TextView titleTextView, crowdMembersTextView;
-    private Button reply, likesBtn, commentsBtn;
+    private boolean isLiked;
+    private TextView titleTextView, crowdMembersTextView, likesTv, commentsTv;
+    private ImageView likesIcon, commentsIcon;
+    private Button reply;
     private com.encore.widget.AspectRatioImageView thumbnailIv;
-    private Drawable statusLikedIcon, statusUnlikedIcon;
+    private Map<Integer, ImageView> likesMapping;
 
 	public InboxViewAdapter(Context c, int textViewResourceId, List<Session> sessions) {
 		super(c, textViewResourceId, sessions);
 		mContext = c;
 		mSessionList = sessions;
+        likesMapping = new HashMap<Integer, ImageView>();
 	}
 
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
         convertView = LayoutInflater.from(mContext).inflate(R.layout.inbox_view, parent, false);
 
+
         // Get the row views
         titleTextView = (TextView) convertView.findViewById(R.id.tvName);
         reply = (Button) convertView.findViewById(R.id.reply);
-        likesBtn = (Button) convertView.findViewById(R.id.likes);
-        commentsBtn = (Button) convertView.findViewById(R.id.comments);
+        likesTv = (TextView) convertView.findViewById(R.id.likes_tv);
+        likesIcon = (ImageView) convertView.findViewById(R.id.likes_icon);
+        commentsTv = (TextView) convertView.findViewById(R.id.comments_tv);
+        commentsIcon = (ImageView) convertView.findViewById(R.id.comments_icon);
         thumbnailIv = (com.encore.widget.AspectRatioImageView) convertView.findViewById(R.id.inboxImageView);
         crowdMembersTextView = (TextView) convertView.findViewById(R.id.crowd_members_tv);
 
-        // Get the like icons so we can use them elsewhere
-        statusUnlikedIcon = getContext().getResources().getDrawable(R.drawable.like_black_border);
-        statusLikedIcon = getContext().getResources().getDrawable(R.drawable.like_red_invert);
-
         // Set the position for each view
         reply.setTag(R.string.first_key, position);
-        likesBtn.setTag(R.string.first_key, position);
-        commentsBtn.setTag(R.string.first_key, position);
+        likesTv.setTag(R.string.first_key, position);
+        likesIcon.setTag(R.string.first_key, position);
+        commentsTv.setTag(R.string.first_key, position);
+        commentsIcon.setTag(R.string.first_key, position);
         thumbnailIv.setTag(R.string.first_key, position);
 
         // Assign click listeners
         reply.setOnClickListener(this);
-        likesBtn.setOnClickListener(this);
-        commentsBtn.setOnClickListener(this);
+        likesTv.setOnClickListener(this);
+        likesIcon.setOnClickListener(this);
+        commentsTv.setOnClickListener(this);
+        commentsIcon.setOnClickListener(this);
         thumbnailIv.setOnClickListener(this);
-
-        // TODO: Make this dynamic!
-        liked = false;
 
         // Get the most recently loaded session
         Session entry = mSessionList.get(position);
+
+        // Maps sessionId <-> likesIcon
+        likesMapping.put(entry.getId(), likesIcon);
+        getUsersLikes(); // TODO: Should only call this once somewhere else
+//        isLiked = (likesMapping.get(position) == null) ? false : true;
+//        likesIcon.setImageResource((isLiked) ? R.drawable.like_red_invert : R.drawable.like_black_border);
 
         // Set session title
         titleTextView.setText(entry.getTitle());
@@ -102,16 +113,16 @@ public class InboxViewAdapter extends ArrayAdapter<Session> implements OnClickLi
 
         // Set num comments and num likes
         if(comments.size() == 1) {
-            commentsBtn.setText(comments.size() + " comment");
+            commentsTv.setText(comments.size() + " comment");
         } else {
-            commentsBtn.setText(comments.size() + " comments");
+            commentsTv.setText(comments.size() + " comments");
         }
 
         int numLikes = entry.getLikes();
         if(numLikes == 1) {
-            likesBtn.setText(numLikes + " like");
+            likesTv.setText(numLikes + " like");
         } else {
-            likesBtn.setText(numLikes + " likes");
+            likesTv.setText(numLikes + " likes");
         }
 
         // Set the thumbnail
@@ -142,25 +153,20 @@ public class InboxViewAdapter extends ArrayAdapter<Session> implements OnClickLi
             ((Activity) mContext).startActivity(launchRecordFragment);
 
             break;
-		case R.id.comments:
-			// Open an AlertDialog that shows a session's comments,
+		case R.id.comments_tv:
+			// Open an AlertDialog which shows a session's comments,
 			// and allows a user to post a new comment
-
-			CommentDialog cDialog = new CommentDialog(mContext);
-			Bundle dArgs = new Bundle();
-			String json = (new Gson()).toJson(sesh.getComments());
-			dArgs.putInt("sessionId", sesh.getId());
-			dArgs.putString("comments", json);
-			cDialog.setDialogArgs(dArgs);
-			cDialog.show();
-
+			openComments(sesh);
 			break;
-		case R.id.likes:
+        case R.id.comments_icon:
+            openComments(sesh);
+            break;
+		case R.id.likes_tv:
             // TODO: Problem -> likesBtn refers to different row
             // Toggle like icon and set updated like count
 //            int numLikes = sesh.getLikes();
 //            Log.d(TAG, "session title: " + sesh.getTitle() + "\nlikesBtn: " + likesBtn.getId());
-//            if(liked) {
+//            if(isLiked) {
 //                likesBtn.setCompoundDrawablesWithIntrinsicBounds(statusUnlikedIcon, null, null, null);
 //                if(numLikes == 1) {
 //                    likesBtn.setText("1 like");
@@ -175,13 +181,12 @@ public class InboxViewAdapter extends ArrayAdapter<Session> implements OnClickLi
 //                    likesBtn.setText(numLikes+1 + " likes");
 //                }
 //            }
-//            liked = !liked;
-
-			Intent likesApi = new Intent(mContext, APIService.class);
-			likesApi.putExtra(T.API_TYPE, T.CREATE_LIKE);
-			likesApi.putExtra(T.SESSION_ID, sesh.getId());
-			mContext.startService(likesApi);
+//            isLiked = !isLiked;
+            like(sesh);
 			break;
+        case R.id.likes_icon:
+            like(sesh);
+            break;
 		case R.id.inboxImageView:
 			// Clicking the thumbnail will play the video
 			Intent clipApi = new Intent(mContext, APIService.class);
@@ -197,7 +202,42 @@ public class InboxViewAdapter extends ArrayAdapter<Session> implements OnClickLi
 			break;
 		}
 	}
-	
+
+    private void like(Session sesh) {
+        Log.d(TAG, "Making like request");
+        Intent likesApi = new Intent(mContext, APIService.class);
+        likesApi.putExtra(T.API_TYPE, T.CREATE_LIKE);
+        likesApi.putExtra(T.SESSION_ID, sesh.getId());
+        mContext.startService(likesApi);
+
+        toggleLikeIcon(sesh.getId());
+    }
+
+    private void toggleLikeIcon(int sessionId) {
+        isLiked = (likesMapping.get(sessionId) != null);
+        likesIcon.setImageResource( isLiked ?
+                R.drawable.like_red_invert : R.drawable.like_black_border);
+    }
+
+    private void openComments(Session sesh) {
+        Log.d(TAG, "Opening comments dialog");
+        CommentDialog cDialog = new CommentDialog(mContext);
+        Bundle dArgs = new Bundle();
+        String json = (new Gson()).toJson(sesh.getComments());
+        dArgs.putInt("sessionId", sesh.getId());
+        dArgs.putString("comments", json);
+        cDialog.setDialogArgs(dArgs);
+        cDialog.show();
+    }
+
+    private void getUsersLikes() {
+        Intent api = new Intent(mContext, APIService.class);
+        LikesReceiver likesReceiver = new LikesReceiver(new Handler());
+        api.putExtra(T.API_TYPE, T.GET_LIKES);
+        api.putExtra(T.RECEIVER, likesReceiver);
+        mContext.startService(api);
+    }
+
 	@Override
 	public int getCount() {
 		if(mSessionList != null) {
@@ -206,7 +246,7 @@ public class InboxViewAdapter extends ArrayAdapter<Session> implements OnClickLi
 		
 		return 0;
 	}
-	
+
 	private class ClipStreamReceiver extends ResultReceiver {
         public ClipStreamReceiver(Handler handler) {
                 super(handler);
@@ -242,6 +282,36 @@ public class InboxViewAdapter extends ArrayAdapter<Session> implements OnClickLi
                 }
         }
 	}
+
+    private class LikesReceiver extends ResultReceiver {
+        public LikesReceiver(Handler handler) {
+            super(handler);
+        }
+
+        @Override
+        protected void onReceiveResult(int resultCode, Bundle resultData) {
+            if (resultCode == 1) {
+                Log.d(TAG, "APIService returned successful with likes");
+                String result = resultData.getString("result");
+                Log.d(TAG, "result from apiservice is: " + result);
+                int[] likedSessionIds = new Gson().fromJson(result, Likes.class)
+                        .getLikedSessionIds();
+
+                ImageView tempIcon;
+                for(int sessionId : likedSessionIds) {
+                    tempIcon = likesMapping.get(sessionId);
+                    if(tempIcon != null) {
+                        Log.d(TAG, "Setting a liked image resource!");
+                        tempIcon.setImageResource(R.drawable.like_red_invert);
+                    }
+                }
+
+                // TODO: Progress bar should stop here
+            } else {
+                Log.d(TAG, "APIService get session clip url failed?");
+            }
+        }
+    }
 	
 	// Asynchronously downloads the thumbnail and displays it
 	private class DownloadImageTask extends AsyncTask<String, Void, Bitmap> {

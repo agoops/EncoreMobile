@@ -41,30 +41,79 @@
         android:text="Member 1, Member 2, Member 3"
         android:padding="10dp"/>
 
+
     <LinearLayout android:orientation="horizontal"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/comments_wrapper" >
+        android:id="@+id/comments_wrapper"
+        android:padding="10dp">
 
-        <Button
-            android:id="@+id/likes"
+        <LinearLayout
+            android:layout_height="wrap_content"
             android:layout_width="0dp"
-            android:layout_height="match_parent"
             android:layout_weight="1"
-            android:gravity="center"
-            android:text="0 likes"
-            android:drawableLeft="@drawable/like_black_border" />
+            android:gravity="center">
+            <ImageView
+                android:id="@+id/likes_icon"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:src="@drawable/like_black_border" />
 
-        <Button
-            android:id="@+id/comments"
+            <TextView
+                android:id="@+id/likes_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:text="0 likes"
+                android:paddingLeft="10dp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_height="wrap_content"
             android:layout_width="0dp"
-            android:layout_height="match_parent"
             android:layout_weight="1"
-            android:gravity="center"
-            android:text="0 comments"
-            android:drawableLeft="@drawable/comment_black" />
+            android:gravity="center">
+
+            <ImageView
+                android:id="@+id/comments_icon"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:src="@drawable/comment_black" />
+
+            <TextView
+                android:id="@+id/comments_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:text="0 comments"
+                android:paddingLeft="10dp"/>
+        </LinearLayout>
     </LinearLayout>
 
+    <!--<LinearLayout android:orientation="horizontal"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:id="@+id/comments_wrapper"-->
+        <!--android:padding="10dp">-->
+
+        <!--<TextView-->
+            <!--android:id="@+id/likes"-->
+            <!--android:layout_width="0dp"-->
+            <!--android:layout_height="match_parent"-->
+            <!--android:layout_weight="1"-->
+            <!--android:gravity="center"-->
+            <!--android:text="0 likes" />-->
+
+        <!--<TextView-->
+            <!--android:id="@+id/comments"-->
+            <!--android:layout_width="0dp"-->
+            <!--android:layout_height="match_parent"-->
+            <!--android:layout_weight="1"-->
+            <!--android:gravity="center"-->
+            <!--android:text="0 comments" />-->
+    <!--</LinearLayout>-->
     <Button
         android:id="@+id/reply"
         android:layout_gravity="center"

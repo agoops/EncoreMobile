@@ -22,7 +22,6 @@ public class SessionView extends LinearLayout {
 		super(context, attrs);
 		commentViews = new ArrayList<View>();
 		commentsVisible = false;
-		// TODO Auto-generated constructor stub
 	}
 	
 	public boolean areCommentsVisible(){

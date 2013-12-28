@@ -99,6 +99,8 @@ public class CreateSessionFragment extends Fragment implements View.OnClickListe
         Log.d(TAG, "Send button clicked");
         switch(v.getId())
         {
+            // TODO: Make API calls
+            // TODO: Return to HomeActivity onSend
             case R.id.send_button:
 //                Intent api = new Intent(getActivity(), APIService.class);
 
@@ -195,7 +197,6 @@ public class CreateSessionFragment extends Fragment implements View.OnClickListe
     private class FriendListReceiver extends ResultReceiver {
         public FriendListReceiver(Handler handler) {
             super(handler);
-            // TODO Auto-generated constructor stub
         }
 
         @Override

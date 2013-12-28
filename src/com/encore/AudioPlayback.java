@@ -1,14 +1,14 @@
 package com.encore;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-
 import android.media.AudioFormat;
 import android.media.AudioManager;
 import android.media.AudioTrack;
 import android.util.Log;
+
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 
 public class AudioPlayback {
 	private String tag = "AudioPlayback";
@@ -22,7 +22,6 @@ public class AudioPlayback {
 		try {
 			this.playAudioFileViaAudioTrack();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
@@ -59,7 +58,6 @@ public class AudioPlayback {
 			in = new FileInputStream(file);
 
 		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 
