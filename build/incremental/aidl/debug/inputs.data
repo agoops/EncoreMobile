@@ -10,7 +10,7 @@
 1386622277000 240 4754e8674638db4a1ee645da5c06f3a1a2de9d80 /Users/babakpourkazemi/Documents/Coding Projects/Github/EncoreMobile/src/Bus/BusProvider.java
 1386622277000 15398 b8797071564eb2503442ef4e86964e4f46b70bc9 /Users/babakpourkazemi/Documents/Coding Projects/Github/EncoreMobile/src/com/encore/RecMicToMp3.java
 1388186219000 2785 3ceaafc9b2380095b9c302561378eddefa097635 /Users/babakpourkazemi/Documents/Coding Projects/Github/EncoreMobile/src/com/encore/views/FriendRequestsFragment.java
-1388004471000 809 26f81c7d342bcf6e14a709ff98dc7f5a19d79a00 /Users/babakpourkazemi/Documents/Coding Projects/Github/EncoreMobile/src/com/encore/widget/AspectRatioImageView.java
+1388246821000 809 26f81c7d342bcf6e14a709ff98dc7f5a19d79a00 /Users/babakpourkazemi/Documents/Coding Projects/Github/EncoreMobile/src/com/encore/widget/AspectRatioImageView.java
 1388029565000 1427 d285d0099331d44a644b0c99ab012fc026a3a8ab /Users/babakpourkazemi/Documents/Coding Projects/Github/EncoreMobile/src/com/encore/StartSession2.java
 1386622277000 76 3a6da50b01e0dea5da8d3c429c386161ce07c6c5 /Users/babakpourkazemi/Documents/Coding Projects/Github/EncoreMobile/src/com/encore/CreateSession.java
 1388200404000 355 d31b40a185b3e82cbcaac05d1301326e47357c75 /Users/babakpourkazemi/Documents/Coding Projects/Github/EncoreMobile/src/com/encore/models/PostLike.java
@@ -34,7 +34,7 @@
 1388186364000 2001 00533ec317ffdeb36d92d0e896dfbc89b77df7ae /Users/babakpourkazemi/Documents/Coding Projects/Github/EncoreMobile/src/com/encore/AudioPlayback.java
 1388004471000 2787 67c4c832c981039d3c4fae8460a0c84d2e9acf24 /Users/babakpourkazemi/Documents/Coding Projects/Github/EncoreMobile/src/com/encore/widget/SessionsAdapter.java
 1388004400000 1830 647921d829e453d59c11113fcdb3c53279ace101 /Users/babakpourkazemi/Documents/Coding Projects/Github/EncoreMobile/src/com/encore/SessionViewAdapter.java
-1388206901000 13571 ee0087ab1193e780792a1c1c612e8d73714f93ac /Users/babakpourkazemi/Documents/Coding Projects/Github/EncoreMobile/src/com/encore/InboxViewAdapter.java
+1388249551000 15114 3071faa758fbd8b8e61c8c0e81ad53e3782ab471 /Users/babakpourkazemi/Documents/Coding Projects/Github/EncoreMobile/src/com/encore/InboxViewAdapter.java
 1388161867000 534 0b56f0124df481d9dfaf92840af1a0fe5f986de1 /Users/babakpourkazemi/Documents/Coding Projects/Github/EncoreMobile/src/com/encore/models/Crowds.java
 1388168393000 3414 f01eb88fe6c966c8c113feaea1b14b954f388690 /Users/babakpourkazemi/Documents/Coding Projects/Github/EncoreMobile/src/com/encore/FriendsFragmentAdapter.java
 1388004471000 2478 63ee3ed3371aaa2c098d1cd06db5e5673e401ef4 /Users/babakpourkazemi/Documents/Coding Projects/Github/EncoreMobile/src/com/encore/widget/CommentDialog.java

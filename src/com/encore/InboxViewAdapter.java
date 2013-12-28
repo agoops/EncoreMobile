@@ -53,18 +53,25 @@ public class InboxViewAdapter extends ArrayAdapter<Session> implements OnClickLi
     private Button reply;
     private com.encore.widget.AspectRatioImageView thumbnailIv;
     private Map<Integer, ImageView> likesMapping;
+    private Map<Integer, Boolean> isLikedMapping;
+    private Map<Integer, Integer> numLikesMapping;
+    private Map<Integer, TextView> likesTvMapping;
+
+    // TODO: Cap the listview, but make it never ending
 
 	public InboxViewAdapter(Context c, int textViewResourceId, List<Session> sessions) {
 		super(c, textViewResourceId, sessions);
 		mContext = c;
 		mSessionList = sessions;
         likesMapping = new HashMap<Integer, ImageView>();
+        isLikedMapping = new HashMap<Integer, Boolean>();
+        numLikesMapping = new HashMap<Integer, Integer>();
+        likesTvMapping = new HashMap<Integer, TextView>();
 	}
 
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
         convertView = LayoutInflater.from(mContext).inflate(R.layout.inbox_view, parent, false);
-
 
         // Get the row views
         titleTextView = (TextView) convertView.findViewById(R.id.tvName);
@@ -97,6 +104,9 @@ public class InboxViewAdapter extends ArrayAdapter<Session> implements OnClickLi
 
         // Maps sessionId <-> likesIcon
         likesMapping.put(entry.getId(), likesIcon);
+        isLikedMapping.put(entry.getId(), false);
+        numLikesMapping.put(entry.getId(), entry.getLikes());
+        likesTvMapping.put(entry.getId(), likesTv);
         getUsersLikes(); // TODO: Should only call this once somewhere else
 //        isLiked = (likesMapping.get(position) == null) ? false : true;
 //        likesIcon.setImageResource((isLiked) ? R.drawable.like_red_invert : R.drawable.like_black_border);
@@ -214,9 +224,40 @@ public class InboxViewAdapter extends ArrayAdapter<Session> implements OnClickLi
     }
 
     private void toggleLikeIcon(int sessionId) {
-        isLiked = (likesMapping.get(sessionId) != null);
-        likesIcon.setImageResource( isLiked ?
-                R.drawable.like_red_invert : R.drawable.like_black_border);
+        // Get the like icon
+        ImageView tempIcon = likesMapping.get(sessionId);
+
+        // Determine if it's already been liked
+        isLiked = (isLikedMapping.get(sessionId));
+
+        // Change the icon accordingly
+        tempIcon.setImageResource( isLiked ?
+                R.drawable.like_black_border : R.drawable.like_red_invert);
+        isLikedMapping.put(sessionId, isLiked = !isLiked);
+        
+        // Update the num likes text
+        int numLikes = numLikesMapping.get(sessionId);
+        TextView tempTv = likesTvMapping.get(sessionId);
+        Log.d(TAG, "numLikes: " + numLikes);
+
+        if(isLiked) {
+            if(numLikes + 1 == 1) {
+                Log.d(TAG, "1");
+                tempTv.setText("1 like");
+            } else {
+                Log.d(TAG, "2");
+                tempTv.setText(numLikes + 1 + " likes");
+            }
+        } else {
+            if(numLikes == 1) {
+                Log.d(TAG, "3");
+                tempTv.setText("1 like");
+            } else {
+                Log.d(TAG, "4");
+                tempTv.setText(numLikes + " likes");
+            }
+        }
+
     }
 
     private void openComments(Session sesh) {
@@ -297,12 +338,13 @@ public class InboxViewAdapter extends ArrayAdapter<Session> implements OnClickLi
                 int[] likedSessionIds = new Gson().fromJson(result, Likes.class)
                         .getLikedSessionIds();
 
+                // Set liked sessions with an updated icon
                 ImageView tempIcon;
                 for(int sessionId : likedSessionIds) {
                     tempIcon = likesMapping.get(sessionId);
                     if(tempIcon != null) {
-                        Log.d(TAG, "Setting a liked image resource!");
                         tempIcon.setImageResource(R.drawable.like_red_invert);
+                        isLikedMapping.put(sessionId, true);
                     }
                 }
 
