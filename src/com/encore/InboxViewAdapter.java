@@ -135,7 +135,7 @@ public class InboxViewAdapter extends ArrayAdapter<Session> implements OnClickLi
         String names = entry.getMembersFirstNames();
         crowdMembersTextView.setText(names);
 
-        // Set the appropriate likeServerSide icon
+        // Set the appropriate like icon
         int sessionId = entry.getId();
         likeButton.setSelected(
                 likedSessionIds.contains(sessionId));
@@ -151,7 +151,7 @@ public class InboxViewAdapter extends ArrayAdapter<Session> implements OnClickLi
 
         int numLikes = entry.getLikes();
         if(numLikes == 1) {
-            likesTv.setText(numLikes + " likeServerSide");
+            likesTv.setText(numLikes + " like");
         } else {
             likesTv.setText(numLikes + " likes");
         }
@@ -193,11 +193,11 @@ public class InboxViewAdapter extends ArrayAdapter<Session> implements OnClickLi
             openComments(sesh);
             break;
 		case R.id.likes_tv:
-            likeServerSide(sesh); // POST likeServerSide
+            likeServerSide(sesh); // POST like
             likeClientSide(sesh, v); // Update count & toggle icon
 			break;
         case R.id.like_button:
-            likeServerSide(sesh); // POST likeServerSide
+            likeServerSide(sesh); // POST like
             likeClientSide(sesh, v); // Update count & toggle icon
             break;
 		case R.id.inboxImageView:
@@ -219,7 +219,7 @@ public class InboxViewAdapter extends ArrayAdapter<Session> implements OnClickLi
     }
 
     private void likeServerSide(Session sesh) {
-        Log.d(TAG, "Making likeServerSide request");
+        Log.d(TAG, "Making like request");
         Intent likesApi = new Intent(mContext, APIService.class);
         likesApi.putExtra(T.API_TYPE, T.CREATE_LIKE);
         likesApi.putExtra(T.SESSION_ID, sesh.getId());
@@ -238,7 +238,7 @@ public class InboxViewAdapter extends ArrayAdapter<Session> implements OnClickLi
             Log.d(TAG, "Decrementing " + numLikes);
             tempLikesTv.setText(
                     (numLikes - 1 == 1) ?
-                            numLikes - 1 + " likeServerSide" : numLikes - 1 + " likes");
+                            numLikes - 1 + " like" : numLikes - 1 + " likes");
             sesh.setLikes(numLikes - 1);
             likedSessionIds.remove(sesh.getId());
         } else {
@@ -246,7 +246,7 @@ public class InboxViewAdapter extends ArrayAdapter<Session> implements OnClickLi
             Log.d(TAG, "Incrementing " + numLikes);
             tempLikesTv.setText(
                     (numLikes + 1 == 1) ?
-                            numLikes + 1 + " likeServerSide" : numLikes + 1 + " likes");
+                            numLikes + 1 + " like" : numLikes + 1 + " likes");
             sesh.setLikes(numLikes + 1);
             likedSessionIds.add(sesh.getId());
         }

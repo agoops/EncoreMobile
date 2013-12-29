@@ -45,11 +45,9 @@
     <LinearLayout android:orientation="horizontal"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/comments_wrapper"
         android:padding="10dp">
 
         <LinearLayout
-            android:id="@+id/likes_container"
             android:layout_height="wrap_content"
             android:layout_width="0dp"
             android:layout_weight="1"
@@ -57,8 +55,8 @@
             <Button
                 style="@style/LikeButtonStyle"
                 android:id="@+id/like_button"
-                android:layout_height="wrap_content"
-                android:layout_width="wrap_content" />
+                android:layout_height="32dp"
+                android:layout_width="32dp" />
 
             <TextView
                 android:id="@+id/likes_tv"
@@ -75,13 +73,13 @@
             android:layout_weight="1"
             android:gravity="center">
 
+
             <ImageView
                 android:id="@+id/comments_icon"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
                 android:gravity="center"
                 android:src="@drawable/comment_black" />
-
             <TextView
                 android:id="@+id/comments_tv"
                 android:layout_width="wrap_content"
@@ -92,28 +90,6 @@
         </LinearLayout>
     </LinearLayout>
 
-    <!--<LinearLayout android:orientation="horizontal"-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:id="@+id/comments_wrapper"-->
-        <!--android:padding="10dp">-->
-
-        <!--<TextView-->
-            <!--android:id="@+id/likes"-->
-            <!--android:layout_width="0dp"-->
-            <!--android:layout_height="match_parent"-->
-            <!--android:layout_weight="1"-->
-            <!--android:gravity="center"-->
-            <!--android:text="0 likes" />-->
-
-        <!--<TextView-->
-            <!--android:id="@+id/comments"-->
-            <!--android:layout_width="0dp"-->
-            <!--android:layout_height="match_parent"-->
-            <!--android:layout_weight="1"-->
-            <!--android:gravity="center"-->
-            <!--android:text="0 comments" />-->
-    <!--</LinearLayout>-->
     <Button
         android:id="@+id/reply"
         android:layout_gravity="center"
