@@ -2,6 +2,8 @@ package com.encore.models;
 
 import com.google.gson.annotations.SerializedName;
 
+import java.util.HashSet;
+
 /**
  * Created by babakpourkazemi on 12/27/13.
  */
@@ -22,10 +24,11 @@ public class Likes {
         return likes;
     }
 
-    public int[] getLikedSessionIds() {
-        int[] sessionIds = new int[likes.length];
+    public HashSet<Integer> getLikedSessionIds() {
+        HashSet<Integer> sessionIds = new HashSet<Integer>(likes.length);
         for(int i=0; i<likes.length; i++) {
-            sessionIds[i] = likes[i].getLikedSession().getId();
+            int id = likes[i].getLikedSession().getId();
+            sessionIds.add(id);
         }
         return sessionIds;
     }

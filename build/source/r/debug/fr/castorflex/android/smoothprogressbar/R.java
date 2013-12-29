@@ -44,8 +44,8 @@ public final class R {
 		public static final int spb_default_speed = 0x7f0c0016;
 	}
 	public static final class style {
-		public static final int SmoothProgressBar = 0x7f0d0006;
-		public static final int Theme_SmoothProgressBarDefaults = 0x7f0d003c;
+		public static final int SmoothProgressBar = 0x7f0d0007;
+		public static final int Theme_SmoothProgressBarDefaults = 0x7f0d003d;
 	}
 	public static final class styleable {
 		public static final int[] SmoothProgressBar = { 0x7f01006a, 0x7f01006b, 0x7f01006c, 0x7f01006d, 0x7f01006e, 0x7f01006f, 0x7f010070, 0x7f010071, 0x7f010072, 0x7f010073 };

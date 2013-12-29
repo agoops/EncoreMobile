@@ -693,6 +693,10 @@
     <eat-comment />
 
     <item name="spb_default_speed" format="float" type="string">1.0</item>
+    <!-- From: file:/Users/babakpourkazemi/Documents/Coding%20Projects/Github/EncoreMobile/res/values/strings.xml -->
+    <eat-comment />
+
+    <string name="third_key">3</string>
     <!-- From: file:/Users/babakpourkazemi/Documents/Coding%20Projects/Github/EncoreMobile/res/values/styles.xml -->
     <eat-comment />
 
@@ -719,6 +723,13 @@
     <style name="CustomDialogTheme" parent="@android:style/Theme.Dialog">
         <item name="@android:background">@color/off_white</item>
         <item name="@android:buttonStyle">@style/RapchatButtons</item>
+    </style>
+
+    <style name="LikeButtonStyle" parent="@android:Widget.Holo.Button">
+        <item name="android:background">@drawable/like_button_style</item>
+        <item name="android:fontFamily">sans-serif-light</item>
+        <item name="android:textStyle">italic</item>
+        <item name="android:textColor">@color/button_text_color</item>
     </style>
 
     <style name="RapchatActionBar" parent="@style/Widget.AppCompat.ActionBar">

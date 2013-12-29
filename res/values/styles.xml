@@ -56,6 +56,13 @@
         <item name="android:textColor">@color/button_text_color</item>
     </style>
 
+    <style name="LikeButtonStyle" parent="@android:Widget.Holo.Button">
+        <item name="android:background">@drawable/like_button_style</item>
+        <item name="android:fontFamily">sans-serif-light</item>
+        <item name="android:textStyle">italic</item>
+        <item name="android:textColor">@color/button_text_color</item>
+    </style>
+
     <!-- ========= Dialogs ========= -->
     <style name="CustomDialogTheme" parent="@android:style/Theme.Dialog">
         <item name="@android:background">@color/off_white</item>

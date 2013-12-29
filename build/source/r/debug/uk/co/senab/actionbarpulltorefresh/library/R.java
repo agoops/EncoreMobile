@@ -68,9 +68,9 @@ public final class R {
 		public static final int spb_default_speed = 0x7f0c0016;
 	}
 	public static final class style {
-		public static final int SmoothProgressBar = 0x7f0d0006;
-		public static final int Theme_SmoothProgressBarDefaults = 0x7f0d003c;
-		public static final int Widget_ProgressBar_PullToRefresh = 0x7f0d0088;
+		public static final int SmoothProgressBar = 0x7f0d0007;
+		public static final int Theme_SmoothProgressBarDefaults = 0x7f0d003d;
+		public static final int Widget_ProgressBar_PullToRefresh = 0x7f0d0089;
 	}
 	public static final class styleable {
 		public static final int[] PullToRefreshHeader = { 0x7f01005e, 0x7f01005f, 0x7f010060, 0x7f010061, 0x7f010062, 0x7f010063, 0x7f010064, 0x7f010065, 0x7f010066 };

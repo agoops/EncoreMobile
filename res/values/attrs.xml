@@ -12,6 +12,5 @@
         <attr name="switchDrawable" format="dimension" />
         <attr name="innerPadding" format="dimension" />
         <attr name="isChecked" format="boolean" />
-
     </declare-styleable>
 </resources>

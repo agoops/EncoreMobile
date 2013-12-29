@@ -53,9 +53,9 @@ public class API {
 	// Common URLs
 	private static final String USERS = BASE_URL + "/users/";
     private static final String USER_ME = USERS + "me/";
-    private static final String SESSIONS = BASE_URL + "/sessions/";
+    private static final String SESSIONS = USER_ME + "sessions/";
     private static final String CLIPS = BASE_URL + "/clips/";
-    private static final String FRIENDS = BASE_URL + "/users/friends/";
+    private static final String FRIENDS = USER_ME + "friends/";
     private static final String CROWDS = USER_ME + "crowds/";
     private static final String REQUESTS = FRIENDS + "requests/";
 
