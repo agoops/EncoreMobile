@@ -22,6 +22,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ImageView.ScaleType;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.VideoView;
 
@@ -50,6 +51,7 @@ public class InboxViewAdapter extends ArrayAdapter<Session> implements OnClickLi
     private ImageView commentsIcon;
     private Button reply, likeButton;
     private com.encore.widget.AspectRatioImageView thumbnailIv;
+    private ProgressBar thumbnailProgressBar;
 
     private HashSet<Integer> likedSessionIds;
 
@@ -68,6 +70,7 @@ public class InboxViewAdapter extends ArrayAdapter<Session> implements OnClickLi
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
         convertView = LayoutInflater.from(mContext).inflate(R.layout.inbox_view, parent, false);
+//        showProgressBar(convertView);
 
         Log.d(TAG, "unavailable");
         while(likedSessionIds == null) {
@@ -98,6 +101,7 @@ public class InboxViewAdapter extends ArrayAdapter<Session> implements OnClickLi
         commentsIcon = (ImageView) convertView.findViewById(R.id.comments_icon);
         thumbnailIv = (com.encore.widget.AspectRatioImageView) convertView.findViewById(R.id.inboxImageView);
         crowdMembersTextView = (TextView) convertView.findViewById(R.id.crowd_members_tv);
+        thumbnailProgressBar = (ProgressBar) convertView.findViewById(R.id.progress_thumbnail);
     }
 
     public void setTags(Session entry) {
@@ -158,7 +162,8 @@ public class InboxViewAdapter extends ArrayAdapter<Session> implements OnClickLi
 
         // Set the thumbnail
         if(entry.getThumbnailUrl() != null) {
-            new DownloadImageTask((com.encore.widget.AspectRatioImageView) convertView.findViewById(R.id.inboxImageView))
+            new DownloadImageTask(
+                    (com.encore.widget.AspectRatioImageView) convertView.findViewById(R.id.inboxImageView), thumbnailProgressBar)
                     .execute(entry.getThumbnailUrl());
         }
     }
@@ -235,7 +240,6 @@ public class InboxViewAdapter extends ArrayAdapter<Session> implements OnClickLi
 
         if(isCurrentlyLiked) {
             // Decrement
-            Log.d(TAG, "Decrementing " + numLikes);
             tempLikesTv.setText(
                     (numLikes - 1 == 1) ?
                             numLikes - 1 + " like" : numLikes - 1 + " likes");
@@ -243,7 +247,6 @@ public class InboxViewAdapter extends ArrayAdapter<Session> implements OnClickLi
             likedSessionIds.remove(sesh.getId());
         } else {
             // Increment
-            Log.d(TAG, "Incrementing " + numLikes);
             tempLikesTv.setText(
                     (numLikes + 1 == 1) ?
                             numLikes + 1 + " like" : numLikes + 1 + " likes");
@@ -281,6 +284,10 @@ public class InboxViewAdapter extends ArrayAdapter<Session> implements OnClickLi
         api.putExtra(T.API_TYPE, T.GET_LIKES);
         api.putExtra(T.RECEIVER, likesReceiver);
         mContext.startService(api);
+    }
+
+    private void hideProgressBar(ProgressBar thumbnailPb) {
+        thumbnailPb.setVisibility(View.GONE);;
     }
 
 	private class ClipStreamReceiver extends ResultReceiver {
@@ -332,42 +339,41 @@ public class InboxViewAdapter extends ArrayAdapter<Session> implements OnClickLi
                 Log.d(TAG, "result from apiservice is: " + result);
                 likedSessionIds = new Gson().fromJson(result, Likes.class)
                         .getLikedSessionIds();
-                // TODO: Progress bar should stop here
             } else {
                 Log.d(TAG, "APIService get session clip url failed?");
             }
         }
     }
-	
-	// Asynchronously downloads the thumbnail and displays it
-	private class DownloadImageTask extends AsyncTask<String, Void, Bitmap> {
-		com.encore.widget.AspectRatioImageView thumbnailIv;
 
-	    public DownloadImageTask(com.encore.widget.AspectRatioImageView bmImage) {
-	        this.thumbnailIv = bmImage;
-	    }
+    private class DownloadImageTask extends AsyncTask<String, Void, Bitmap> {
+        com.encore.widget.AspectRatioImageView thumbnailIv;
+        ProgressBar thumbnailPb;
 
-	    protected Bitmap doInBackground(String... urls) {
-	        String urldisplay = urls[0];
-	        Bitmap thumbnail = null;
-	        try {
-	            InputStream in = new java.net.URL(urldisplay).openStream();
-	            thumbnail = BitmapFactory.decodeStream(in);
-	            thumbnailIv.setScaleType(ScaleType.FIT_XY);
-	        } catch (Exception e) {
-	            Log.e("Error", e.getMessage());
-	            e.printStackTrace();
-	        }
-	        return thumbnail;
-	    }
+        public DownloadImageTask(com.encore.widget.AspectRatioImageView bitmapImage, ProgressBar thumbnailPb) {
+            this.thumbnailIv = bitmapImage;
+            this.thumbnailPb = thumbnailPb;
+        }
 
-	    protected void onPostExecute(Bitmap result) {
-	        thumbnailIv.setImageBitmap(result);
+        protected Bitmap doInBackground(String... urls) {
+            String urldisplay = urls[0];
+            Bitmap thumbnail = null;
+            try {
+                InputStream in = new java.net.URL(urldisplay).openStream();
+                thumbnail = BitmapFactory.decodeStream(in);
+                thumbnailIv.setScaleType(ScaleType.FIT_XY);
+            } catch (Exception e) {
+                Log.e("Error", e.getMessage());
+                e.printStackTrace();
+            }
+            return thumbnail;
+        }
 
-            // TODO: And here. Set a flag to true both in LikesReceiver and here. When both have loaded, hide the progress bar
-	    }
-	}
-	
+        protected void onPostExecute(Bitmap result) {
+            thumbnailIv.setImageBitmap(result);
+            hideProgressBar(thumbnailPb);
+        }
+    }
+
 	private void showVideoDialog(Uri uri) {
 
 		final Dialog dialog = new Dialog(mContext);

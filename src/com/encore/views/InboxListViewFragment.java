@@ -75,8 +75,6 @@ public class InboxListViewFragment extends Fragment implements OnRefreshListener
 	    receiver = new SessionListReceiver(new Handler());
 	    getRaps(receiver);
 
-
-//	    lv.setOnItemClickListener(new ResponseListener());
 	    return view;
     }
 
