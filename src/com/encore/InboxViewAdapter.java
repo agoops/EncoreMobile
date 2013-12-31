@@ -22,6 +22,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ImageView.ScaleType;
+import android.widget.MediaController;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.VideoView;
@@ -55,6 +56,8 @@ public class InboxViewAdapter extends ArrayAdapter<Session> implements OnClickLi
 
     private HashSet<Integer> likedSessionIds;
 
+    private MediaController mc;
+
     // TODO: Cap the listview, but make it never ending
 
 	public InboxViewAdapter(Context c, int textViewResourceId, List<Session> sessions) {
@@ -62,7 +65,7 @@ public class InboxViewAdapter extends ArrayAdapter<Session> implements OnClickLi
 		mContext = c;
 		mSessionList = sessions;
 
-        // When the adapter is instantiated, we'll the user's liked sessions
+        // When the adapter is instantiated, we'll populate the likedSessionIds
         likedSessionIds = null;
         getUsersLikes();
 	}
@@ -139,7 +142,7 @@ public class InboxViewAdapter extends ArrayAdapter<Session> implements OnClickLi
         String names = entry.getMembersFirstNames();
         crowdMembersTextView.setText(names);
 
-        // Set the appropriate like icon
+        // Set the like icon if the session is liked
         int sessionId = entry.getId();
         likeButton.setSelected(
                 likedSessionIds.contains(sessionId));
@@ -265,11 +268,6 @@ public class InboxViewAdapter extends ArrayAdapter<Session> implements OnClickLi
         dArgs.putString("comments", json);
         cDialog.setDialogArgs(dArgs);
         cDialog.show();
-//        Intent commentsIntent = new Intent(mContext, CommentDialog.class);
-//        String json = (new Gson()).toJson(sesh.getComments());
-//        commentsIntent.putExtra("sessionId", sesh.getId());
-//        commentsIntent.putExtra("comments", json);
-//        getContext().startActivity(commentsIntent);
     }
 
     private void playVideo(Session sesh) {
@@ -312,19 +310,14 @@ public class InboxViewAdapter extends ArrayAdapter<Session> implements OnClickLi
                 		
                 		int numClipsInSession = jsonClipsArray.size();
                 		
-                		//Get last clipElement, get clip url
+                		// Get last clipElement, get clip url
                 		String url = jsonClipsArray.get(0).getAsJsonObject().get("url").getAsString();
                 		Log.d(TAG, "url is: " + url);
                 		Uri uri = Uri.parse(url);
-                		
-                		//this link works. it's asian people playing ping pong CLASSIC
-                		Uri hardcodeUri = Uri.parse("http://students.mimuw.edu.pl/~nh209484/Video000.3gp");
-                		
+
                 		//Problems: can stream back a video from android, but not from what michael made. 
                 		//I know android records in mpeg4.
                 		showVideoDialog(uri);
-    
-                        
                 } else {
                         Log.d(TAG, "APIService get session clip url failed?");
                 }
@@ -389,14 +382,33 @@ public class InboxViewAdapter extends ArrayAdapter<Session> implements OnClickLi
         VideoView videoView = (VideoView) dialog.findViewById(R.id.video_dialog_video_view);
         videoView.setZOrderOnTop(true);
         videoView.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
-			
+
 			@Override
 			public void onCompletion(MediaPlayer mp) {
 				dialog.cancel();
 			}
 		});
+//        All these methods play android, but don't play iOS
+//        -------- 1st method ----------
         VideoPlayer vp = new VideoPlayer(videoView, mContext);
         vp.playVideo(uri);
+
+//        -------- 2nd method ----------
+//        mc = new MediaController(mContext);
+//        mc.setMediaPlayer(videoView);
+//        videoView.setMediaController(mc);
+//        videoView.setVideoURI(uri);
+//        videoView.requestFocus();
+//        videoView.start();
+
+//        --------- 3rd method ---------
+//        mc = new MediaController(mContext);
+//        mc.setAnchorView(videoView);
+//        videoView.setMediaController(mc);
+//        videoView.setVideoURI(uri);
+//        videoView.requestFocus();
+//        videoView.start();
+
         dialog.show();
 	}
 

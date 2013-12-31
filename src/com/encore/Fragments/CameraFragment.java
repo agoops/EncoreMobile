@@ -248,9 +248,6 @@ public class CameraFragment extends Fragment implements
 
         mediaRecorder.setMaxFileSize(maxFileSizeInBytes);
         mediaRecorder.setOrientationHint(270);
-
-
-
     }
 
     private  File getOutputMediaFile(){

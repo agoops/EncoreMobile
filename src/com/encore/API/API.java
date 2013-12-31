@@ -59,6 +59,7 @@ public class API {
     private static final String REQUESTS = FRIENDS + "requests/";
     private static final String REPLY = REQUESTS + "reply/";
     private static final String LIKES = USER_ME + "likes/";
+    private static final String CLIP = BASE_URL + "sessions/%s/clips/";
     // Users
 	private static final String SIGN_IN = USERS + "obtain-token/";
     private static final String SIGN_UP = USERS;
@@ -69,8 +70,8 @@ public class API {
     private static final String CREATE_SESSION = SESSIONS;
     private static final String GET_SESSION = BASE_URL + "sessions/%s/";
     // Clips
-    private static final String GET_CLIP_STREAM = SESSIONS + "clip/";
-    private static final String ADD_CLIP = BASE_URL + "sessions/%s/clips/";
+    private static final String GET_CLIP = CLIP;
+    private static final String ADD_CLIP = CLIP;
     // Friends
 	private static final String SEND_FRIEND_REQUEST = FRIENDS + "requests/";
     // Crowds
@@ -520,14 +521,14 @@ public class API {
 	
 	public String getClipStream(int sessionId) throws Exception {
 		Log.d(TAG, "getClipStream called");
-		String url = SESSIONS + sessionId + "/clips/";
+        String url = String.format(GET_CLIP, Integer.toString(sessionId));
 		String resultJSON = null;
 		
 		try {
 			resultJSON = get(url, String.class);
 			Log.d(TAG, "getClipStream result: " + resultJSON);
 		} catch(Exception e) {
-			Log.e(TAG, "createComment() error");
+			Log.e(TAG, "getClipStream() error");
 			throw e;
 		}
 		return resultJSON;
