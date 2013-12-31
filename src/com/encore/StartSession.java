@@ -20,13 +20,13 @@ public class StartSession extends FragmentActivity {
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
         CameraFragment cameraFragment = new CameraFragment();
 
+        // Open the camera fragment
         Intent intent = getIntent();
         Bundle bundle = new Bundle();
         bundle.putInt("crowdId", intent.getIntExtra("crowdId", -1));
         bundle.putString("sessionTitle", intent.getStringExtra("sessionTitle"));
         bundle.putInt("sessionId", intent.getIntExtra("sessionId", -1));
         cameraFragment.setArguments(bundle);
-
 
         ft.add(R.id.fragment_placeholder, cameraFragment);
         ft.commit();

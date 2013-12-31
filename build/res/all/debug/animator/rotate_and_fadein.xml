@@ -13,4 +13,4 @@
         android:valueFrom="0"
         android:valueTo="360"
         android:valueType="floatType" />
-</set><!-- From: file:/Users/babakpourkazemi/Documents/Coding%20Projects/Github/EncoreMobile/res/animator/imageview_grow_and_rotate.xml -->
+</set><!-- From: file:/Users/babakpourkazemi/Documents/Coding%20Projects/Github/EncoreMobile/res/animator/rotate_and_fadein.xml -->

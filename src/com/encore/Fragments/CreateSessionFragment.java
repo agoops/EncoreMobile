@@ -45,7 +45,6 @@ public class CreateSessionFragment extends Fragment implements View.OnClickListe
     private Button sendButton;
     private ProgressBar progressBar;
     private boolean isChecked;
-    private int type = 0;
     private String videoFilepath, thumbnailFilepath;
 
     private CrowdAdapter crowdAdapter;

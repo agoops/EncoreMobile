@@ -34,7 +34,7 @@
 1388186364000 2001 00533ec317ffdeb36d92d0e896dfbc89b77df7ae /Users/babakpourkazemi/Documents/Coding Projects/Github/EncoreMobile/src/com/encore/AudioPlayback.java
 1388004471000 2787 67c4c832c981039d3c4fae8460a0c84d2e9acf24 /Users/babakpourkazemi/Documents/Coding Projects/Github/EncoreMobile/src/com/encore/widget/SessionsAdapter.java
 1388004400000 1830 647921d829e453d59c11113fcdb3c53279ace101 /Users/babakpourkazemi/Documents/Coding Projects/Github/EncoreMobile/src/com/encore/SessionViewAdapter.java
-1388529233000 15228 11cf1e564dfc5a378a0b6846d98ddcb9586e3ef1 /Users/babakpourkazemi/Documents/Coding Projects/Github/EncoreMobile/src/com/encore/InboxViewAdapter.java
+1388529432000 15231 268d2c8d3038444f592e866b0a7c9ae07c671fb6 /Users/babakpourkazemi/Documents/Coding Projects/Github/EncoreMobile/src/com/encore/InboxViewAdapter.java
 1388161867000 534 0b56f0124df481d9dfaf92840af1a0fe5f986de1 /Users/babakpourkazemi/Documents/Coding Projects/Github/EncoreMobile/src/com/encore/models/Crowds.java
 1388448342000 3605 35c42367e3cd611c682e6cd59f6b8df1d498d899 /Users/babakpourkazemi/Documents/Coding Projects/Github/EncoreMobile/src/com/encore/FriendsFragmentAdapter.java
 1388428300000 2554 ddff78fadeab1659e18c884806232fa761efca77 /Users/babakpourkazemi/Documents/Coding Projects/Github/EncoreMobile/src/com/encore/widget/CommentDialog.java
@@ -42,8 +42,8 @@
 1388186219000 3220 6651ea74c5c48112504621a1b91b2ae1e427341c /Users/babakpourkazemi/Documents/Coding Projects/Github/EncoreMobile/src/com/encore/Fragments/SignupFragment.java
 1386622277000 294 29059cd587e020460f5f91b332063980ca4aad95 /Users/babakpourkazemi/Documents/Coding Projects/Github/EncoreMobile/src/com/encore/EncoreApplication.java
 1388340552000 975 28edab64a47896615a7484a5a155e9d91485a493 /Users/babakpourkazemi/Documents/Coding Projects/Github/EncoreMobile/src/com/encore/models/Likes.java
-1388528337000 11089 b93172b0879732f5192ee4b24dffc776a93669d5 /Users/babakpourkazemi/Documents/Coding Projects/Github/EncoreMobile/src/com/encore/Fragments/CameraFragment.java
-1388030798000 1146 243358e8f099c0d700c4d012d374b24797b0a0c4 /Users/babakpourkazemi/Documents/Coding Projects/Github/EncoreMobile/src/com/encore/StartSession.java
+1388529678000 11081 8617e88743aeaac52ab304d9c157d9973984eed7 /Users/babakpourkazemi/Documents/Coding Projects/Github/EncoreMobile/src/com/encore/Fragments/CameraFragment.java
+1388529985000 1181 b1a66da67a72f2033a5ebfb2808d1e8e8e9ee42f /Users/babakpourkazemi/Documents/Coding Projects/Github/EncoreMobile/src/com/encore/StartSession.java
 1388004855000 6675 3f09e2aaed4a087485e36f7d6dc823a81c9ca5e1 /Users/babakpourkazemi/Documents/Coding Projects/Github/EncoreMobile/src/com/encore/Fragments/RecordSessionFragment.java
 1388186356000 3184 b9c7422b3ada0adee0eea1de9f04f8d10c94dc39 /Users/babakpourkazemi/Documents/Coding Projects/Github/EncoreMobile/src/com/encore/views/UsersFragment.java
 1388004400000 723 f8631a501cd6fb69547e152d59c66d03275a3497 /Users/babakpourkazemi/Documents/Coding Projects/Github/EncoreMobile/src/com/encore/models/Friend.java
@@ -65,7 +65,7 @@
 1388447731000 2102 293a69b4ce452f559c825202883866dbc11c6674 /Users/babakpourkazemi/Documents/Coding Projects/Github/EncoreMobile/src/com/encore/util/T.java
 1388004400000 671 597fce161ce50be10021f0e1827ed835a3fc3a00 /Users/babakpourkazemi/Documents/Coding Projects/Github/EncoreMobile/src/com/encore/models/Song.java
 1388004400000 1424 4f13cb5cd11a58eac01619c2598adbd788476bd0 /Users/babakpourkazemi/Documents/Coding Projects/Github/EncoreMobile/src/com/encore/models/PostSession.java
-1388453268000 9668 e857a39b0814268ad1ca650b5c0f74ccada3a6d5 /Users/babakpourkazemi/Documents/Coding Projects/Github/EncoreMobile/src/com/encore/Fragments/CreateSessionFragment.java
+1388529985000 9642 3e9f9414f0e1e45bb019b96fe3b0cebc766399e8 /Users/babakpourkazemi/Documents/Coding Projects/Github/EncoreMobile/src/com/encore/Fragments/CreateSessionFragment.java
 1388004471000 4673 6bc29b15225836ae38b85bf3ed28ce54f0db6a41 /Users/babakpourkazemi/Documents/Coding Projects/Github/EncoreMobile/src/com/encore/widget/NewsfeedLoader.java
 1388186219000 4492 9ce48a852ff74ceae2063f60df49c04e94727bb6 /Users/babakpourkazemi/Documents/Coding Projects/Github/EncoreMobile/src/com/encore/views/FriendsFragment.java
 1388186463000 1360 74325d438a09899adab3da6a70d444add5c33219 /Users/babakpourkazemi/Documents/Coding Projects/Github/EncoreMobile/src/com/encore/SessionView.java

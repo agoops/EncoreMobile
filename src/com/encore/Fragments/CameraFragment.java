@@ -159,7 +159,7 @@ public class CameraFragment extends Fragment implements
                     send.setVisibility(View.VISIBLE);
                     // Show the send button, and animate its appearance
                     AnimatorSet set = (AnimatorSet) AnimatorInflater.loadAnimator(context,
-                            R.animator.imageview_grow_and_rotate);
+                            R.animator.rotate_and_fadein);
                     Log.d(TAG, "send.toString(): " + send.toString() + ", set.toString(): " + set.toString());
                     set.setTarget(send);
                     set.start();

@@ -63,8 +63,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:padding="10dp"
-        android:background="#eee"
-        android:layout_below="@id/thumbnail_container" >
+        android:background="@drawable/background_333_transparent"
+        android:layout_alignBottom="@id/thumbnail_container" >
 
         <LinearLayout
             android:layout_height="wrap_content"
@@ -83,6 +83,7 @@
                 android:layout_height="match_parent"
                 android:gravity="center"
                 android:text="0 likes"
+                android:textColor="#fff"
                 android:paddingLeft="10dp" />
         </LinearLayout>
 
@@ -97,13 +98,14 @@
                 android:layout_width="32dp"
                 android:layout_height="32dp"
                 android:gravity="center"
-                android:src="@drawable/comment_black" />
+                android:src="@drawable/comment_white" />
             <TextView
                 android:id="@+id/comments_tv"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:gravity="center"
                 android:text="0 comments"
+                android:textColor="#fff"
                 android:paddingLeft="10dp"/>
         </LinearLayout>
     </LinearLayout>
@@ -113,6 +115,7 @@
         android:layout_gravity="center"
         android:layout_height="wrap_content"
         android:layout_width="match_parent"
+        android:textStyle="bold"
         android:text="Reply"
-        android:layout_below="@id/likes_and_comments_container"/>
+        android:layout_below="@id/thumbnail_container"/>
 </RelativeLayout>
