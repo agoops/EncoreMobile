@@ -4870,11 +4870,6 @@ false
                 qualifiers=""
                 type="drawable" />
             <file
-                name="like_red_border"
-                path="/Users/babakpourkazemi/Documents/Coding Projects/Github/EncoreMobile/res/drawable/like_red_border.png"
-                qualifiers=""
-                type="drawable" />
-            <file
                 name="like_red_invert"
                 path="/Users/babakpourkazemi/Documents/Coding Projects/Github/EncoreMobile/res/drawable/like_red_invert.png"
                 qualifiers=""

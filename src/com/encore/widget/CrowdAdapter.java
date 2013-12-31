@@ -78,7 +78,7 @@ public class CrowdAdapter extends ArrayAdapter<Crowd> implements OnCheckedChange
 				Toast.makeText(context, "You can only pick 1 crowd (for now!)", Toast.LENGTH_SHORT).show();
 				checkboxView.setChecked(false);
 			} else {
-				Log.d("CrowdAdapter", "Checked " + (Integer)checkboxView.getTag());
+				Log.d("CrowdAdapter", "Checked " + position);
 				selectedCrowds.add(crowds.get(position));
 				numCrowdsSelected++;
 			}
@@ -91,6 +91,10 @@ public class CrowdAdapter extends ArrayAdapter<Crowd> implements OnCheckedChange
 	public List<Crowd> getSelectedCrowds() {
 		return selectedCrowds;
 	}
+
+    public int getSelectedCrowdId() {
+        return selectedCrowds.get(0).getId();
+    }
 
     public void setItemList(ArrayList<Crowd> crowds) {
         this.crowds = crowds;

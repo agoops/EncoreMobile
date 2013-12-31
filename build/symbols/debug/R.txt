@@ -296,12 +296,11 @@ int drawable intro_background_blurred 0x7f020065
 int drawable jay 0x7f020066
 int drawable like_black_border 0x7f020067
 int drawable like_button_style 0x7f020068
-int drawable like_red_border 0x7f020069
-int drawable like_red_invert 0x7f02006a
-int drawable orange_gradient 0x7f02006b
-int drawable play_32x32 0x7f02006c
-int drawable play_64x64 0x7f02006d
-int drawable rapchat_logo 0x7f02006e
+int drawable like_red_invert 0x7f020069
+int drawable orange_gradient 0x7f02006a
+int drawable play_32x32 0x7f02006b
+int drawable play_64x64 0x7f02006c
+int drawable rapchat_logo 0x7f02006d
 int id action_bar 0x7f090023
 int id action_bar_activity_content 0x7f09001a
 int id action_bar_container 0x7f090022

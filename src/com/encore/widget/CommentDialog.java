@@ -1,10 +1,5 @@
 package com.encore.widget;
 
-import java.lang.reflect.Type;
-import java.util.ArrayList;
-import java.util.List;
-
-import com.encore.util.T;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
@@ -17,24 +12,30 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 
-import com.encore.R;
 import com.encore.API.APIService;
+import com.encore.R;
 import com.encore.models.Comment;
+import com.encore.util.T;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
+import java.lang.reflect.Type;
+import java.util.ArrayList;
+import java.util.List;
+
 public class CommentDialog extends Dialog implements OnClickListener {
 	private static final String TAG = "CommentDialog";
-	private Context context;
 	private ListView commentLv;
-	private EditText postCommentEt;
-	private Button postCommentBtn;
-	private Dialog dialog;
-	private int sessionId;
+    private EditText postCommentEt;
+    private Button postCommentBtn;
+    private Dialog dialog;
+
+    private Context context;
+    private int sessionId;
 	private List<Comment> comments;
 	
 	public CommentDialog(Context c) {
-		super(c); 
+		super(c);
 		this.context = c;
 	}
 	
@@ -44,14 +45,15 @@ public class CommentDialog extends Dialog implements OnClickListener {
 		// 1. Set the dialog's settings
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
 		setContentView(R.layout.comment_dialog);
-		
+
 		// 2. Get our views
 		commentLv = (ListView) findViewById(R.id.comment_listview);
 		postCommentEt = (EditText) findViewById(R.id.comment_edittext);
 		postCommentBtn = (Button) findViewById(R.id.comment_post_button);
+
 		postCommentBtn.setOnClickListener(this);
-		
-		// 3. Finally attach the comments 
+
+		// 3. Finally attach the comments
 		CommentsAdapter adapter = new CommentsAdapter(context, R.layout.comment_list_row, comments);
 		commentLv.setAdapter(adapter);
 	}
@@ -73,7 +75,8 @@ public class CommentDialog extends Dialog implements OnClickListener {
 		}
 		dismiss();
 	}
-	
+
+    // Useful for passing the comments data in from another class
 	public void setDialogArgs(Bundle args) {
 		this.sessionId = args.getInt("sessionId");
 		String commentsJson = args.getString("comments");

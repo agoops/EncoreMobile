@@ -24,11 +24,13 @@ import com.encore.models.Crowds;
 import com.encore.models.Friends;
 import com.encore.models.Profile;
 import com.encore.util.T;
+import com.encore.views.HomeActivity;
 import com.encore.widget.CrowdAdapter;
 import com.google.gson.Gson;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 /**
  * Created by babakpourkazemi on 12/25/13.
@@ -44,6 +46,7 @@ public class CreateSessionFragment extends Fragment implements View.OnClickListe
     private ProgressBar progressBar;
     private boolean isChecked;
     private int type = 0;
+    private String videoFilepath, thumbnailFilepath;
 
     private CrowdAdapter crowdAdapter;
     private FriendsFragmentAdapter friendsAdapter;
@@ -63,6 +66,11 @@ public class CreateSessionFragment extends Fragment implements View.OnClickListe
         crowdsAndFriendsLv = (ListView) view.findViewById(R.id.crowds_and_friends_lv);
         sendButton = (Button) view.findViewById(R.id.send_button);
         progressBar = (ProgressBar) view.findViewById(R.id.new_session_pb);
+
+        // Get filepaths from the CameraFragment
+        Bundle args = getArguments();
+        videoFilepath = args.getString(T.FILEPATH);
+        thumbnailFilepath = args.getString(T.THUMBNAIL_FILEPATH);
 
         // Hide everything until we get some data
         setVisibility(0);
@@ -99,23 +107,50 @@ public class CreateSessionFragment extends Fragment implements View.OnClickListe
         Log.d(TAG, "Send button clicked");
         switch(v.getId())
         {
-            // TODO: Make API calls
             // TODO: Return to HomeActivity onSend
             case R.id.send_button:
-//                Intent api = new Intent(getActivity(), APIService.class);
+                String sessionTitle, crowdId, crowdTitle;
+                List<String> crowdUsernames;
+                boolean useExistingCrowd;
 
-                if(isChecked) {
-                    Log.d(TAG, "Send clicked, switch checked");
-                    // POST sessions/
-//                    api.putExtra(T.API_TYPE, T.CREATE_SESSION);
-//                    getActivity().startService(api);
-                } else if(!isChecked) {
-                    Log.d(TAG, "Send clicked, switch not checked");
-                    // POST crowds/, then sessions/
-//                    api.putExtra(T.API_TYPE, T.CREATE_CROWD);
-//                    getActivity().startService(api);
+                sessionTitle = newSessionTitle.getText().toString();
+                useExistingCrowd = !isChecked;
+
+                Intent api = new Intent(getActivity(), APIService.class);
+                api.putExtra(T.API_TYPE, T.CREATE_SESSION);
+                if(useExistingCrowd) {
+                    Log.d(TAG, "Send clicked, switch checked = use an existing crowd");
+                    // sessionTitle, useExistingCrowd, Filepath, and crowdId
+                    sessionTitle = newSessionTitle.getText().toString();
+                    crowdId = Integer.toString(crowdAdapter.getSelectedCrowdId());
+
+                    api.putExtra(T.SESSION_TITLE, sessionTitle);
+                    api.putExtra(T.SESSION_USE_EXISTING_CROWD, useExistingCrowd);
+                    api.putExtra(T.FILEPATH, videoFilepath);
+                    api.putExtra(T.SESSION_CROWD_ID, crowdId);
+                    api.putExtra(T.THUMBNAIL_FILEPATH, thumbnailFilepath);
+
+                    getActivity().startService(api);
+                } else {
+                    Log.d(TAG, "Send clicked, switch not checked = create crowd");
+                    // sessionTitle, useExistingCrowd, Filepath, crowdTitle, crowdMembers
+                    sessionTitle = newSessionTitle.getText().toString();
+                    crowdTitle = newCrowdTitle.getText().toString();
+                    crowdUsernames = friendsAdapter.getSelectedUsernames();
+                    String crowdMembers = new Gson().toJson(crowdUsernames);
+
+                    api.putExtra(T.SESSION_TITLE, sessionTitle);
+                    api.putExtra(T.SESSION_USE_EXISTING_CROWD, useExistingCrowd);
+                    api.putExtra(T.FILEPATH, videoFilepath);
+                    api.putExtra(T.SESSION_CROWD_TITLE, crowdTitle);
+                    api.putExtra(T.SESSION_CROWD_MEMBERS, crowdMembers);
+                    api.putExtra(T.THUMBNAIL_FILEPATH, thumbnailFilepath);
+
+                    getActivity().startService(api);
                 }
 
+                Intent homeActivity = new Intent(getActivity(), HomeActivity.class);
+                getActivity().startActivity(homeActivity);
                 break;
             default:
                 break;
@@ -144,6 +179,7 @@ public class CreateSessionFragment extends Fragment implements View.OnClickListe
     }
 
     private void setVisibility(int type) {
+        // Set the visibility of a group of views
 
         if(type == 0) {
             progressBar.setVisibility(View.VISIBLE);
@@ -151,6 +187,7 @@ public class CreateSessionFragment extends Fragment implements View.OnClickListe
             crowdsAndFriendsLv.setVisibility(View.GONE);
             sendButton.setVisibility(View.GONE);
         } else if(type == 1) {
+            // The crowd title textview should only be visible if isChecked
             int crowdTitleVisibility = (isChecked) ? View.VISIBLE : View.GONE;
 
             progressBar.setVisibility(View.GONE);

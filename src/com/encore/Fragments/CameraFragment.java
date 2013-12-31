@@ -179,10 +179,16 @@ public class CameraFragment extends Fragment implements
                 }
                 if (sessionId == -1) {
                     // take to screen to collect new information
-//                    Log.d(TAG, "create new session with recorded clip...not implemented yet");
                     Log.d(TAG, "Creating new session");
+                    generateThumbnail();
                     FragmentTransaction ft = getFragmentManager().beginTransaction();
                     CreateSessionFragment createSessionFragment = new CreateSessionFragment();
+
+                    // Pass the filepath to the session
+                    Bundle args = new Bundle();
+                    args.putString(T.FILEPATH, mediaFile.getAbsolutePath());
+                    args.putString(T.THUMBNAIL_FILEPATH, thumbnailFilepath);
+                    createSessionFragment.setArguments(args);
 
                     ft.replace(R.id.fragment_placeholder, createSessionFragment);
                     ft.addToBackStack(null);
@@ -212,7 +218,7 @@ public class CameraFragment extends Fragment implements
             stream = new FileOutputStream(thumbnailFilepath);
             Bitmap bitmap = ThumbnailUtils.createVideoThumbnail(mediaFile.getAbsolutePath(), MediaStore.Video.Thumbnails.MINI_KIND);
             bitmap.compress(Bitmap.CompressFormat.JPEG, 100, stream); // 100 is highest quality
-            Log.d(TAG, "jpeg generated!!!");
+            Log.d(TAG, "jpeg thumbnail successfully generated!");
         } catch (FileNotFoundException e) {
             Log.d(TAG, "Error creating FileOutputStream.");
             e.printStackTrace();

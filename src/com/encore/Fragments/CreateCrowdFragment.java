@@ -27,7 +27,6 @@ import com.google.gson.Gson;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Set;
 
 public class CreateCrowdFragment extends Fragment implements OnClickListener {
 	private static final String TAG = "CreateCrowdFragment";
@@ -35,7 +34,7 @@ public class CreateCrowdFragment extends Fragment implements OnClickListener {
 	private ListView listview;
 	private FriendsFragmentAdapter adapter;
     private ArrayList<Profile> friends;
-	private int[] selectedFriends;
+	private String[] selectedFriends;
     private APIService api;
 
 	@Override
@@ -68,14 +67,10 @@ public class CreateCrowdFragment extends Fragment implements OnClickListener {
 		switch(v.getId()) {
 		case R.id.createCrowdBtn:
 			// Get the String array of selected usernames to add as crowd members
-			Set<Integer> selectedFriendsSet = adapter.getSelectedFriends();
-            List<Integer> selectedFriendsList = new ArrayList<Integer>(selectedFriendsSet);
+			List<String> selectedFriendsList = adapter.getSelectedUsernames();
+			selectedFriends = new String[selectedFriendsList.size()];
+            selectedFriends = selectedFriendsList.toArray(selectedFriends);
 
-			selectedFriends = new int[selectedFriendsList.size()];
-			for(int i=0; i<selectedFriendsList.size(); i++) {
-				selectedFriends[i] = selectedFriendsList.get(i);
-			}
-			
 			String crowdTitle = crowdTitleET.getText().toString();
 			if(crowdTitle == null || crowdTitle.equals("")) {
 				Toast.makeText(getActivity(), "Forgetting a title?", Toast.LENGTH_LONG).show();

@@ -36,14 +36,6 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name="com.encore.views.LoginActivity" >
-        </activity>
-        <activity android:name="com.encore.views.SignUpActivity" >
-        </activity>
-        <activity
-            android:name="com.encore.MyActivity"
-            android:label="@string/app_name" >
-        </activity>
         <activity android:name="com.encore.AndroidVideoCapture" >
         </activity>
         <activity
@@ -56,13 +48,9 @@
        
         <activity android:name="com.encore.VideoPlayback" >
         </activity>
-        <activity android:name="com.encore.CameraActivity2" >
-        </activity>
         <activity android:name="com.encore.StartSession" >
         </activity>
           <activity android:name="com.encore.StartSession2" >
-        </activity>
-         <activity android:name="com.encore.views.FriendsActivity" >
         </activity>
         <activity android:name="com.encore.views.NewsfeedActivity" >
         </activity>
@@ -70,9 +58,9 @@
             android:windowSoftInputMode="adjustPan">
         </activity>
 
-        <service android:name="UploadService2" >
-        </service>
-        
+        <service android:name="UploadService2"></service>
+
+
         <service android:enabled="true" android:name=".API.APIService" />
     </application>
 

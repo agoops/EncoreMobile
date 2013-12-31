@@ -46,65 +46,39 @@ public class API {
 	private boolean isSigningIn = false;
 	private static final String AUTHORIZATION = "Authorization";
 	private static String ACCESS_TOKEN = "invalidaccesstoken";
-	private static final String PROD = "http://rapchat-django.herokuapp.com";
-	private static final String QA = "http://rapchat-django.herokuapp.com";
+	private static final String PROD = "http://rapchat-django.herokuapp.com/";
+	private static final String QA = "http://rapchat-django.herokuapp.com/";
 	private static final String BASE_URL = Constants.DEBUG ? QA:PROD;
 
 	// Common URLs
-	private static final String USERS = BASE_URL + "/users/";
+	private static final String USERS = BASE_URL + "users/";
     private static final String USER_ME = USERS + "me/";
     private static final String SESSIONS = USER_ME + "sessions/";
-    private static final String CLIPS = BASE_URL + "/clips/";
     private static final String FRIENDS = USER_ME + "friends/";
     private static final String CROWDS = USER_ME + "crowds/";
     private static final String REQUESTS = FRIENDS + "requests/";
-
-	private static final String REPLY = REQUESTS + "reply/";
+    private static final String REPLY = REQUESTS + "reply/";
+    private static final String LIKES = USER_ME + "likes/";
     // Users
 	private static final String SIGN_IN = USERS + "obtain-token/";
-    private static final String ALL_USERS = USERS;
-    private static final String GET_USER = USERS + "/find/%s";
     private static final String SIGN_UP = USERS;
-	private static final String UPDATE_USER = USERS + "%s";
-	private static final String DELETE_USER = USERS + "%s";
-
-	// Sessions
-	private static final String CREATE_SESSION = SESSIONS;
-	private static final String GET_SESSION = SESSIONS + "%s";
-	private static final String GET_SESSIONS = SESSIONS;
-	private static final String ADD_CLIP = SESSIONS + "%s/clips/";
-
-	// Clips
-	// private static final String ALL_CLIPS = CLIPS;
-	// private static final String CREATE_CLIP = CLIPS;
-	// private static final String GET_CLIP = CLIPS + "%s";
-	// private static final String UPDATE_CLIP = CLIPS + "%s";
-	// private static final String DELETE_CLIP = CLIPS + "%s";
-
-	// Friends
-	private static final String ALL_FRIENDS = FRIENDS;
-	private static final String GET_FRIEND = FRIENDS + "%s"; // untested
-	private static final String GET_FRIEND_REQUEST = FRIENDS + "requests";
+    private static final String UPDATE_USER = USERS + "%s/";
+    private static final String DELETE_USER = USERS + "%s/";
+    // Sessions
+    private static final String GET_SESSIONS = SESSIONS;
+    private static final String CREATE_SESSION = SESSIONS;
+    private static final String GET_SESSION = BASE_URL + "sessions/%s/";
+    // Clips
+    private static final String GET_CLIP_STREAM = SESSIONS + "clip/";
+    private static final String ADD_CLIP = BASE_URL + "sessions/%s/clips/";
+    // Friends
 	private static final String SEND_FRIEND_REQUEST = FRIENDS + "requests/";
-	private static final String CREATE_FRIEND_REQUEST_REPLY = FRIENDS
-			+ "requests/reply";
-
-	// Crowds
+    // Crowds
 	private static final String GET_CROWDS = CROWDS;
-	private static final String CREATE_CROWD = CROWDS;
-	// private static final String GET_CROWD = CROWDS + "%s";
-	// private static final String UPDATE_CROWD = CROWDS + "%s";
-	// private static final String DELETE_CROWD = CROWDS + "%s";
-	
-	// Comments
-	private static final String CREATE_COMMENT = SESSIONS + "%s/comments/";
-	
-	//	Likes
-	private static final String LIKES = USER_ME + "likes/";
-	
-	// Clip stream
-	private static final String GET_CLIP_STREAM = SESSIONS + "clip/";
-	
+    private static final String CREATE_CROWD = CROWDS;
+    // Comments
+	private static final String CREATE_COMMENT = BASE_URL + "sessions/%s/comments/";
+
 	public API(OkHttpClient client, Context context) {
 		this.client = client;
 		this.ACCESS_TOKEN = "Token " + TokenHelper.getToken(context);

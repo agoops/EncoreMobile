@@ -1138,12 +1138,11 @@ containing a value of this type.
         public static final int jay=0x7f020066;
         public static final int like_black_border=0x7f020067;
         public static final int like_button_style=0x7f020068;
-        public static final int like_red_border=0x7f020069;
-        public static final int like_red_invert=0x7f02006a;
-        public static final int orange_gradient=0x7f02006b;
-        public static final int play_32x32=0x7f02006c;
-        public static final int play_64x64=0x7f02006d;
-        public static final int rapchat_logo=0x7f02006e;
+        public static final int like_red_invert=0x7f020069;
+        public static final int orange_gradient=0x7f02006a;
+        public static final int play_32x32=0x7f02006b;
+        public static final int play_64x64=0x7f02006c;
+        public static final int rapchat_logo=0x7f02006d;
     }
     public static final class id {
         public static final int action_bar=0x7f090023;

@@ -1,7 +1,5 @@
 package com.encore.widget;
 
-import java.util.List;
-
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,6 +9,8 @@ import android.widget.TextView;
 
 import com.encore.R;
 import com.encore.models.Comment;
+
+import java.util.List;
 
 public class CommentsAdapter extends ArrayAdapter<Comment> {
 	private Context context;
@@ -43,7 +43,7 @@ public class CommentsAdapter extends ArrayAdapter<Comment> {
 		
 		// And set the creator and comment
 		Comment comment = comments.get(position);
-		viewHolder.creator.setText(Integer.toString(comment.getCreator()));
+		viewHolder.creator.setText(comment.getCommenter());
 		viewHolder.comment.setText(comment.getText());
 		
 		return rowView;

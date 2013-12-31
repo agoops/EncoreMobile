@@ -265,6 +265,11 @@ public class InboxViewAdapter extends ArrayAdapter<Session> implements OnClickLi
         dArgs.putString("comments", json);
         cDialog.setDialogArgs(dArgs);
         cDialog.show();
+//        Intent commentsIntent = new Intent(mContext, CommentDialog.class);
+//        String json = (new Gson()).toJson(sesh.getComments());
+//        commentsIntent.putExtra("sessionId", sesh.getId());
+//        commentsIntent.putExtra("comments", json);
+//        getContext().startActivity(commentsIntent);
     }
 
     private void playVideo(Session sesh) {

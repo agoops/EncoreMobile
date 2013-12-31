@@ -281,17 +281,23 @@ public class APIService extends IntentService {
 	}
 
 	private void createSession(Bundle data) {
-	    MultipartEntityBuilder multipartEntity = MultipartEntityBuilder.create();   
-	    multipartEntity.setMode(HttpMultipartMode.BROWSER_COMPATIBLE);
-	    
-	    multipartEntity.setBoundary("---*******");
-	    multipartEntity.addPart("clip", new FileBody(new File(data.getString(T.FILEPATH))));
-	    multipartEntity.addTextBody("title", data.getString(T.SESSION_TITLE));
-	    Log.d(TAG, "CrOwd ID being sent: " + data.getString(T.SESSION_CROWD_ID));
-		multipartEntity.addTextBody("crowd_id", data.getString(T.SESSION_CROWD_ID));
-		
-		multipartEntity.addTextBody("use_existing_crowd", data.getBoolean(T.SESSION_USE_EXISTING_CROWD) ? "True": "False");
-	    
+        MultipartEntityBuilder multipartEntity = MultipartEntityBuilder.create();
+        multipartEntity.setMode(HttpMultipartMode.BROWSER_COMPATIBLE);
+
+        multipartEntity.setBoundary("---*******");
+        multipartEntity.addTextBody("title", data.getString(T.SESSION_TITLE));
+        multipartEntity.addPart("clip", new FileBody(new File(data.getString(T.FILEPATH))));
+        multipartEntity.addPart("thumbnail", new FileBody(new File(data.getString(T.THUMBNAIL_FILEPATH))));
+
+        boolean useExistingCrowd = data.getBoolean(T.SESSION_USE_EXISTING_CROWD);
+        multipartEntity.addTextBody("use_existing_crowd", (useExistingCrowd) ? "True":"False");
+        if(useExistingCrowd) {
+            multipartEntity.addTextBody("crowd", data.getString(T.SESSION_CROWD_ID));
+        } else {
+            multipartEntity.addTextBody("crowd_title", data.getString(T.SESSION_CROWD_TITLE));
+            multipartEntity.addTextBody("crowd_members", data.getString(T.SESSION_CROWD_MEMBERS));
+        }
+
 	    HttpEntity entity = multipartEntity.build();
 		try {
 			String result = api.createSession(entity);

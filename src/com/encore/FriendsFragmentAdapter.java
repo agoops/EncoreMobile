@@ -25,14 +25,14 @@ public class FriendsFragmentAdapter extends ArrayAdapter<Profile> implements OnC
 	private List<Profile> mFriendList;
 	private String tag = "FriendsFragmentAdapter";
 	private static LayoutInflater inflater = null;
-    private Set<Integer> selectedFriendsSet;
+    private Set<String> selectedUsernamesSet;
 
 	public FriendsFragmentAdapter(Context context, int resource,
 			List<Profile> objects) {
 		super(context, resource, objects);
 		mContext = context;
 		mFriendList = objects;
-        selectedFriendsSet = new HashSet<Integer>();
+        selectedUsernamesSet = new HashSet<String>();
 	}
 
 	// public FriendsFragmentAdapter(Context context, List<Profile> list) {
@@ -104,19 +104,24 @@ public class FriendsFragmentAdapter extends ArrayAdapter<Profile> implements OnC
 		int position = (Integer) buttonView.getTag();
 
         // Get the checked friend's uid
-        int selectedId = mFriendList.get(position).getUser().getUserId();
+        String selectedUsername= mFriendList.get(position).getUser().getUsername();
 
         if(isChecked) {
-            selectedFriendsSet.add(selectedId);
+            selectedUsernamesSet.add(selectedUsername);
 		} else {
-            selectedFriendsSet.remove(selectedId);
+            selectedUsernamesSet.remove(selectedUsername);
 		}
 	}
 	
-	public Set<Integer> getSelectedFriends() {
-		Log.d(TAG, "getting selected friends: " + selectedFriendsSet.toString());
-		return selectedFriendsSet;
+	public Set<String> getSelectedFriends() {
+		Log.d(TAG, "getting selected friends: " + selectedUsernamesSet.toString());
+		return selectedUsernamesSet;
 	}
+
+    public List<String> getSelectedUsernames() {
+        List<String> usernames = new ArrayList<String>(selectedUsernamesSet);
+        return usernames;
+    }
 
 	static class FriendsHolder {
 		TextView username;
