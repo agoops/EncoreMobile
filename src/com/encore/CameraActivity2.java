@@ -17,6 +17,7 @@ import android.view.SurfaceView;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
+import android.widget.ImageView;
 
 import com.encore.API.APIService;
 import com.encore.util.T;
@@ -35,8 +36,8 @@ public class CameraActivity2 extends Activity implements
 	private SurfaceView surfaceView;
 	private SurfaceHolder surfaceHolder;
 	private Camera camera;
-	private Button record;
-	private Button send;
+	private ImageView record;
+	private ImageView send;
 
 	private File mediaFile;
 	boolean isRecording;
@@ -141,8 +142,8 @@ public class CameraActivity2 extends Activity implements
 	}
 
 	private void setUpButtons() {
-		record = (Button) findViewById(R.id.record);
-		send = (Button) findViewById(R.id.send);
+		record = (ImageView) findViewById(R.id.record);
+		send = (ImageView) findViewById(R.id.send);
 
 		record.setOnClickListener(this);
 		send.setOnClickListener(this);

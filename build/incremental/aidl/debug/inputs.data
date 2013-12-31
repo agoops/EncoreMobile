@@ -4,7 +4,7 @@
 1388004457000 2851 dea70008cb11be734d6537d92740dc5a56f6091b /Users/babakpourkazemi/Documents/Coding Projects/Github/EncoreMobile/src/com/encore/Fragments/ProfileFragment.java
 1388454952000 16131 6f180a80eaf650d41eece8b9d6405ebdebe62137 /Users/babakpourkazemi/Documents/Coding Projects/Github/EncoreMobile/src/com/encore/API/API.java
 1386622277000 4108 0284857bacbd5bb668d78ca743509cda77fbeba0 /Users/babakpourkazemi/Documents/Coding Projects/Github/EncoreMobile/src/com/encore/UploadService2.java
-1388186442000 8400 9d67e1421c9ffc0afd2c663c0c4ae48162b05700 /Users/babakpourkazemi/Documents/Coding Projects/Github/EncoreMobile/src/com/encore/CameraActivity2.java
+1388529233000 8445 f7eae2b3e1b8b17ffe928fd8f603cced4251e911 /Users/babakpourkazemi/Documents/Coding Projects/Github/EncoreMobile/src/com/encore/CameraActivity2.java
 1388200089000 646 45e7fc14ca99f975a4278d467e505b8ad55b4197 /Users/babakpourkazemi/Documents/Coding Projects/Github/EncoreMobile/src/com/encore/models/Like.java
 1388033171000 2734 6e3502647195e7864c6ff280fc49539375fde1b2 /Users/babakpourkazemi/Documents/Coding Projects/Github/EncoreMobile/src/com/encore/FriendRequestFragmentAdapter.java
 1386622277000 240 4754e8674638db4a1ee645da5c06f3a1a2de9d80 /Users/babakpourkazemi/Documents/Coding Projects/Github/EncoreMobile/src/Bus/BusProvider.java
@@ -34,7 +34,7 @@
 1388186364000 2001 00533ec317ffdeb36d92d0e896dfbc89b77df7ae /Users/babakpourkazemi/Documents/Coding Projects/Github/EncoreMobile/src/com/encore/AudioPlayback.java
 1388004471000 2787 67c4c832c981039d3c4fae8460a0c84d2e9acf24 /Users/babakpourkazemi/Documents/Coding Projects/Github/EncoreMobile/src/com/encore/widget/SessionsAdapter.java
 1388004400000 1830 647921d829e453d59c11113fcdb3c53279ace101 /Users/babakpourkazemi/Documents/Coding Projects/Github/EncoreMobile/src/com/encore/SessionViewAdapter.java
-1388456865000 15138 910dca2528907fc7faf75c7624290ad308830913 /Users/babakpourkazemi/Documents/Coding Projects/Github/EncoreMobile/src/com/encore/InboxViewAdapter.java
+1388529233000 15228 11cf1e564dfc5a378a0b6846d98ddcb9586e3ef1 /Users/babakpourkazemi/Documents/Coding Projects/Github/EncoreMobile/src/com/encore/InboxViewAdapter.java
 1388161867000 534 0b56f0124df481d9dfaf92840af1a0fe5f986de1 /Users/babakpourkazemi/Documents/Coding Projects/Github/EncoreMobile/src/com/encore/models/Crowds.java
 1388448342000 3605 35c42367e3cd611c682e6cd59f6b8df1d498d899 /Users/babakpourkazemi/Documents/Coding Projects/Github/EncoreMobile/src/com/encore/FriendsFragmentAdapter.java
 1388428300000 2554 ddff78fadeab1659e18c884806232fa761efca77 /Users/babakpourkazemi/Documents/Coding Projects/Github/EncoreMobile/src/com/encore/widget/CommentDialog.java
@@ -42,7 +42,7 @@
 1388186219000 3220 6651ea74c5c48112504621a1b91b2ae1e427341c /Users/babakpourkazemi/Documents/Coding Projects/Github/EncoreMobile/src/com/encore/Fragments/SignupFragment.java
 1386622277000 294 29059cd587e020460f5f91b332063980ca4aad95 /Users/babakpourkazemi/Documents/Coding Projects/Github/EncoreMobile/src/com/encore/EncoreApplication.java
 1388340552000 975 28edab64a47896615a7484a5a155e9d91485a493 /Users/babakpourkazemi/Documents/Coding Projects/Github/EncoreMobile/src/com/encore/models/Likes.java
-1388454289000 10400 9caa4661c17fbbee205c46eb9bf9ca0cda45f282 /Users/babakpourkazemi/Documents/Coding Projects/Github/EncoreMobile/src/com/encore/Fragments/CameraFragment.java
+1388528337000 11089 b93172b0879732f5192ee4b24dffc776a93669d5 /Users/babakpourkazemi/Documents/Coding Projects/Github/EncoreMobile/src/com/encore/Fragments/CameraFragment.java
 1388030798000 1146 243358e8f099c0d700c4d012d374b24797b0a0c4 /Users/babakpourkazemi/Documents/Coding Projects/Github/EncoreMobile/src/com/encore/StartSession.java
 1388004855000 6675 3f09e2aaed4a087485e36f7d6dc823a81c9ca5e1 /Users/babakpourkazemi/Documents/Coding Projects/Github/EncoreMobile/src/com/encore/Fragments/RecordSessionFragment.java
 1388186356000 3184 b9c7422b3ada0adee0eea1de9f04f8d10c94dc39 /Users/babakpourkazemi/Documents/Coding Projects/Github/EncoreMobile/src/com/encore/views/UsersFragment.java

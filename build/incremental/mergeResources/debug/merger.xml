@@ -4830,6 +4830,16 @@ false
                 qualifiers=""
                 type="drawable" />
             <file
+                name="button_recording_default"
+                path="/Users/babakpourkazemi/Documents/Coding Projects/Github/EncoreMobile/res/drawable/button_recording_default.png"
+                qualifiers=""
+                type="drawable" />
+            <file
+                name="button_recording_pressed"
+                path="/Users/babakpourkazemi/Documents/Coding Projects/Github/EncoreMobile/res/drawable/button_recording_pressed.png"
+                qualifiers=""
+                type="drawable" />
+            <file
                 name="button_style"
                 path="/Users/babakpourkazemi/Documents/Coding Projects/Github/EncoreMobile/res/drawable/button_style.xml"
                 qualifiers=""
@@ -4867,6 +4877,11 @@ false
             <file
                 name="like_black_border"
                 path="/Users/babakpourkazemi/Documents/Coding Projects/Github/EncoreMobile/res/drawable/like_black_border.png"
+                qualifiers=""
+                type="drawable" />
+            <file
+                name="like_button_style"
+                path="/Users/babakpourkazemi/Documents/Coding Projects/Github/EncoreMobile/res/drawable/like_button_style.xml"
                 qualifiers=""
                 type="drawable" />
             <file
@@ -5045,6 +5060,11 @@ false
                 qualifiers=""
                 type="layout" />
             <file
+                name="new_session"
+                path="/Users/babakpourkazemi/Documents/Coding Projects/Github/EncoreMobile/res/layout/new_session.xml"
+                qualifiers=""
+                type="layout" />
+            <file
                 name="newsfeed_fragment"
                 path="/Users/babakpourkazemi/Documents/Coding Projects/Github/EncoreMobile/res/layout/newsfeed_fragment.xml"
                 qualifiers=""
@@ -5135,6 +5155,46 @@ false
                 qualifiers=""
                 type="raw" />
             <file
+                path="/Users/babakpourkazemi/Documents/Coding Projects/Github/EncoreMobile/res/values/attrs.xml"
+                qualifiers="" >
+                <attr
+                    name="switchStyle"
+                    format="reference" />
+
+                <declare-styleable name="Switch" >
+                    <attr
+                        name="textLeft"
+                        format="string" />
+                    <attr
+                        name="textRight"
+                        format="string" />
+                    <attr
+                        name="switchMinWidth"
+                        format="dimension" />
+                    <attr
+                        name="switchPadding"
+                        format="dimension" />
+                    <attr
+                        name="colorUnChecked"
+                        format="color" />
+                    <attr
+                        name="colorChecked"
+                        format="color" />
+                    <attr
+                        name="backgroundDrawable"
+                        format="reference" />
+                    <attr
+                        name="switchDrawable"
+                        format="dimension" />
+                    <attr
+                        name="innerPadding"
+                        format="dimension" />
+                    <attr
+                        name="isChecked"
+                        format="boolean" />
+                </declare-styleable>
+            </file>
+            <file
                 path="/Users/babakpourkazemi/Documents/Coding Projects/Github/EncoreMobile/res/values/color.xml"
                 qualifiers="" >
                 <color name="off_white" >#e9e9e9
@@ -5171,9 +5231,9 @@ false
                 </string>
                 <string name="first_key" >1
                 </string>
-                <string name="app_name" >Rapchat
-                </string>
                 <string name="third_key" >3
+                </string>
+                <string name="app_name" >Rapback
                 </string>
 
                 <string-array name="navbar_titles" >
@@ -5344,55 +5404,20 @@ false
                 </style>
             </file>
             <file
-                name="new_session"
-                path="/Users/babakpourkazemi/Documents/Coding Projects/Github/EncoreMobile/res/layout/new_session.xml"
-                qualifiers=""
-                type="layout" />
-            <file
-                path="/Users/babakpourkazemi/Documents/Coding Projects/Github/EncoreMobile/res/values/attrs.xml"
-                qualifiers="" >
-                <attr
-                    name="switchStyle"
-                    format="reference" />
-
-                <declare-styleable name="Switch" >
-                    <attr
-                        name="textLeft"
-                        format="string" />
-                    <attr
-                        name="textRight"
-                        format="string" />
-                    <attr
-                        name="switchMinWidth"
-                        format="dimension" />
-                    <attr
-                        name="switchPadding"
-                        format="dimension" />
-                    <attr
-                        name="colorUnChecked"
-                        format="color" />
-                    <attr
-                        name="colorChecked"
-                        format="color" />
-                    <attr
-                        name="backgroundDrawable"
-                        format="reference" />
-                    <attr
-                        name="switchDrawable"
-                        format="dimension" />
-                    <attr
-                        name="innerPadding"
-                        format="dimension" />
-                    <attr
-                        name="isChecked"
-                        format="boolean" />
-                </declare-styleable>
-            </file>
-            <file
-                name="like_button_style"
-                path="/Users/babakpourkazemi/Documents/Coding Projects/Github/EncoreMobile/res/drawable/like_button_style.xml"
+                name="ic_action_send_now"
+                path="/Users/babakpourkazemi/Documents/Coding Projects/Github/EncoreMobile/res/drawable/ic_action_send_now.png"
                 qualifiers=""
                 type="drawable" />
+            <file
+                name="ic_action_send_now_pressed"
+                path="/Users/babakpourkazemi/Documents/Coding Projects/Github/EncoreMobile/res/drawable/ic_action_send_now_pressed.png"
+                qualifiers=""
+                type="drawable" />
+            <file
+                name="imageview_grow_and_rotate"
+                path="/Users/babakpourkazemi/Documents/Coding Projects/Github/EncoreMobile/res/animator/imageview_grow_and_rotate.xml"
+                qualifiers=""
+                type="animator" />
         </source>
         <source path="/Users/babakpourkazemi/Documents/Coding Projects/Github/EncoreMobile/build/res/rs/debug" />
     </dataSet>

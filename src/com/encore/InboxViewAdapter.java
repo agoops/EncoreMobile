@@ -190,7 +190,7 @@ public class InboxViewAdapter extends ArrayAdapter<Session> implements OnClickLi
         case R.id.reply:
             // Pass crowdId and sessionTitle on to StartSession2
             // who in turn passes it on to RecordFragment
-            launchRecordFragment(sesh);
+            launchSessionActivity(sesh);
             break;
 		case R.id.comments_tv:
 			// Open an AlertDialog to show comments
@@ -217,13 +217,14 @@ public class InboxViewAdapter extends ArrayAdapter<Session> implements OnClickLi
 		}
 	}
 
-    private void launchRecordFragment(Session sesh) {
+    private void launchSessionActivity(Session sesh) {
         int crowdId = sesh.getCrowdId();
-        Intent launchRecordFragment = new Intent(mContext, CameraActivity2.class);
-        launchRecordFragment.putExtra("crowdId", crowdId);
-        launchRecordFragment.putExtra("sessionTitle", sesh.getTitle());
-        launchRecordFragment.putExtra("sessionId", sesh.getId());
-        ((Activity) mContext).startActivity(launchRecordFragment);
+//        Intent launchSessionActivity = new Intent(mContext, CameraActivity2.class);
+        Intent startSessionActivity = new Intent(mContext, StartSession.class);
+        startSessionActivity.putExtra("crowdId", crowdId);
+        startSessionActivity.putExtra("sessionTitle", sesh.getTitle());
+        startSessionActivity.putExtra("sessionId", sesh.getId());
+        ((Activity) mContext).startActivity(startSessionActivity);
     }
 
     private void likeServerSide(Session sesh) {

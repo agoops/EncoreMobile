@@ -1,9 +1,10 @@
 package com.encore.Fragments;
 
+import android.animation.AnimatorInflater;
+import android.animation.AnimatorSet;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.Color;
 import android.hardware.Camera;
 import android.media.MediaRecorder;
 import android.media.ThumbnailUtils;
@@ -18,7 +19,7 @@ import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
+import android.widget.ImageView;
 
 import com.encore.API.APIService;
 import com.encore.R;
@@ -33,13 +34,12 @@ public class CameraFragment extends Fragment implements
         SurfaceHolder.Callback, View.OnClickListener {
 
     private static final String TAG = "CameraActivity2";
-    private Context context = getActivity();
+    private Context context;
     private MediaRecorder mediaRecorder;
     private SurfaceView surfaceView;
     private SurfaceHolder surfaceHolder;
     private Camera camera;
-    private Button record;
-    private Button send;
+    private ImageView record, send;
     private View view;
 
     private File mediaFile;
@@ -51,6 +51,7 @@ public class CameraFragment extends Fragment implements
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.capture_video, container, false);
+        context = getActivity();
 
         // Get sessionId. -1 means we need to create a new session
         sessionId = getArguments().getInt("sessionId");
@@ -135,8 +136,8 @@ public class CameraFragment extends Fragment implements
     }
 
     private void setUpButtons() {
-        record = (Button) view.findViewById(R.id.record);
-        send = (Button) view.findViewById(R.id.send);
+        record = (ImageView) view.findViewById(R.id.record);
+        send = (ImageView) view.findViewById(R.id.send);
 
         record.setOnClickListener(this);
         send.setOnClickListener(this);
@@ -152,18 +153,24 @@ public class CameraFragment extends Fragment implements
                     mediaRecorder.stop();
                     isRecording = false;
                     oneRecorded = true;
-                    Button button = (Button) v;
-                    button.setText("Record");
-                    button.setTextColor(Color.WHITE);
+                    ImageView button = (ImageView) v;
+                    button.setBackgroundResource(R.drawable.button_recording_default);
+
+                    send.setVisibility(View.VISIBLE);
+                    // Show the send button, and animate its appearance
+                    AnimatorSet set = (AnimatorSet) AnimatorInflater.loadAnimator(context,
+                            R.animator.imageview_grow_and_rotate);
+                    Log.d(TAG, "send.toString(): " + send.toString() + ", set.toString(): " + set.toString());
+                    set.setTarget(send);
+                    set.start();
                 } else {
                     try {
                         setUpMediaRecorder();
                         mediaRecorder.prepare();
                         mediaRecorder.start();
                         isRecording = true;
-                        Button button = (Button) v;
-                        button.setText("Stop");
-                        button.setTextColor(Color.RED);
+                        ImageView button = (ImageView) v;
+                        button.setBackgroundResource(R.drawable.button_recording_pressed);
                     } catch (IllegalStateException e) {
                         e.printStackTrace();
                     } catch (IOException e) {
@@ -178,7 +185,11 @@ public class CameraFragment extends Fragment implements
                     return;
                 }
                 if (sessionId == -1) {
-                    // take to screen to collect new information
+                    // Update the image
+                    ImageView sendButton = (ImageView) v;
+                    sendButton.setBackgroundResource(R.drawable.ic_action_send_now_pressed);
+
+                    // Start new session flow
                     Log.d(TAG, "Creating new session");
                     generateThumbnail();
                     FragmentTransaction ft = getFragmentManager().beginTransaction();
