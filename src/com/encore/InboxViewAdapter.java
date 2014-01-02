@@ -392,6 +392,7 @@ public class InboxViewAdapter extends ArrayAdapter<Session> implements OnClickLi
 //        All these methods play android, but don't play iOS
 //        -------- 1st method ----------
         VideoPlayer vp = new VideoPlayer(videoView, mContext);
+        Log.d(TAG, "URI is: " + uri.toString());
         vp.playVideo(uri);
 
 //        -------- 2nd method ----------

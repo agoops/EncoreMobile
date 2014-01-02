@@ -8,6 +8,7 @@ import android.graphics.Bitmap;
 import android.hardware.Camera;
 import android.media.MediaRecorder;
 import android.media.ThumbnailUtils;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
@@ -15,6 +16,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.view.View;
@@ -139,8 +141,65 @@ public class CameraFragment extends Fragment implements
         record = (ImageView) view.findViewById(R.id.record);
         send = (ImageView) view.findViewById(R.id.send);
 
-        record.setOnClickListener(this);
+//        record.setOnClickListener(this);
         send.setOnClickListener(this);
+
+        record.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                if (event.getAction() == MotionEvent.ACTION_DOWN) {
+                    // Record
+                    Log.d(TAG, "Start recording");
+                    startRecording();
+                    ImageView button = (ImageView) v;
+                    button.setBackgroundResource(R.drawable.button_recording_pressed);
+                } else if (event.getAction() == MotionEvent.ACTION_UP) {
+                    // Stop recording, show preview
+                    Log.d(TAG, "Stop recording");
+                    stopRecording();
+                    ImageView button = (ImageView) v;
+                    button.setBackgroundResource(R.drawable.button_recording_default);
+                    goToPreview();
+                }
+                return true;
+            }
+        });
+    }
+
+    public void startRecording() {
+        try {
+            setUpMediaRecorder();
+            mediaRecorder.prepare();
+            mediaRecorder.start();
+            isRecording = true;
+        } catch (IllegalStateException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void stopRecording() {
+        if (isRecording) {
+            mediaRecorder.stop();
+            isRecording = false;
+            oneRecorded = true;
+        }
+    }
+
+    public void goToPreview() {
+        FragmentTransaction ft = getFragmentManager().beginTransaction();
+        PreviewFragment previewFragment = new PreviewFragment();
+//        TestCameraFragment previewFragment = new TestCameraFragment();
+
+        // Pass along the filepath for it to play
+        Bundle args = new Bundle();
+        args.putParcelable(T.FILEPATH, getOutputMediaFileUri());
+        previewFragment.setArguments(args);
+
+        ft.replace(R.id.fragment_placeholder, previewFragment);
+        ft.addToBackStack(null);
+        ft.commit();
     }
 
     @Override
@@ -259,6 +318,11 @@ public class CameraFragment extends Fragment implements
 
         mediaRecorder.setMaxFileSize(maxFileSizeInBytes);
         mediaRecorder.setOrientationHint(270);
+    }
+
+    /** Create a file Uri for saving a video */
+    private Uri getOutputMediaFileUri(){
+        return Uri.fromFile(getOutputMediaFile());
     }
 
     private  File getOutputMediaFile(){

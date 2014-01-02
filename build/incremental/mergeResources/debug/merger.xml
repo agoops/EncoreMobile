@@ -5220,19 +5220,23 @@ false
                 </color>
                 <color name="android_midnight_blue" >#212E3B
                 </color>
-                <color name="button_text_color" >#212E3B
+                <color name="vinyet_green_pressed" >#007858
+                </color>
+                <color name="button_text_color" >#fff
                 </color>
                 <color name="darker_flat_red" >#d0362c
                 </color>
                 <color name="flat_red" >#e74c3c
                 </color>
-                <color name="button_default" >#D1D5D8
+                <color name="button_default" >#00a87b
+                </color>
+                <color name="vinyet_green" >#00a87b
                 </color>
                 <color name="dark_grey" >#252525
                 </color>
-                <color name="button_focused" >#D1D5D8
+                <color name="button_focused" >#007858
                 </color>
-                <color name="button_pressed" >#e74c3c
+                <color name="button_pressed" >#007858
                 </color>
             </file>
             <file
@@ -5279,18 +5283,7 @@ Users
                 qualifiers="" >
 
                 <style
-                    name="CustomDialogTheme"
-                    parent="@android:style/Theme.Dialog" >
-                    <item name="@android:background">
-@color/off_white
-                    </item>
-                    <item name="@android:buttonStyle">
-@style/RapchatButtons
-                    </item>
-                </style>
-
-                <style
-                    name="RapchatActionBar"
+                    name="RapbackActionBar"
                     parent="@style/Widget.AppCompat.ActionBar" >
                     <item name="android:titleTextStyle">
 @style/TitleTextStyle
@@ -5309,27 +5302,21 @@ Users
                 </style>
 
                 <style
-                    name="LikeButtonStyle"
-                    parent="@android:Widget.Holo.Button" >
-                    <item name="android:background">
-@drawable/like_button_style
+                    name="CustomDialogTheme"
+                    parent="@android:style/Theme.Dialog" >
+                    <item name="@android:background">
+@color/off_white
                     </item>
-                    <item name="android:fontFamily">
-sans-serif-light
-                    </item>
-                    <item name="android:textStyle">
-italic
-                    </item>
-                    <item name="android:textColor">
-@color/button_text_color
+                    <item name="@android:buttonStyle">
+@style/RapbackButtons
                     </item>
                 </style>
 
                 <style
-                    name="RapchatButtons"
+                    name="LikeButtonStyle"
                     parent="@android:Widget.Holo.Button" >
                     <item name="android:background">
-@drawable/button_style
+@drawable/like_button_style
                     </item>
                     <item name="android:fontFamily">
 sans-serif-light
@@ -5364,7 +5351,24 @@ false
                 </style>
 
                 <style
-                    name="RapchatTabs"
+                    name="RapbackButtons"
+                    parent="@android:Widget.Holo.Button" >
+                    <item name="android:background">
+@drawable/button_style
+                    </item>
+                    <item name="android:fontFamily">
+sans-serif-light
+                    </item>
+                    <item name="android:textStyle">
+bold
+                    </item>
+                    <item name="android:textColor">
+@color/button_text_color
+                    </item>
+                </style>
+
+                <style
+                    name="RapbackTabs"
                     parent="@style/Widget.AppCompat.ActionBar.TabText" >
                     <item name="android:textColor">
 @color/dark_grey
@@ -5377,16 +5381,16 @@ false
 
                     <!-- All customizations that are NOT specific to a particular API-level can go here. -->
                     <item name="android:actionBarStyle">
-@style/RapchatActionBar
+@style/RapbackActionBar
                     </item>
                     <item name="android:actionBarTabTextStyle">
-@style/RapchatTabs
+@style/RapbackTabs
                     </item>
                     <item name="actionBarTabTextStyle">
-@style/RapchatTabs
+@style/RapbackTabs
                     </item>
                     <item name="android:buttonStyle">
-@style/RapchatButtons
+@style/RapbackButtons
                     </item>
                     <item name="android:dialogTheme">
 @style/CustomDialogTheme
@@ -5425,6 +5429,21 @@ false
             <file
                 name="background_333_transparent"
                 path="/Users/babakpourkazemi/Documents/Coding Projects/Github/EncoreMobile/res/drawable/background_333_transparent.png"
+                qualifiers=""
+                type="drawable" />
+            <file
+                name="preview_fragment"
+                path="/Users/babakpourkazemi/Documents/Coding Projects/Github/EncoreMobile/res/layout/preview_fragment.xml"
+                qualifiers=""
+                type="layout" />
+            <file
+                name="divider"
+                path="/Users/babakpourkazemi/Documents/Coding Projects/Github/EncoreMobile/res/drawable/divider.xml"
+                qualifiers=""
+                type="drawable" />
+            <file
+                name="bobby_prof"
+                path="/Users/babakpourkazemi/Documents/Coding Projects/Github/EncoreMobile/res/drawable/bobby_prof.jpg"
                 qualifiers=""
                 type="drawable" />
         </source>
