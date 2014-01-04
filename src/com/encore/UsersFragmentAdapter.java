@@ -3,7 +3,7 @@ package com.encore;
 import java.util.ArrayList;
 import java.util.List;
 
-import util.T;
+import com.encore.util.T;
 import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
@@ -16,8 +16,7 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.encore.API.APIService;
-import com.encore.API.models.Profile;
-import com.encore.API.models.User;
+import com.encore.models.Profile;
 
 public class UsersFragmentAdapter extends ArrayAdapter<Profile> {
 	private Context mContext;

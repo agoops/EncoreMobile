@@ -1,11 +1,12 @@
 package com.encore;
 
-import Fragments.RecordSessionFragment;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
+
+import com.encore.Fragments.RecordSessionFragment;
 
 public class StartSession2 extends FragmentActivity {
 

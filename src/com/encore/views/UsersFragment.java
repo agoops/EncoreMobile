@@ -1,10 +1,5 @@
 package com.encore.views;
 
-import java.lang.reflect.Type;
-import java.util.ArrayList;
-import java.util.List;
-
-import util.T;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
@@ -18,12 +13,17 @@ import android.widget.Button;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 
+import com.encore.API.APIService;
 import com.encore.R;
 import com.encore.UsersFragmentAdapter;
-import com.encore.API.APIService;
-import com.encore.API.models.Profile;
+import com.encore.models.Profile;
+import com.encore.util.T;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+
+import java.lang.reflect.Type;
+import java.util.ArrayList;
+import java.util.List;
 
 public class UsersFragment extends Fragment{
 	private static final String TAG = "UsersFragment";
@@ -71,7 +71,6 @@ public class UsersFragment extends Fragment{
 	private class UsersListReceiver extends ResultReceiver {
 		public UsersListReceiver(Handler handler) {
 			super(handler);
-			// TODO Auto-generated constructor stub
 		}
 
 		@Override

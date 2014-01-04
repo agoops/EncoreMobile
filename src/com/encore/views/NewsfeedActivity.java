@@ -1,14 +1,9 @@
 package com.encore.views;
 
-import java.util.ArrayList;
-
-import util.T;
 import android.app.ActionBar;
 import android.app.ActionBar.Tab;
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.ResultReceiver;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
@@ -19,18 +14,11 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 
-import com.encore.InboxViewAdapter;
 import com.encore.R;
 import com.encore.SessionTemp;
-import com.encore.SessionViewAdapter;
 import com.encore.StartSession2;
-import com.encore.API.APIService;
-import com.encore.API.models.Session;
-import com.encore.API.models.User;
-import com.google.gson.Gson;
-import com.google.gson.JsonArray;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonParser;
+
+import java.util.ArrayList;
 
 public class NewsfeedActivity extends FragmentActivity {
 	
@@ -86,7 +74,6 @@ public class NewsfeedActivity extends FragmentActivity {
 //	private class SessionListReceiver extends ResultReceiver {
 //		public SessionListReceiver(Handler handler) {
 //			super(handler);
-//			// TODO Auto-generated constructor stub
 //		}
 //
 //		@Override
@@ -152,7 +139,6 @@ public class NewsfeedActivity extends FragmentActivity {
 			@Override
 			public void onTabReselected(Tab tab,
 					android.app.FragmentTransaction ft) {
-				// TODO
 			}
 
 			@Override
@@ -165,7 +151,6 @@ public class NewsfeedActivity extends FragmentActivity {
 			@Override
 			public void onTabUnselected(Tab tab,
 					android.app.FragmentTransaction ft) {
-				// TODO
 			}
 		};
 		// Add title to tabs

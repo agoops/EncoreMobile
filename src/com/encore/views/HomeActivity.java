@@ -1,6 +1,5 @@
 package com.encore.views;
 
-import Fragments.ProfileFragment;
 import android.app.ActionBar;
 import android.app.ActionBar.Tab;
 import android.content.Intent;
@@ -17,8 +16,9 @@ import android.view.MenuItem;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import com.encore.CameraActivity2;
+import com.encore.Fragments.ProfileFragment;
 import com.encore.R;
+import com.encore.StartSession;
 
 public class HomeActivity extends FragmentActivity {
 	private static final String TAG = "HomeActivity";
@@ -29,11 +29,11 @@ public class HomeActivity extends FragmentActivity {
 //	private static int NEWSFEED = 0;
 	private static int INBOX = 0;
 //	private static int PENDING_REQUESTS = 1;
-	private static int USERS = 1;
-	private static int PROFILE = 2;
+//	private static int USERS = 2;
+	private static int PROFILE = 1;
 
 	// Change this to take out tabs from HomeActivity
-	private static int NUM_TABS = 3;
+	private static int NUM_TABS = 2;
 	boolean customTitleSupported;
 
 	@Override
@@ -92,7 +92,6 @@ public class HomeActivity extends FragmentActivity {
 			@Override
 			public void onTabReselected(Tab tab,
 					android.app.FragmentTransaction ft) {
-				// TODO
 			}
 
 			@Override
@@ -105,7 +104,6 @@ public class HomeActivity extends FragmentActivity {
 			@Override
 			public void onTabUnselected(Tab tab,
 					android.app.FragmentTransaction ft) {
-				// TODO
 			}
 		};
 		// Add title to tabs
@@ -119,11 +117,11 @@ public class HomeActivity extends FragmentActivity {
 				actionBar.addTab(actionBar.newTab().setText("Inbox")
 						.setTabListener(tabListener));
 				break;
+//			case 1:
+//				actionBar.addTab(actionBar.newTab().setText("Users")
+//						.setTabListener(tabListener));
+//				break;
 			case 1:
-				actionBar.addTab(actionBar.newTab().setText("Users")
-						.setTabListener(tabListener));
-				break;
-			case 2:
 				actionBar.addTab(actionBar.newTab().setText("Profile")
 						.setTabListener(tabListener));
 				break;
@@ -160,11 +158,11 @@ public class HomeActivity extends FragmentActivity {
 //				Fragment fragment3 = new FriendRequestsFragment();
 //				fragments[PENDING_REQUESTS] = fragment3;
 //				return fragment3;
+//			case 2:
+//				Fragment fragment4 = new UsersFragment();
+//				fragments[USERS] = fragment4;
+//				return fragment4;
 			case 1:
-				Fragment fragment4 = new UsersFragment();
-				fragments[USERS] = fragment4;
-				return fragment4;
-			case 2:
 				Fragment profileFragment = new ProfileFragment();
 				fragments[PROFILE] = profileFragment;
 				return profileFragment;
@@ -187,8 +185,10 @@ public class HomeActivity extends FragmentActivity {
 				return "Inbox";
 //			case 1:
 //				return "Requests";
-			case 1:
-				return "Users";
+//			case 2:
+//				return "Users";
+            case 1:
+                return "Profile";
 			default:
 				return null;
 			}
@@ -212,7 +212,9 @@ public class HomeActivity extends FragmentActivity {
 			// Launch a new session
 			Log.d(TAG, "Launching StartSession2");
 //			Intent intent = new Intent(this, StartSession2.class);
-			Intent intent = new Intent(this, CameraActivity2.class);
+
+//			Intent intent = new Intent(this, CameraActivity2.class);
+            Intent intent = new Intent(this, StartSession.class);
 			startActivity(intent);
 			return true;
 		default:

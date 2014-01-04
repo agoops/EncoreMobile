@@ -1,7 +1,5 @@
 package com.encore;
 
-import java.util.ArrayList;
-
 import android.content.Context;
 import android.util.AttributeSet;
 import android.view.View;
@@ -9,7 +7,9 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.encore.API.models.Session;
+import com.encore.models.Session;
+
+import java.util.ArrayList;
 
 public class SessionView extends LinearLayout {
 	Session data;
@@ -22,7 +22,6 @@ public class SessionView extends LinearLayout {
 		super(context, attrs);
 		commentViews = new ArrayList<View>();
 		commentsVisible = false;
-		// TODO Auto-generated constructor stub
 	}
 	
 	public boolean areCommentsVisible(){

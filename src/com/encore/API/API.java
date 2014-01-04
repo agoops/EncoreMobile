@@ -1,13 +1,16 @@
 package com.encore.API;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.OutputStream;
-import java.lang.reflect.Type;
-import java.net.HttpURLConnection;
-import java.net.URL;
+import android.content.Context;
+import android.util.Log;
+
+import com.encore.TokenHelper;
+import com.encore.models.Crowd;
+import com.encore.models.PostComment;
+import com.encore.models.PostCrowd;
+import com.encore.models.PostLike;
+import com.encore.util.Constants;
+import com.google.gson.Gson;
+import com.squareup.okhttp.OkHttpClient;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
@@ -17,21 +20,16 @@ import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.DefaultHttpClient;
 
-import util.Constants;
-import android.content.Context;
-import android.util.Log;
-
-import com.encore.TokenHelper;
-import com.encore.API.models.Crowd;
-import com.encore.API.models.Crowds;
-import com.encore.API.models.Favorite;
-import com.encore.API.models.Like;
-import com.encore.API.models.PostComment;
-import com.encore.API.models.PostCrowd;
-import com.encore.API.models.User;
-import com.google.gson.Gson;
-import com.squareup.okhttp.OkHttpClient;
-//import com.encore.API.models.Crowds;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.OutputStream;
+import java.lang.reflect.Type;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.util.ArrayList;
+//import com.encore.models.Crowds;
 
 public class API {
 	OkHttpClient client;
@@ -48,65 +46,40 @@ public class API {
 	private boolean isSigningIn = false;
 	private static final String AUTHORIZATION = "Authorization";
 	private static String ACCESS_TOKEN = "invalidaccesstoken";
-	private static final String PROD = "http://rapchat-django.herokuapp.com";
-	private static final String QA = "http://rapchat-django.herokuapp.com";
+	private static final String PROD = "http://rapchat-django.herokuapp.com/";
+	private static final String QA = "http://rapchat-django.herokuapp.com/";
 	private static final String BASE_URL = Constants.DEBUG ? QA:PROD;
 
 	// Common URLs
-	private static final String USERS = BASE_URL + "/users/";
-	private static final String SESSIONS = BASE_URL + "/sessions/";
-	private static final String CLIPS = BASE_URL + "/clips/";
-	private static final String FRIENDS = BASE_URL + "/users/friends/";
-	private static final String CROWDS = BASE_URL + "/crowds/";
-	private static final String REQUESTS = FRIENDS + "requests/";
-	private static final String REPLY = REQUESTS + "reply/";
-
-	// Users
+	private static final String USERS = BASE_URL + "users/";
+    private static final String USER_ME = USERS + "me/";
+    private static final String SESSIONS = USER_ME + "sessions/";
+    private static final String FRIENDS = USER_ME + "friends/";
+    private static final String CROWDS = USER_ME + "crowds/";
+    private static final String REQUESTS = FRIENDS + "requests/";
+    private static final String REPLY = REQUESTS + "reply/";
+    private static final String LIKES = USER_ME + "likes/";
+    private static final String CLIP = BASE_URL + "sessions/%s/clips/";
+    // Users
 	private static final String SIGN_IN = USERS + "obtain-token/";
-	private static final String ALL_USERS = USERS;
-	private static final String GET_USER = USERS + "/find/%s";
-	private static final String SIGN_UP = USERS;
-	private static final String USER_ME = USERS + "me/";
-	private static final String UPDATE_USER = USERS + "%s";
-	private static final String DELETE_USER = USERS + "%s";
-
-	// Sessions
-	private static final String CREATE_SESSION = SESSIONS;
-	private static final String GET_SESSION = SESSIONS + "%s";
-	private static final String GET_SESSIONS = SESSIONS;
-	private static final String ADD_CLIP = SESSIONS + "%s/clips/";
-
-	// Clips
-	// private static final String ALL_CLIPS = CLIPS;
-	// private static final String CREATE_CLIP = CLIPS;
-	// private static final String GET_CLIP = CLIPS + "%s";
-	// private static final String UPDATE_CLIP = CLIPS + "%s";
-	// private static final String DELETE_CLIP = CLIPS + "%s";
-
-	// Friends
-	private static final String ALL_FRIENDS = FRIENDS;
-	private static final String GET_FRIEND = FRIENDS + "%s"; // untested
-	private static final String GET_FRIEND_REQUEST = FRIENDS + "requests";
+    private static final String SIGN_UP = USERS;
+    private static final String UPDATE_USER = USERS + "%s/";
+    private static final String DELETE_USER = USERS + "%s/";
+    // Sessions
+    private static final String GET_SESSIONS = SESSIONS;
+    private static final String CREATE_SESSION = SESSIONS;
+    private static final String GET_SESSION = BASE_URL + "sessions/%s/";
+    // Clips
+    private static final String GET_CLIP = CLIP;
+    private static final String ADD_CLIP = CLIP;
+    // Friends
 	private static final String SEND_FRIEND_REQUEST = FRIENDS + "requests/";
-	private static final String CREATE_FRIEND_REQUEST_REPLY = FRIENDS
-			+ "requests/reply";
-
-	// Crowds
+    // Crowds
 	private static final String GET_CROWDS = CROWDS;
-	private static final String CREATE_CROWD = CROWDS;
-	// private static final String GET_CROWD = CROWDS + "%s";
-	// private static final String UPDATE_CROWD = CROWDS + "%s";
-	// private static final String DELETE_CROWD = CROWDS + "%s";
-	
-	// Comments
-	private static final String CREATE_COMMENT = SESSIONS + "%s/comments/";
-	
-	//	Likes
-	private static final String CREATE_LIKE = USER_ME + "likes/";
-	
-	// Clip stream
-	private static final String GET_CLIP_STREAM = SESSIONS + "clip/";
-	
+    private static final String CREATE_CROWD = CROWDS;
+    // Comments
+	private static final String CREATE_COMMENT = BASE_URL + "sessions/%s/comments/";
+
 	public API(OkHttpClient client, Context context) {
 		this.client = client;
 		this.ACCESS_TOKEN = "Token " + TokenHelper.getToken(context);
@@ -135,9 +108,7 @@ public class API {
 		InputStream in = null;
 		try {
 			connection.setRequestMethod("GET");
-			Log.d(TAG, "connection: " + connection.toString());
 			in = connection.getInputStream();
-			Log.d(TAG, "input stream: " + in.toString());
 			// return getGson().fromJson(new InputStreamReader(in), type);
 
 			/* Adding this section to see response */
@@ -342,7 +313,6 @@ public class API {
 			result = postClip(entity, url);
 			return result;
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 			throw e;
 		}
@@ -456,7 +426,7 @@ public class API {
 		ACCESS_TOKEN = "Token " + token;
 		String url = GET_CROWDS;
 		String json = "";
-		 Crowds result = null;
+        ArrayList<Crowd> result;
 
 		// try {
 		// json = get(url, Crowds.class);
@@ -467,9 +437,8 @@ public class API {
 		// }
 
 		try {
-			json = get(url, Crowds.class);
+			json = get(url, Crowd.class);
 			Log.d(TAG, "get crowds JSON: " + json);
-			result  = getGson().fromJson(json, Crowds.class);
 		} catch(Exception e) {
 			Log.e(TAG, "getCrowds() error");
 			throw e;
@@ -533,10 +502,10 @@ public class API {
 		return resultJSON;
 	}
 	
-	public String createLike(Like like, String token) throws Exception {
+	public String createLike(PostLike like, String token) throws Exception {
 		Log.d(TAG, "createLike called");
 		ACCESS_TOKEN = "Token " + token;
-		String url = CREATE_LIKE;
+		String url = LIKES;
 		String resultJSON = null;
 		
 		try {
@@ -552,14 +521,14 @@ public class API {
 	
 	public String getClipStream(int sessionId) throws Exception {
 		Log.d(TAG, "getClipStream called");
-		String url = SESSIONS + sessionId + "/clips/";
+        String url = String.format(GET_CLIP, Integer.toString(sessionId));
 		String resultJSON = null;
 		
 		try {
 			resultJSON = get(url, String.class);
 			Log.d(TAG, "getClipStream result: " + resultJSON);
 		} catch(Exception e) {
-			Log.e(TAG, "createComment() error");
+			Log.e(TAG, "getClipStream() error");
 			throw e;
 		}
 		return resultJSON;
@@ -580,4 +549,20 @@ public class API {
 		}
 		return resultJSON;
 	}
+
+    public String getLikes(String token) throws Exception {
+        Log.d(TAG, "getLikes called");
+        String url = LIKES;
+        ACCESS_TOKEN = "Token " + token;
+        String resultJSON = null;
+
+        try {
+            resultJSON = get(url, String.class);
+            Log.d(TAG, "getLikes result: " + resultJSON);
+        } catch(Exception e) {
+            Log.d(TAG, "getLikes() error");
+            throw e;
+        }
+        return resultJSON;
+    }
 }

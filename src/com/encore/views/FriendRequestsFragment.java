@@ -1,9 +1,5 @@
 package com.encore.views;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-
-import util.T;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
@@ -16,15 +12,16 @@ import android.view.ViewGroup;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 
+import com.encore.API.APIService;
 import com.encore.FriendRequestFragmentAdapter;
 import com.encore.R;
-import com.encore.API.APIService;
-import com.encore.API.models.FriendRequest;
-import com.encore.API.models.User;
+import com.encore.models.FriendRequest;
+import com.encore.models.User;
+import com.encore.util.T;
 import com.google.gson.Gson;
-import com.google.gson.JsonArray;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonParser;
+
+import java.util.ArrayList;
+import java.util.Arrays;
 
 public class FriendRequestsFragment extends Fragment {
 
@@ -70,7 +67,6 @@ public class FriendRequestsFragment extends Fragment {
 		
 		public FriendRequestListReceiver(Handler handler) {
 			super(handler);
-			// TODO Auto-generated constructor stub
 		}
 		
 		@Override
