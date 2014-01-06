@@ -7,10 +7,28 @@
     <color name="android_midnight_blue">#212E3B</color>
     <color name="vinyet_green">#00a87b</color>
     <color name="vinyet_green_pressed">#007858</color>
-    <!--Pressed red: D1D5D8-->
-    <!--Button text color: 212E3B-->
+    <color name="flat_blue">#3498DB</color>
+    <color name="flat_blue_pressed">#2980B9</color>
+
+
     <color name="button_pressed">#007858</color>
     <color name="button_focused">#007858</color>
     <color name="button_default">#00a87b</color>
     <color name="button_text_color">#fff</color>
+
+    <color name="accept_button_pressed">#2980B9</color>
+    <color name="accept_button_focused">#2980B9</color>
+    <color name="accept_button_default">#3498DB</color>
+    <color name="accept_button_text_color">#fff</color>
+
+    <color name="decline_button_pressed">#d0362c</color>
+    <color name="decline_button_focused">#d0362c</color>
+    <color name="decline_button_default">#e74c3c</color>
+    <color name="decline_button_text_color">#fff</color>
+
+    <color name="profile_button_selected">#fff</color>
+    <color name="profile_button_pressed">#f6f6f6</color>
+    <color name="profile_button_focused">#f6f6f6</color>
+    <color name="profile_button_default">#e6e6e6</color>
+    <color name="profile_button_text_color">#000</color>
 </resources>

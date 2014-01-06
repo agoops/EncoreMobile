@@ -26,10 +26,7 @@ public class HomeActivity extends FragmentActivity {
 	ListView listView;
 	ActionBar actionBar;
 	Fragment[] fragments;
-//	private static int NEWSFEED = 0;
 	private static int INBOX = 0;
-//	private static int PENDING_REQUESTS = 1;
-//	private static int USERS = 2;
 	private static int PROFILE = 1;
 
 	// Change this to take out tabs from HomeActivity
@@ -109,25 +106,14 @@ public class HomeActivity extends FragmentActivity {
 		// Add title to tabs
 		for (int i = 0; i < NUM_TABS; i++) {
 			switch (i) {
-//			case 0:
-//				actionBar.addTab(actionBar.newTab().setText("Newsfeed")
-//						.setTabListener(tabListener));
-//				break;
 			case 0:
 				actionBar.addTab(actionBar.newTab().setText("Inbox")
 						.setTabListener(tabListener));
 				break;
-//			case 1:
-//				actionBar.addTab(actionBar.newTab().setText("Users")
-//						.setTabListener(tabListener));
-//				break;
 			case 1:
 				actionBar.addTab(actionBar.newTab().setText("Profile")
 						.setTabListener(tabListener));
 				break;
-//			case 2:
-//				actionBar.addTab(actionBar.newTab().setText("Users")
-//						.setTabListener(tabListener));
 
 			}
 		}
@@ -142,28 +128,15 @@ public class HomeActivity extends FragmentActivity {
 		@Override
 		public Fragment getItem(int i) {
 			Log.d(TAG, "getItem() called with " + i);
-			
+
 			switch (i) {
-//			case 0:
-//				Fragment fragment1 = new VideoListViewFragment();
-//				Bundle args = new Bundle();
-//				fragment1.setArguments(args);
-//				fragments[NEWSFEED] = fragment1;
-//				return fragment1;
 			case 0:
 				Fragment fragment2 = new InboxListViewFragment();
 				fragments[INBOX] = fragment2;
 				return fragment2;
-//			case 1:
-//				Fragment fragment3 = new FriendRequestsFragment();
-//				fragments[PENDING_REQUESTS] = fragment3;
-//				return fragment3;
-//			case 2:
-//				Fragment fragment4 = new UsersFragment();
-//				fragments[USERS] = fragment4;
-//				return fragment4;
 			case 1:
 				Fragment profileFragment = new ProfileFragment();
+//                Fragment profileFragment = new TabLikesFragment();
 				fragments[PROFILE] = profileFragment;
 				return profileFragment;
 			}
@@ -179,14 +152,8 @@ public class HomeActivity extends FragmentActivity {
 		@Override
 		public CharSequence getPageTitle(int position) {
 			switch (position) {
-//			case 0:
-//				return "Home page";
 			case 0:
 				return "Inbox";
-//			case 1:
-//				return "Requests";
-//			case 2:
-//				return "Users";
             case 1:
                 return "Profile";
 			default:
@@ -210,9 +177,7 @@ public class HomeActivity extends FragmentActivity {
 		switch(item.getItemId()) {
 		case R.id.action_video:
 			// Launch a new session
-			Log.d(TAG, "Launching StartSession2");
-//			Intent intent = new Intent(this, StartSession2.class);
-
+			Log.d(TAG, "Launching StartSession");
 //			Intent intent = new Intent(this, CameraActivity2.class);
             Intent intent = new Intent(this, StartSession.class);
 			startActivity(intent);

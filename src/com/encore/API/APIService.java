@@ -11,6 +11,7 @@ import com.encore.models.Crowd;
 import com.encore.models.PostComment;
 import com.encore.models.PostCrowd;
 import com.encore.models.PostLike;
+import com.encore.models.UpdateUser;
 import com.encore.util.T;
 import com.google.gson.Gson;
 import com.squareup.okhttp.OkHttpClient;
@@ -58,7 +59,7 @@ public class APIService extends IntentService {
 		case T.CREATE_SESSION:
 			createSession(intent.getExtras());
 			break;
-		case T.FRIENDS:
+		case T.GET_FRIENDS:
 			getFriends(intent.getExtras());
 			break;
 		case T.FRIEND_REQUEST:
@@ -100,6 +101,9 @@ public class APIService extends IntentService {
             break;
         case T.GET_LIKES:
             getLikes(intent.getExtras());
+            break;
+        case T.UPDATE_USER:
+            updateUser(intent.getExtras());
             break;
 		default:
 			break;
@@ -441,6 +445,27 @@ public class APIService extends IntentService {
             Log.e(TAG, e.getMessage() + " ");
             e.printStackTrace();
             resultReceiver.send(0, null);
+        }
+    }
+
+    private void updateUser(Bundle data) {
+        Log.d(TAG, "updateUser called");
+        String token = TokenHelper.getToken(this);
+        String firstName = data.getString(T.FIRST_NAME);
+        String lastName = data.getString(T.LAST_NAME);
+        String email = data.getString(T.EMAIL);
+        String phoneNumber = data.getString(T.PHONE_NUMBER);
+
+        String resultJSON = null;
+        UpdateUser user = new UpdateUser(firstName, lastName, email, phoneNumber);
+
+        try {
+            resultJSON = api.updateUser(token, user);
+            Log.d(TAG, "updateUser result: " + resultJSON);
+
+        } catch(Exception e) {
+            Log.e(TAG, e.getMessage() + " ");
+            e.printStackTrace();
         }
     }
 }

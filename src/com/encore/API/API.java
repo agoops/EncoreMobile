@@ -8,6 +8,7 @@ import com.encore.models.Crowd;
 import com.encore.models.PostComment;
 import com.encore.models.PostCrowd;
 import com.encore.models.PostLike;
+import com.encore.models.UpdateUser;
 import com.encore.util.Constants;
 import com.google.gson.Gson;
 import com.squareup.okhttp.OkHttpClient;
@@ -216,6 +217,7 @@ public class API {
 			throws IOException {
 		URL postUrl = new URL(url);
 		HttpURLConnection connection = client.open(postUrl);
+        connection.setRequestProperty(AUTHORIZATION, ACCESS_TOKEN);
 		connection.setRequestProperty("Content-Type", "application/json");
 		connection.setDoOutput(true);
 		OutputStream out = null;
@@ -238,9 +240,20 @@ public class API {
 						+ connection.getResponseMessage());
 			}
 
-			// Return the response as the given type
-			in = connection.getInputStream();
-			return getGson().fromJson(new InputStreamReader(in), type);
+            // Return the response as the given type
+                    in = connection.getInputStream();
+
+            // return getGson().fromJson(new InputStreamReader(in), type);
+            Log.d(TAG, "Just got input stream: " + in.toString());
+			/* Adding this section to see response */
+            BufferedReader r = new BufferedReader(new InputStreamReader(in));
+            StringBuilder total = new StringBuilder();
+            String line;
+            while ((line = r.readLine()) != null) {
+                total.append(line);
+            }
+            return (T) total.toString();
+
 		} finally {
 			if (out != null)
 				out.close();
@@ -561,6 +574,25 @@ public class API {
             Log.d(TAG, "getLikes result: " + resultJSON);
         } catch(Exception e) {
             Log.d(TAG, "getLikes() error");
+            throw e;
+        }
+        return resultJSON;
+    }
+
+    public String updateUser(String token, UpdateUser user) throws Exception {
+        Log.d(TAG, "updateUser called");
+        String url = USER_ME;
+        ACCESS_TOKEN = "Token " + token;
+        String resultJSON = null;
+
+        try {
+            String JSON = getGson().toJson(user);
+            Log.d(TAG, "Posting JSON: " + JSON);
+
+            resultJSON = put(url, new StringEntity(JSON), String.class);
+            Log.d(TAG, "updateUser result: " + resultJSON);
+        } catch(Exception e) {
+            Log.d(TAG, "updateUser() error");
             throw e;
         }
         return resultJSON;

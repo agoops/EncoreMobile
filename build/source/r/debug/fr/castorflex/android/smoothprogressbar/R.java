@@ -24,7 +24,7 @@ public final class R {
 		public static final int spb_default_reversed = 0x7f080007;
 	}
 	public static final class color {
-		public static final int spb_default_color = 0x7f09000d;
+		public static final int spb_default_color = 0x7f09001c;
 	}
 	public static final class dimen {
 		public static final int spb_default_stroke_separator_length = 0x7f0b0013;
@@ -44,8 +44,8 @@ public final class R {
 		public static final int spb_default_speed = 0x7f0d0016;
 	}
 	public static final class style {
-		public static final int SmoothProgressBar = 0x7f0e0007;
-		public static final int Theme_SmoothProgressBarDefaults = 0x7f0e003d;
+		public static final int SmoothProgressBar = 0x7f0e000a;
+		public static final int Theme_SmoothProgressBarDefaults = 0x7f0e0040;
 	}
 	public static final class styleable {
 		public static final int[] SmoothProgressBar = { 0x7f01006a, 0x7f01006b, 0x7f01006c, 0x7f01006d, 0x7f01006e, 0x7f01006f, 0x7f010070, 0x7f010071, 0x7f010072, 0x7f010073 };

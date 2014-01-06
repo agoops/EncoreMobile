@@ -33,7 +33,7 @@ public class SessionView extends LinearLayout {
 	}
 	
 	public void toggleCommentsVisible(){
-		// Toggle comment TVs and Buttons
+		// Toggle numLikes TVs and Buttons
 		for (View cv: commentViews){
 			cv.setVisibility(this.areCommentsVisible() ? TextView.GONE : TextView.VISIBLE);
 		}

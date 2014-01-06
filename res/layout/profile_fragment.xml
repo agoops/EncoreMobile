@@ -1,20 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical" >
     
-    <!--<ProgressBar-->
-        <!--android:id="@+id/progress_profile"-->
-        <!--android:layout_width="wrap_content"-->
-        <!--android:layout_height="match_parent"-->
-        <!--android:layout_gravity="center"-->
-        <!--style="?android:attr/progressBarStyleLarge" />-->
+    <ProgressBar
+        android:id="@+id/progress_profile"
+        android:layout_height="match_parent"
+        android:layout_width="wrap_content"
+        android:layout_centerHorizontal="true"
+        style="?android:attr/progressBarStyleLarge" />
 
     <RelativeLayout
         android:id="@+id/profileTopContainer"
         android:layout_height="wrap_content"
         android:layout_width="match_parent"
+        android:layout_below="@id/progress_profile"
         android:background="#e6e6e6"
         android:paddingBottom="20dp">
         <ImageView
@@ -29,17 +31,17 @@
             android:layout_height="wrap_content"
             android:layout_width="wrap_content"
             android:layout_toRightOf="@id/profilePicture"
+            android:layout_alignTop="@id/profilePicture"
             android:text="0 Raps"
-            android:layout_marginTop="15dp"
             android:textAppearance="?android:textAppearanceMedium" />
 
         <TextView
-            android:id="@+id/profileNumCrowdsTv"
+            android:id="@+id/profileNumLikesTv"
             android:layout_height="wrap_content"
             android:layout_width="wrap_content"
             android:layout_toRightOf="@id/profilePicture"
             android:layout_below="@id/profileNumRapsTv"
-            android:text="0 Crowds"
+            android:text="0 Likes"
             android:layout_marginTop="15dp"
             android:textAppearance="?android:textAppearanceMedium" />
 
@@ -48,12 +50,13 @@
             android:layout_height="wrap_content"
             android:layout_width="wrap_content"
             android:layout_toRightOf="@id/profilePicture"
-            android:layout_below="@id/profileNumCrowdsTv"
+            android:layout_below="@id/profileNumLikesTv"
             android:text="0 Friends"
             android:layout_marginTop="15dp"
             android:textAppearance="?android:textAppearanceMedium" />
 
         <Button
+            android:id="@+id/profileEditButton"
             android:layout_height="wrap_content"
             android:layout_width="match_parent"
             android:layout_below="@id/profilePicture"
@@ -63,96 +66,65 @@
 
     </RelativeLayout>
 
-    <TabHost
-        android:id="@+id/profileTabHost"
+    <RelativeLayout
+        android:layout_below="@id/profileTopContainer"
         android:layout_height="wrap_content"
-        android:layout_width="match_parent"
-        android:layout_below="@id/profileTopContainer" >
+        android:layout_width="wrap_content"
+        android:background="#fff">
+
         <LinearLayout
+            android:id="@+id/profileTabsHolder"
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:orientation="horizontal" >
+            <Button
+                style="@style/ProfileButtonsStyle"
+                android:id="@+id/profile_raps_button"
+                android:layout_height="wrap_content"
+                android:layout_width="match_parent"
+                android:layout_weight="1"
+                android:text="Friends" />
+            <Button
+                style="@style/ProfileButtonsStyle"
+                android:id="@+id/profile_crowds_button"
+                android:layout_height="wrap_content"
+                android:layout_width="match_parent"
+                android:layout_weight="1"
+                android:text="Crowds" />
+            <Button
+                style="@style/ProfileButtonsStyle"
+                android:id="@+id/profile_likes_button"
+                android:layout_height="wrap_content"
+                android:layout_width="match_parent"
+                android:layout_weight="1"
+                android:text="Likes" />
+            <Button
+                style="@style/ProfileButtonsStyle"
+                android:id="@+id/profile_requests_button"
+                android:layout_height="wrap_content"
+                android:layout_width="match_parent"
+                android:layout_weight="1"
+                android:text="Requests" />
+        </LinearLayout>
+
+        <ProgressBar
+            android:id="@+id/progress_profile_tabs"
+            android:layout_height="match_parent"
+            android:layout_width="wrap_content"
+            android:layout_below="@id/profileTabsHolder"
+            android:layout_centerHorizontal="true"/>
+
+        <ListView
+            android:id="@+id/tabsLv"
             android:layout_height="match_parent"
             android:layout_width="match_parent"
-            android:orientation="vertical">
+            android:layout_below="@id/progress_profile_tabs" />
 
-            <TabWidget
-                android:id="@android:id/tabs"
-                android:layout_height="wrap_content"
-                android:layout_width="match_parent" />
-            <FrameLayout
-                android:id="@android:id/tabcontent"
-                android:layout_height="match_parent"
-                android:layout_width="match_parent">
-
-                <LinearLayout
-                    android:id="@+id/tab1"
-                    android:layout_height="fill_parent"
-                    android:layout_width="fill_parent">
-                    <ListView
-                        android:id="@+id/profile_friends_lv"
-                        android:layout_width="fill_parent"
-                        android:layout_height="wrap_content" />
-                </LinearLayout>
-
-                <LinearLayout
-                    android:id="@+id/tab2"
-                    android:layout_height="fill_parent"
-                    android:layout_width="fill_parent">
-                    <TextView
-                        android:layout_height="wrap_content"
-                        android:layout_width="wrap_content"
-                        android:text="9999 Likes"/>
-                </LinearLayout>
-
-                <LinearLayout
-                    android:id="@+id/tab3"
-                    android:layout_height="fill_parent"
-                    android:layout_width="fill_parent">
-                    <TextView
-                        android:layout_height="wrap_content"
-                        android:layout_width="wrap_content"
-                        android:text="9999 Crowds"/>
-                </LinearLayout>
-
-                <LinearLayout
-                    android:id="@+id/tab4"
-                    android:layout_height="fill_parent"
-                    android:layout_width="fill_parent">
-                    <TextView
-                        android:layout_height="wrap_content"
-                        android:layout_width="wrap_content"
-                        android:text="9999 Requests"/>
-                </LinearLayout>
-            </FrameLayout>
-        </LinearLayout>
-    </TabHost>
-
-
-    <!--<TextView-->
-    <!--android:id="@+id/profile_name"-->
-    <!--android:layout_width="match_parent"-->
-    <!--android:layout_height="wrap_content"-->
-    <!--android:text="First Name"-->
-    <!--android:textSize="30sp"-->
-    <!--android:textStyle="bold"-->
-    <!--android:padding="5dp"-->
-    <!--android:gravity="center" />-->
-    <!---->
-    <!--<TextView-->
-    <!--android:id="@+id/profile_username"-->
-    <!--android:layout_width="fill_parent"-->
-    <!--android:layout_height="wrap_content"-->
-    <!--android:text="Username"-->
-    <!--android:textSize="15sp"-->
-    <!--android:padding="5dp"-->
-    <!--android:gravity="center" />-->
-    <!---->
-    <!--<TextView-->
-    <!--android:id="@+id/profile_email"-->
-    <!--android:layout_width="fill_parent"-->
-    <!--android:layout_height="wrap_content"-->
-    <!--android:text="Email"-->
-    <!--android:textSize="15sp"-->
-    <!--android:padding="5dp"-->
-    <!--android:gravity="center" />-->
-    <!---->
+        <!--<FrameLayout-->
+            <!--android:id="@+id/profileNestedFragmentsHolder"-->
+            <!--android:layout_below="@id/profileTabsHolder"-->
+            <!--android:layout_height="match_parent"-->
+            <!--android:layout_width="match_parent" />-->
+    </RelativeLayout>
 
 </RelativeLayout>

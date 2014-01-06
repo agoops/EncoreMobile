@@ -26,7 +26,7 @@ public class Friends {
     public String toString() {
         String result = "";
         for(Profile friend : friends) {
-            result += friend.toString() + "\n";
+            result += friend.toString() + ",\n";
         }
         return result;
     }

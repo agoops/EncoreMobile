@@ -5,12 +5,24 @@ import com.google.gson.annotations.SerializedName;
 public class Profile implements UserInfo {
 	@SerializedName("id")
 	private int profileId;
+
 	@SerializedName("user")
 	private User user;
+
 	@SerializedName("phone_number")
 	private String phoneNumber;
+
 	@SerializedName("friends")
 	private Profile[] friends;
+
+    @SerializedName("num_likes")
+    private int numLikes;
+
+    @SerializedName("num_friends")
+    private int numFriends;
+
+    @SerializedName("num_raps")
+    private int numRaps;
 	
 	public Profile() {
 		this.profileId =  -1;
@@ -55,8 +67,19 @@ public class Profile implements UserInfo {
 		return "P_ID: " + profileId + " user: " + user.toString() + " " + "PhoneNo.: " + phoneNumber;
 	}
 
+    public int getNumLikes() {
+        return numLikes;
+    }
 
-	@Override
+    public int getNumFriends() {
+        return numFriends;
+    }
+
+    public int getNumRaps() {
+        return numRaps;
+    }
+
+    @Override
 	public String getUsername() {
 		return user.getUsername();
 	}

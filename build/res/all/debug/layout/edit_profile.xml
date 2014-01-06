@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:orientation="horizontal">
+        <EditText
+            android:id="@+id/edit_profile_firstname"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:inputType="textCapWords"
+            android:hint="First Name"
+            android:layout_marginTop="20dp"
+            android:layout_marginBottom="20dp"
+            android:layout_marginLeft="20dp"
+            android:layout_weight="1" />
+
+        <EditText
+            android:id="@+id/edit_profile_lastname"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:inputType="textCapWords"
+            android:hint="Last Name"
+            android:layout_marginTop="20dp"
+            android:layout_marginRight="20dp"
+            android:layout_marginBottom="20dp"
+            android:layout_weight="1" />
+
+        </LinearLayout>
+
+    <EditText
+        android:id="@+id/edit_profile_email"
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:inputType="textEmailAddress"
+        android:hint="E-mail"
+        android:layout_margin="20dp"/>
+
+    <EditText
+        android:id="@+id/edit_profile_phonenumber"
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:inputType="phone"
+        android:digits="0123456789"
+        android:hint="Phone Number"
+        android:layout_margin="20dp"/>
+
+    <Button
+        android:id="@+id/edit_profile_submit_button"
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:layout_margin="20dp"
+        android:text="Save Changes" />
+
+</LinearLayout><!-- From: file:/Users/babakpourkazemi/Documents/Coding%20Projects/Github/EncoreMobile/res/layout/edit_profile.xml -->

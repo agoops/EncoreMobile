@@ -35,8 +35,8 @@ public final class R {
 		public static final int spb_default_reversed = 0x7f080007;
 	}
 	public static final class color {
-		public static final int default_progress_bar_color = 0x7f09000a;
-		public static final int spb_default_color = 0x7f09000d;
+		public static final int default_progress_bar_color = 0x7f090012;
+		public static final int spb_default_color = 0x7f09001c;
 	}
 	public static final class dimen {
 		public static final int ptr_progress_bar_stroke_width = 0x7f0b0012;
@@ -68,9 +68,9 @@ public final class R {
 		public static final int spb_default_speed = 0x7f0d0016;
 	}
 	public static final class style {
-		public static final int SmoothProgressBar = 0x7f0e0007;
-		public static final int Theme_SmoothProgressBarDefaults = 0x7f0e003d;
-		public static final int Widget_ProgressBar_PullToRefresh = 0x7f0e0089;
+		public static final int SmoothProgressBar = 0x7f0e000a;
+		public static final int Theme_SmoothProgressBarDefaults = 0x7f0e0040;
+		public static final int Widget_ProgressBar_PullToRefresh = 0x7f0e008c;
 	}
 	public static final class styleable {
 		public static final int[] PullToRefreshHeader = { 0x7f01005e, 0x7f01005f, 0x7f010060, 0x7f010061, 0x7f010062, 0x7f010063, 0x7f010064, 0x7f010065, 0x7f010066 };

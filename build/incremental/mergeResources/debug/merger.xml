@@ -5218,25 +5218,55 @@ false
                 qualifiers="" >
                 <color name="off_white" >#e9e9e9
                 </color>
-                <color name="android_midnight_blue" >#212E3B
-                </color>
-                <color name="vinyet_green_pressed" >#007858
-                </color>
-                <color name="button_text_color" >#fff
-                </color>
                 <color name="darker_flat_red" >#d0362c
                 </color>
-                <color name="flat_red" >#e74c3c
-                </color>
-                <color name="button_default" >#00a87b
+                <color name="flat_blue_pressed" >#2980B9
                 </color>
                 <color name="vinyet_green" >#00a87b
                 </color>
                 <color name="dark_grey" >#252525
                 </color>
-                <color name="button_focused" >#007858
+                <color name="accept_button_pressed" >#2980B9
+                </color>
+                <color name="profile_button_default" >#e6e6e6
+                </color>
+                <color name="decline_button_focused" >#d0362c
+                </color>
+                <color name="android_midnight_blue" >#212E3B
+                </color>
+                <color name="flat_red" >#e74c3c
+                </color>
+                <color name="profile_button_focused" >#f6f6f6
+                </color>
+                <color name="accept_button_focused" >#2980B9
                 </color>
                 <color name="button_pressed" >#007858
+                </color>
+                <color name="decline_button_pressed" >#d0362c
+                </color>
+                <color name="profile_button_text_color" >#000
+                </color>
+                <color name="button_text_color" >#fff
+                </color>
+                <color name="button_default" >#00a87b
+                </color>
+                <color name="profile_button_selected" >#fff
+                </color>
+                <color name="flat_blue" >#3498DB
+                </color>
+                <color name="accept_button_default" >#3498DB
+                </color>
+                <color name="vinyet_green_pressed" >#007858
+                </color>
+                <color name="profile_button_pressed" >#f6f6f6
+                </color>
+                <color name="decline_button_text_color" >#fff
+                </color>
+                <color name="decline_button_default" >#e74c3c
+                </color>
+                <color name="accept_button_text_color" >#fff
+                </color>
+                <color name="button_focused" >#007858
                 </color>
             </file>
             <file
@@ -5330,6 +5360,23 @@ italic
                 </style>
 
                 <style
+                    name="DeclineButtonStyle"
+                    parent="@android:Widget.Holo.Button" >
+                    <item name="android:background">
+@drawable/decline_button_style
+                    </item>
+                    <item name="android:fontFamily">
+sans-serif-light
+                    </item>
+                    <item name="android:textStyle">
+bold
+                    </item>
+                    <item name="android:textColor">
+@color/decline_button_text_color
+                    </item>
+                </style>
+
+                <style
                     name="TitleTextStyle"
                     parent="@style/TextAppearance.AppCompat.Widget.ActionBar.Title" >
                     <item name="android:textColor">
@@ -5368,10 +5415,44 @@ bold
                 </style>
 
                 <style
+                    name="AcceptButtonStyle"
+                    parent="@android:Widget.Holo.Button" >
+                    <item name="android:background">
+@drawable/accept_button_style
+                    </item>
+                    <item name="android:fontFamily">
+sans-serif-light
+                    </item>
+                    <item name="android:textStyle">
+bold
+                    </item>
+                    <item name="android:textColor">
+@color/accept_button_text_color
+                    </item>
+                </style>
+
+                <style
                     name="RapbackTabs"
                     parent="@style/Widget.AppCompat.ActionBar.TabText" >
                     <item name="android:textColor">
 @color/dark_grey
+                    </item>
+                </style>
+
+                <style
+                    name="ProfileButtonsStyle"
+                    parent="@android:Widget.Holo.Button" >
+                    <item name="android:background">
+@drawable/profile_button_style
+                    </item>
+                    <item name="android:fontFamily">
+sans-serif-light
+                    </item>
+                    <item name="android:textStyle">
+bold
+                    </item>
+                    <item name="android:textColor">
+@color/profile_button_text_color
                     </item>
                 </style>
 
@@ -5446,6 +5527,66 @@ bold
                 path="/Users/babakpourkazemi/Documents/Coding Projects/Github/EncoreMobile/res/drawable/bobby_prof.jpg"
                 qualifiers=""
                 type="drawable" />
+            <file
+                name="tab_requests_list_row"
+                path="/Users/babakpourkazemi/Documents/Coding Projects/Github/EncoreMobile/res/layout/tab_requests_list_row.xml"
+                qualifiers=""
+                type="layout" />
+            <file
+                name="tab_requests"
+                path="/Users/babakpourkazemi/Documents/Coding Projects/Github/EncoreMobile/res/layout/tab_requests.xml"
+                qualifiers=""
+                type="layout" />
+            <file
+                name="decline_button_style"
+                path="/Users/babakpourkazemi/Documents/Coding Projects/Github/EncoreMobile/res/drawable/decline_button_style.xml"
+                qualifiers=""
+                type="drawable" />
+            <file
+                name="tab_likes_list_row"
+                path="/Users/babakpourkazemi/Documents/Coding Projects/Github/EncoreMobile/res/layout/tab_likes_list_row.xml"
+                qualifiers=""
+                type="layout" />
+            <file
+                name="tab_crowds"
+                path="/Users/babakpourkazemi/Documents/Coding Projects/Github/EncoreMobile/res/layout/tab_crowds.xml"
+                qualifiers=""
+                type="layout" />
+            <file
+                name="tab_crowd_list_row"
+                path="/Users/babakpourkazemi/Documents/Coding Projects/Github/EncoreMobile/res/layout/tab_crowd_list_row.xml"
+                qualifiers=""
+                type="layout" />
+            <file
+                name="tab_friends"
+                path="/Users/babakpourkazemi/Documents/Coding Projects/Github/EncoreMobile/res/layout/tab_friends.xml"
+                qualifiers=""
+                type="layout" />
+            <file
+                name="tab_friends_list_row"
+                path="/Users/babakpourkazemi/Documents/Coding Projects/Github/EncoreMobile/res/layout/tab_friends_list_row.xml"
+                qualifiers=""
+                type="layout" />
+            <file
+                name="accept_button_style"
+                path="/Users/babakpourkazemi/Documents/Coding Projects/Github/EncoreMobile/res/drawable/accept_button_style.xml"
+                qualifiers=""
+                type="drawable" />
+            <file
+                name="tab_likes"
+                path="/Users/babakpourkazemi/Documents/Coding Projects/Github/EncoreMobile/res/layout/tab_likes.xml"
+                qualifiers=""
+                type="layout" />
+            <file
+                name="profile_button_style"
+                path="/Users/babakpourkazemi/Documents/Coding Projects/Github/EncoreMobile/res/drawable/profile_button_style.xml"
+                qualifiers=""
+                type="drawable" />
+            <file
+                name="edit_profile"
+                path="/Users/babakpourkazemi/Documents/Coding Projects/Github/EncoreMobile/res/layout/edit_profile.xml"
+                qualifiers=""
+                type="layout" />
         </source>
         <source path="/Users/babakpourkazemi/Documents/Coding Projects/Github/EncoreMobile/build/res/rs/debug" />
     </dataSet>

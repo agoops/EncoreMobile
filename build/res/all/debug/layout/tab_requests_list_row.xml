@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <TextView
+        android:id="@+id/tab_requests_username"
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:layout_centerInParent="true"
+        android:layout_toLeftOf="@+id/tab_requests_decline"
+        android:textAppearance="?android:textAppearanceMedium"
+        android:paddingLeft="20dp"
+        android:paddingRight="20dp"
+        android:text="Username" />
+
+    <TextView
+        android:id="@+id/tab_requests_fullname"
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:layout_below="@id/tab_requests_username"
+        android:layout_toLeftOf="@+id/tab_requests_decline"
+        android:textAppearance="?android:textAppearanceSmall"
+        android:text="Full Name"
+        android:paddingTop="20dp"
+        android:paddingLeft="20dp"
+        android:paddingRight="20dp"
+        android:textColor="#555" />
+
+    <Button
+        style="@style/AcceptButtonStyle"
+        android:id="@+id/tab_requests_accept"
+        android:layout_height="wrap_content"
+        android:layout_width="75dp"
+        android:layout_centerVertical="true"
+        android:layout_alignTop="@id/tab_requests_username"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="20dp"
+        android:text="Accept"/>
+
+    <Button
+        style="@style/DeclineButtonStyle"
+        android:id="@+id/tab_requests_decline"
+        android:layout_height="wrap_content"
+        android:layout_width="75dp"
+        android:layout_alignTop="@id/tab_requests_username"
+        android:layout_toLeftOf="@id/tab_requests_accept"
+        android:layout_marginRight="10dp"
+        android:text="Decline" />
+
+</RelativeLayout><!-- From: file:/Users/babakpourkazemi/Documents/Coding%20Projects/Github/EncoreMobile/res/layout/tab_requests_list_row.xml -->

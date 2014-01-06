@@ -11,7 +11,7 @@ public class Crowd {
 	
 	@SerializedName("members")
 	private Profile[] members;
-	
+
 	public Crowd() {
 		title = null;;
 		members = null;
@@ -21,7 +21,6 @@ public class Crowd {
 	public Crowd(String title, Profile[] members) {
 		this.title = title;
 		this.members = members;
-		this.id = id;
 	}
 
 	public String getTitle() {
@@ -43,6 +42,10 @@ public class Crowd {
 	public int getId() {
 		return this.id;
 	}
+
+    public int getNumMembers() {
+        return members.length;
+    }
 
     public String toString() {
         return "Crowd id: " + id + ", title: " + title;

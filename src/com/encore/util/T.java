@@ -21,7 +21,7 @@ public class T {
 	public static final int SIGN_UP = 1;
 	public static final int ADD_CLIP = 2;
 	public static final int CREATE_SESSION = 3;
-	public static final int FRIENDS = 4;
+	public static final int GET_FRIENDS = 4;
 	public static final int USERS = 5;
 	public static final int FRIEND_REQUEST = 6;
 	public static final int GET_CROWDS = 7;
@@ -34,6 +34,7 @@ public class T {
 	public static final int GET_ME = 14;
 	public static final int GET_CLIP_STREAM = 15;
     public static final int GET_LIKES = 16;
+    public static final int UPDATE_USER = 17;
 	
 	// Column names for newsfeed query
 	public static final String SESSION_TITLE = "title";

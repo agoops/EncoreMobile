@@ -75,13 +75,13 @@ public class InboxViewAdapter extends ArrayAdapter<Session> implements OnClickLi
         convertView = LayoutInflater.from(mContext).inflate(R.layout.inbox_view, parent, false);
 //        showProgressBar(convertView);
 
-        Log.d(TAG, "unavailable");
-        while(likedSessionIds == null) {
-            // Wait until we've gotten our liked session ids
-            Log.d(TAG, "waiting...");
-            continue;
-        }
-        Log.d(TAG, "available");
+//        Log.d(TAG, "unavailable");
+//        while(likedSessionIds == null) {
+//            // Wait until we've gotten our liked session ids
+//            Log.d(TAG, "waiting...");
+//            continue;
+//        }
+//        Log.d(TAG, "available");
 
         // Get the most recently loaded session
         Session entry = mSessionList.get(position);
@@ -151,7 +151,7 @@ public class InboxViewAdapter extends ArrayAdapter<Session> implements OnClickLi
         List<Comment> comments = entry.getComments();
         int commentsSize = comments.size();
         if(commentsSize == 1) {
-            commentsTv.setText(commentsSize + " comment");
+            commentsTv.setText(commentsSize + " numLikes");
         } else {
             commentsTv.setText(commentsSize + " comments");
         }

@@ -96,7 +96,7 @@ public class CreateSessionFragment extends Fragment implements View.OnClickListe
     private void getFriends() {
         Intent apiIntent = new Intent(getActivity(), APIService.class);
         FriendListReceiver receiver = new FriendListReceiver(new Handler());
-        apiIntent.putExtra(T.API_TYPE, T.FRIENDS);
+        apiIntent.putExtra(T.API_TYPE, T.GET_FRIENDS);
         apiIntent.putExtra("receiver", receiver);
         getActivity().startService(apiIntent);
     }

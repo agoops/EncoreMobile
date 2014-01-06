@@ -40,6 +40,7 @@
         </activity>
         <activity android:name="com.encore.views.HomeActivity" android:windowSoftInputMode="adjustPan">
         </activity>
+        <activity android:name="com.encore.views.EditProfileActivity" android:parentActivityName="com.encore.views.HomeActivity"/>
 
         <service android:name="com.encore.UploadService2"/>
 

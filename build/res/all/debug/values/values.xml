@@ -110,6 +110,10 @@
     <!-- From: file:/Users/babakpourkazemi/Documents/Coding%20Projects/Github/EncoreMobile/res/values/color.xml -->
     <eat-comment />
 
+    <color name="accept_button_default">#3498DB</color>
+    <color name="accept_button_focused">#2980B9</color>
+    <color name="accept_button_pressed">#2980B9</color>
+    <color name="accept_button_text_color">#fff</color>
     <color name="android_midnight_blue">#212E3B</color>
     <color name="button_default">#00a87b</color>
     <color name="button_focused">#007858</color>
@@ -117,6 +121,10 @@
     <color name="button_text_color">#fff</color>
     <color name="dark_grey">#252525</color>
     <color name="darker_flat_red">#d0362c</color>
+    <color name="decline_button_default">#e74c3c</color>
+    <color name="decline_button_focused">#d0362c</color>
+    <color name="decline_button_pressed">#d0362c</color>
+    <color name="decline_button_text_color">#fff</color>
     <!-- From: file:/Users/babakpourkazemi/Documents/Coding%20Projects/Github/EncoreMobile/build/exploded-bundles/ComGithubChrisbanesActionbarpulltorefreshLibrary093.aar/res/values/values.xml -->
     <eat-comment />
 
@@ -124,8 +132,15 @@
     <!-- From: file:/Users/babakpourkazemi/Documents/Coding%20Projects/Github/EncoreMobile/res/values/color.xml -->
     <eat-comment />
 
+    <color name="flat_blue">#3498DB</color>
+    <color name="flat_blue_pressed">#2980B9</color>
     <color name="flat_red">#e74c3c</color>
     <color name="off_white">#e9e9e9</color>
+    <color name="profile_button_default">#e6e6e6</color>
+    <color name="profile_button_focused">#f6f6f6</color>
+    <color name="profile_button_pressed">#f6f6f6</color>
+    <color name="profile_button_selected">#fff</color>
+    <color name="profile_button_text_color">#000</color>
     <!-- From: file:/Users/babakpourkazemi/Documents/Coding%20Projects/Github/EncoreMobile/build/exploded-bundles/ComGithubCastorflexSmoothprogressbarLibrary020.aar/res/values/values.xml -->
     <eat-comment />
 
@@ -705,6 +720,13 @@
     <!-- From: file:/Users/babakpourkazemi/Documents/Coding%20Projects/Github/EncoreMobile/res/values/styles.xml -->
     <eat-comment />
 
+    <style name="AcceptButtonStyle" parent="@android:Widget.Holo.Button">
+        <item name="android:background">@drawable/accept_button_style</item>
+        <item name="android:fontFamily">sans-serif-light</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textColor">@color/accept_button_text_color</item>
+    </style>
+
     <style name="AppBaseTheme" parent="android:Theme.Holo.NoActionBar">
         <item name="android:windowNoTitle">false</item>
         <!--
@@ -730,11 +752,25 @@
         <item name="@android:buttonStyle">@style/RapbackButtons</item>
     </style>
 
+    <style name="DeclineButtonStyle" parent="@android:Widget.Holo.Button">
+        <item name="android:background">@drawable/decline_button_style</item>
+        <item name="android:fontFamily">sans-serif-light</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textColor">@color/decline_button_text_color</item>
+    </style>
+
     <style name="LikeButtonStyle" parent="@android:Widget.Holo.Button">
         <item name="android:background">@drawable/like_button_style</item>
         <item name="android:fontFamily">sans-serif-light</item>
         <item name="android:textStyle">italic</item>
         <item name="android:textColor">@color/button_text_color</item>
+    </style>
+
+    <style name="ProfileButtonsStyle" parent="@android:Widget.Holo.Button">
+        <item name="android:background">@drawable/profile_button_style</item>
+        <item name="android:fontFamily">sans-serif-light</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textColor">@color/profile_button_text_color</item>
     </style>
 
     <style name="RapbackActionBar" parent="@style/Widget.AppCompat.ActionBar">
