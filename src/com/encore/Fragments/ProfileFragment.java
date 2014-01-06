@@ -166,7 +166,7 @@ public class ProfileFragment extends Fragment implements View.OnClickListener{
         api.putExtra(T.RECEIVER, receiver);
         getActivity().startService(api);
     }
-    
+
     private void getFriends() {
         Log.d(TAG, "Making request to get friends");
 

@@ -2,8 +2,19 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android" >
 
     <item
+        android:id="@+id/action_inbox"
+        android:icon="@drawable/ic_home"
+        android:showAsAction="always"/>
+
+    <item
+        android:id="@+id/action_profile"
+        android:icon="@drawable/ic_person"
+        android:showAsAction="always"/>
+
+    <item
         android:id="@+id/action_video"
         android:icon="@drawable/ic_action_video"
         android:showAsAction="always"/>
+
 
 </menu><!-- From: file:/Users/babakpourkazemi/Documents/Coding%20Projects/Github/EncoreMobile/res/menu/home_activity_actions.xml -->

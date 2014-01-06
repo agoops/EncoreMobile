@@ -151,7 +151,7 @@ public class InboxViewAdapter extends ArrayAdapter<Session> implements OnClickLi
         List<Comment> comments = entry.getComments();
         int commentsSize = comments.size();
         if(commentsSize == 1) {
-            commentsTv.setText(commentsSize + " numLikes");
+            commentsTv.setText(commentsSize + " comment");
         } else {
             commentsTv.setText(commentsSize + " comments");
         }

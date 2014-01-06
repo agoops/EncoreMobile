@@ -1,7 +1,6 @@
 package com.encore.views;
 
 import android.app.ActionBar;
-import android.app.ActionBar.Tab;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -14,176 +13,260 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.widget.ListView;
-import android.widget.TextView;
 
 import com.encore.Fragments.ProfileFragment;
 import com.encore.R;
 import com.encore.StartSession;
 
 public class HomeActivity extends FragmentActivity {
-	private static final String TAG = "HomeActivity";
-	ViewPager viewPager;
-	ListView listView;
-	ActionBar actionBar;
-	Fragment[] fragments;
-	private static int INBOX = 0;
-	private static int PROFILE = 1;
+    private static final String TAG = "HomeActivity";
+    ViewPager viewPager;
+    ListView listView;
+    ActionBar actionBar;
+    Fragment[] fragments;
+    private static final int INBOX = 0;
+    private static final int PROFILE = 1;
 
-	// Change this to take out tabs from HomeActivity
-	private static int NUM_TABS = 2;
-	boolean customTitleSupported;
+    // Change this to take out tabs from HomeActivity
+    private static int NUM_TABS = 2;
+    boolean customTitleSupported;
 
-	@Override
-	public void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
-		// check if custom title is supported BEFORE setting the content view!
-		// TODO doesn't work. do later;
-		// customTitleSupported =
-		// requestWindowFeature(Window.FEATURE_CUSTOM_TITLE);
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.home_activity);
 
-		setContentView(R.layout.home_activity);
-		// customTitleBar();
+        fragments = new Fragment[NUM_TABS];
 
-		fragments = new Fragment[NUM_TABS];
-		actionBar = getActionBar();
+        viewPager = (ViewPager) findViewById(R.id.pager);
+        viewPager.setOffscreenPageLimit(0);
+        viewPager.setAdapter(new PagerAdapter(getSupportFragmentManager()));
+        viewPager
+                .setOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {
+                    @Override
+                    public void onPageSelected(int position) {
+                        Log.d(TAG, "Page changed. Position is now: " + position);
+                        switch(position)
+                        {
+                            case INBOX:
+                                // Set actionbar menu icon
 
-		viewPager = (ViewPager) findViewById(R.id.pager);
-		viewPager.setAdapter(new PagerAdapter(getSupportFragmentManager()));
-		setupActionBar(actionBar);
-		viewPager.setOffscreenPageLimit(0);
-		viewPager
-				.setOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {
-					@Override
-					public void onPageSelected(int position) {
-						// When swiping between pages, select the
-						// corresponding tab.
-						getActionBar().setSelectedNavigationItem(position);
-					}
-				});
-		
-//		getAllSessions();
-	}
+                                break;
+                            case PROFILE:
+                                // Set actionbar menu icon
+                                
+                                break;
+                            default:
+                                break;
+                        }
+                    }
+                });
 
-	public void customTitleBar() {
-		// set up custom title
-		if (customTitleSupported) {
-//			getWindow().setFeatureInt(Window.FEATURE_CUSTOM_TITLE,
-//					R.layout.customtitlebar);
-			TextView title = (TextView) findViewById(R.id.title);
-			title.setText(getText(R.string.app_name).toString());
+//        Fragment inbox = new InboxListViewFragment();
+//        getSupportFragmentManager().beginTransaction().add(R.id.home_activity_fragments_container, inbox).commit();
+    }
 
-		}
-	}
+    public class PagerAdapter extends FragmentStatePagerAdapter {
+        public PagerAdapter(FragmentManager fm) {
+            super(fm);
+            Log.d(TAG, "PagerAdapter ctor");
+        }
 
-	private void startNewSession() {
-		Log.d(TAG, "Button clicked!");
-	}
+        @Override
+        public Fragment getItem(int i) {
+            Log.d(TAG, "getItem() called with " + i);
 
-	private void setupActionBar(ActionBar actionBar) {
-		// Specify that tabs should be displayed in the action bar.
-		actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
-
-		// Create a tab listener that is called when the user changes tabs.
-		ActionBar.TabListener tabListener = new ActionBar.TabListener() {
-
-			@Override
-			public void onTabReselected(Tab tab,
-					android.app.FragmentTransaction ft) {
-			}
-
-			@Override
-			public void onTabSelected(Tab tab,
-					android.app.FragmentTransaction ft) {
-				Log.d(TAG, "onTabSelected() called");
-				viewPager.setCurrentItem(tab.getPosition(), true);
-			}
-
-			@Override
-			public void onTabUnselected(Tab tab,
-					android.app.FragmentTransaction ft) {
-			}
-		};
-		// Add title to tabs
-		for (int i = 0; i < NUM_TABS; i++) {
-			switch (i) {
-			case 0:
-				actionBar.addTab(actionBar.newTab().setText("Inbox")
-						.setTabListener(tabListener));
-				break;
-			case 1:
-				actionBar.addTab(actionBar.newTab().setText("Profile")
-						.setTabListener(tabListener));
-				break;
-
-			}
-		}
-	}
-
-	public class PagerAdapter extends FragmentStatePagerAdapter {
-		public PagerAdapter(FragmentManager fm) {
-			super(fm);
-			Log.d(TAG, "PagerAdapter ctor");
-		}
-
-		@Override
-		public Fragment getItem(int i) {
-			Log.d(TAG, "getItem() called with " + i);
-
-			switch (i) {
-			case 0:
-				Fragment fragment2 = new InboxListViewFragment();
-				fragments[INBOX] = fragment2;
-				return fragment2;
-			case 1:
-				Fragment profileFragment = new ProfileFragment();
+            switch (i) {
+                case 0:
+                    Fragment fragment2 = new InboxListViewFragment();
+                    fragments[INBOX] = fragment2;
+                    return fragment2;
+                case 1:
+                    Fragment profileFragment = new ProfileFragment();
 //                Fragment profileFragment = new TabLikesFragment();
-				fragments[PROFILE] = profileFragment;
-				return profileFragment;
-			}
+                    fragments[PROFILE] = profileFragment;
+                    return profileFragment;
+            }
 
-			return null;
-		}
+            return null;
+        }
 
-		@Override
-		public int getCount() {
-			return NUM_TABS;
-		}
+        @Override
+        public int getCount() {
+            return NUM_TABS;
+        }
 
-		@Override
-		public CharSequence getPageTitle(int position) {
-			switch (position) {
-			case 0:
-				return "Inbox";
-            case 1:
-                return "Profile";
-			default:
-				return null;
-			}
-		}
-	}
-	
-	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-		// Inflate the menu items in the action bar
-		MenuInflater inflater = getMenuInflater();
-		inflater.inflate(R.menu.home_activity_actions, menu);
-		return super.onCreateOptionsMenu(menu);
-	}
-	
-	@Override
-	public boolean onOptionsItemSelected(MenuItem item) {
-		Log.d(TAG, "Action Item selected");
-		// Handle presses on action bar items
-		switch(item.getItemId()) {
-		case R.id.action_video:
-			// Launch a new session
-			Log.d(TAG, "Launching StartSession");
-//			Intent intent = new Intent(this, CameraActivity2.class);
-            Intent intent = new Intent(this, StartSession.class);
-			startActivity(intent);
-			return true;
-		default:
-			return super.onOptionsItemSelected(item);
-		}
-	}
+        @Override
+        public CharSequence getPageTitle(int position) {
+            switch (position) {
+                case 0:
+                    return "Inbox";
+                case 1:
+                    return "Profile";
+                default:
+                    return null;
+            }
+        }
+    }
+
+//    @Override
+//    public void onCreate(Bundle savedInstanceState) {
+//        super.onCreate(savedInstanceState);
+//        // check if custom title is supported BEFORE setting the content view!
+//        // TODO doesn't work. do later;
+//        // customTitleSupported =
+//        // requestWindowFeature(Window.FEATURE_CUSTOM_TITLE);
+//
+//        setContentView(R.layout.home_activity);
+//        // customTitleBar();
+//
+//        fragments = new Fragment[NUM_TABS];
+//        actionBar = getActionBar();
+//
+//        viewPager = (ViewPager) findViewById(R.id.pager);
+//        viewPager.setAdapter(new PagerAdapter(getSupportFragmentManager()));
+//        setupActionBar(actionBar);
+//        viewPager.setOffscreenPageLimit(0);
+//        viewPager
+//                .setOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {
+//                    @Override
+//                    public void onPageSelected(int position) {
+//                        // When swiping between pages, select the
+//                        // corresponding tab.
+//                        getActionBar().setSelectedNavigationItem(position);
+//                    }
+//                });
+//
+////		getAllSessions();
+//    }
+//
+//    public void customTitleBar() {
+//        // set up custom title
+//        if (customTitleSupported) {
+////			getWindow().setFeatureInt(Window.FEATURE_CUSTOM_TITLE,
+////					R.layout.customtitlebar);
+//            TextView title = (TextView) findViewById(R.id.title);
+//            title.setText(getText(R.string.app_name).toString());
+//
+//        }
+//    }
+//
+//    private void startNewSession() {
+//        Log.d(TAG, "Button clicked!");
+//    }
+//
+//    private void setupActionBar(ActionBar actionBar) {
+//        // Specify that tabs should be displayed in the action bar.
+//        actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
+//
+//        // Create a tab listener that is called when the user changes tabs.
+//        ActionBar.TabListener tabListener = new ActionBar.TabListener() {
+//
+//            @Override
+//            public void onTabReselected(Tab tab,
+//                                        android.app.FragmentTransaction ft) {
+//            }
+//
+//            @Override
+//            public void onTabSelected(Tab tab,
+//                                      android.app.FragmentTransaction ft) {
+//                Log.d(TAG, "onTabSelected() called");
+//                viewPager.setCurrentItem(tab.getPosition(), true);
+//            }
+//
+//            @Override
+//            public void onTabUnselected(Tab tab,
+//                                        android.app.FragmentTransaction ft) {
+//            }
+//        };
+//        // Add title to tabs
+//        for (int i = 0; i < NUM_TABS; i++) {
+//            switch (i) {
+//                case 0:
+//                    actionBar.addTab(actionBar.newTab().setText("Inbox")
+//                            .setTabListener(tabListener));
+//                    break;
+//                case 1:
+//                    actionBar.addTab(actionBar.newTab().setText("Profile")
+//                            .setTabListener(tabListener));
+//                    break;
+//
+//            }
+//        }
+//    }
+//
+//    public class PagerAdapter extends FragmentStatePagerAdapter {
+//        public PagerAdapter(FragmentManager fm) {
+//            super(fm);
+//            Log.d(TAG, "PagerAdapter ctor");
+//        }
+//
+//        @Override
+//        public Fragment getItem(int i) {
+//            Log.d(TAG, "getItem() called with " + i);
+//
+//            switch (i) {
+//                case 0:
+//                    Fragment fragment2 = new InboxListViewFragment();
+//                    fragments[INBOX] = fragment2;
+//                    return fragment2;
+//                case 1:
+//                    Fragment profileFragment = new ProfileFragment();
+////                Fragment profileFragment = new TabLikesFragment();
+//                    fragments[PROFILE] = profileFragment;
+//                    return profileFragment;
+//            }
+//
+//            return null;
+//        }
+//
+//        @Override
+//        public int getCount() {
+//            return NUM_TABS;
+//        }
+//
+//        @Override
+//        public CharSequence getPageTitle(int position) {
+//            switch (position) {
+//                case 0:
+//                    return "Inbox";
+//                case 1:
+//                    return "Profile";
+//                default:
+//                    return null;
+//            }
+//        }
+//    }
+
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu items in the action bar
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.home_activity_actions, menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        Log.d(TAG, "Action Item selected");
+        // Handle presses on action bar items
+        switch(item.getItemId())
+        {
+            case R.id.action_video:
+                // Launch a new session
+                Log.d(TAG, "Launching StartSession");
+                Intent intent = new Intent(this, StartSession.class);
+                startActivity(intent);
+                return true;
+            case R.id.action_inbox:
+                viewPager.setCurrentItem(INBOX);
+                return true;
+            case R.id.action_profile:
+                viewPager.setCurrentItem(PROFILE);
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
 }
