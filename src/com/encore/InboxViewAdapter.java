@@ -275,11 +275,14 @@ public class InboxViewAdapter extends ArrayAdapter<Session> implements OnClickLi
         Intent clipApi = new Intent(mContext, APIService.class);
         ResultReceiver receiver = new ClipStreamReceiver(new Handler());
         int sessionId = sesh.getId();
-
-        clipApi.putExtra(T.API_TYPE, T.GET_CLIP_STREAM);
-        clipApi.putExtra(T.SESSION_ID, sessionId);
-        clipApi.putExtra(T.RECEIVER, receiver);
-        mContext.startService(clipApi);
+        String clipUrl = sesh.getClipUrl();
+        Log.d(TAG, "clip url:  " + clipUrl);
+        Uri uri = Uri.parse(clipUrl);
+        showVideoDialog(uri);
+//        clipApi.putExtra(T.API_TYPE, T.GET_CLIP_STREAM);
+//        clipApi.putExtra(T.SESSION_ID, sessionId);
+//        clipApi.putExtra(T.RECEIVER, receiver);
+//        mContext.startService(clipApi);
     }
 
     private void getUsersLikes() {

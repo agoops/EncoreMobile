@@ -27,7 +27,9 @@ public class Session {
 	
 	@SerializedName("thumbnail_url")
 	private String thumbnailUrl;
-	
+
+    @SerializedName("clip_url")
+    private String clipUrl;
 	// GET only, use PostSession for POST
 	public Session() {
 		this.title = null;
@@ -36,6 +38,7 @@ public class Session {
 		this.comments = null;
 		this.numLikes = 0;
 		this.thumbnailUrl = null;
+        this.clipUrl = null;
 	}
 	
 	public Session(String title, Crowd crowd) {
@@ -99,6 +102,10 @@ public class Session {
 		this.thumbnailUrl = url;
 	}
 
+    public String getClipUrl() { return this.clipUrl;}
+
+    public void setClipUrl(String url) { this.clipUrl=url;}
+
     public String getMembersFirstNames() {
         String[] namesArray = crowd.getMembersFirstNames();
         StringBuilder sb = new StringBuilder();
@@ -113,6 +120,6 @@ public class Session {
 	
 	public String toString() {
 		return "[" + "Title: " + this.title + ", \nCrowd Title" + this.crowd.getTitle() + ", \nCrowd ID: " + this.crowd.getId() +
-				", \nThumbnail URL: " + this.thumbnailUrl + "]";
+				", \nThumbnail URL: " + this.thumbnailUrl + " \nClip URL: " + this.clipUrl + " \n]";
 	}
 }
