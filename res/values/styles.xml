@@ -23,7 +23,7 @@
         <item name="android:dialogTheme">@style/CustomDialogTheme</item>
         <!--<item name="de.ankri:switchStyle">@style/switch_light</item>-->
     </style>
-    
+
     
     <!--  ========= Action Bar =========  -->
     
@@ -35,13 +35,13 @@
         <item name="titleTextStyle">@style/TitleTextStyle</item>
         <item name="background">@color/flat_red</item>
     </style>
-    
+
     <style name="TitleTextStyle" parent="@style/TextAppearance.AppCompat.Widget.ActionBar.Title">
         <item name="android:textColor">@color/off_white</item>
     </style>
-    
+
     <!-- ========= Tabs ========= -->
-    
+
     <style name="RapbackTabs" parent="@style/Widget.AppCompat.ActionBar.TabText">
         <item name="android:textColor">@color/dark_grey</item>
     </style>
