@@ -35,7 +35,7 @@ import java.io.IOException;
 public class CameraFragment extends Fragment implements
         SurfaceHolder.Callback, View.OnClickListener {
 
-    private static final String TAG = "CameraActivity2";
+    private static final String TAG = "CameraFragment";
     private Context context;
     private MediaRecorder mediaRecorder;
     private SurfaceView surfaceView;
@@ -100,7 +100,7 @@ public class CameraFragment extends Fragment implements
     }
 
     private final int maxDurationInMs = 900000;
-    private final long maxFileSizeInBytes = 500000;
+    private final long maxFileSizeInBytes = Long.MAX_VALUE;
     private final int videoFramesPerSecond = 20;
 
 
@@ -194,7 +194,8 @@ public class CameraFragment extends Fragment implements
 
         // Pass along the filepath for it to play
         Bundle args = new Bundle();
-        args.putParcelable(T.FILEPATH, getOutputMediaFileUri());
+        args.putString(T.FILEPATH, mediaFile.getAbsolutePath());
+        args.putInt(T.SESSION_ID, this.sessionId);
         previewFragment.setArguments(args);
 
         ft.replace(R.id.fragment_placeholder, previewFragment);

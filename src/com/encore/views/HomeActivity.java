@@ -210,7 +210,7 @@ public class HomeActivity extends FragmentActivity {
 		switch(item.getItemId()) {
 		case R.id.action_video:
 			// Launch a new session
-			Log.d(TAG, "Launching StartSession2");
+			Log.d(TAG, "Launching StartSession");
 //			Intent intent = new Intent(this, StartSession2.class);
 
 //			Intent intent = new Intent(this, CameraActivity2.class);
