@@ -4975,11 +4975,6 @@ false
                 qualifiers="xhdpi"
                 type="drawable" />
             <file
-                name="ic_launcher"
-                path="/Users/babakpourkazemi/Documents/Coding Projects/Github/EncoreMobile/res/drawable-xxhdpi/ic_launcher.png"
-                qualifiers="xxhdpi"
-                type="drawable" />
-            <file
                 name="ic_navigation_drawer"
                 path="/Users/babakpourkazemi/Documents/Coding Projects/Github/EncoreMobile/res/drawable-xxhdpi/ic_navigation_drawer.png"
                 qualifiers="xxhdpi"
@@ -5641,6 +5636,61 @@ bold
                 name="rapback_tab_indicator"
                 path="/Users/babakpourkazemi/Documents/Coding Projects/Github/EncoreMobile/res/drawable/rapback_tab_indicator.xml"
                 qualifiers=""
+                type="drawable" />
+            <file
+                name="ic_launcher"
+                path="/Users/babakpourkazemi/Documents/Coding Projects/Github/EncoreMobile/res/drawable-ldpi/ic_launcher.png"
+                qualifiers="ldpi"
+                type="drawable" />
+            <file
+                name="ic_home_selected"
+                path="/Users/babakpourkazemi/Documents/Coding Projects/Github/EncoreMobile/res/drawable-mdpi/ic_home_selected.png"
+                qualifiers="mdpi"
+                type="drawable" />
+            <file
+                name="ic_home_selected"
+                path="/Users/babakpourkazemi/Documents/Coding Projects/Github/EncoreMobile/res/drawable-hdpi/ic_home_selected.png"
+                qualifiers="hdpi"
+                type="drawable" />
+            <file
+                name="ic_home_selected"
+                path="/Users/babakpourkazemi/Documents/Coding Projects/Github/EncoreMobile/res/drawable-ldpi/ic_home_selected.png"
+                qualifiers="ldpi"
+                type="drawable" />
+            <file
+                name="actionbar_inbox_selector"
+                path="/Users/babakpourkazemi/Documents/Coding Projects/Github/EncoreMobile/res/drawable/actionbar_inbox_selector.xml"
+                qualifiers=""
+                type="drawable" />
+            <file
+                name="ic_home_selected"
+                path="/Users/babakpourkazemi/Documents/Coding Projects/Github/EncoreMobile/res/drawable-xhdpi/ic_home_selected.png"
+                qualifiers="xhdpi"
+                type="drawable" />
+            <file
+                name="ic_person_selected"
+                path="/Users/babakpourkazemi/Documents/Coding Projects/Github/EncoreMobile/res/drawable-hdpi/ic_person_selected.png"
+                qualifiers="hdpi"
+                type="drawable" />
+            <file
+                name="ic_person_selected"
+                path="/Users/babakpourkazemi/Documents/Coding Projects/Github/EncoreMobile/res/drawable-mdpi/ic_person_selected.png"
+                qualifiers="mdpi"
+                type="drawable" />
+            <file
+                name="actionbar_profile_selector"
+                path="/Users/babakpourkazemi/Documents/Coding Projects/Github/EncoreMobile/res/drawable/actionbar_profile_selector.xml"
+                qualifiers=""
+                type="drawable" />
+            <file
+                name="ic_person_selected"
+                path="/Users/babakpourkazemi/Documents/Coding Projects/Github/EncoreMobile/res/drawable-xhdpi/ic_person_selected.png"
+                qualifiers="xhdpi"
+                type="drawable" />
+            <file
+                name="ic_person_selected"
+                path="/Users/babakpourkazemi/Documents/Coding Projects/Github/EncoreMobile/res/drawable-ldpi/ic_person_selected.png"
+                qualifiers="ldpi"
                 type="drawable" />
         </source>
         <source path="/Users/babakpourkazemi/Documents/Coding Projects/Github/EncoreMobile/build/res/rs/debug" />

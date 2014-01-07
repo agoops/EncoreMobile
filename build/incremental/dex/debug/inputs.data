@@ -8,12 +8,12 @@
 1388786336000 526 6d0b5da04627e602526b479ad28282b6cab7e528 /Users/babakpourkazemi/Documents/Coding Projects/Github/EncoreMobile/build/classes/debug/uk/co/senab/actionbarpulltorefresh/library/R$color.class
 1388701391000 2509 b6e758ca36c2c48efd96ff7902565c181eb6a164 /Users/babakpourkazemi/Documents/Coding Projects/Github/EncoreMobile/build/classes/debug/com/encore/models/Likes.class
 1388527388000 1348 63bd4fed03d38e839f0bc403fd05a3681c780bd0 /Users/babakpourkazemi/Documents/Coding Projects/Github/EncoreMobile/build/classes/debug/com/encore/MainActivity.class
-1388990934000 11730 eddf10dad1f8631619947ca5a5043881a151ab4f /Users/babakpourkazemi/Documents/Coding Projects/Github/EncoreMobile/build/classes/debug/com/encore/Fragments/CameraFragment.class
+1389034959000 11730 260cbc798f035577c3176be8b3da9df9d123b254 /Users/babakpourkazemi/Documents/Coding Projects/Github/EncoreMobile/build/classes/debug/com/encore/Fragments/CameraFragment.class
 1388786336000 467 6b470a20f69136dcce329e4f92829c25b2734a66 /Users/babakpourkazemi/Documents/Coding Projects/Github/EncoreMobile/build/classes/debug/fr/castorflex/android/smoothprogressbar/R$color.class
-1388990934000 361 a68f4bee5a117d42e8dbc01888c78fa13e338533 /Users/babakpourkazemi/Documents/Coding Projects/Github/EncoreMobile/build/classes/debug/com/encore/R$raw.class
+1389034960000 361 2a2e77404517a6968d7b4a486ab12971ee3fc85c /Users/babakpourkazemi/Documents/Coding Projects/Github/EncoreMobile/build/classes/debug/com/encore/R$raw.class
 1388186923000 2354 b046e7ad19fa79dc8ba91d97da3a2b50c6f044cc /Users/babakpourkazemi/Documents/Coding Projects/Github/EncoreMobile/build/classes/debug/com/encore/views/UsersFragment$UsersListReceiver.class
 1387850049000 1019 70ed995ba3ee6b297ea01c90d4000e85470e6d6f /Users/babakpourkazemi/Documents/Coding Projects/Github/EncoreMobile/build/classes/debug/android/support/v7/appcompat/R.class
-1388991649000 3192 ddbc6857039ee81c12c8be658f4a98678f88cec2 /Users/babakpourkazemi/Documents/Coding Projects/Github/EncoreMobile/build/classes/debug/com/encore/views/HomeActivity.class
+1389076743000 3319 7d590d2427d52025a10b6fc6f86d1cd1650f8ac1 /Users/babakpourkazemi/Documents/Coding Projects/Github/EncoreMobile/build/classes/debug/com/encore/views/HomeActivity.class
 1388963220000 810 b06134c36ca966eb6f02457cd211c0130ffcf1bd /Users/babakpourkazemi/Documents/Coding Projects/Github/EncoreMobile/build/classes/debug/com/encore/Fragments/ExploreFragment.class
 1388786336000 594 e1f0de103a40c4873f20dccc983666c3c9ede895 /Users/babakpourkazemi/Documents/Coding Projects/Github/EncoreMobile/build/classes/debug/android/support/v7/appcompat/R$color.class
 1388186922000 1134 b68f923e0551ee1eaf99ded3f9c174ca955b9e25 /Users/babakpourkazemi/Documents/Coding Projects/Github/EncoreMobile/build/classes/debug/com/encore/AndroidVideoCapture$5.class
@@ -24,7 +24,7 @@
 1388186922000 723 6ad7ac390d1cbcf07f77a5778b6b5fc965ed10b7 /Users/babakpourkazemi/Documents/Coding Projects/Github/EncoreMobile/build/classes/debug/com/encore/AndroidVideoCapture$6.class
 1388527388000 9463 6775a9641bea51fd0e4c3ad59e595814d8c8a238 /Users/babakpourkazemi/Documents/Coding Projects/Github/EncoreMobile/build/classes/debug/com/encore/AndroidVideoCapture.class
 1388004509000 205 69a4fe273d59c51c0111cfbd0b05e5ae85442f9c /Users/babakpourkazemi/Documents/Coding Projects/Github/EncoreMobile/build/classes/debug/com/encore/models/UserInfo.class
-1388987371000 998 b6ade00740814381af279ed36f13d05a3cbe33a5 /Users/babakpourkazemi/Documents/Coding Projects/Github/EncoreMobile/build/classes/debug/com/encore/views/InboxListViewFragment$1.class
+1389074489000 998 b6ade00740814381af279ed36f13d05a3cbe33a5 /Users/babakpourkazemi/Documents/Coding Projects/Github/EncoreMobile/build/classes/debug/com/encore/views/InboxListViewFragment$1.class
 1387850048000 475 67008ece7b473a7abe9cc8324473ffc951ef3b9f /Users/babakpourkazemi/Documents/Coding Projects/Github/EncoreMobile/build/classes/debug/Bus/BusProvider.class
 1388004509000 626 60a26f3f0691a1791cce63f6ab6c25323f5ed0c8 /Users/babakpourkazemi/Documents/Coding Projects/Github/EncoreMobile/build/classes/debug/com/encore/models/Reply.class
 1388990934000 5185 cbd7b44fc5fd1cd801d343424a2706bbbfb5bb67 /Users/babakpourkazemi/Documents/Coding Projects/Github/EncoreMobile/build/classes/debug/com/encore/Fragments/CreateCrowdFragment.class
@@ -37,15 +37,15 @@
 1388990934000 3710 672783498afae6e145fce0941f4ad2d41dd75dce /Users/babakpourkazemi/Documents/Coding Projects/Github/EncoreMobile/build/classes/debug/com/encore/UsersFragmentAdapter.class
 1388529245000 9234 9ff70056026b86a9ce28cc93bf6f7eb2147c5c09 /Users/babakpourkazemi/Documents/Coding Projects/Github/EncoreMobile/build/classes/debug/com/encore/CameraActivity2.class
 1388965909000 5164 f0c961a4c15b34bd37660c44b74a6282c7dbb713 /Users/babakpourkazemi/Documents/Coding Projects/Github/EncoreMobile/build/classes/debug/com/encore/FriendsFragmentAdapter.class
-1388991710000 1114 e622cf031ef5a3c31f08c20b7579fc810dbcc979 /Users/babakpourkazemi/Documents/Coding Projects/Github/EncoreMobile/build/classes/debug/com/encore/views/HomeActivity$1.class
+1389076743000 909 a4f26605fc6061c884a81f35e0b3c807e0fe5181 /Users/babakpourkazemi/Documents/Coding Projects/Github/EncoreMobile/build/classes/debug/com/encore/views/HomeActivity$1.class
 1388529245000 938 ff28c0d29eff47f0a64e7665a8669fb3448fd468 /Users/babakpourkazemi/Documents/Coding Projects/Github/EncoreMobile/build/classes/debug/com/encore/InboxViewAdapter$1.class
 1387825868000 68847 0ec2beaefef3bd4f680c17fad8e72e66f2a006f1 /Users/babakpourkazemi/.gradle/caches/artifacts-26/filestore/com.squareup.okhttp/okhttp-protocols/1.2.1/jar/ec2beaefef3bd4f680c17fad8e72e66f2a006f1/okhttp-protocols-1.2.1.jar
 1387850048000 2180 9288e507f32bb0d350c8e199e320b6b62da83383 /Users/babakpourkazemi/Documents/Coding Projects/Github/EncoreMobile/build/classes/debug/com/encore/Audio.class
 1388186922000 1515 fe2fa28315efcd7dd744c9ff89475cb5a14e8c23 /Users/babakpourkazemi/Documents/Coding Projects/Github/EncoreMobile/build/classes/debug/com/encore/AndroidVideoCapture$4.class
 1388339333000 1272 b092e71a0a4cc69ea70b3714bdd46043ab1f2d4a /Users/babakpourkazemi/Documents/Coding Projects/Github/EncoreMobile/build/classes/debug/uk/co/senab/actionbarpulltorefresh/library/R$attr.class
 1388186922000 2667 ae826417fdfc887a19043c9997b2b04d41723eb8 /Users/babakpourkazemi/Documents/Coding Projects/Github/EncoreMobile/build/classes/debug/com/encore/AndroidVideoCapture$AudioAsyncTask.class
-1388701391000 1404 4980079cad902b2f2daed0de2ff5a73cf0e99c16 /Users/babakpourkazemi/Documents/Coding Projects/Github/EncoreMobile/build/classes/debug/com/encore/Fragments/CameraFragment$1.class
-1388990934000 3347 337e862d39c569f9369d3b71438ce5e2cd9314f2 /Users/babakpourkazemi/Documents/Coding Projects/Github/EncoreMobile/build/classes/debug/com/encore/R$layout.class
+1389034959000 1404 3152e913472b73b2aea26a848a8df9948332b2df /Users/babakpourkazemi/Documents/Coding Projects/Github/EncoreMobile/build/classes/debug/com/encore/Fragments/CameraFragment$1.class
+1389034960000 3347 ea1857aff8c97cd013f1f718af71e7fd38f7407a /Users/babakpourkazemi/Documents/Coding Projects/Github/EncoreMobile/build/classes/debug/com/encore/R$layout.class
 1388186923000 2002 9cfe849f1d5bb6d49c4eda0a45bafe5a3e088ac0 /Users/babakpourkazemi/Documents/Coding Projects/Github/EncoreMobile/build/classes/debug/com/encore/views/FriendsFragment$FriendListReceiver.class
 1387850048000 2132 7823af68d81dd371aa20c2c206b3dc6232230d7e /Users/babakpourkazemi/Documents/Coding Projects/Github/EncoreMobile/build/classes/debug/com/encore/AudioInfo.class
 1388987371000 2732 d7a3774076e26d1f759df428e2c2dc03dd38eb7b /Users/babakpourkazemi/Documents/Coding Projects/Github/EncoreMobile/build/classes/debug/com/encore/Fragments/ProfileFragment$MeReceiver.class
@@ -64,7 +64,7 @@
 1388990934000 2839 b2a60bdf0740b83863963b8f96cd45a833bc8f77 /Users/babakpourkazemi/Documents/Coding Projects/Github/EncoreMobile/build/classes/debug/com/encore/TabRequestsAdapter.class
 1387849868000 9198 6c4d079ac3911c38d4d9c5383f786f258115633d /Users/babakpourkazemi/Documents/Coding Projects/Github/EncoreMobile/build/exploded-bundles/ComGithubCastorflexSmoothprogressbarLibrary020.aar/classes.jar
 1387850049000 1067 301fb0844a7db3e7a18b940bd370f5f905eeea24 /Users/babakpourkazemi/Documents/Coding Projects/Github/EncoreMobile/build/classes/debug/uk/co/senab/actionbarpulltorefresh/library/R.class
-1388987371000 2467 5422a9dc7ace59138ee218ca222ce98d6dc96751 /Users/babakpourkazemi/Documents/Coding Projects/Github/EncoreMobile/build/classes/debug/com/encore/views/InboxListViewFragment$SessionListReceiver.class
+1389074489000 2467 5422a9dc7ace59138ee218ca222ce98d6dc96751 /Users/babakpourkazemi/Documents/Coding Projects/Github/EncoreMobile/build/classes/debug/com/encore/views/InboxListViewFragment$SessionListReceiver.class
 1388990934000 3927 c7b6a7e78d7138d6341f32d040a7afc04b909cef /Users/babakpourkazemi/Documents/Coding Projects/Github/EncoreMobile/build/classes/debug/com/encore/Fragments/LoginFragment.class
 1388339333000 803 d2459af45f55e9383d29deef32e6ef25cbecd920 /Users/babakpourkazemi/Documents/Coding Projects/Github/EncoreMobile/build/classes/debug/fr/castorflex/android/smoothprogressbar/R$attr.class
 1388990934000 8235 758e7f57e197e90a111560d54f9b406033563579 /Users/babakpourkazemi/Documents/Coding Projects/Github/EncoreMobile/build/classes/debug/com/encore/Fragments/CreateSessionFragment.class
@@ -77,16 +77,16 @@
 1387850048000 2785 512bfa11d85029bc0916cfe402c8bc2c4f9779bb /Users/babakpourkazemi/Documents/Coding Projects/Github/EncoreMobile/build/classes/debug/com/encore/Metronome.class
 1388810499000 3632 fb84ba425aa360efc139f9c5b39f4fcd19b53f3a /Users/babakpourkazemi/Documents/Coding Projects/Github/EncoreMobile/build/classes/debug/com/encore/DummyAdapter.class
 1387850048000 1225 3530d97e4f752d20a08531fe0f2886e8a1f62923 /Users/babakpourkazemi/Documents/Coding Projects/Github/EncoreMobile/build/classes/debug/com/encore/VideoPlayer.class
-1388990934000 6375 f0f56efbd64f806929ea7b8408f3398d163138bc /Users/babakpourkazemi/Documents/Coding Projects/Github/EncoreMobile/build/classes/debug/com/encore/views/InboxListViewFragment.class
+1389074489000 6375 f0f56efbd64f806929ea7b8408f3398d163138bc /Users/babakpourkazemi/Documents/Coding Projects/Github/EncoreMobile/build/classes/debug/com/encore/views/InboxListViewFragment.class
 1388004510000 2369 fcdda9c53c635a2b3b7d8e27dd48ad2ca9488579 /Users/babakpourkazemi/Documents/Coding Projects/Github/EncoreMobile/build/classes/debug/com/encore/widget/NewsfeedLoader.class
 1388701391000 886 5cdf1df15224493ddf1b386106641dc3e08cd653 /Users/babakpourkazemi/Documents/Coding Projects/Github/EncoreMobile/build/classes/debug/com/encore/models/FriendRequestProfile.class
 1388990934000 2378 c467d5ac04e3013a65dfcd476cbdad35927dbc8f /Users/babakpourkazemi/Documents/Coding Projects/Github/EncoreMobile/build/classes/debug/com/encore/widget/SessionsAdapter.class
 1388004509000 1689 682fcb20e8a06904e7dde479b6a90f121860c5ed /Users/babakpourkazemi/Documents/Coding Projects/Github/EncoreMobile/build/classes/debug/com/encore/models/PostSession.class
-1388990934000 489 0841a2b67aeed03ca30fa84969bc2464c09858e4 /Users/babakpourkazemi/Documents/Coding Projects/Github/EncoreMobile/build/classes/debug/com/encore/R$integer.class
+1389034960000 489 d75d4775c6e5764a5e08810bd8be15855f3a6a3f /Users/babakpourkazemi/Documents/Coding Projects/Github/EncoreMobile/build/classes/debug/com/encore/R$integer.class
 1388004509000 533 a7ad3cd7abbeb2f53f737d7779b587c3c47bdc95 /Users/babakpourkazemi/Documents/Coding Projects/Github/EncoreMobile/build/classes/debug/com/encore/models/Favorite.class
 1388988259000 8830 76d7748706ad888dfde1d21ff712a786692e50a1 /Users/babakpourkazemi/Documents/Coding Projects/Github/EncoreMobile/build/classes/debug/android/support/v7/appcompat/R$style.class
 1388527389000 470 d6ef39d4d30c0067d8042551a9c2c7811ebf4e8f /Users/babakpourkazemi/Documents/Coding Projects/Github/EncoreMobile/build/classes/debug/fr/castorflex/android/smoothprogressbar/R$string.class
-1388991649000 1912 3dd153b171db7e8c59e2189e555e69a86f4042e8 /Users/babakpourkazemi/Documents/Coding Projects/Github/EncoreMobile/build/classes/debug/com/encore/views/HomeActivity$PagerAdapter.class
+1389076743000 1869 3f9c233838d1a21294c7ba07dd5cdfc596cb8cd5 /Users/babakpourkazemi/Documents/Coding Projects/Github/EncoreMobile/build/classes/debug/com/encore/views/HomeActivity$PagerAdapter.class
 1388701391000 2542 cea7a7a48fa5b2c6c72cf8182f85f2bf4fb91728 /Users/babakpourkazemi/Documents/Coding Projects/Github/EncoreMobile/build/classes/debug/com/encore/views/FriendRequestsFragment$FriendRequestListReceiver.class
 1388527389000 6138 d3c46ebe506ad3143a76212cafb7040041ed4d45 /Users/babakpourkazemi/Documents/Coding Projects/Github/EncoreMobile/build/classes/debug/com/encore/R$attr.class
 1388812006000 2085 125c9ce6efc12b6a4d19115a499ebe197c3d1d7e /Users/babakpourkazemi/Documents/Coding Projects/Github/EncoreMobile/build/classes/debug/com/encore/views/TabLikesFragment$LikesReceiver.class
@@ -101,8 +101,8 @@
 1388186923000 1448 28732c07f7f269de785f38e9bc1ef2d221ffea5c /Users/babakpourkazemi/Documents/Coding Projects/Github/EncoreMobile/build/classes/debug/com/encore/Fragments/SignupFragment$SignUpReceiver.class
 1387850048000 305 fc8b07604816f628e3b0c756a80ba5c527f0d08c /Users/babakpourkazemi/Documents/Coding Projects/Github/EncoreMobile/build/classes/debug/com/encore/EncoreApplication.class
 1388988259000 587 0e2a0713dd4979c8165e72bd42a1d8008d44a942 /Users/babakpourkazemi/Documents/Coding Projects/Github/EncoreMobile/build/classes/debug/uk/co/senab/actionbarpulltorefresh/library/R$style.class
-1388990934000 1529 b7cf9804c1b1c0187d10412f5955de2b159fab04 /Users/babakpourkazemi/Documents/Coding Projects/Github/EncoreMobile/build/classes/debug/com/encore/R$string.class
-1388990934000 8413 0a9674923f15012fb755b9860628ae64caf19986 /Users/babakpourkazemi/Documents/Coding Projects/Github/EncoreMobile/build/classes/debug/com/encore/R$id.class
+1389034960000 1529 abda5e09e32188e839d8ad3b770e06d2497fbaaf /Users/babakpourkazemi/Documents/Coding Projects/Github/EncoreMobile/build/classes/debug/com/encore/R$string.class
+1389034960000 8413 dc18b0022b0139f41731a783522c441d366f0d59 /Users/babakpourkazemi/Documents/Coding Projects/Github/EncoreMobile/build/classes/debug/com/encore/R$id.class
 1387825869000 19025 4d72fb811c7b3c0e7f412112020d4430f044e510 /Users/babakpourkazemi/.gradle/caches/artifacts-26/filestore/com.squareup/otto/1.3.4/jar/4d72fb811c7b3c0e7f412112020d4430f044e510/otto-1.3.4.jar
 1388809407000 1705 c5cadc439da941823300997e9253b2fd7ca8d913 /Users/babakpourkazemi/Documents/Coding Projects/Github/EncoreMobile/build/classes/debug/com/encore/TabLikesAdapter$LikesReceiver.class
 1388527389000 638 320ccda98b6eb2a7c39e97a729b923713e53b867 /Users/babakpourkazemi/Documents/Coding Projects/Github/EncoreMobile/build/classes/debug/uk/co/senab/actionbarpulltorefresh/library/R$string.class
@@ -122,7 +122,7 @@
 1388527389000 514 09f70342dffd36c901a552564af96e742d57c279 /Users/babakpourkazemi/Documents/Coding Projects/Github/EncoreMobile/build/classes/debug/fr/castorflex/android/smoothprogressbar/R$bool.class
 1387850048000 1629 1ec418215ccf79da83fa492b26f0d158961d68ba /Users/babakpourkazemi/Documents/Coding Projects/Github/EncoreMobile/build/classes/debug/com/encore/CameraActivity$1.class
 1387850048000 959 3fc505d5fa5b47056860ea973cb2a2c2c6297898 /Users/babakpourkazemi/Documents/Coding Projects/Github/EncoreMobile/build/classes/debug/com/encore/SessionTemp.class
-1388987371000 1960 eb77cfe2bb3646e89b1c3d1fc61e465778374d1f /Users/babakpourkazemi/Documents/Coding Projects/Github/EncoreMobile/build/classes/debug/com/encore/views/InboxListViewFragment$ResponseListener.class
+1389074489000 1960 eb77cfe2bb3646e89b1c3d1fc61e465778374d1f /Users/babakpourkazemi/Documents/Coding Projects/Github/EncoreMobile/build/classes/debug/com/encore/views/InboxListViewFragment$ResponseListener.class
 1387850049000 960 c509fe2df1a6236059378453d374d13b39418f1d /Users/babakpourkazemi/Documents/Coding Projects/Github/EncoreMobile/build/classes/debug/fr/castorflex/android/smoothprogressbar/R.class
 1388990934000 2183 64568ff3e473ae1f5c2b8af927a783c5b4cac44c /Users/babakpourkazemi/Documents/Coding Projects/Github/EncoreMobile/build/classes/debug/com/encore/StartSession2.class
 1388186922000 2645 f2d4d41c2351e835181dc3e9fe41f72e53d49836 /Users/babakpourkazemi/Documents/Coding Projects/Github/EncoreMobile/build/classes/debug/com/encore/AndroidVideoCapture$2.class
@@ -142,7 +142,7 @@
 1388786336000 1726 4aed8f5e9205f4456fed01a1d481a997422952fa /Users/babakpourkazemi/Documents/Coding Projects/Github/EncoreMobile/build/classes/debug/com/encore/R$color.class
 1388339333000 6261 96dcf1ae1278c75014176ad2d57cd980408f2bee /Users/babakpourkazemi/Documents/Coding Projects/Github/EncoreMobile/build/classes/debug/android/support/v7/appcompat/R$styleable.class
 1388527388000 834 6d1838e65c152717562b04cfa279cf439838e317 /Users/babakpourkazemi/Documents/Coding Projects/Github/EncoreMobile/build/classes/debug/com/encore/CurrentSessions.class
-1388990934000 409 39068b5c94396dfea0221caa9262442669017774 /Users/babakpourkazemi/Documents/Coding Projects/Github/EncoreMobile/build/classes/debug/com/encore/R$menu.class
+1389034960000 409 1c7b68d32009e07b9f64e022e88a2700d8ec43da /Users/babakpourkazemi/Documents/Coding Projects/Github/EncoreMobile/build/classes/debug/com/encore/R$menu.class
 1388530379000 389 2785e4d9d4c6f4b97df741578b8e545b1f7af77a /Users/babakpourkazemi/Documents/Coding Projects/Github/EncoreMobile/build/classes/debug/com/encore/R$animator.class
 1387850048000 844 391b5519791de6bbd52ea2b139d13b5ae192715c /Users/babakpourkazemi/Documents/Coding Projects/Github/EncoreMobile/build/classes/debug/Bus/ServiceBus.class
 1388990934000 10318 f6c00a66c831568b28274f4f595632eb43b211cd /Users/babakpourkazemi/Documents/Coding Projects/Github/EncoreMobile/build/classes/debug/com/encore/Fragments/ProfileFragment.class
@@ -152,7 +152,7 @@
 1388990934000 2833 87d11030dac1cb68eca49065e68b3ceaa2f164bd /Users/babakpourkazemi/Documents/Coding Projects/Github/EncoreMobile/build/classes/debug/com/encore/views/TabRequestsFragment.class
 1388990934000 6302 f95f872fe02f8146adecd480d5a46bda21de086c /Users/babakpourkazemi/Documents/Coding Projects/Github/EncoreMobile/build/classes/debug/com/encore/Fragments/PickCrowdFragment.class
 1388186923000 830 94bfecdd286398271292769303ec237cf7a0c963 /Users/babakpourkazemi/Documents/Coding Projects/Github/EncoreMobile/build/classes/debug/com/encore/views/UsersFragment$UsersListReceiver$1.class
-1388990934000 8167 0e7b022b9726415a1920e9845bd7001a864d2e96 /Users/babakpourkazemi/Documents/Coding Projects/Github/EncoreMobile/build/classes/debug/com/encore/R$styleable.class
+1389034960000 8167 28a2d35f8549bc25f999ad0c16f3ce19083df48a /Users/babakpourkazemi/Documents/Coding Projects/Github/EncoreMobile/build/classes/debug/com/encore/R$styleable.class
 1388527389000 539 f01289674eda2b36f949f7aa7405bb46f8ccf353 /Users/babakpourkazemi/Documents/Coding Projects/Github/EncoreMobile/build/classes/debug/uk/co/senab/actionbarpulltorefresh/library/R$integer.class
 1388990934000 2771 7b9085c7238c7d4f455897a73820f33917be7ed7 /Users/babakpourkazemi/Documents/Coding Projects/Github/EncoreMobile/build/classes/debug/com/encore/views/TabCrowdsFragment.class
 1388527389000 763 a6d9d75daaff7dbfcae73a30650f0709ead16a65 /Users/babakpourkazemi/Documents/Coding Projects/Github/EncoreMobile/build/classes/debug/android/support/v7/appcompat/R$bool.class
@@ -185,7 +185,7 @@
 1388200459000 882 493eda3df8ba0d41593b4d987c5c2d574ab78650 /Users/babakpourkazemi/Documents/Coding Projects/Github/EncoreMobile/build/classes/debug/com/encore/models/Like.class
 1388527389000 1280 c884ba339db6823f885460bb4a2383a674f20788 /Users/babakpourkazemi/Documents/Coding Projects/Github/EncoreMobile/build/classes/debug/android/support/v7/appcompat/R$dimen.class
 1388979072000 13624 afa910fdd76aae587ec0dd4f47f639287e4a433c /Users/babakpourkazemi/Documents/Coding Projects/Github/EncoreMobile/build/classes/debug/com/encore/API/APIService.class
-1388988259000 6582 3dadf942da43bbb2580430f9f2204daa53f1bc88 /Users/babakpourkazemi/Documents/Coding Projects/Github/EncoreMobile/build/classes/debug/com/encore/R$drawable.class
+1389034960000 6762 2af23ff0eb63d58416b12262d903f88d8a8b5740 /Users/babakpourkazemi/Documents/Coding Projects/Github/EncoreMobile/build/classes/debug/com/encore/R$drawable.class
 1388004509000 998 26339059d9a6312020abbefe11a4390a476b6bca /Users/babakpourkazemi/Documents/Coding Projects/Github/EncoreMobile/build/classes/debug/com/encore/views/VideoListViewFragment$1.class
 1388701391000 2412 078c0c7060e4b901a6f1d953c7e960974c65c12d /Users/babakpourkazemi/Documents/Coding Projects/Github/EncoreMobile/build/classes/debug/com/encore/FriendRequestFragmentAdapter$1.class
 1388004509000 844 ad1c92fefdeff04a31f21eebfe9c777b202948f4 /Users/babakpourkazemi/Documents/Coding Projects/Github/EncoreMobile/build/classes/debug/com/encore/models/PostCrowd.class
@@ -215,6 +215,6 @@
 1388527388000 6896 74129194db084eab7facf4f4faa5ffcb67905f78 /Users/babakpourkazemi/Documents/Coding Projects/Github/EncoreMobile/build/classes/debug/com/encore/CameraActivity.class
 1388527389000 923 1dfaa28ac019c842c33a83316fa369b8740373ee /Users/babakpourkazemi/Documents/Coding Projects/Github/EncoreMobile/build/classes/debug/com/encore/R.class
 1388004510000 487 6ee31993242e7e50ccf0b6ac06f45d7724be5069 /Users/babakpourkazemi/Documents/Coding Projects/Github/EncoreMobile/build/classes/debug/com/encore/widget/CommentsAdapter$CommentsHolder.class
-1388990934000 9392 ed2bab95938bc5d8536aa60d7e8aa906911ac100 /Users/babakpourkazemi/Documents/Coding Projects/Github/EncoreMobile/build/classes/debug/com/encore/R$style.class
+1389034960000 9392 931b59fe2a96a5621d2e138bdd0cdd537cab4023 /Users/babakpourkazemi/Documents/Coding Projects/Github/EncoreMobile/build/classes/debug/com/encore/R$style.class
 1388527389000 445 00390f4f3fc96a62df52bbb9daffd6fda3ac5aab /Users/babakpourkazemi/Documents/Coding Projects/Github/EncoreMobile/build/classes/debug/android/support/v7/appcompat/R$integer.class
 1388035470000 6434 65d9bd32ee50dcbaed6c5729713351028688e83c /Users/babakpourkazemi/Documents/Coding Projects/Github/EncoreMobile/build/classes/debug/com/encore/widget/Switch.class
