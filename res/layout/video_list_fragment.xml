@@ -25,4 +25,9 @@
             android:scrollbars="none" >
         </ListView>
     </uk.co.senab.actionbarpulltorefresh.library.PullToRefreshLayout>
+
+    <ProgressBar
+        android:id="@+id/progress_inbox_lvfooter"
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent" />
     </LinearLayout>

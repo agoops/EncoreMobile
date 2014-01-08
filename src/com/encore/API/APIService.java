@@ -108,6 +108,9 @@ public class APIService extends IntentService {
         case T.SEARCH_USERNAME:
             searchUsername(intent.getExtras());
             break;
+        case T.PAGINATE_NEXT_SESSION:
+            paginateNextSession(intent.getExtras());
+            break;
 		default:
 			break;
 		}
@@ -481,6 +484,29 @@ public class APIService extends IntentService {
 
         try {
             resultJSON = api.searchUsername(token, username);
+            Log.d(TAG, "resultJSON result: " + resultJSON);
+
+            Bundle b = new Bundle();
+            b.putString("result", resultJSON);
+            resultReceiver.send(1, b);
+        } catch(Exception e) {
+            Log.e(TAG, e.getMessage() + " ");
+            e.printStackTrace();
+            resultReceiver.send(0, null);
+        }
+    }
+
+    private void paginateNextSession(Bundle data) {
+        Log.d(TAG, "paginateNextSession called");
+        String token = TokenHelper.getToken(this);
+
+        // The URL must be toString()'d from a paginator
+        String nextSessionUrl = data.getString(T.NEXT_SESSION_URL);
+
+        String resultJSON = null;
+
+        try {
+            resultJSON = api.paginateNextSession(token, nextSessionUrl);
             Log.d(TAG, "resultJSON result: " + resultJSON);
 
             Bundle b = new Bundle();

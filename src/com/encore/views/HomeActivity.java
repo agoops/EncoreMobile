@@ -47,7 +47,7 @@ public class HomeActivity extends FragmentActivity {
                 .setOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {
                     @Override
                     public void onPageSelected(int position) {
-                        if(actionInboxDefault) {
+                        if(actionInboxDefault && actionInbox != null) {
                             // Change the inbox icon to a selector
                             inboxSelector = getResources().getDrawable(R.drawable.actionbar_inbox_selector);
                             actionInbox.setIcon(inboxSelector);

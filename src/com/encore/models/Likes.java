@@ -11,6 +11,8 @@ import java.util.List;
  */
 public class Likes {
 
+    private static final String TAG = "Likes";
+
     @SerializedName("likes")
     private Like[] likes;
 

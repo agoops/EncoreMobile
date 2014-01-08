@@ -13,6 +13,7 @@ import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.ProgressBar;
@@ -36,6 +37,7 @@ import com.encore.models.Session;
 import com.encore.util.T;
 import com.encore.views.EditProfileActivity;
 import com.encore.views.FindFriendsActivity;
+import com.encore.views.OtherProfileActivity;
 import com.google.gson.Gson;
 
 import java.util.ArrayList;
@@ -99,7 +101,6 @@ public class ProfileFragment extends Fragment implements View.OnClickListener{
     }
 
     public void initData() {
-
         // Populate the profile page's basic data
         getMe();
 
@@ -119,6 +120,7 @@ public class ProfileFragment extends Fragment implements View.OnClickListener{
                     break; // no need to make another request
                 }
                 setTabPressed(1);
+                setOnItemClickListener(1);
                 getFriends();
 
                 break;
@@ -231,7 +233,7 @@ public class ProfileFragment extends Fragment implements View.OnClickListener{
     }
 
     // To visually simulate tabs, we "select" the given tab number
-    public void setTabPressed(int tabNumber) {
+    private void setTabPressed(int tabNumber) {
         rapsButton.setSelected((tabNumber == 1));
         crowdsButton.setSelected((tabNumber == 2));
         likesButton.setSelected((tabNumber == 3));
@@ -255,6 +257,48 @@ public class ProfileFragment extends Fragment implements View.OnClickListener{
         } else if(type == 1) {
             progressTabs.setVisibility(View.GONE);
             listview.setVisibility(View.VISIBLE);
+        }
+    }
+
+    private void setOnItemClickListener(int tabNumber) {
+        switch(tabNumber)
+        {
+            case 1:
+                listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                        Intent otherProfile = new Intent(getActivity(), OtherProfileActivity.class);
+
+                        // TODO: Set some info to send along
+
+                        startActivity(otherProfile);
+                    }
+                });
+                break;
+            case 2:
+                listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+
+                    }
+                });
+                break;
+            case 3:
+                listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+
+                    }
+                });
+                break;
+            case 4:
+                listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+
+                    }
+                });
+                break;
         }
     }
 

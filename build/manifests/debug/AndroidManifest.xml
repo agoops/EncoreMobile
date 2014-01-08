@@ -41,6 +41,7 @@
         <activity android:name="com.encore.views.HomeActivity" android:windowSoftInputMode="adjustPan">
         </activity>
         <activity android:name="com.encore.views.EditProfileActivity" android:parentActivityName="com.encore.views.HomeActivity"/>
+        <activity android:name="com.encore.views.OtherProfileActivity" android:parentActivityName="com.encore.views.HomeActivity"/>
 
         <activity android:launchMode="singleTop" android:name="com.encore.views.FindFriendsActivity" android:parentActivityName="com.encore.views.HomeActivity">
 

@@ -301,27 +301,27 @@ public class InboxViewAdapter extends ArrayAdapter<Session> implements OnClickLi
 
         @Override
         protected void onReceiveResult(int resultCode, Bundle resultData) {
-                if (resultCode == 1) {
-                        Log.d(TAG, "APIService returned successful with clip stream");
-                        Log.d(TAG, "Attempting to play clip");
-                        String result = resultData.getString("result");
-                        Log.d(TAG, "result from apiservice is: " + result);
-                        JsonParser jsonParser = new JsonParser();
-                		JsonArray jsonClipsArray = jsonParser.parse(result).getAsJsonArray();
-                		
-                		int numClipsInSession = jsonClipsArray.size();
-                		
-                		// Get last clipElement, get clip url
-                		String url = jsonClipsArray.get(0).getAsJsonObject().get("url").getAsString();
-                		Log.d(TAG, "url is: " + url);
-                		Uri uri = Uri.parse(url);
+            if (resultCode == 1) {
+                Log.d(TAG, "APIService returned successful with clip stream");
+                Log.d(TAG, "Attempting to play clip");
+                String result = resultData.getString("result");
+                Log.d(TAG, "result from apiservice is: " + result);
+                JsonParser jsonParser = new JsonParser();
+                JsonArray jsonClipsArray = jsonParser.parse(result).getAsJsonArray();
 
-                		//Problems: can stream back a video from android, but not from what michael made. 
-                		//I know android records in mpeg4.
-                		showVideoDialog(uri);
-                } else {
-                        Log.d(TAG, "APIService get session clip url failed?");
-                }
+                int numClipsInSession = jsonClipsArray.size();
+
+                // Get last clipElement, get clip url
+                String url = jsonClipsArray.get(0).getAsJsonObject().get("url").getAsString();
+                Log.d(TAG, "url is: " + url);
+                Uri uri = Uri.parse(url);
+
+                //Problems: can stream back a video from android, but not from what michael made.
+                //I know android records in mpeg4.
+                showVideoDialog(uri);
+            } else {
+                Log.d(TAG, "APIService get session clip url failed?");
+            }
         }
 	}
 

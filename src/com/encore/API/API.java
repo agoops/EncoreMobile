@@ -69,7 +69,7 @@ public class API {
     // Sessions
     private static final String GET_SESSIONS = SESSIONS;
     private static final String CREATE_SESSION = SESSIONS;
-    private static final String GET_SESSION = BASE_URL + "sessions/%s/";
+    private static final String SESSION_PAGE = SESSIONS + "?page=%s";
     // Clips
     private static final String GET_CLIP = CLIP;
     private static final String ADD_CLIP = CLIP;
@@ -594,7 +594,7 @@ public class API {
             resultJSON = put(url, new StringEntity(JSON), String.class);
             Log.d(TAG, "updateUser result: " + resultJSON);
         } catch(Exception e) {
-            Log.d(TAG, "updateUser() error");
+            Log.d(TAG, "updateUser error");
             throw e;
         }
         return resultJSON;
@@ -610,7 +610,22 @@ public class API {
             resultJSON = get(url, String.class);
             Log.d(TAG, "searchUsername result: " + resultJSON);
         } catch(Exception e) {
-            Log.d(TAG, "updateUser() error");
+            Log.d(TAG, "updateUser error");
+            throw e;
+        }
+        return resultJSON;
+    }
+
+    public String paginateNextSession(String token, String nextUrl) throws Exception {
+        Log.d(TAG, "paginateNextSession called");
+        ACCESS_TOKEN = "Token " + token;
+        String resultJSON = null;
+
+        try {
+            resultJSON = get(nextUrl, String.class);
+            Log.d(TAG, "paginateNextSession result: " + resultJSON);
+        } catch(Exception e) {
+            Log.d(TAG, "paginateNextSession error");
             throw e;
         }
         return resultJSON;

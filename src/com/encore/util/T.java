@@ -14,7 +14,9 @@ public class T {
 	public static final String DURATION = "duration";
 	public static final String FILEPATH = "filepath";
 	public static final String ACCEPTED = "accepted";
-	public static final String THUMBNAIL_FILEPATH = "thumbnail_filepath"; 
+	public static final String THUMBNAIL_FILEPATH = "thumbnail_filepath";
+    public static final String NEXT_SESSION_URL= "next_session_url";
+    public static final String PREVIOUS_SESSION_URL = "previous_session_url";
 
 	// API call types
 	public static final int SIGN_IN = 0;
@@ -36,6 +38,7 @@ public class T {
     public static final int GET_LIKES = 16;
     public static final int UPDATE_USER = 17;
     public static final int SEARCH_USERNAME = 18;
+    public static final int PAGINATE_NEXT_SESSION = 19;
 	
 	// Column names for newsfeed query
 	public static final String SESSION_TITLE = "title";
