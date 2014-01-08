@@ -42,6 +42,15 @@
         </activity>
         <activity android:name="com.encore.views.EditProfileActivity" android:parentActivityName="com.encore.views.HomeActivity"/>
 
+        <activity android:launchMode="singleTop" android:name="com.encore.views.FindFriendsActivity" android:parentActivityName="com.encore.views.HomeActivity">
+
+            <intent-filter>
+                <action android:name="android.intent.action.SEARCH"/>
+            </intent-filter>
+            <meta-data android:name="android.app.searchable" android:resource="@xml/searchable"/>
+
+        </activity>
+
         <service android:name="com.encore.UploadService2"/>
 
 

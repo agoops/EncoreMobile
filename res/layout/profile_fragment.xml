@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical" >
-    
+
     <ProgressBar
         android:id="@+id/progress_profile"
         android:layout_height="match_parent"
@@ -25,6 +25,16 @@
             android:layout_width="100dp"
             android:src="@drawable/bobby_prof"
             android:layout_margin="20dp"/>
+
+        <Button
+            android:id="@+id/profileEditButton"
+            android:layout_height="35dp"
+            android:layout_width="wrap_content"
+            android:layout_alignRight="@id/profilePicture"
+            android:layout_alignBottom="@id/profilePicture"
+            android:layout_alignLeft="@id/profilePicture"
+            android:background="@drawable/background_333_transparent"
+            android:text="Edit"/>
 
         <TextView
             android:id="@+id/profileNumRapsTv"
@@ -56,13 +66,12 @@
             android:textAppearance="?android:textAppearanceMedium" />
 
         <Button
-            android:id="@+id/profileEditButton"
+            android:id="@+id/profile_find_friends_button"
             android:layout_height="wrap_content"
             android:layout_width="match_parent"
-            android:layout_below="@id/profilePicture"
-            android:text="Edit Your Profile"
-            android:layout_alignLeft="@id/profilePicture"
-            android:layout_marginRight="20dp"/>
+            android:layout_below="@id/profileEditButton"
+            android:text="Find Friends"
+            android:layout_margin="20dp"/>
 
     </RelativeLayout>
 
@@ -120,11 +129,11 @@
             android:layout_width="match_parent"
             android:layout_below="@id/progress_profile_tabs" />
 
-        <!--<FrameLayout-->
-            <!--android:id="@+id/profileNestedFragmentsHolder"-->
-            <!--android:layout_below="@id/profileTabsHolder"-->
-            <!--android:layout_height="match_parent"-->
-            <!--android:layout_width="match_parent" />-->
+        <FrameLayout
+            android:id="@+id/profileNestedFragmentsHolder"
+            android:layout_below="@id/profileTabsHolder"
+            android:layout_height="match_parent"
+            android:layout_width="match_parent" />
     </RelativeLayout>
 
 </RelativeLayout>

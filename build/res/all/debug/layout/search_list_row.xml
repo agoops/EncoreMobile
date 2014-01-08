@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <ImageView
+        android:id="@+id/search_profile_pic"
+        android:gravity="center_vertical"
+        android:layout_height="75dp"
+        android:layout_width="75dp"
+        android:layout_marginLeft="10dp"
+        android:paddingTop="5dp"
+        android:paddingBottom="5dp"
+        android:layout_centerVertical="true"
+        android:src="@drawable/bobby_prof"/>
+
+    <LinearLayout
+        android:id="@+id/search_textview_container"
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:orientation="vertical"
+        android:layout_toRightOf="@id/search_profile_pic"
+        android:layout_toLeftOf="@+id/search_add_friend"
+        android:layout_alignTop="@id/search_profile_pic"
+        android:layout_alignBottom="@id/search_profile_pic">
+
+        <TextView
+            android:id="@+id/search_username"
+            android:layout_height="0dp"
+            android:layout_width="match_parent"
+            android:text="Username"
+            android:gravity="bottom"
+            android:textAppearance="?android:textAppearanceMedium"
+            android:layout_weight="1"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"/>
+
+        <TextView
+            android:id="@+id/search_fullname"
+            android:layout_height="0dp"
+            android:layout_width="match_parent"
+            android:text="Full Name"
+            android:layout_weight="1"
+            android:gravity="center_vertical"
+            android:textAppearance="?android:textAppearanceSmall"
+            android:textColor="#777"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"/>
+
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/search_add_friend"
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:layout_marginRight="10dp"
+        android:text="Add"/>
+
+</RelativeLayout><!-- From: file:/Users/babakpourkazemi/Documents/Coding%20Projects/Github/EncoreMobile/res/layout/search_list_row.xml -->

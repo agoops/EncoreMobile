@@ -150,6 +150,7 @@
 
     <color name="vinyet_green">#00a87b</color>
     <color name="vinyet_green_pressed">#007858</color>
+    <color name="white">#fff</color>
     <!-- From: file:/Users/babakpourkazemi/Documents/Coding%20Projects/Github/EncoreMobile/build/exploded-bundles/ComAndroidSupportAppcompatV71800.aar/res/values/values.xml -->
     <eat-comment />
 
@@ -708,6 +709,7 @@
     <!-- From: file:/Users/babakpourkazemi/Documents/Coding%20Projects/Github/EncoreMobile/res/values/strings.xml -->
     <eat-comment />
 
+    <string name="search_hint">Search usernames</string>
     <string name="second_key">2</string>
     <!-- From: file:/Users/babakpourkazemi/Documents/Coding%20Projects/Github/EncoreMobile/build/exploded-bundles/ComGithubCastorflexSmoothprogressbarLibrary020.aar/res/values/values.xml -->
     <eat-comment />
@@ -721,7 +723,7 @@
     <eat-comment />
 
     <style name="AcceptButtonStyle" parent="@android:Widget.Holo.Button">
-        <item name="android:background">@drawable/accept_button_style</item>
+        <item name="android:background">@drawable/blue_button_selector</item>
         <item name="android:fontFamily">sans-serif-light</item>
         <item name="android:textStyle">bold</item>
         <item name="android:textColor">@color/accept_button_text_color</item>
@@ -746,6 +748,13 @@
         <item name="android:buttonStyle">@style/RapbackButtons</item>
         <item name="android:dialogTheme">@style/CustomDialogTheme</item>
         <!-- <item name="de.ankri:switchStyle">@style/switch_light</item> -->
+    </style>
+
+    <style name="BlueButtonStyle" parent="@android:Widget.Holo.Button">
+        <item name="android:background">@drawable/blue_button_selector</item>
+        <item name="android:fontFamily">sans-serif-light</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textColor">@color/accept_button_text_color</item>
     </style>
 
     <style name="CustomDialogTheme" parent="@android:style/Theme.Dialog">

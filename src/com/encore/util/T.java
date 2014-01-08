@@ -35,6 +35,7 @@ public class T {
 	public static final int GET_CLIP_STREAM = 15;
     public static final int GET_LIKES = 16;
     public static final int UPDATE_USER = 17;
+    public static final int SEARCH_USERNAME = 18;
 	
 	// Column names for newsfeed query
 	public static final String SESSION_TITLE = "title";

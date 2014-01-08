@@ -80,6 +80,8 @@ public class API {
     private static final String CREATE_CROWD = CROWDS;
     // Comments
 	private static final String CREATE_COMMENT = BASE_URL + "sessions/%s/comments/";
+    // Search
+    private static final String SEARCH_USERNAME = USERS + "search/?username=%s";
 
 	public API(OkHttpClient client, Context context) {
 		this.client = client;
@@ -591,6 +593,22 @@ public class API {
 
             resultJSON = put(url, new StringEntity(JSON), String.class);
             Log.d(TAG, "updateUser result: " + resultJSON);
+        } catch(Exception e) {
+            Log.d(TAG, "updateUser() error");
+            throw e;
+        }
+        return resultJSON;
+    }
+
+    public String searchUsername(String token, String username) throws Exception {
+        Log.d(TAG, "searchUsername called");
+        String url = String.format(SEARCH_USERNAME, username);
+        ACCESS_TOKEN = "Token " + token;
+        String resultJSON = null;
+
+        try {
+            resultJSON = get(url, String.class);
+            Log.d(TAG, "searchUsername result: " + resultJSON);
         } catch(Exception e) {
             Log.d(TAG, "updateUser() error");
             throw e;

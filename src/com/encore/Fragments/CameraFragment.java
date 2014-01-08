@@ -35,7 +35,7 @@ import java.io.IOException;
 public class CameraFragment extends Fragment implements
         SurfaceHolder.Callback, View.OnClickListener {
 
-    private static final String TAG = "CameraActivity2";
+    private static final String TAG = "CameraFragment";
     private Context context;
     private MediaRecorder mediaRecorder;
     private SurfaceView surfaceView;
@@ -56,7 +56,7 @@ public class CameraFragment extends Fragment implements
         context = getActivity();
 
         // Get sessionId. -1 means we need to create a new session
-        sessionId = getArguments().getInt("sessionId");
+        sessionId = getArguments().getInt("sessionId", -1);
 
         surfaceView = (SurfaceView) view.findViewById(R.id.videoview);
         surfaceHolder = surfaceView.getHolder();

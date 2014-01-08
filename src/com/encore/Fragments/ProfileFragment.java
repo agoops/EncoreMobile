@@ -35,6 +35,7 @@ import com.encore.models.Profile;
 import com.encore.models.Session;
 import com.encore.util.T;
 import com.encore.views.EditProfileActivity;
+import com.encore.views.FindFriendsActivity;
 import com.google.gson.Gson;
 
 import java.util.ArrayList;
@@ -43,7 +44,7 @@ import java.util.Arrays;
 public class ProfileFragment extends Fragment implements View.OnClickListener{
 	private static final String TAG = "ProfileFragment";
     private View view;
-    private Button rapsButton, crowdsButton, likesButton, requestsButton, editProfileButton;
+    private Button rapsButton, crowdsButton, likesButton, requestsButton, editProfileButton, findFriendsButton;
     private ListView listview;
     private TextView numRapsTv, numLikesTv, numFriendsTv;
     private ProgressBar progressProfile, progressTabs;
@@ -54,6 +55,9 @@ public class ProfileFragment extends Fragment implements View.OnClickListener{
     private ResultReceiver receiver;
 
     private Profile userMe;
+
+    // TODO: Fix the listview only-loading-sometimes bug (try reloading/reinitializing the fragment?)
+    // TODO: Set the profile picture
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -73,6 +77,7 @@ public class ProfileFragment extends Fragment implements View.OnClickListener{
         likesButton = (Button) view.findViewById(R.id.profile_likes_button);
         requestsButton = (Button) view.findViewById(R.id.profile_requests_button);
         editProfileButton = (Button) view.findViewById(R.id.profileEditButton);
+        findFriendsButton = (Button) view.findViewById(R.id.profile_find_friends_button);
         listview = (ListView) view.findViewById(R.id.tabsLv);
         numRapsTv = (TextView) view.findViewById(R.id.profileNumRapsTv);
         numLikesTv = (TextView) view.findViewById(R.id.profileNumLikesTv);
@@ -90,9 +95,11 @@ public class ProfileFragment extends Fragment implements View.OnClickListener{
         likesButton.setOnClickListener(this);
         requestsButton.setOnClickListener(this);
         editProfileButton.setOnClickListener(this);
+        findFriendsButton.setOnClickListener(this);
     }
 
     public void initData() {
+
         // Populate the profile page's basic data
         getMe();
 
@@ -147,6 +154,10 @@ public class ProfileFragment extends Fragment implements View.OnClickListener{
                 launchEditProfileActivity.putExtra(T.PHONE_NUMBER, userMe.getPhoneNumber());
                 startActivity(launchEditProfileActivity);
 
+                break;
+            case R.id.profile_find_friends_button:
+                Intent launchFriendFinder = new Intent(getActivity(), FindFriendsActivity.class);
+                startActivity(launchFriendFinder);
                 break;
             default:
                 break;

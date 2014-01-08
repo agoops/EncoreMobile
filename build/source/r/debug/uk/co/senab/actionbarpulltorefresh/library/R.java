@@ -31,46 +31,46 @@ public final class R {
 		public static final int spb_stroke_width = 0x7f01006c;
 	}
 	public static final class bool {
-		public static final int spb_default_mirror_mode = 0x7f080006;
-		public static final int spb_default_reversed = 0x7f080007;
+		public static final int spb_default_mirror_mode = 0x7f090006;
+		public static final int spb_default_reversed = 0x7f090007;
 	}
 	public static final class color {
-		public static final int default_progress_bar_color = 0x7f090012;
-		public static final int spb_default_color = 0x7f09001c;
+		public static final int default_progress_bar_color = 0x7f0a0012;
+		public static final int spb_default_color = 0x7f0a001c;
 	}
 	public static final class dimen {
-		public static final int ptr_progress_bar_stroke_width = 0x7f0b0012;
-		public static final int spb_default_stroke_separator_length = 0x7f0b0013;
-		public static final int spb_default_stroke_width = 0x7f0b0014;
+		public static final int ptr_progress_bar_stroke_width = 0x7f0c0012;
+		public static final int spb_default_stroke_separator_length = 0x7f0c0013;
+		public static final int spb_default_stroke_width = 0x7f0c0014;
 	}
 	public static final class id {
-		public static final int inside = 0x7f0a0012;
-		public static final int outside = 0x7f0a0013;
-		public static final int ptr_content = 0x7f0a001e;
-		public static final int ptr_progress = 0x7f0a001f;
-		public static final int ptr_text = 0x7f0a0020;
-		public static final int spb_interpolator_accelerate = 0x7f0a0014;
-		public static final int spb_interpolator_acceleratedecelerate = 0x7f0a0016;
-		public static final int spb_interpolator_decelerate = 0x7f0a0017;
-		public static final int spb_interpolator_linear = 0x7f0a0015;
+		public static final int inside = 0x7f0b0012;
+		public static final int outside = 0x7f0b0013;
+		public static final int ptr_content = 0x7f0b001e;
+		public static final int ptr_progress = 0x7f0b001f;
+		public static final int ptr_text = 0x7f0b0020;
+		public static final int spb_interpolator_accelerate = 0x7f0b0014;
+		public static final int spb_interpolator_acceleratedecelerate = 0x7f0b0016;
+		public static final int spb_interpolator_decelerate = 0x7f0b0017;
+		public static final int spb_interpolator_linear = 0x7f0b0015;
 	}
 	public static final class integer {
-		public static final int spb_default_interpolator = 0x7f0c0001;
-		public static final int spb_default_sections_count = 0x7f0c0002;
+		public static final int spb_default_interpolator = 0x7f0d0001;
+		public static final int spb_default_sections_count = 0x7f0d0002;
 	}
 	public static final class layout {
 		public static final int default_header = 0x7f030020;
 	}
 	public static final class string {
-		public static final int pull_to_refresh_pull_label = 0x7f0d0012;
-		public static final int pull_to_refresh_refreshing_label = 0x7f0d0013;
-		public static final int pull_to_refresh_release_label = 0x7f0d0014;
-		public static final int spb_default_speed = 0x7f0d0016;
+		public static final int pull_to_refresh_pull_label = 0x7f0e0012;
+		public static final int pull_to_refresh_refreshing_label = 0x7f0e0013;
+		public static final int pull_to_refresh_release_label = 0x7f0e0014;
+		public static final int spb_default_speed = 0x7f0e0017;
 	}
 	public static final class style {
-		public static final int SmoothProgressBar = 0x7f0e000b;
-		public static final int Theme_SmoothProgressBarDefaults = 0x7f0e0041;
-		public static final int Widget_ProgressBar_PullToRefresh = 0x7f0e008d;
+		public static final int SmoothProgressBar = 0x7f0f000c;
+		public static final int Theme_SmoothProgressBarDefaults = 0x7f0f0042;
+		public static final int Widget_ProgressBar_PullToRefresh = 0x7f0f008e;
 	}
 	public static final class styleable {
 		public static final int[] PullToRefreshHeader = { 0x7f01005e, 0x7f01005f, 0x7f010060, 0x7f010061, 0x7f010062, 0x7f010063, 0x7f010064, 0x7f010065, 0x7f010066 };

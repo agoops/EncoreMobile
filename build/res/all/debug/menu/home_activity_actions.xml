@@ -13,7 +13,7 @@
 
     <item
         android:id="@+id/action_video"
-        android:icon="@drawable/ic_action_video"
+        android:icon="@drawable/actionbar_video_selector"
         android:showAsAction="always"/>
 
 

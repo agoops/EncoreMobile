@@ -253,19 +253,19 @@ false
                     name="ptr_content"
                     type="id"/>
 
-                <dimen name="ptr_progress_bar_stroke_width" >4dp
-                </dimen>
-
                 <attr
                     name="ptrHeaderStyle"
                     format="reference" />
+
+                <dimen name="ptr_progress_bar_stroke_width" >4dp
+                </dimen>
             </file>
             <file
                 path="/Users/babakpourkazemi/Documents/Coding Projects/Github/EncoreMobile/build/exploded-bundles/ComGithubChrisbanesActionbarpulltorefreshLibrary093.aar/res/values-ar/values.xml"
                 qualifiers="ar" >
-                <string name="pull_to_refresh_release_label" >اترك للتحديث…
-                </string>
                 <string name="pull_to_refresh_pull_label" >اسحب للتحديث…
+                </string>
+                <string name="pull_to_refresh_release_label" >اترك للتحديث…
                 </string>
                 <string name="pull_to_refresh_refreshing_label" >تحميل…
                 </string>
@@ -373,9 +373,9 @@ false
             <file
                 path="/Users/babakpourkazemi/Documents/Coding Projects/Github/EncoreMobile/build/exploded-bundles/ComGithubChrisbanesActionbarpulltorefreshLibrary093.aar/res/values-lt/values.xml"
                 qualifiers="lt" >
-                <string name="pull_to_refresh_release_label" >Paleiskite, kad atnaujinti…
-                </string>
                 <string name="pull_to_refresh_refreshing_label" >Kraunama…
+                </string>
+                <string name="pull_to_refresh_release_label" >Paleiskite, kad atnaujinti…
                 </string>
                 <string name="pull_to_refresh_pull_label" >Traukite, kad atnaujinti…
                 </string>
@@ -1835,6 +1835,10 @@ false
                 <string name="abc_searchview_description_query" >Search query
                 </string>
 
+                <item
+                    name="home"
+                    type="id"/>
+
                 <declare-styleable name="MenuView" >
 
                     <!-- Default appearance of menu item text. -->
@@ -1855,24 +1859,20 @@ false
                     <attr name="android:preserveIconSpacing" />
                 </declare-styleable>
 
-                <item
-                    name="home"
-                    type="id"/>
+                <string name="abc_action_bar_up_description" >Navigate up
+                </string>
 
                 <attr
                     name="actionModeStyle"
                     format="reference" />
 
-                <string name="abc_action_bar_up_description" >Navigate up
-                </string>
+                <item
+                    name="action_bar_activity_content"
+                    type="id"/>
 
                 <attr
                     name="actionBarSplitStyle"
                     format="reference" />
-
-                <item
-                    name="action_bar_activity_content"
-                    type="id"/>
 
                 <style
                     name="Widget.AppCompat.ActionBar"
@@ -2029,19 +2029,18 @@ true
                     </item>
                 </style>
 
-                <attr
-                    name="actionModeCloseDrawable"
-                    format="reference" />
-
                 <dimen name="abc_action_bar_stacked_max_height" >48dp
                 </dimen>
 
-                <color name="abc_search_url_text_selected" >@android:color/black
-                </color>
-
+                <attr
+                    name="actionModeCloseDrawable"
+                    format="reference" />
                 <attr
                     name="searchViewTextField"
                     format="reference" />
+
+                <color name="abc_search_url_text_selected" >@android:color/black
+                </color>
 
                 <declare-styleable name="Spinner" >
 
@@ -2127,26 +2126,32 @@ middle
                 </style>
 
                 <style
-                    name="Widget.AppCompat.Light.ActionBar.TabText"
-                    parent="Widget.AppCompat.Light.Base.ActionBar.TabText" />
-
-                <style
                     name="Widget.AppCompat.ActionBar.TabBar"
                     parent="Widget.AppCompat.Base.ActionBar.TabBar" />
+
+                <style
+                    name="Widget.AppCompat.Light.ActionBar.TabText"
+                    parent="Widget.AppCompat.Light.Base.ActionBar.TabText" />
 
                 <attr
                     name="isLightTheme"
                     format="boolean" />
                 <attr
-                    name="textAppearanceSearchResultSubtitle"
+                    name="actionOverflowButtonStyle"
                     format="reference" />
                 <attr
-                    name="actionOverflowButtonStyle"
+                    name="textAppearanceSearchResultSubtitle"
                     format="reference" />
 
                 <style
                     name="Widget.AppCompat.ActivityChooserView"
                     parent="Widget.AppCompat.Base.ActivityChooserView" />
+
+                <string name="abc_action_menu_overflow_description" >More options
+                </string>
+
+                <dimen name="abc_action_bar_default_height" >48dip
+                </dimen>
 
                 <style
                     name="Widget.AppCompat.Light.Base.ActionBar.TabText.Inverse"
@@ -2155,12 +2160,6 @@ middle
 ?android:attr/textColorPrimaryInverseDisableOnly
                     </item>
                 </style>
-
-                <dimen name="abc_action_bar_default_height" >48dip
-                </dimen>
-
-                <string name="abc_action_menu_overflow_description" >More options
-                </string>
 
                 <style
                     name="Widget.AppCompat.Light.Base.ActionBar.TabText"
@@ -2176,6 +2175,10 @@ middle
                 <style
                     name="Widget.AppCompat.ActionBar.TabView"
                     parent="Widget.AppCompat.Base.ActionBar.TabView" />
+
+                <style
+                    name="TextAppearance.AppCompat.Widget.ActionMode.Subtitle.Inverse"
+                    parent="TextAppearance.AppCompat.Widget.Base.ActionMode.Subtitle.Inverse" />
 
                 <style
                     name="Widget.AppCompat.Light.Base.ActionBar"
@@ -2203,10 +2206,6 @@ middle
                     </item>
                 </style>
 
-                <style
-                    name="TextAppearance.AppCompat.Widget.ActionMode.Subtitle.Inverse"
-                    parent="TextAppearance.AppCompat.Widget.Base.ActionMode.Subtitle.Inverse" />
-
                 <attr
                     name="actionModeShareDrawable"
                     format="reference" />
@@ -2232,12 +2231,12 @@ normal
                     </item>
                 </style>
 
+                <string name="abc_shareactionprovider_share_with_application" >Share with %s
+                </string>
+
                 <attr
                     name="actionBarTabStyle"
                     format="reference" />
-
-                <string name="abc_shareactionprovider_share_with_application" >Share with %s
-                </string>
 
                 <style
                     name="Widget.AppCompat.Light.Base.PopupMenu"
@@ -2263,13 +2262,13 @@ wrap_content
                     name="TextAppearance.AppCompat.Widget.Base.ActionBar.Subtitle"
                     parent="android:TextAppearance.Small" />
 
-                <attr
-                    name="actionBarItemBackground"
-                    format="reference" />
-
                 <integer name="abc_max_action_buttons" >
 2
                 </integer>
+
+                <attr
+                    name="actionBarItemBackground"
+                    format="reference" />
 
                 <style
                     name="Widget.AppCompat.Light.Base.ActionBar.TabBar.Inverse"
@@ -2280,12 +2279,12 @@ wrap_content
                     format="reference" />
 
                 <style
-                    name="Widget.AppCompat.Light.ActionButton"
-                    parent="Widget.AppCompat.Light.Base.ActionButton" />
-
-                <style
                     name="Widget.AppCompat.ActionMode"
                     parent="Widget.AppCompat.Base.ActionMode" />
+
+                <style
+                    name="Widget.AppCompat.Light.ActionButton"
+                    parent="Widget.AppCompat.Light.Base.ActionButton" />
 
                 <style
                     name="Widget.AppCompat.ListView.DropDown"
@@ -2294,10 +2293,6 @@ wrap_content
                 <style
                     name="TextAppearance.AppCompat.Widget.PopupMenu.Large"
                     parent="TextAppearance.AppCompat.Base.Widget.PopupMenu.Large" />
-
-                <attr
-                    name="listPreferredItemHeightSmall"
-                    format="dimension" />
 
                 <declare-styleable name="MenuItem" >
 
@@ -2436,6 +2431,10 @@ wrap_content
                         name="actionProviderClass"
                         format="string" />
                 </declare-styleable>
+
+                <attr
+                    name="listPreferredItemHeightSmall"
+                    format="dimension" />
 
                 <style
                     name="TextAppearance.AppCompat.Widget.ActionBar.Subtitle.Inverse"
@@ -3195,14 +3194,15 @@ true
                     <!-- Whether the items are enabled. -->
                     <attr name="android:enabled" />
                 </declare-styleable>
-                <declare-styleable name="ActionMenuView" >
-
-                    <!-- Size of padding on either end of a divider. -->
-                </declare-styleable>
 
                 <attr
                     name="textColorSearchUrl"
                     format="reference|color" />
+
+                <declare-styleable name="ActionMenuView" >
+
+                    <!-- Size of padding on either end of a divider. -->
+                </declare-styleable>
 
                 <style
                     name="TextAppearance.AppCompat.Base.Widget.PopupMenu.Small"
@@ -3219,12 +3219,12 @@ true
 false
                 </bool>
 
+                <dimen name="abc_dropdownitem_icon_width" >32dip
+                </dimen>
+
                 <style
                     name="Widget.AppCompat.Light.Base.DropDownItem.Spinner"
                     parent="Widget.AppCompat.Base.DropDownItem.Spinner" />
-
-                <dimen name="abc_dropdownitem_icon_width" >32dip
-                </dimen>
 
                 <attr
                     name="listPreferredItemPaddingLeft"
@@ -3377,12 +3377,12 @@ true
                     format="reference" />
 
                 <style
-                    name="Widget.AppCompat.ListView.Menu"
-                    parent="Widget.AppCompat.Base.ListView.Menu" />
-
-                <style
                     name="Theme.AppCompat.CompactMenu"
                     parent="Theme.AppCompat.Base.CompactMenu" />
+
+                <style
+                    name="Widget.AppCompat.ListView.Menu"
+                    parent="Widget.AppCompat.Base.ListView.Menu" />
 
                 <style
                     name="Theme.Base.AppCompat.Light"
@@ -3531,6 +3531,23 @@ true
                     </item>
                 </style>
 
+                <string name="abc_activity_chooser_view_see_all" >See all
+                </string>
+
+                <dimen name="abc_search_view_text_min_width" >160dip
+                </dimen>
+
+                <style
+                    name="Theme.AppCompat.Base.CompactMenu"
+                    parent="" >
+                    <item name="android:itemTextAppearance">
+            @style/TextAppearance.Widget.AppCompat.ExpandedMenu.Item
+                    </item>
+                    <item name="android:listViewStyle">
+@style/Widget.AppCompat.ListView.Menu
+                    </item>
+                </style>
+
                 <style
                     name="Widget.AppCompat.Base.PopupMenu"
                     parent="" >
@@ -3550,23 +3567,6 @@ true
 wrap_content
                     </item>
                 </style>
-
-                <style
-                    name="Theme.AppCompat.Base.CompactMenu"
-                    parent="" >
-                    <item name="android:itemTextAppearance">
-            @style/TextAppearance.Widget.AppCompat.ExpandedMenu.Item
-                    </item>
-                    <item name="android:listViewStyle">
-@style/Widget.AppCompat.ListView.Menu
-                    </item>
-                </style>
-
-                <dimen name="abc_search_view_text_min_width" >160dip
-                </dimen>
-
-                <string name="abc_activity_chooser_view_see_all" >See all
-                </string>
 
                 <style
                     name="TextAppearance.AppCompat.SearchResult.Subtitle"
@@ -3607,12 +3607,12 @@ wrap_content
                 </string>
 
                 <style
-                    name="TextAppearance.Widget.AppCompat.ExpandedMenu.Item"
-                    parent="TextAppearance.Widget.AppCompat.Base.ExpandedMenu.Item" />
-
-                <style
                     name="TextAppearance.AppCompat.Widget.Base.ActionMode.Title.Inverse"
                     parent="android:TextAppearance.Medium.Inverse" />
+
+                <style
+                    name="TextAppearance.Widget.AppCompat.ExpandedMenu.Item"
+                    parent="TextAppearance.Widget.AppCompat.Base.ExpandedMenu.Item" />
 
                 <style
                     name="Theme.AppCompat"
@@ -3699,6 +3699,9 @@ false
                     </item>
                 </style>
 
+                <dimen name="abc_config_prefDialogWidth" >320dp
+                </dimen>
+
                 <style
                     name="Widget.AppCompat.Light.Base.Spinner"
                     parent="Widget.AppCompat.Base.Spinner" >
@@ -3713,9 +3716,6 @@ false
                     </item>
                 </style>
 
-                <dimen name="abc_config_prefDialogWidth" >320dp
-                </dimen>
-
                 <declare-styleable name="ActionBarWindow" >
                     <attr
                         name="windowActionBar"
@@ -3728,13 +3728,14 @@ false
                         format="boolean" />
                 </declare-styleable>
 
+                <attr
+                    name="actionButtonStyle"
+                    format="reference" />
+
                 <style
                     name="Widget.AppCompat.Light.PopupMenu"
                     parent="Widget.AppCompat.Light.Base.PopupMenu" />
 
-                <attr
-                    name="actionButtonStyle"
-                    format="reference" />
                 <attr
                     name="searchViewAutoCompleteTextView"
                     format="reference" />
@@ -3747,27 +3748,27 @@ false
                     name="Widget.AppCompat.Light.ActionBar.TabView"
                     parent="Widget.AppCompat.Light.Base.ActionBar.TabView" />
 
-                <style
-                    name="Widget.AppCompat.Light.ActionBar.TabBar"
-                    parent="Widget.AppCompat.Light.Base.ActionBar.TabBar" />
-
                 <style name="TextAppearance.AppCompat.Base.SearchResult.Title" >
                     <item name="android:textSize">
 18sp
                     </item>
                 </style>
 
+                <style
+                    name="Widget.AppCompat.Light.ActionBar.TabBar"
+                    parent="Widget.AppCompat.Light.Base.ActionBar.TabBar" />
+
                 <attr
                     name="actionBarTabTextStyle"
                     format="reference" />
+                <attr
+                    name="searchResultListItemHeight"
+                    format="dimension" />
 
                 <style
                     name="Widget.AppCompat.ActionButton.Overflow"
                     parent="Widget.AppCompat.Base.ActionButton.Overflow" />
 
-                <attr
-                    name="searchResultListItemHeight"
-                    format="dimension" />
                 <attr
                     name="listPreferredItemHeight"
                     format="dimension" />
@@ -3812,6 +3813,9 @@ false
                 <style
                     name="Widget.AppCompat.Light.ActionButton.CloseMode"
                     parent="Widget.AppCompat.Light.Base.ActionButton.CloseMode" />
+
+                <dimen name="abc_action_bar_subtitle_top_margin" >-3dp
+                </dimen>
 
                 <style
                     name="Theme.Base.AppCompat.Light.DarkActionBar"
@@ -3877,9 +3881,6 @@ false
 @drawable/abc_list_selector_holo_dark
                     </item>
                 </style>
-
-                <dimen name="abc_action_bar_subtitle_top_margin" >-3dp
-                </dimen>
 
                 <style
                     name="TextAppearance.AppCompat.SearchResult.Title"
@@ -3952,6 +3953,9 @@ false
                     name="Widget.AppCompat.ProgressBar.Horizontal"
                     parent="Widget.AppCompat.Base.ProgressBar.Horizontal" />
 
+                <dimen name="abc_panel_menu_list_width" >296dp
+                </dimen>
+
                 <style
                     name="Widget.AppCompat.Light.Base.ActionButton.Overflow"
                     parent="Widget.AppCompat.Light.Base.ActionButton" >
@@ -3960,17 +3964,14 @@ false
                     </item>
                 </style>
 
-                <dimen name="abc_panel_menu_list_width" >296dp
-                </dimen>
-
-                <color name="abc_search_url_text_pressed" >@android:color/black
-                </color>
-
                 <style name="TextAppearance.AppCompat.Light.Base.SearchResult.Title" >
                     <item name="android:textSize">
 18sp
                     </item>
                 </style>
+
+                <color name="abc_search_url_text_pressed" >@android:color/black
+                </color>
 
                 <style
                     name="Widget.AppCompat.Base.AutoCompleteTextView"
@@ -4014,13 +4015,13 @@ false
                     name="TextAppearance.AppCompat.Widget.ActionBar.Title"
                     parent="TextAppearance.AppCompat.Widget.Base.ActionBar.Title" />
 
-                <bool name="abc_split_action_bar_is_narrow" >
-true
-                </bool>
-
                 <attr
                     name="spinnerStyle"
                     format="reference" />
+
+                <bool name="abc_split_action_bar_is_narrow" >
+true
+                </bool>
 
                 <style
                     name="Widget.AppCompat.Light.Base.AutoCompleteTextView"
@@ -4129,11 +4130,6 @@ useLogo|showHome|showTitle
                     <!-- The input type to set on the query text field. -->
                     <attr name="android:inputType" />
                 </declare-styleable>
-
-                <style
-                    name="Theme.AppCompat.CompactMenu.Dialog"
-                    parent="Theme.AppCompat.Base.CompactMenu.Dialog" />
-
                 <declare-styleable name="ActionMode" >
 
                     <!-- Specifies a style to use for title text. -->
@@ -4149,6 +4145,10 @@ useLogo|showHome|showTitle
                 </declare-styleable>
 
                 <style
+                    name="Theme.AppCompat.CompactMenu.Dialog"
+                    parent="Theme.AppCompat.Base.CompactMenu.Dialog" />
+
+                <style
                     name="Widget.AppCompat.Light.Base.ActivityChooserView"
                     parent="Widget.AppCompat.Base.ActivityChooserView" >
                     <item name="android:background">
@@ -4159,13 +4159,12 @@ useLogo|showHome|showTitle
             <file
                 path="/Users/babakpourkazemi/Documents/Coding Projects/Github/EncoreMobile/build/exploded-bundles/ComAndroidSupportAppcompatV71800.aar/res/values-land/values.xml"
                 qualifiers="land" >
-                <dimen name="abc_action_bar_title_text_size" >16dp
-                </dimen>
-
                 <bool name="abc_config_allowActionMenuItemTextWithIcon" >
 true
                 </bool>
 
+                <dimen name="abc_action_bar_title_text_size" >16dp
+                </dimen>
                 <dimen name="abc_action_bar_icon_vertical_padding" >4dip
                 </dimen>
                 <dimen name="abc_action_bar_subtitle_top_margin" >-2dp
@@ -4268,10 +4267,6 @@ false
                     parent="android:Widget.Holo.AutoCompleteTextView" />
 
                 <style
-                    name="Widget.AppCompat.Base.ProgressBar"
-                    parent="android:Widget.Holo.ProgressBar" />
-
-                <style
                     name="Theme.Base"
                     parent="android:Theme.Holo" >
                     <item name="android:windowNoTitle">
@@ -4292,6 +4287,10 @@ false
 ?android:attr/selectableItemBackground
                     </item>
                 </style>
+
+                <style
+                    name="Widget.AppCompat.Base.ProgressBar"
+                    parent="android:Widget.Holo.ProgressBar" />
 
                 <style
                     name="Widget.AppCompat.Base.ProgressBar.Horizontal"
@@ -4453,6 +4452,10 @@ middle
                     parent="android:Widget.Holo.Light.Spinner" />
 
                 <style
+                    name="Widget.AppCompat.Base.DropDownItem.Spinner"
+                    parent="android:Widget.Holo.DropDownItem.Spinner" />
+
+                <style
                     name="Theme.Base.AppCompat.Light"
                     parent="android:Theme.Holo.Light" >
 
@@ -4510,10 +4513,6 @@ middle
 ?android:attr/buttonBarButtonStyle
                     </item>
                 </style>
-
-                <style
-                    name="Widget.AppCompat.Base.DropDownItem.Spinner"
-                    parent="android:Widget.Holo.DropDownItem.Spinner" />
 
                 <style
                     name="Widget.AppCompat.Light.Base.PopupMenu"
@@ -4699,11 +4698,11 @@ middle
                 <bool name="abc_config_allowActionMenuItemTextWithIcon" >
 true
                 </bool>
-                <bool name="abc_split_action_bar_is_narrow" >
-false
-                </bool>
                 <bool name="abc_action_bar_embed_tabs_pre_jb" >
 true
+                </bool>
+                <bool name="abc_split_action_bar_is_narrow" >
+false
                 </bool>
             </file>
             <file
@@ -4733,9 +4732,9 @@ true
                 </dimen>
                 <dimen name="abc_action_bar_default_height" >56dip
                 </dimen>
-                <dimen name="abc_search_view_text_min_width" >192dip
-                </dimen>
                 <dimen name="abc_action_button_min_width" >64dip
+                </dimen>
+                <dimen name="abc_search_view_text_min_width" >192dip
                 </dimen>
             </file>
             <file
@@ -4759,20 +4758,20 @@ false
                 </dimen>
                 <dimen name="abc_action_bar_subtitle_text_size" >14dp
                 </dimen>
-                <dimen name="abc_action_bar_subtitle_top_margin" >-3dp
-                </dimen>
 
                 <bool name="abc_action_bar_expanded_action_views_exclusive" >
 false
                 </bool>
 
-                <dimen name="abc_action_bar_subtitle_bottom_margin" >9dip
+                <dimen name="abc_action_bar_subtitle_top_margin" >-3dp
                 </dimen>
                 <dimen name="abc_action_bar_default_height" >56dip
                 </dimen>
-                <dimen name="abc_action_button_min_width" >64dip
+                <dimen name="abc_action_bar_subtitle_bottom_margin" >9dip
                 </dimen>
                 <dimen name="abc_action_bar_title_text_size" >18dp
+                </dimen>
+                <dimen name="abc_action_button_min_width" >64dip
                 </dimen>
             </file>
         </source>
@@ -4805,13 +4804,63 @@ false
                 qualifiers=""
                 type="animator" />
             <file
+                name="accept_button_style"
+                path="/Users/babakpourkazemi/Documents/Coding Projects/Github/EncoreMobile/res/drawable/accept_button_style.xml"
+                qualifiers=""
+                type="drawable" />
+            <file
                 name="action_people"
                 path="/Users/babakpourkazemi/Documents/Coding Projects/Github/EncoreMobile/res/drawable/action_people.png"
                 qualifiers=""
                 type="drawable" />
             <file
+                name="actionbar_inbox_selector"
+                path="/Users/babakpourkazemi/Documents/Coding Projects/Github/EncoreMobile/res/drawable/actionbar_inbox_selector.xml"
+                qualifiers=""
+                type="drawable" />
+            <file
+                name="actionbar_profile_selector"
+                path="/Users/babakpourkazemi/Documents/Coding Projects/Github/EncoreMobile/res/drawable/actionbar_profile_selector.xml"
+                qualifiers=""
+                type="drawable" />
+            <file
+                name="actionbar_video_selector"
+                path="/Users/babakpourkazemi/Documents/Coding Projects/Github/EncoreMobile/res/drawable/actionbar_video_selector.xml"
+                qualifiers=""
+                type="drawable" />
+            <file
                 name="alt_intro_background"
                 path="/Users/babakpourkazemi/Documents/Coding Projects/Github/EncoreMobile/res/drawable/alt_intro_background.png"
+                qualifiers=""
+                type="drawable" />
+            <file
+                name="background_333_transparent"
+                path="/Users/babakpourkazemi/Documents/Coding Projects/Github/EncoreMobile/res/drawable/background_333_transparent.png"
+                qualifiers=""
+                type="drawable" />
+            <file
+                name="blue_button_default"
+                path="/Users/babakpourkazemi/Documents/Coding Projects/Github/EncoreMobile/res/drawable/blue_button_default.xml"
+                qualifiers=""
+                type="drawable" />
+            <file
+                name="blue_button_focused"
+                path="/Users/babakpourkazemi/Documents/Coding Projects/Github/EncoreMobile/res/drawable/blue_button_focused.xml"
+                qualifiers=""
+                type="drawable" />
+            <file
+                name="blue_button_pressed"
+                path="/Users/babakpourkazemi/Documents/Coding Projects/Github/EncoreMobile/res/drawable/blue_button_pressed.xml"
+                qualifiers=""
+                type="drawable" />
+            <file
+                name="blue_button_selector"
+                path="/Users/babakpourkazemi/Documents/Coding Projects/Github/EncoreMobile/res/drawable/blue_button_selector.xml"
+                qualifiers=""
+                type="drawable" />
+            <file
+                name="bobby_prof"
+                path="/Users/babakpourkazemi/Documents/Coding Projects/Github/EncoreMobile/res/drawable/bobby_prof.jpg"
                 qualifiers=""
                 type="drawable" />
             <file
@@ -4862,6 +4911,16 @@ false
             <file
                 name="comment_white"
                 path="/Users/babakpourkazemi/Documents/Coding Projects/Github/EncoreMobile/res/drawable/comment_white.png"
+                qualifiers=""
+                type="drawable" />
+            <file
+                name="decline_button_style"
+                path="/Users/babakpourkazemi/Documents/Coding Projects/Github/EncoreMobile/res/drawable/decline_button_style.xml"
+                qualifiers=""
+                type="drawable" />
+            <file
+                name="divider"
+                path="/Users/babakpourkazemi/Documents/Coding Projects/Github/EncoreMobile/res/drawable/divider.xml"
                 qualifiers=""
                 type="drawable" />
             <file
@@ -4925,6 +4984,16 @@ false
                 qualifiers=""
                 type="drawable" />
             <file
+                name="profile_button_style"
+                path="/Users/babakpourkazemi/Documents/Coding Projects/Github/EncoreMobile/res/drawable/profile_button_style.xml"
+                qualifiers=""
+                type="drawable" />
+            <file
+                name="rapback_tab_indicator"
+                path="/Users/babakpourkazemi/Documents/Coding Projects/Github/EncoreMobile/res/drawable/rapback_tab_indicator.xml"
+                qualifiers=""
+                type="drawable" />
+            <file
                 name="rapchat_logo"
                 path="/Users/babakpourkazemi/Documents/Coding Projects/Github/EncoreMobile/res/drawable/rapchat_logo.png"
                 qualifiers=""
@@ -4932,6 +5001,21 @@ false
             <file
                 name="ic_action_video"
                 path="/Users/babakpourkazemi/Documents/Coding Projects/Github/EncoreMobile/res/drawable-hdpi/ic_action_video.png"
+                qualifiers="hdpi"
+                type="drawable" />
+            <file
+                name="ic_action_video_selected"
+                path="/Users/babakpourkazemi/Documents/Coding Projects/Github/EncoreMobile/res/drawable-hdpi/ic_action_video_selected.png"
+                qualifiers="hdpi"
+                type="drawable" />
+            <file
+                name="ic_home"
+                path="/Users/babakpourkazemi/Documents/Coding Projects/Github/EncoreMobile/res/drawable-hdpi/ic_home.png"
+                qualifiers="hdpi"
+                type="drawable" />
+            <file
+                name="ic_home_selected"
+                path="/Users/babakpourkazemi/Documents/Coding Projects/Github/EncoreMobile/res/drawable-hdpi/ic_home_selected.png"
                 qualifiers="hdpi"
                 type="drawable" />
             <file
@@ -4945,8 +5029,58 @@ false
                 qualifiers="hdpi"
                 type="drawable" />
             <file
+                name="ic_person"
+                path="/Users/babakpourkazemi/Documents/Coding Projects/Github/EncoreMobile/res/drawable-hdpi/ic_person.png"
+                qualifiers="hdpi"
+                type="drawable" />
+            <file
+                name="ic_person_selected"
+                path="/Users/babakpourkazemi/Documents/Coding Projects/Github/EncoreMobile/res/drawable-hdpi/ic_person_selected.png"
+                qualifiers="hdpi"
+                type="drawable" />
+            <file
+                name="ic_home"
+                path="/Users/babakpourkazemi/Documents/Coding Projects/Github/EncoreMobile/res/drawable-ldpi/ic_home.png"
+                qualifiers="ldpi"
+                type="drawable" />
+            <file
+                name="ic_home_selected"
+                path="/Users/babakpourkazemi/Documents/Coding Projects/Github/EncoreMobile/res/drawable-ldpi/ic_home_selected.png"
+                qualifiers="ldpi"
+                type="drawable" />
+            <file
+                name="ic_launcher"
+                path="/Users/babakpourkazemi/Documents/Coding Projects/Github/EncoreMobile/res/drawable-ldpi/ic_launcher.png"
+                qualifiers="ldpi"
+                type="drawable" />
+            <file
+                name="ic_person"
+                path="/Users/babakpourkazemi/Documents/Coding Projects/Github/EncoreMobile/res/drawable-ldpi/ic_person.png"
+                qualifiers="ldpi"
+                type="drawable" />
+            <file
+                name="ic_person_selected"
+                path="/Users/babakpourkazemi/Documents/Coding Projects/Github/EncoreMobile/res/drawable-ldpi/ic_person_selected.png"
+                qualifiers="ldpi"
+                type="drawable" />
+            <file
                 name="ic_action_video"
                 path="/Users/babakpourkazemi/Documents/Coding Projects/Github/EncoreMobile/res/drawable-mdpi/ic_action_video.png"
+                qualifiers="mdpi"
+                type="drawable" />
+            <file
+                name="ic_action_video_selected"
+                path="/Users/babakpourkazemi/Documents/Coding Projects/Github/EncoreMobile/res/drawable-mdpi/ic_action_video_selected.png"
+                qualifiers="mdpi"
+                type="drawable" />
+            <file
+                name="ic_home"
+                path="/Users/babakpourkazemi/Documents/Coding Projects/Github/EncoreMobile/res/drawable-mdpi/ic_home.png"
+                qualifiers="mdpi"
+                type="drawable" />
+            <file
+                name="ic_home_selected"
+                path="/Users/babakpourkazemi/Documents/Coding Projects/Github/EncoreMobile/res/drawable-mdpi/ic_home_selected.png"
                 qualifiers="mdpi"
                 type="drawable" />
             <file
@@ -4960,8 +5094,33 @@ false
                 qualifiers="mdpi"
                 type="drawable" />
             <file
+                name="ic_person"
+                path="/Users/babakpourkazemi/Documents/Coding Projects/Github/EncoreMobile/res/drawable-mdpi/ic_person.png"
+                qualifiers="mdpi"
+                type="drawable" />
+            <file
+                name="ic_person_selected"
+                path="/Users/babakpourkazemi/Documents/Coding Projects/Github/EncoreMobile/res/drawable-mdpi/ic_person_selected.png"
+                qualifiers="mdpi"
+                type="drawable" />
+            <file
                 name="ic_action_video"
                 path="/Users/babakpourkazemi/Documents/Coding Projects/Github/EncoreMobile/res/drawable-xhdpi/ic_action_video.png"
+                qualifiers="xhdpi"
+                type="drawable" />
+            <file
+                name="ic_action_video_selected"
+                path="/Users/babakpourkazemi/Documents/Coding Projects/Github/EncoreMobile/res/drawable-xhdpi/ic_action_video_selected.png"
+                qualifiers="xhdpi"
+                type="drawable" />
+            <file
+                name="ic_home"
+                path="/Users/babakpourkazemi/Documents/Coding Projects/Github/EncoreMobile/res/drawable-xhdpi/ic_home.png"
+                qualifiers="xhdpi"
+                type="drawable" />
+            <file
+                name="ic_home_selected"
+                path="/Users/babakpourkazemi/Documents/Coding Projects/Github/EncoreMobile/res/drawable-xhdpi/ic_home_selected.png"
                 qualifiers="xhdpi"
                 type="drawable" />
             <file
@@ -4972,6 +5131,16 @@ false
             <file
                 name="ic_navigation_drawer"
                 path="/Users/babakpourkazemi/Documents/Coding Projects/Github/EncoreMobile/res/drawable-xhdpi/ic_navigation_drawer.png"
+                qualifiers="xhdpi"
+                type="drawable" />
+            <file
+                name="ic_person"
+                path="/Users/babakpourkazemi/Documents/Coding Projects/Github/EncoreMobile/res/drawable-xhdpi/ic_person.png"
+                qualifiers="xhdpi"
+                type="drawable" />
+            <file
+                name="ic_person_selected"
+                path="/Users/babakpourkazemi/Documents/Coding Projects/Github/EncoreMobile/res/drawable-xhdpi/ic_person_selected.png"
                 qualifiers="xhdpi"
                 type="drawable" />
             <file
@@ -5022,6 +5191,11 @@ false
             <file
                 name="drawer_list_item"
                 path="/Users/babakpourkazemi/Documents/Coding Projects/Github/EncoreMobile/res/layout/drawer_list_item.xml"
+                qualifiers=""
+                type="layout" />
+            <file
+                name="edit_profile"
+                path="/Users/babakpourkazemi/Documents/Coding Projects/Github/EncoreMobile/res/layout/edit_profile.xml"
                 qualifiers=""
                 type="layout" />
             <file
@@ -5105,6 +5279,11 @@ false
                 qualifiers=""
                 type="layout" />
             <file
+                name="preview_fragment"
+                path="/Users/babakpourkazemi/Documents/Coding Projects/Github/EncoreMobile/res/layout/preview_fragment.xml"
+                qualifiers=""
+                type="layout" />
+            <file
                 name="profile_fragment"
                 path="/Users/babakpourkazemi/Documents/Coding Projects/Github/EncoreMobile/res/layout/profile_fragment.xml"
                 qualifiers=""
@@ -5127,6 +5306,46 @@ false
             <file
                 name="start_session"
                 path="/Users/babakpourkazemi/Documents/Coding Projects/Github/EncoreMobile/res/layout/start_session.xml"
+                qualifiers=""
+                type="layout" />
+            <file
+                name="tab_crowd_list_row"
+                path="/Users/babakpourkazemi/Documents/Coding Projects/Github/EncoreMobile/res/layout/tab_crowd_list_row.xml"
+                qualifiers=""
+                type="layout" />
+            <file
+                name="tab_crowds"
+                path="/Users/babakpourkazemi/Documents/Coding Projects/Github/EncoreMobile/res/layout/tab_crowds.xml"
+                qualifiers=""
+                type="layout" />
+            <file
+                name="tab_friends"
+                path="/Users/babakpourkazemi/Documents/Coding Projects/Github/EncoreMobile/res/layout/tab_friends.xml"
+                qualifiers=""
+                type="layout" />
+            <file
+                name="tab_friends_list_row"
+                path="/Users/babakpourkazemi/Documents/Coding Projects/Github/EncoreMobile/res/layout/tab_friends_list_row.xml"
+                qualifiers=""
+                type="layout" />
+            <file
+                name="tab_likes"
+                path="/Users/babakpourkazemi/Documents/Coding Projects/Github/EncoreMobile/res/layout/tab_likes.xml"
+                qualifiers=""
+                type="layout" />
+            <file
+                name="tab_likes_list_row"
+                path="/Users/babakpourkazemi/Documents/Coding Projects/Github/EncoreMobile/res/layout/tab_likes_list_row.xml"
+                qualifiers=""
+                type="layout" />
+            <file
+                name="tab_requests"
+                path="/Users/babakpourkazemi/Documents/Coding Projects/Github/EncoreMobile/res/layout/tab_requests.xml"
+                qualifiers=""
+                type="layout" />
+            <file
+                name="tab_requests_list_row"
+                path="/Users/babakpourkazemi/Documents/Coding Projects/Github/EncoreMobile/res/layout/tab_requests_list_row.xml"
                 qualifiers=""
                 type="layout" />
             <file
@@ -5214,9 +5433,9 @@ false
                 qualifiers="" >
                 <color name="off_white" >#e9e9e9
                 </color>
-                <color name="flat_blue_pressed" >#2980B9
-                </color>
                 <color name="darker_flat_red" >#d0362c
+                </color>
+                <color name="flat_blue_pressed" >#2980B9
                 </color>
                 <color name="vinyet_green" >#00a87b
                 </color>
@@ -5224,9 +5443,9 @@ false
                 </color>
                 <color name="accept_button_pressed" >#2980B9
                 </color>
-                <color name="decline_button_focused" >#d0362c
-                </color>
                 <color name="profile_button_default" >#e6e6e6
+                </color>
+                <color name="decline_button_focused" >#d0362c
                 </color>
                 <color name="android_midnight_blue" >#212E3B
                 </color>
@@ -5254,6 +5473,8 @@ false
                 </color>
                 <color name="vinyet_green_pressed" >#007858
                 </color>
+                <color name="white" >#fff
+                </color>
                 <color name="profile_button_pressed" >#f6f6f6
                 </color>
                 <color name="decline_button_text_color" >#fff
@@ -5280,9 +5501,11 @@ false
                 </string>
                 <string name="first_key" >1
                 </string>
+                <string name="app_name" >Rapback
+                </string>
                 <string name="third_key" >3
                 </string>
-                <string name="app_name" >Rapback
+                <string name="search_hint" >Search usernames
                 </string>
 
                 <string-array name="navbar_titles" >
@@ -5309,13 +5532,69 @@ Users
                 qualifiers="" >
 
                 <style
-                    name="CustomDialogTheme"
-                    parent="@android:style/Theme.Dialog" >
-                    <item name="@android:background">
+                    name="DeclineButtonStyle"
+                    parent="@android:Widget.Holo.Button" >
+                    <item name="android:background">
+@drawable/decline_button_style
+                    </item>
+                    <item name="android:fontFamily">
+sans-serif-light
+                    </item>
+                    <item name="android:textStyle">
+bold
+                    </item>
+                    <item name="android:textColor">
+@color/decline_button_text_color
+                    </item>
+                </style>
+
+                <style
+                    name="TitleTextStyle"
+                    parent="@style/TextAppearance.AppCompat.Widget.ActionBar.Title" >
+                    <item name="android:textColor">
 @color/off_white
                     </item>
-                    <item name="@android:buttonStyle">
-@style/RapbackButtons
+                </style>
+
+                <style
+                    name="BlueButtonStyle"
+                    parent="@android:Widget.Holo.Button" >
+                    <item name="android:background">
+@drawable/blue_button_selector
+                    </item>
+                    <item name="android:fontFamily">
+sans-serif-light
+                    </item>
+                    <item name="android:textStyle">
+bold
+                    </item>
+                    <item name="android:textColor">
+@color/accept_button_text_color
+                    </item>
+                </style>
+
+                <style
+                    name="RapbackTabs"
+                    parent="@style/Widget.AppCompat.ActionBar.TabText" >
+                    <item name="android:textColor">
+@color/dark_grey
+                    </item>
+                </style>
+
+                <style
+                    name="ProfileButtonsStyle"
+                    parent="@android:Widget.Holo.Button" >
+                    <item name="android:background">
+@drawable/profile_button_style
+                    </item>
+                    <item name="android:fontFamily">
+sans-serif-light
+                    </item>
+                    <item name="android:textStyle">
+bold
+                    </item>
+                    <item name="android:textColor">
+@color/profile_button_text_color
                     </item>
                 </style>
 
@@ -5335,6 +5614,17 @@ Users
                     </item>
                     <item name="background">
 @color/flat_red
+                    </item>
+                </style>
+
+                <style
+                    name="CustomDialogTheme"
+                    parent="@android:style/Theme.Dialog" >
+                    <item name="@android:background">
+@color/off_white
+                    </item>
+                    <item name="@android:buttonStyle">
+@style/RapbackButtons
                     </item>
                 </style>
 
@@ -5360,31 +5650,6 @@ italic
                     </item>
                     <item name="android:textColor">
 @color/button_text_color
-                    </item>
-                </style>
-
-                <style
-                    name="DeclineButtonStyle"
-                    parent="@android:Widget.Holo.Button" >
-                    <item name="android:background">
-@drawable/decline_button_style
-                    </item>
-                    <item name="android:fontFamily">
-sans-serif-light
-                    </item>
-                    <item name="android:textStyle">
-bold
-                    </item>
-                    <item name="android:textColor">
-@color/decline_button_text_color
-                    </item>
-                </style>
-
-                <style
-                    name="TitleTextStyle"
-                    parent="@style/TextAppearance.AppCompat.Widget.ActionBar.Title" >
-                    <item name="android:textColor">
-@color/off_white
                     </item>
                 </style>
 
@@ -5422,7 +5687,7 @@ bold
                     name="AcceptButtonStyle"
                     parent="@android:Widget.Holo.Button" >
                     <item name="android:background">
-@drawable/accept_button_style
+@drawable/blue_button_selector
                     </item>
                     <item name="android:fontFamily">
 sans-serif-light
@@ -5432,31 +5697,6 @@ bold
                     </item>
                     <item name="android:textColor">
 @color/accept_button_text_color
-                    </item>
-                </style>
-
-                <style
-                    name="RapbackTabs"
-                    parent="@style/Widget.AppCompat.ActionBar.TabText" >
-                    <item name="android:textColor">
-@color/dark_grey
-                    </item>
-                </style>
-
-                <style
-                    name="ProfileButtonsStyle"
-                    parent="@android:Widget.Holo.Button" >
-                    <item name="android:background">
-@drawable/profile_button_style
-                    </item>
-                    <item name="android:fontFamily">
-sans-serif-light
-                    </item>
-                    <item name="android:textStyle">
-bold
-                    </item>
-                    <item name="android:textColor">
-@color/profile_button_text_color
                     </item>
                 </style>
 
@@ -5513,185 +5753,50 @@ bold
                 </style>
             </file>
             <file
-                name="background_333_transparent"
-                path="/Users/babakpourkazemi/Documents/Coding Projects/Github/EncoreMobile/res/drawable/background_333_transparent.png"
-                qualifiers=""
-                type="drawable" />
-            <file
-                name="preview_fragment"
-                path="/Users/babakpourkazemi/Documents/Coding Projects/Github/EncoreMobile/res/layout/preview_fragment.xml"
-                qualifiers=""
-                type="layout" />
-            <file
-                name="divider"
-                path="/Users/babakpourkazemi/Documents/Coding Projects/Github/EncoreMobile/res/drawable/divider.xml"
-                qualifiers=""
-                type="drawable" />
-            <file
-                name="bobby_prof"
-                path="/Users/babakpourkazemi/Documents/Coding Projects/Github/EncoreMobile/res/drawable/bobby_prof.jpg"
-                qualifiers=""
-                type="drawable" />
-            <file
-                name="tab_requests_list_row"
-                path="/Users/babakpourkazemi/Documents/Coding Projects/Github/EncoreMobile/res/layout/tab_requests_list_row.xml"
-                qualifiers=""
-                type="layout" />
-            <file
-                name="tab_requests"
-                path="/Users/babakpourkazemi/Documents/Coding Projects/Github/EncoreMobile/res/layout/tab_requests.xml"
-                qualifiers=""
-                type="layout" />
-            <file
-                name="decline_button_style"
-                path="/Users/babakpourkazemi/Documents/Coding Projects/Github/EncoreMobile/res/drawable/decline_button_style.xml"
-                qualifiers=""
-                type="drawable" />
-            <file
-                name="tab_likes_list_row"
-                path="/Users/babakpourkazemi/Documents/Coding Projects/Github/EncoreMobile/res/layout/tab_likes_list_row.xml"
-                qualifiers=""
-                type="layout" />
-            <file
-                name="tab_crowds"
-                path="/Users/babakpourkazemi/Documents/Coding Projects/Github/EncoreMobile/res/layout/tab_crowds.xml"
-                qualifiers=""
-                type="layout" />
-            <file
-                name="tab_crowd_list_row"
-                path="/Users/babakpourkazemi/Documents/Coding Projects/Github/EncoreMobile/res/layout/tab_crowd_list_row.xml"
-                qualifiers=""
-                type="layout" />
-            <file
-                name="tab_friends"
-                path="/Users/babakpourkazemi/Documents/Coding Projects/Github/EncoreMobile/res/layout/tab_friends.xml"
-                qualifiers=""
-                type="layout" />
-            <file
-                name="tab_friends_list_row"
-                path="/Users/babakpourkazemi/Documents/Coding Projects/Github/EncoreMobile/res/layout/tab_friends_list_row.xml"
-                qualifiers=""
-                type="layout" />
-            <file
-                name="accept_button_style"
-                path="/Users/babakpourkazemi/Documents/Coding Projects/Github/EncoreMobile/res/drawable/accept_button_style.xml"
-                qualifiers=""
-                type="drawable" />
-            <file
-                name="tab_likes"
-                path="/Users/babakpourkazemi/Documents/Coding Projects/Github/EncoreMobile/res/layout/tab_likes.xml"
-                qualifiers=""
-                type="layout" />
-            <file
-                name="profile_button_style"
-                path="/Users/babakpourkazemi/Documents/Coding Projects/Github/EncoreMobile/res/drawable/profile_button_style.xml"
-                qualifiers=""
-                type="drawable" />
-            <file
-                name="edit_profile"
-                path="/Users/babakpourkazemi/Documents/Coding Projects/Github/EncoreMobile/res/layout/edit_profile.xml"
-                qualifiers=""
-                type="layout" />
-            <file
-                name="ic_home"
-                path="/Users/babakpourkazemi/Documents/Coding Projects/Github/EncoreMobile/res/drawable-ldpi/ic_home.png"
-                qualifiers="ldpi"
-                type="drawable" />
-            <file
-                name="ic_person"
-                path="/Users/babakpourkazemi/Documents/Coding Projects/Github/EncoreMobile/res/drawable-mdpi/ic_person.png"
+                name="ic_action_search"
+                path="/Users/babakpourkazemi/Documents/Coding Projects/Github/EncoreMobile/res/drawable-mdpi/ic_action_search.png"
                 qualifiers="mdpi"
                 type="drawable" />
             <file
-                name="ic_person"
-                path="/Users/babakpourkazemi/Documents/Coding Projects/Github/EncoreMobile/res/drawable-hdpi/ic_person.png"
-                qualifiers="hdpi"
-                type="drawable" />
-            <file
-                name="ic_home"
-                path="/Users/babakpourkazemi/Documents/Coding Projects/Github/EncoreMobile/res/drawable-hdpi/ic_home.png"
-                qualifiers="hdpi"
-                type="drawable" />
-            <file
-                name="ic_home"
-                path="/Users/babakpourkazemi/Documents/Coding Projects/Github/EncoreMobile/res/drawable-mdpi/ic_home.png"
-                qualifiers="mdpi"
-                type="drawable" />
-            <file
-                name="ic_person"
-                path="/Users/babakpourkazemi/Documents/Coding Projects/Github/EncoreMobile/res/drawable-xhdpi/ic_person.png"
+                name="ic_action_search"
+                path="/Users/babakpourkazemi/Documents/Coding Projects/Github/EncoreMobile/res/drawable-xhdpi/ic_action_search.png"
                 qualifiers="xhdpi"
                 type="drawable" />
             <file
-                name="ic_home"
-                path="/Users/babakpourkazemi/Documents/Coding Projects/Github/EncoreMobile/res/drawable-xhdpi/ic_home.png"
-                qualifiers="xhdpi"
-                type="drawable" />
-            <file
-                name="ic_person"
-                path="/Users/babakpourkazemi/Documents/Coding Projects/Github/EncoreMobile/res/drawable-ldpi/ic_person.png"
-                qualifiers="ldpi"
-                type="drawable" />
-            <file
-                name="rapback_tab_indicator"
-                path="/Users/babakpourkazemi/Documents/Coding Projects/Github/EncoreMobile/res/drawable/rapback_tab_indicator.xml"
+                name="find_users_menu"
+                path="/Users/babakpourkazemi/Documents/Coding Projects/Github/EncoreMobile/res/menu/find_users_menu.xml"
                 qualifiers=""
-                type="drawable" />
+                type="menu" />
             <file
-                name="ic_launcher"
-                path="/Users/babakpourkazemi/Documents/Coding Projects/Github/EncoreMobile/res/drawable-ldpi/ic_launcher.png"
-                qualifiers="ldpi"
-                type="drawable" />
-            <file
-                name="ic_home_selected"
-                path="/Users/babakpourkazemi/Documents/Coding Projects/Github/EncoreMobile/res/drawable-mdpi/ic_home_selected.png"
-                qualifiers="mdpi"
-                type="drawable" />
-            <file
-                name="ic_home_selected"
-                path="/Users/babakpourkazemi/Documents/Coding Projects/Github/EncoreMobile/res/drawable-hdpi/ic_home_selected.png"
+                name="ic_action_search"
+                path="/Users/babakpourkazemi/Documents/Coding Projects/Github/EncoreMobile/res/drawable-hdpi/ic_action_search.png"
                 qualifiers="hdpi"
                 type="drawable" />
             <file
-                name="ic_home_selected"
-                path="/Users/babakpourkazemi/Documents/Coding Projects/Github/EncoreMobile/res/drawable-ldpi/ic_home_selected.png"
-                qualifiers="ldpi"
+                name="ic_action_search"
+                path="/Users/babakpourkazemi/Documents/Coding Projects/Github/EncoreMobile/res/drawable-xxhdpi/ic_action_search.png"
+                qualifiers="xxhdpi"
                 type="drawable" />
             <file
-                name="actionbar_inbox_selector"
-                path="/Users/babakpourkazemi/Documents/Coding Projects/Github/EncoreMobile/res/drawable/actionbar_inbox_selector.xml"
+                name="find_friends_activity"
+                path="/Users/babakpourkazemi/Documents/Coding Projects/Github/EncoreMobile/res/layout/find_friends_activity.xml"
                 qualifiers=""
-                type="drawable" />
+                type="layout" />
             <file
-                name="ic_home_selected"
-                path="/Users/babakpourkazemi/Documents/Coding Projects/Github/EncoreMobile/res/drawable-xhdpi/ic_home_selected.png"
-                qualifiers="xhdpi"
-                type="drawable" />
-            <file
-                name="ic_person_selected"
-                path="/Users/babakpourkazemi/Documents/Coding Projects/Github/EncoreMobile/res/drawable-hdpi/ic_person_selected.png"
-                qualifiers="hdpi"
-                type="drawable" />
-            <file
-                name="ic_person_selected"
-                path="/Users/babakpourkazemi/Documents/Coding Projects/Github/EncoreMobile/res/drawable-mdpi/ic_person_selected.png"
-                qualifiers="mdpi"
-                type="drawable" />
-            <file
-                name="actionbar_profile_selector"
-                path="/Users/babakpourkazemi/Documents/Coding Projects/Github/EncoreMobile/res/drawable/actionbar_profile_selector.xml"
+                name="searchable"
+                path="/Users/babakpourkazemi/Documents/Coding Projects/Github/EncoreMobile/res/xml/searchable.xml"
                 qualifiers=""
-                type="drawable" />
+                type="xml" />
             <file
-                name="ic_person_selected"
-                path="/Users/babakpourkazemi/Documents/Coding Projects/Github/EncoreMobile/res/drawable-xhdpi/ic_person_selected.png"
-                qualifiers="xhdpi"
-                type="drawable" />
+                name="search_activity"
+                path="/Users/babakpourkazemi/Documents/Coding Projects/Github/EncoreMobile/res/layout/search_activity.xml"
+                qualifiers=""
+                type="layout" />
             <file
-                name="ic_person_selected"
-                path="/Users/babakpourkazemi/Documents/Coding Projects/Github/EncoreMobile/res/drawable-ldpi/ic_person_selected.png"
-                qualifiers="ldpi"
-                type="drawable" />
+                name="search_list_row"
+                path="/Users/babakpourkazemi/Documents/Coding Projects/Github/EncoreMobile/res/layout/search_list_row.xml"
+                qualifiers=""
+                type="layout" />
         </source>
         <source path="/Users/babakpourkazemi/Documents/Coding Projects/Github/EncoreMobile/build/res/rs/debug" />
     </dataSet>

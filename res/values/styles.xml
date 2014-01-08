@@ -69,7 +69,7 @@
     </style>
 
     <style name="AcceptButtonStyle" parent="@android:Widget.Holo.Button">
-        <item name="android:background">@drawable/accept_button_style</item>
+        <item name="android:background">@drawable/blue_button_selector</item>
         <item name="android:fontFamily">sans-serif-light</item>
         <item name="android:textStyle">bold</item>
         <item name="android:textColor">@color/accept_button_text_color</item>
@@ -87,6 +87,13 @@
         <item name="android:fontFamily">sans-serif-light</item>
         <item name="android:textStyle">bold</item>
         <item name="android:textColor">@color/profile_button_text_color</item>
+    </style>
+
+    <style name="BlueButtonStyle" parent="@android:Widget.Holo.Button">
+        <item name="android:background">@drawable/blue_button_selector</item>
+        <item name="android:fontFamily">sans-serif-light</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textColor">@color/accept_button_text_color</item>
     </style>
 
     <!-- ========= Dialogs ========= -->
