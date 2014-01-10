@@ -36,7 +36,7 @@ public final class R {
 	}
 	public static final class color {
 		public static final int default_progress_bar_color = 0x7f0a0012;
-		public static final int spb_default_color = 0x7f0a001c;
+		public static final int spb_default_color = 0x7f0a001d;
 	}
 	public static final class dimen {
 		public static final int ptr_progress_bar_stroke_width = 0x7f0c0012;

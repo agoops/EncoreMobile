@@ -58,8 +58,6 @@ public class InboxViewAdapter extends ArrayAdapter<Session> implements OnClickLi
 
     private MediaController mc;
 
-    // TODO: Cap the listview, but make it never ending
-
 	public InboxViewAdapter(Context c, int textViewResourceId, List<Session> sessions) {
 		super(c, textViewResourceId, sessions);
 		mContext = c;
@@ -73,16 +71,6 @@ public class InboxViewAdapter extends ArrayAdapter<Session> implements OnClickLi
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
         convertView = LayoutInflater.from(mContext).inflate(R.layout.inbox_view, parent, false);
-//        showProgressBar(convertView);
-
-//        Log.d(TAG, "unavailable");
-//        while(likedSessionIds == null) {
-//            // Wait until we've gotten our liked session ids
-//            Log.d(TAG, "waiting...");
-//            continue;
-//        }
-//        Log.d(TAG, "available");
-
         // Get the most recently loaded session
         Session entry = mSessionList.get(position);
 
@@ -361,7 +349,7 @@ public class InboxViewAdapter extends ArrayAdapter<Session> implements OnClickLi
                 thumbnail = BitmapFactory.decodeStream(in);
                 thumbnailIv.setScaleType(ScaleType.FIT_XY);
             } catch (Exception e) {
-                Log.e("Error", e.getMessage());
+                Log.e("ApiError", e.getMessage());
                 e.printStackTrace();
             }
             return thumbnail;

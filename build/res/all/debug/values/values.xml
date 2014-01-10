@@ -132,6 +132,7 @@
     <!-- From: file:/Users/babakpourkazemi/Documents/Coding%20Projects/Github/EncoreMobile/res/values/color.xml -->
     <eat-comment />
 
+    <color name="disabled_gray">#ff888888</color>
     <color name="flat_blue">#3498DB</color>
     <color name="flat_blue_pressed">#2980B9</color>
     <color name="flat_red">#e74c3c</color>

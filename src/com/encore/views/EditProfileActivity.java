@@ -14,6 +14,7 @@ import android.widget.Toast;
 
 import com.encore.API.APIService;
 import com.encore.R;
+import com.encore.TokenHelper;
 import com.encore.util.T;
 
 /**
@@ -22,7 +23,7 @@ import com.encore.util.T;
 public class EditProfileActivity extends Activity implements View.OnClickListener {
     private static final String TAG = "EditProfileActivity";
     private EditText first, last, email, phone;
-    private Button makeChangesBtn;
+    private Button makeChangesBtn, logoutButton;
     private String currentFirst, currentLast, currentEmail, currentPhone;
 
     public void onCreate(Bundle savedInstanceState) {
@@ -41,6 +42,7 @@ public class EditProfileActivity extends Activity implements View.OnClickListene
         email = (EditText) findViewById(R.id.edit_profile_email);
         phone = (EditText) findViewById(R.id.edit_profile_phonenumber);
         makeChangesBtn = (Button) findViewById(R.id.edit_profile_submit_button);
+        logoutButton = (Button) findViewById(R.id.edit_profile_logout_button);
     }
 
     private void setCurrentInfo() {
@@ -59,6 +61,7 @@ public class EditProfileActivity extends Activity implements View.OnClickListene
 
     private void setOnClickListeners() {
         makeChangesBtn.setOnClickListener(this);
+        logoutButton.setOnClickListener(this);
     }
 
     @Override
@@ -92,6 +95,11 @@ public class EditProfileActivity extends Activity implements View.OnClickListene
                     Intent homeActivity = new Intent(this, HomeActivity.class);
                     startActivity(homeActivity);
                 }
+                break;
+            case R.id.edit_profile_logout_button:
+                TokenHelper.updateToken(this, null);
+                Intent introScreen = new Intent(this, WelcomeActivity.class);
+                startActivity(introScreen);
                 break;
             default:
                 break;

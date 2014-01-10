@@ -63,4 +63,13 @@
         android:layout_margin="20dp"
         android:text="Save Changes" />
 
+    <Button
+        style="@style/DeclineButtonStyle"
+        android:id="@+id/edit_profile_logout_button"
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:text="Logout" />
+
 </LinearLayout><!-- From: file:/Users/babakpourkazemi/Documents/Coding%20Projects/Github/EncoreMobile/res/layout/edit_profile.xml -->

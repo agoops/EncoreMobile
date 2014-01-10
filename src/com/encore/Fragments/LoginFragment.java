@@ -22,35 +22,27 @@ import com.encore.views.HomeActivity;
 public class LoginFragment extends Fragment implements OnClickListener {
 	private static final String TAG = "LoginActivity";
 	Button login;
-	Button skip;
 	EditText usernameInput;
 	EditText passwordInput;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-    	Log.d(TAG, "onCreateView called");
 		View v = inflater.inflate(R.layout.login_fragment, container, false);
 		
         login = (Button) v.findViewById(R.id.login);
-        skip = (Button) v.findViewById(R.id.skip_login);
         usernameInput = (EditText) v.findViewById(R.id.username_login);
         passwordInput = (EditText) v.findViewById(R.id.password_login);
         
         login.setOnClickListener((OnClickListener) this);
-        skip.setOnClickListener((OnClickListener)this);
         return v;
     }
 
     // Click listeners!
     @Override
     public void onClick(View v) {
-    	Log.d(TAG, "Assigning click listeners");
     	switch(v.getId()) {
     	case R.id.login:
     		login(v);
-    		break;
-    	case R.id.skip_login:
-    		skip(v);
     		break;
     	default:
     		break;
@@ -72,13 +64,8 @@ public class LoginFragment extends Fragment implements OnClickListener {
         apiIntent.putExtra("receiver", mReceiver);
         
         getActivity().startService(apiIntent);
-        Toast.makeText(getActivity(), "service started", Toast.LENGTH_SHORT).show();
     }
 
-    public void skip(View view) {
-        goToHomeScreen();
-    }
-    
     private class LoginReceiver extends ResultReceiver {
     	public LoginReceiver(Handler handler) {
     		super(handler);
@@ -87,7 +74,7 @@ public class LoginFragment extends Fragment implements OnClickListener {
     	@Override
     	protected void onReceiveResult(int resultCode, Bundle resultData) {
     		if (resultCode == 1) {
-    			Log.d(TAG, "APIService returned successful");
+    			Log.d(TAG, "APIService returned successfully");
     			goToHomeScreen();
     		}
     		else {
@@ -102,6 +89,4 @@ public class LoginFragment extends Fragment implements OnClickListener {
     private void showLoginFailed() {
         Toast.makeText(getActivity(), "Login Failed", Toast.LENGTH_SHORT).show();
     }
-    
-	
 }

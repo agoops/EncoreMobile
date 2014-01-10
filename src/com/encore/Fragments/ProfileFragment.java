@@ -1,16 +1,12 @@
 package com.encore.Fragments;
 
 import android.content.Intent;
-import android.graphics.Point;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.ResultReceiver;
-import android.os.SystemClock;
 import android.support.v4.app.Fragment;
 import android.util.Log;
-import android.view.Display;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -18,7 +14,6 @@ import android.widget.Button;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.encore.API.APIService;
 import com.encore.R;
@@ -42,13 +37,14 @@ import com.google.gson.Gson;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashSet;
 
 public class ProfileFragment extends Fragment implements View.OnClickListener{
 	private static final String TAG = "ProfileFragment";
     private View view;
     private Button rapsButton, crowdsButton, likesButton, requestsButton, editProfileButton, findFriendsButton;
     private ListView listview;
-    private TextView numRapsTv, numLikesTv, numFriendsTv;
+    private TextView myUsernameTv, myFullNameTv, numRapsTv, numLikesTv, numFriendsTv;
     private ProgressBar progressProfile, progressTabs;
     private TabFriendsAdapter friendsAdapter;
     private TabCrowdAdapter crowdsAdapter;
@@ -56,7 +52,10 @@ public class ProfileFragment extends Fragment implements View.OnClickListener{
     private TabRequestsAdapter requestsAdapter;
     private ResultReceiver receiver;
 
+    private ArrayList<Profile> friendsList;
+    private HashSet<String> friendsUsernames;
     private Profile userMe;
+    private String myUsername;
 
     // TODO: Fix the listview only-loading-sometimes bug (try reloading/reinitializing the fragment?)
     // TODO: Set the profile picture
@@ -86,6 +85,8 @@ public class ProfileFragment extends Fragment implements View.OnClickListener{
         numFriendsTv = (TextView) view.findViewById(R.id.profileNumFriendsTv);
         progressProfile = (ProgressBar) view.findViewById(R.id.progress_profile);
         progressTabs = (ProgressBar) view.findViewById(R.id.progress_profile_tabs);
+        myUsernameTv = (TextView) view.findViewById(R.id.profile_username);
+        myFullNameTv = (TextView) view.findViewById(R.id.profile_fullname);
 
         // Hide everything until we get some data
         setProfileVisibility(0);
@@ -101,11 +102,15 @@ public class ProfileFragment extends Fragment implements View.OnClickListener{
     }
 
     public void initData() {
+        // Init our friendsUsernames
+        friendsUsernames = new HashSet<String>();
+
         // Populate the profile page's basic data
         getMe();
 
         // By default, the first tab will be selected
         setTabPressed(1);
+        setOnItemClickListener(1);
 
         // The default first tab means we want to pull in our friends
         getFriends();
@@ -159,6 +164,8 @@ public class ProfileFragment extends Fragment implements View.OnClickListener{
                 break;
             case R.id.profile_find_friends_button:
                 Intent launchFriendFinder = new Intent(getActivity(), FindFriendsActivity.class);
+                launchFriendFinder.putExtra(T.MY_USERNAME, myUsername);
+                launchFriendFinder.putExtra("friendsUsernames", friendsUsernames);
                 startActivity(launchFriendFinder);
                 break;
             default:
@@ -266,11 +273,10 @@ public class ProfileFragment extends Fragment implements View.OnClickListener{
             case 1:
                 listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                     @Override
-                    public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                    public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
                         Intent otherProfile = new Intent(getActivity(), OtherProfileActivity.class);
-
-                        // TODO: Set some info to send along
-
+                        otherProfile.putExtra(T.USERNAME, friendsList.get(position).getUsername());
+                        otherProfile.putExtra(T.MY_USERNAME, myUsername);
                         startActivity(otherProfile);
                     }
                 });
@@ -302,34 +308,6 @@ public class ProfileFragment extends Fragment implements View.OnClickListener{
         }
     }
 
-    private void simulateTouch(View v) {
-        Display display = getActivity().getWindowManager().getDefaultDisplay();
-        Point size = new Point();
-        display.getSize(size);
-
-        // Obtain MotionEvent object
-        long downTime = SystemClock.uptimeMillis();
-        long eventTime = SystemClock.uptimeMillis() + 100;
-        float x = 200f;
-        float y = 200f;
-        Toast.makeText(getActivity(), "(x, y): " + x + ", " + y, Toast.LENGTH_SHORT).show();
-        // List of meta states found here: developer.android.com/reference/android/view/KeyEvent.html#getMetaState()
-        int metaState = 0;
-
-        MotionEvent motionEvent = MotionEvent.obtain(
-                downTime,
-                eventTime,
-                MotionEvent.ACTION_UP,
-                x,
-                y,
-                metaState
-        );
-
-
-        // Dispatch touch event to view
-        v.dispatchTouchEvent(motionEvent);
-    }
-
     // Our receivers
     public class MeReceiver extends ResultReceiver {
         public MeReceiver(Handler handler) {
@@ -356,6 +334,11 @@ public class ProfileFragment extends Fragment implements View.OnClickListener{
                         (numLikes == 1) ? numLikes + " Like" : numLikes + " Likes");
                 numFriendsTv.setText(
                         (numFriends == 1) ? numFriends + " Friend" : numFriends + " Friends");
+
+                myUsername = userMe.getUsername();
+
+                myUsernameTv.setText(myUsername);
+                myFullNameTv.setText(userMe.getFullName());
 
                 // Show data
                 setProfileVisibility(1);
@@ -386,12 +369,13 @@ public class ProfileFragment extends Fragment implements View.OnClickListener{
                 // Update the data on our listview
                 friendsAdapter = new TabFriendsAdapter(getActivity(), R.layout.tab_friends_list_row, null);
                 listview.setAdapter(friendsAdapter);
-                friendsAdapter.setItemList(new ArrayList<Profile>(Arrays.asList(friendsArray)));
+                friendsList = new ArrayList<Profile>(Arrays.asList(friendsArray));
+                friendsAdapter.setItemList(friendsList);
                 friendsAdapter.notifyDataSetChanged();
-                listview.performClick();
 
-//                listview.invalidateViews();
-//                simulateTouch(listview);
+                for(Profile profile : friendsList) {
+                    friendsUsernames.add(profile.getUsername());
+                }
 
                 // Show data
                 setTabVisibility(1);
@@ -422,10 +406,6 @@ public class ProfileFragment extends Fragment implements View.OnClickListener{
                 listview.setAdapter(crowdsAdapter);
                 crowdsAdapter.setItemList(crowds);
                 crowdsAdapter.notifyDataSetChanged();
-                listview.performClick();
-
-//                listview.invalidateViews();
-//                simulateTouch(listview);
 
                 // Show data
                 setTabVisibility(1);
@@ -457,11 +437,6 @@ public class ProfileFragment extends Fragment implements View.OnClickListener{
                 listview.setAdapter(likesAdapter);
                 likesAdapter.setItemList(likedSessions);
                 likesAdapter.notifyDataSetChanged();
-                listview.performClick();
-
-                // For whatever reason, the listview won't update unless touched, so we simulate one
-//                listview.invalidateViews();
-//                simulateTouch(listview);
 
                 // Show data
                 setTabVisibility(1);
@@ -491,12 +466,6 @@ public class ProfileFragment extends Fragment implements View.OnClickListener{
                 listview.setAdapter(requestsAdapter);
                 requestsAdapter.setItemList(new ArrayList<FriendRequestProfile>(Arrays.asList(pendingMe)));
                 requestsAdapter.notifyDataSetChanged();
-                listview.performClick();
-
-
-                // For whatever reason, the listview won't update unless touched, so we simulate one
-//                listview.invalidateViews();
-//                simulateTouch(listview);
 
                 // Show data
                 setTabVisibility(1);
@@ -505,5 +474,4 @@ public class ProfileFragment extends Fragment implements View.OnClickListener{
             }
         }
     }
-	
 }

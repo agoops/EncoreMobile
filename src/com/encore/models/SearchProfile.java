@@ -26,6 +26,10 @@ public class SearchProfile {
     }
 
     public List<User> getAsList() {
+        if(users == null) {
+            return new ArrayList<User>();
+        }
+
         return new ArrayList<User>(Arrays.asList(users));
     }
 }

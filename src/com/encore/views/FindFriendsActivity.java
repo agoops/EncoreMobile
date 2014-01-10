@@ -14,10 +14,10 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.SearchView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.encore.API.APIService;
 import com.encore.R;
@@ -28,6 +28,7 @@ import com.encore.util.T;
 import com.google.gson.Gson;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 
 /**
  * Created by babakpourkazemi on 1/7/14.
@@ -37,12 +38,17 @@ public class FindFriendsActivity extends Activity implements View.OnClickListene
     private Context context;
     private ListView listview;
     private SearchUsersFragmentAdapter adapter;
+    private String myUsername;
+    private ArrayList<User> searchResults;
+    private HashSet<String> friendsUsernames;
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.search_activity);
         context = this;
+        myUsername = getIntent().getStringExtra(T.MY_USERNAME);
 
+        initData();
         getViews();
         setupActionBar();
         setupListView();
@@ -50,6 +56,12 @@ public class FindFriendsActivity extends Activity implements View.OnClickListene
         handleIntent(getIntent());
     }
 
+    // Initialize any data
+    private void initData() {
+        friendsUsernames = (HashSet) getIntent().getSerializableExtra("friendsUsernames");
+    }
+
+    // Grab our views
     private void getViews() {
         listview = (ListView) findViewById(R.id.search_results_lv);
     }
@@ -59,30 +71,44 @@ public class FindFriendsActivity extends Activity implements View.OnClickListene
         getActionBar().setDisplayHomeAsUpEnabled(true);
     }
 
+    // Set the adapter and onclicklisteners
     private void setupListView() {
         adapter = new SearchUsersFragmentAdapter(context, R.layout.search_list_row, null);
+        adapter.setFriendsUsernamesSet(friendsUsernames);
         listview.setAdapter(adapter);
+
+        listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
+                Intent otherProfile = new Intent(context, OtherProfileActivity.class);
+                otherProfile.putExtra(T.USERNAME, searchResults.get(position).getUsername());
+                otherProfile.putExtra(T.MY_USERNAME, myUsername);
+                otherProfile.putExtra(T.PENDING_THEM, adapter.getPendingThemSet());
+                startActivity(otherProfile);
+            }
+        });
     }
 
     @Override
     protected void onNewIntent(Intent intent) {
-//        setIntent(intent);
+        // Handle the search intent
         handleIntent(intent);
     }
 
+    // Handles our search intent
     private void handleIntent(Intent intent) {
         if (Intent.ACTION_SEARCH.equals(intent.getAction())) {
             String query = intent.getStringExtra(SearchManager.QUERY);
             Log.d(TAG, "querying data: " + query);
             if(query.length() == 0) {
-                Toast.makeText(this, "Enter a username", Toast.LENGTH_SHORT)
-                        .show();
+                // Do nothing. Maybe notify the user.
             } else {
                 searchUsername(query);
             }
         }
     }
 
+    // Our api request
     public void searchUsername(String username) {
         Intent api = new Intent(this, APIService.class);
         SearchReceiver receiver = new SearchReceiver(new Handler());
@@ -149,11 +175,10 @@ public class FindFriendsActivity extends Activity implements View.OnClickListene
                 Log.d(TAG, "Search results received successfully");
                 String result = data.getString("result");
 
-                // Assign the adapter
-                ArrayList<User> searchResults =
+                searchResults  =
                         (ArrayList) (new Gson().fromJson(result, SearchProfile.class).getAsList());
                 adapter.setItemList(searchResults);
-                adapter.notifyDataSetChanged();
+                    adapter.notifyDataSetChanged();
             } else {
                 Log.d(TAG, "GET /users/search/ unsuccessful");
             }

@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentTransaction;
+import android.view.Window;
 
 import com.encore.Fragments.IntroFragment;
 import com.encore.R;
@@ -14,7 +15,10 @@ public class WelcomeActivity extends FragmentActivity {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.placeholder);
+        //set no title
+        requestWindowFeature(Window.FEATURE_NO_TITLE);
+
+        setContentView(R.layout.placeholder);
 		String token = TokenHelper.getToken(this);
 		if(token == null) {
 			// Create a new transaction and welcome screen fragment

@@ -57,6 +57,7 @@
         android:layout_alignParentRight="true"
         android:layout_centerVertical="true"
         android:layout_marginRight="10dp"
+        android:focusable="false"
         android:text="Add"/>
 
 </RelativeLayout><!-- From: file:/Users/babakpourkazemi/Documents/Coding%20Projects/Github/EncoreMobile/res/layout/search_list_row.xml -->

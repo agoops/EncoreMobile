@@ -2,7 +2,6 @@ package com.encore;
 
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.ResultReceiver;
@@ -33,6 +32,7 @@ public class SearchUsersFragmentAdapter extends ArrayAdapter<User> implements Vi
     private Context context;
     private List<User> users;
     private HashSet<String> pendingThemSet;
+    private HashSet<String> friendsUsernamesSet;
 
     private ImageView profilePic;
     private TextView usernameTv, fullNameTv;
@@ -56,34 +56,41 @@ public class SearchUsersFragmentAdapter extends ArrayAdapter<User> implements Vi
         User user = users.get(position);
 
         initViews(convertView);
+        setTags();
         setOnClickListeners();
         populateViews(user);
 
         return convertView;
     }
 
-    public void initViews(View convertView) {
+    private void initViews(View convertView) {
         profilePic = (ImageView) convertView.findViewById(R.id.search_profile_pic);
         usernameTv = (TextView) convertView.findViewById(R.id.search_username);
         fullNameTv = (TextView) convertView.findViewById(R.id.search_fullname);
         addFriendButton = (Button) convertView.findViewById(R.id.search_add_friend);
     }
 
-    public void setOnClickListeners() {
+    private void setTags() {
+        // necessary for adding a friend
+        addFriendButton.setTag(R.string.first_key, usernameTv);
+        addFriendButton.setTag(R.string.second_key, addFriendButton);
+    }
+
+    private void setOnClickListeners() {
         addFriendButton.setOnClickListener(this);
     }
 
-    public void populateViews(User user) {
+    private void populateViews(User user) {
         // TODO: Set profile picture
         usernameTv.setText(user.getUsername());
         fullNameTv.setText(user.getFullName());
 
-        // wait until we know who we've friend requested
-        if(pendingThemSet.contains(user.getUsername())) {
+        if(friendsUsernamesSet != null && friendsUsernamesSet.contains(user.getUsername())) {
+            // If you're friends with someone, disable the button
+            disableButton(addFriendButton, "Friends");
+        } else if(pendingThemSet != null && pendingThemSet.contains(user.getUsername())) {
             // If you've already sent a request, don't send another!
-            addFriendButton.setEnabled(false);
-            addFriendButton.setText("Sent");
-            addFriendButton.setBackgroundColor(Color.GRAY);
+            disableButton(addFriendButton, "Sent");
         }
     }
 
@@ -92,28 +99,46 @@ public class SearchUsersFragmentAdapter extends ArrayAdapter<User> implements Vi
         switch(v.getId())
         {
             case R.id.search_add_friend:
-                sendFriendRequest();
+                TextView usernameTv = (TextView) v.getTag(R.string.first_key);
+                Button addFriendButton = (Button) v.getTag(R.string.second_key);
+                sendFriendRequest(usernameTv.getText().toString());
+                disableButton(addFriendButton, "Sent");
                 break;
             default:
                 break;
         }
     }
 
-    public void sendFriendRequest() {
+    private void disableButton(Button button, String disabledText) {
+        button.setEnabled(false);
+        button.setText(disabledText);
+        button.setBackgroundResource(R.drawable.disabled_state);
+    }
+
+    private void sendFriendRequest(String username) {
         Intent api = new Intent(context, APIService.class);
         api.putExtra(T.API_TYPE, T.FRIEND_REQUEST);
-        api.putExtra(T.USERNAME, usernameTv.getText().toString());
+        api.putExtra(T.USERNAME, username);
         context.startService(api);
 
         addFriendButton.setText("Sent");
     }
 
-    public void getPendingRequests() {
+    private void getPendingRequests() {
         Intent api = new Intent(context, APIService.class);
         ResultReceiver receiver = new RequestsReceiver(new Handler());
         api.putExtra(T.API_TYPE, T.FRIEND_REQUESTS_PENDING);
         api.putExtra(T.RECEIVER, receiver);
         context.startService(api);
+    }
+
+    // Used for passing the pending them data to OtherProfile
+    public HashSet<String> getPendingThemSet() {
+        return this.pendingThemSet;
+    }
+
+    public void setFriendsUsernamesSet(HashSet<String> usernames) {
+        this.friendsUsernamesSet = usernames;
     }
 
     @Override

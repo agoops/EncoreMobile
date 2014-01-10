@@ -10,6 +10,7 @@
     <color name="vinyet_green_pressed">#007858</color>
     <color name="flat_blue">#3498DB</color>
     <color name="flat_blue_pressed">#2980B9</color>
+    <color name="disabled_gray">#ff888888</color>
 
 
     <color name="button_pressed">#007858</color>

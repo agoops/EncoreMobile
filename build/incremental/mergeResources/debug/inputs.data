@@ -41,8 +41,8 @@
 1387849868000 128 b6aad3a65012b78c72c8676c85cb6b3a2f613a49 /Users/babakpourkazemi/Documents/Coding Projects/Github/EncoreMobile/build/exploded-bundles/ComAndroidSupportAppcompatV71800.aar/res/drawable-xhdpi/abc_textfield_search_right_selected_holo_dark.9.png
 1386113955000 827 b9d79fd28ae9eaad1030f85aea6c2b3dc1c3100a /Users/babakpourkazemi/Documents/Coding Projects/Github/EncoreMobile/res/drawable-xhdpi/ic_action_search.png
 1387849868000 1063 7596fa8c76be5658d10aa0227418a6ffe1f8a726 /Users/babakpourkazemi/Documents/Coding Projects/Github/EncoreMobile/build/exploded-bundles/ComAndroidSupportAppcompatV71800.aar/res/layout/abc_expanded_menu_layout.xml
+1389236802000 2604 9f68af599ea79e0272091646e1962c8121ecf225 /Users/babakpourkazemi/Documents/Coding Projects/Github/EncoreMobile/res/layout/edit_profile.xml
 1387752093000 21448 444d3d4257fba9ca0d74e16529a4eb02e473af1e /Users/babakpourkazemi/Documents/Coding Projects/Github/EncoreMobile/res/drawable/play_64x64.png
-1388980356000 2291 2baf623347e04b5be7a165bea6cca9094a06527e /Users/babakpourkazemi/Documents/Coding Projects/Github/EncoreMobile/res/layout/edit_profile.xml
 1387849868000 3619 1cfa271de2198c846e7dca54877085d243c1809e /Users/babakpourkazemi/Documents/Coding Projects/Github/EncoreMobile/build/exploded-bundles/ComAndroidSupportAppcompatV71800.aar/res/layout/abc_action_bar_decor_overlay.xml
 1387849867000 139 8b1509730eacfefdd44c00f40aa9c5c16e4efeec /Users/babakpourkazemi/Documents/Coding Projects/Github/EncoreMobile/build/exploded-bundles/ComAndroidSupportAppcompatV71800.aar/res/drawable-hdpi/abc_ab_stacked_transparent_dark_holo.9.png
 1387849868000 1032 ad3e2052c2070d64eb82c50b46960b485ad880c0 /Users/babakpourkazemi/Documents/Coding Projects/Github/EncoreMobile/build/exploded-bundles/ComAndroidSupportAppcompatV71800.aar/res/layout/abc_action_bar_tabbar.xml
@@ -54,7 +54,7 @@
 1387849867000 158 8ed107b33cbccbfab88308eb540858af01ef0483 /Users/babakpourkazemi/Documents/Coding Projects/Github/EncoreMobile/build/exploded-bundles/ComAndroidSupportAppcompatV71800.aar/res/drawable-mdpi/abc_list_pressed_holo_dark.9.png
 1387849867000 2280 2198a75242179df4d771d4d78995975fb456112c /Users/babakpourkazemi/Documents/Coding Projects/Github/EncoreMobile/build/exploded-bundles/ComAndroidSupportAppcompatV71800.aar/res/drawable-mdpi/abc_ic_search.png
 1387849867000 507 6171a3111d88b69c1eca571563e232f8ab3716be /Users/babakpourkazemi/Documents/Coding Projects/Github/EncoreMobile/build/exploded-bundles/ComAndroidSupportAppcompatV71800.aar/res/drawable-hdpi/abc_spinner_ab_focused_holo_dark.9.png
-1389118382000 1472 32259313c5b998c5eb2f3f3bbf492596e666e0fa /Users/babakpourkazemi/Documents/Coding Projects/Github/EncoreMobile/res/values/color.xml
+1389326027000 1522 528d452603934d32f8744a596c6873283bcdcb47 /Users/babakpourkazemi/Documents/Coding Projects/Github/EncoreMobile/res/values/color.xml
 1387849867000 393 949f779b47ed77f03dc48ab80640478a97e332fc /Users/babakpourkazemi/Documents/Coding Projects/Github/EncoreMobile/build/exploded-bundles/ComAndroidSupportAppcompatV71800.aar/res/drawable-xhdpi/abc_spinner_ab_disabled_holo_light.9.png
 1381719078000 2592 e13b86c0bd49f190891d4e6885ba04ba8963064a /Users/babakpourkazemi/Documents/Coding Projects/Github/EncoreMobile/res/drawable/action_people.png
 1368792970000 334 ba64d91230d605cfbef54ceea655a6b75fcb0f62 /Users/babakpourkazemi/Documents/Coding Projects/Github/EncoreMobile/res/drawable-ldpi/ic_person.png
@@ -85,6 +85,7 @@
 1388613692000 654 e79af1668ea73afd05160e331e2c02bb05884de3 /Users/babakpourkazemi/Documents/Coding Projects/Github/EncoreMobile/res/layout/preview_fragment.xml
 1387849868000 1930 b63a675a54c3cca4684f505749cb60b3d0c56e1b /Users/babakpourkazemi/Documents/Coding Projects/Github/EncoreMobile/build/exploded-bundles/ComAndroidSupportAppcompatV71800.aar/res/layout/abc_action_bar_home.xml
 1389078660000 15568 f26db8708fc73f80b777f74a3ec1d22636d18703 /Users/babakpourkazemi/Documents/Coding Projects/Github/EncoreMobile/res/drawable-mdpi/ic_action_video_selected.png
+1389237173000 354 06bdcc217dc7fb17b3606839db98263e6e0309db /Users/babakpourkazemi/Documents/Coding Projects/Github/EncoreMobile/res/drawable/decline_button_focused.xml
 1387849868000 67794 57ed68a346e74c7dd249ffa8afe8a15318500b86 /Users/babakpourkazemi/Documents/Coding Projects/Github/EncoreMobile/build/exploded-bundles/ComAndroidSupportAppcompatV71800.aar/res/values/values.xml
 1387849868000 1597 51244da67acf1e317901c3ef405e27280d2d8846 /Users/babakpourkazemi/Documents/Coding Projects/Github/EncoreMobile/build/exploded-bundles/ComAndroidSupportAppcompatV71800.aar/res/layout/abc_action_mode_close_item.xml
 1387849867000 76 f8acd0cd8504ba75a5fbc77a622d89b9c3bd2a57 /Users/babakpourkazemi/Documents/Coding Projects/Github/EncoreMobile/build/exploded-bundles/ComAndroidSupportAppcompatV71800.aar/res/drawable-hdpi/abc_list_divider_holo_light.9.png
@@ -95,7 +96,7 @@
 1387849868000 2038 d66f2697bf4b46027a994a52bcca3490a71e67e8 /Users/babakpourkazemi/Documents/Coding Projects/Github/EncoreMobile/build/exploded-bundles/ComAndroidSupportAppcompatV71800.aar/res/drawable/abc_item_background_holo_dark.xml
 1387849867000 135 60713e3a44942264850afe8ab272ad43dcb6411e /Users/babakpourkazemi/Documents/Coding Projects/Github/EncoreMobile/build/exploded-bundles/ComAndroidSupportAppcompatV71800.aar/res/drawable-hdpi/abc_ab_bottom_transparent_dark_holo.9.png
 1387849868000 1193 46481a837291fc4da2460027950b8191c978c712 /Users/babakpourkazemi/Documents/Coding Projects/Github/EncoreMobile/build/exploded-bundles/ComAndroidSupportAppcompatV71800.aar/res/layout/abc_action_menu_layout.xml
-1389160882000 6167 f78aae761f287090055c4d84931cf8d18aeceffa /Users/babakpourkazemi/Documents/Coding Projects/Github/EncoreMobile/res/layout/other_profile_activity.xml
+1389286408000 5890 e04404e847e84aafb583714721f19c3ad272c7e0 /Users/babakpourkazemi/Documents/Coding Projects/Github/EncoreMobile/res/layout/other_profile_activity.xml
 1387849867000 836 f7e8c2792631dd583b32c6807834296f755e3d4f /Users/babakpourkazemi/Documents/Coding Projects/Github/EncoreMobile/build/exploded-bundles/ComAndroidSupportAppcompatV71800.aar/res/drawable-mdpi/abc_menu_dropdown_panel_holo_light.9.png
 1386622277000 1248 0d35d8347a69517baaaaecf87863a80eda98f18a /Users/babakpourkazemi/Documents/Coding Projects/Github/EncoreMobile/res/drawable-hdpi/ic_action_video.png
 1387849868000 438 5fe8786f3a7120497bc9fb76add8d713e88a5218 /Users/babakpourkazemi/Documents/Coding Projects/Github/EncoreMobile/build/exploded-bundles/ComGithubChrisbanesActionbarpulltorefreshLibrary093.aar/res/values-ru/values.xml
@@ -118,10 +119,9 @@
 1387849868000 443 c9b69e08a3d10678c4bd88f6102ff5317caa8045 /Users/babakpourkazemi/Documents/Coding Projects/Github/EncoreMobile/build/exploded-bundles/ComGithubChrisbanesActionbarpulltorefreshLibrary093.aar/res/values-he/values.xml
 1387849868000 464 6b579b8b555312b3bfc6abceb29b058f76af3d92 /Users/babakpourkazemi/Documents/Coding Projects/Github/EncoreMobile/build/exploded-bundles/ComGithubChrisbanesActionbarpulltorefreshLibrary093.aar/res/values-es/values.xml
 1387601208000 671 f1c65fff85d768f7d7b7282de30ba7727eb6164c /Users/babakpourkazemi/Documents/Coding Projects/Github/EncoreMobile/res/layout/camera_preview.xml
-1389222443000 387 5b7f35bd433d566baa4b9a444820eea436ddf5b3 /Users/babakpourkazemi/Documents/Coding Projects/Github/EncoreMobile/res/layout/footer_view.xml
 1387849867000 1541 b1c20edae3d69588b0a4f4f1c3647da798c842b8 /Users/babakpourkazemi/Documents/Coding Projects/Github/EncoreMobile/build/exploded-bundles/ComAndroidSupportAppcompatV71800.aar/res/drawable-mdpi/abc_ic_search_api_holo_light.png
 1388612172000 4342 fb8c5a2ffb97e9bf31e8fe511a608dc908052738 /Users/babakpourkazemi/Documents/Coding Projects/Github/EncoreMobile/res/layout/inbox_view.xml
-1388698724000 405 5b7eb70dce6bb4d22319058fff04ef505d681865 /Users/babakpourkazemi/Documents/Coding Projects/Github/EncoreMobile/res/drawable/decline_button_style.xml
+1389237147000 414 b053621cbf1c59f2d0a2866373086f0653f6b799 /Users/babakpourkazemi/Documents/Coding Projects/Github/EncoreMobile/res/drawable/decline_button_style.xml
 1387849867000 105 7fb42d84e1d2959e3d6a351ae8ae2cd92d273ec6 /Users/babakpourkazemi/Documents/Coding Projects/Github/EncoreMobile/build/exploded-bundles/ComAndroidSupportAppcompatV71800.aar/res/drawable-hdpi/abc_textfield_search_default_holo_light.9.png
 1387849867000 171 36ba6735cc60a20406dcbc2af3408f54468d0151 /Users/babakpourkazemi/Documents/Coding Projects/Github/EncoreMobile/build/exploded-bundles/ComAndroidSupportAppcompatV71800.aar/res/drawable-mdpi/abc_list_focused_holo.9.png
 1387849867000 1540 2d675b99d2c7757a1598d848b5163f5e9c5a0fbb /Users/babakpourkazemi/Documents/Coding Projects/Github/EncoreMobile/build/exploded-bundles/ComAndroidSupportAppcompatV71800.aar/res/drawable-hdpi/abc_ic_clear_search_api_holo_light.png
@@ -160,7 +160,7 @@
 1387849867000 145 96f5beb6c2c8cb83b787d9fdd73ef62724020ea1 /Users/babakpourkazemi/Documents/Coding Projects/Github/EncoreMobile/build/exploded-bundles/ComAndroidSupportAppcompatV71800.aar/res/drawable-hdpi/abc_cab_background_bottom_holo_light.9.png
 1389033089000 67983 d98bfcacf8fee1dc48b2031fef649e60a61cce84 /Users/babakpourkazemi/Documents/Coding Projects/Github/EncoreMobile/res/drawable/icon.png
 1386622277000 354 abde488d081de5269e81594f30d081261c87b3d9 /Users/babakpourkazemi/Documents/Coding Projects/Github/EncoreMobile/res/anim/exit.xml
-1389151144000 2247 cd5769610341f4a2dcd54acdf390b09e941995c8 /Users/babakpourkazemi/Documents/Coding Projects/Github/EncoreMobile/res/layout/search_list_row.xml
+1389283988000 2281 55ab3862448fc5fa4fd834584485aa29c709baff /Users/babakpourkazemi/Documents/Coding Projects/Github/EncoreMobile/res/layout/search_list_row.xml
 1387849867000 1414 c5fe1d4a855f70122d21d9e24552d695d0d56c81 /Users/babakpourkazemi/Documents/Coding Projects/Github/EncoreMobile/build/exploded-bundles/ComAndroidSupportAppcompatV71800.aar/res/drawable-xhdpi/abc_ic_voice_search_api_holo_light.png
 1387849867000 133 c99bfce5ea0212688b8f67016a7c3ba24376b43f /Users/babakpourkazemi/Documents/Coding Projects/Github/EncoreMobile/build/exploded-bundles/ComAndroidSupportAppcompatV71800.aar/res/drawable-mdpi/abc_ab_solid_light_holo.9.png
 1387849867000 159 310d42b8814569a737d59b69e3f6ca076cf2e2ca /Users/babakpourkazemi/Documents/Coding Projects/Github/EncoreMobile/build/exploded-bundles/ComAndroidSupportAppcompatV71800.aar/res/drawable-hdpi/abc_list_pressed_holo_dark.9.png
@@ -222,7 +222,7 @@
 1387849868000 1667 50a01d686721c4f853aa36e8b3b3d2ccb95dc764 /Users/babakpourkazemi/Documents/Coding Projects/Github/EncoreMobile/build/exploded-bundles/ComGithubChrisbanesActionbarpulltorefreshLibrary093.aar/res/layout/default_header.xml
 1387849867000 147 f162f0baf35db1964b2fe722460605cab8312a27 /Users/babakpourkazemi/Documents/Coding Projects/Github/EncoreMobile/build/exploded-bundles/ComAndroidSupportAppcompatV71800.aar/res/drawable-xhdpi/abc_tab_selected_focused_holo.9.png
 1387849867000 154 c30d142f651cd0670bb0474e1ddd5d462361a3c9 /Users/babakpourkazemi/Documents/Coding Projects/Github/EncoreMobile/build/exploded-bundles/ComAndroidSupportAppcompatV71800.aar/res/drawable-hdpi/abc_list_longpressed_holo.9.png
-1389140466000 393 91a9a5233a7bc2b50e472fad130a06de1f5b059d /Users/babakpourkazemi/Documents/Coding Projects/Github/EncoreMobile/res/layout/search_activity.xml
+1389283952000 393 91a9a5233a7bc2b50e472fad130a06de1f5b059d /Users/babakpourkazemi/Documents/Coding Projects/Github/EncoreMobile/res/layout/search_activity.xml
 1387849867000 189 a742959d32d3ecee0adb34bce43edd7b5bc4e649 /Users/babakpourkazemi/Documents/Coding Projects/Github/EncoreMobile/build/exploded-bundles/ComAndroidSupportAppcompatV71800.aar/res/drawable-hdpi/abc_list_selector_disabled_holo_light.9.png
 1381719078000 381 b129b276e01126de5b3b753572ac67cbfc19454c /Users/babakpourkazemi/Documents/Coding Projects/Github/EncoreMobile/res/values-v14/styles.xml
 1387849867000 155 6eb18ad9cf9c0c56f5d935f1f78e47ace4cb6d96 /Users/babakpourkazemi/Documents/Coding Projects/Github/EncoreMobile/build/exploded-bundles/ComAndroidSupportAppcompatV71800.aar/res/drawable-mdpi/abc_tab_unselected_pressed_holo.9.png
@@ -230,7 +230,7 @@
 1387849867000 163 9b955f05fd12424fa0817650d664b6016843194c /Users/babakpourkazemi/Documents/Coding Projects/Github/EncoreMobile/build/exploded-bundles/ComAndroidSupportAppcompatV71800.aar/res/drawable-xhdpi/abc_list_pressed_holo_dark.9.png
 1387849867000 151 8c9e4a41bd8801010a3a404ab608865ecf6dbd34 /Users/babakpourkazemi/Documents/Coding Projects/Github/EncoreMobile/build/exploded-bundles/ComAndroidSupportAppcompatV71800.aar/res/drawable-mdpi/abc_list_longpressed_holo.9.png
 1386113955000 1152 476686addcfc93dc742f9f78cf225bf8f77fa338 /Users/babakpourkazemi/Documents/Coding Projects/Github/EncoreMobile/res/drawable-xxhdpi/ic_action_search.png
-1389215436000 2154 5562be3ae97cda94c8c9e6147dc4e119e71d53cd /Users/babakpourkazemi/Documents/Coding Projects/Github/EncoreMobile/res/layout/login_fragment.xml
+1389242519000 1896 4d4f8b6ac809e4fe0ab25f91af602a297bbdbc47 /Users/babakpourkazemi/Documents/Coding Projects/Github/EncoreMobile/res/layout/login_fragment.xml
 1388425494000 1140 1893e6691b2d4e0f20066d332c5abb52b5007afa /Users/babakpourkazemi/Documents/Coding Projects/Github/EncoreMobile/res/layout/comment_dialog.xml
 1368792970000 499 143e7b48829d7eafb4fae7328e40144967792720 /Users/babakpourkazemi/Documents/Coding Projects/Github/EncoreMobile/res/drawable-xhdpi/ic_home.png
 1387601208000 105 78f13a10db0f89fd96a4930a0627005d66fae350 /Users/babakpourkazemi/Documents/Coding Projects/Github/EncoreMobile/res/drawable-mdpi/ic_navigation_drawer.png
@@ -275,6 +275,7 @@
 1387849868000 432 55b16f0e94f6fabe9084dc7fa782af6edeab7dd3 /Users/babakpourkazemi/Documents/Coding Projects/Github/EncoreMobile/build/exploded-bundles/ComGithubChrisbanesActionbarpulltorefreshLibrary093.aar/res/values-zh/values.xml
 1387849867000 133 f0150fee71868aa90a70e123e9d809c8433899d7 /Users/babakpourkazemi/Documents/Coding Projects/Github/EncoreMobile/build/exploded-bundles/ComAndroidSupportAppcompatV71800.aar/res/drawable-mdpi/abc_ab_solid_dark_holo.9.png
 1387849867000 112 73cfc0acc999fd36db8f34b20f87c370a04b70db /Users/babakpourkazemi/Documents/Coding Projects/Github/EncoreMobile/build/exploded-bundles/ComAndroidSupportAppcompatV71800.aar/res/drawable-hdpi/abc_textfield_search_selected_holo_light.9.png
+1389237163000 354 54c9fd4cde9cdad63003b4e6e75a4a5b28b6f17d /Users/babakpourkazemi/Documents/Coding Projects/Github/EncoreMobile/res/drawable/decline_button_pressed.xml
 1387849868000 1070 b75b82dac423d9931a115c8056e8ff2450a3e9b9 /Users/babakpourkazemi/Documents/Coding Projects/Github/EncoreMobile/build/exploded-bundles/ComAndroidSupportAppcompatV71800.aar/res/layout/abc_action_mode_bar.xml
 1387849868000 2767 de8260b16378a98e974d25f5f2aed294108a8903 /Users/babakpourkazemi/Documents/Coding Projects/Github/EncoreMobile/build/exploded-bundles/ComGithubCastorflexSmoothprogressbarLibrary020.aar/res/values/values.xml
 1389117050000 337 8e19ce9c6d44c8b25dfddba40a894569d05ede18 /Users/babakpourkazemi/Documents/Coding Projects/Github/EncoreMobile/res/menu/find_users_menu.xml
@@ -301,6 +302,7 @@
 1389080664000 501 a254085bcb65b4ede8b04c693511e394f4d665b9 /Users/babakpourkazemi/Documents/Coding Projects/Github/EncoreMobile/res/drawable/blue_button_selector.xml
 1387849867000 134 e342203daa6736f43ba38f0d3c0433d8d5cd05bf /Users/babakpourkazemi/Documents/Coding Projects/Github/EncoreMobile/build/exploded-bundles/ComAndroidSupportAppcompatV71800.aar/res/drawable-hdpi/abc_ab_bottom_transparent_light_holo.9.png
 1386622277000 957 935986c5da18a01f451dd23303f7a644fff25544 /Users/babakpourkazemi/Documents/Coding Projects/Github/EncoreMobile/res/layout/newsfeed_fragment.xml
+1389326040000 420 a4e861337873c25e3dca0b4fe56d2f1add65473f /Users/babakpourkazemi/Documents/Coding Projects/Github/EncoreMobile/res/drawable/disabled_state.xml
 1387601208000 611 4373bbda9714f63515c3b1158249dafa278b0a04 /Users/babakpourkazemi/Documents/Coding Projects/Github/EncoreMobile/res/layout/drawer_list_item.xml
 1387849867000 160 641573c0f9991d3141343fea4198a7f8b54c6adb /Users/babakpourkazemi/Documents/Coding Projects/Github/EncoreMobile/build/exploded-bundles/ComAndroidSupportAppcompatV71800.aar/res/drawable-xhdpi/abc_ab_transparent_light_holo.9.png
 1387849867000 134 28a5a832c88cf99d22fa1a4e3c3e2c2f536987e5 /Users/babakpourkazemi/Documents/Coding Projects/Github/EncoreMobile/build/exploded-bundles/ComAndroidSupportAppcompatV71800.aar/res/drawable-mdpi/abc_ab_stacked_solid_dark_holo.9.png
@@ -309,10 +311,11 @@
 1387849867000 146 60342113c1e8733957ba95df38a6b12a69eec915 /Users/babakpourkazemi/Documents/Coding Projects/Github/EncoreMobile/build/exploded-bundles/ComAndroidSupportAppcompatV71800.aar/res/drawable-hdpi/abc_ab_solid_dark_holo.9.png
 1387849868000 114 1faaccdb2cb05d0c6cbcdd58edb2c7921d906ef3 /Users/babakpourkazemi/Documents/Coding Projects/Github/EncoreMobile/build/exploded-bundles/ComAndroidSupportAppcompatV71800.aar/res/drawable-xhdpi/abc_textfield_search_selected_holo_dark.9.png
 1387849868000 7121 0921f343f2b6cdccdd93de843fd0f131414a981c /Users/babakpourkazemi/Documents/Coding Projects/Github/EncoreMobile/build/exploded-bundles/ComAndroidSupportAppcompatV71800.aar/res/layout/abc_search_view.xml
-1389205091000 3372 31bfe1c1111bd89e405a54649ca6d6f3201b7f7c /Users/babakpourkazemi/Documents/Coding Projects/Github/EncoreMobile/res/layout/signup_fragment.xml
+1389239099000 3728 8a632203de2180945246e251a5c4e87e9dd39f34 /Users/babakpourkazemi/Documents/Coding Projects/Github/EncoreMobile/res/layout/signup_fragment.xml
 1387849867000 147 2a32fedfa6e27c8c8570fb878026581b90d0a341 /Users/babakpourkazemi/Documents/Coding Projects/Github/EncoreMobile/build/exploded-bundles/ComAndroidSupportAppcompatV71800.aar/res/drawable-hdpi/abc_tab_selected_focused_holo.9.png
 1389033042000 67983 2c2faf9b88ae58729cd4d21b17bbadb3a5965f94 /Users/babakpourkazemi/Documents/Coding Projects/Github/EncoreMobile/res/drawable-xhdpi/ic_launcher.png
 1387849868000 2317 48b6695730268c217983e3de82c88044acee0b9a /Users/babakpourkazemi/Documents/Coding Projects/Github/EncoreMobile/build/exploded-bundles/ComAndroidSupportAppcompatV71800.aar/res/layout/abc_action_bar_decor_include.xml
+1389237121000 354 38e468bb1a9b25abbad6f08561a3c7cf36efa94a /Users/babakpourkazemi/Documents/Coding Projects/Github/EncoreMobile/res/drawable/decline_button_default.xml
 1387849867000 127 0133c28723214c52ead07ff8645d9eabc990edaf /Users/babakpourkazemi/Documents/Coding Projects/Github/EncoreMobile/build/exploded-bundles/ComAndroidSupportAppcompatV71800.aar/res/drawable-mdpi/abc_ab_stacked_transparent_dark_holo.9.png
 1387849867000 172 43945c859f258e0e64dd01716868ad4c55bd2c0d /Users/babakpourkazemi/Documents/Coding Projects/Github/EncoreMobile/build/exploded-bundles/ComAndroidSupportAppcompatV71800.aar/res/drawable-mdpi/abc_list_selector_disabled_holo_dark.9.png
 1387849867000 616 4a78d6ccdf7cac98036230177a485a70c136bde0 /Users/babakpourkazemi/Documents/Coding Projects/Github/EncoreMobile/build/exploded-bundles/ComAndroidSupportAppcompatV71800.aar/res/drawable-hdpi/abc_ic_commit_search_api_holo_light.png
@@ -358,8 +361,8 @@
 1387849867000 655 4d53ae893691401366b77a752c53220c32bd09de /Users/babakpourkazemi/Documents/Coding Projects/Github/EncoreMobile/build/exploded-bundles/ComAndroidSupportAppcompatV71800.aar/res/drawable-xhdpi/abc_spinner_ab_focused_holo_light.9.png
 1368792970000 377 1f2bdcd8b36512092cac9829d7e01853b398ceb6 /Users/babakpourkazemi/Documents/Coding Projects/Github/EncoreMobile/res/drawable-ldpi/ic_home.png
 1387849867000 467 e3957f74af8a6065588555038399054874bd4adf /Users/babakpourkazemi/Documents/Coding Projects/Github/EncoreMobile/build/exploded-bundles/ComAndroidSupportAppcompatV71800.aar/res/drawable-hdpi/abc_ic_menu_share_holo_dark.png
-1387849867000 145 96903703247060fec0141c9ac7a921de8da95cf6 /Users/babakpourkazemi/Documents/Coding Projects/Github/EncoreMobile/build/exploded-bundles/ComAndroidSupportAppcompatV71800.aar/res/drawable-hdpi/abc_ab_solid_light_holo.9.png
 1387601208000 1346 8ea986745564db0fa9b0c9a416ca9eb9fb6253f0 /Users/babakpourkazemi/Documents/Coding Projects/Github/EncoreMobile/res/layout/create_crowd_fragment.xml
+1387849867000 145 96903703247060fec0141c9ac7a921de8da95cf6 /Users/babakpourkazemi/Documents/Coding Projects/Github/EncoreMobile/build/exploded-bundles/ComAndroidSupportAppcompatV71800.aar/res/drawable-hdpi/abc_ab_solid_light_holo.9.png
 1387849867000 393 5d2f8d6b95c3d4748773a4227562207887b6cebe /Users/babakpourkazemi/Documents/Coding Projects/Github/EncoreMobile/build/exploded-bundles/ComAndroidSupportAppcompatV71800.aar/res/drawable-xhdpi/abc_spinner_ab_disabled_holo_dark.9.png
 1387849867000 405 cb922793eed9e55eabcdad9e73453cfa1447dba8 /Users/babakpourkazemi/Documents/Coding Projects/Github/EncoreMobile/build/exploded-bundles/ComAndroidSupportAppcompatV71800.aar/res/drawable-xhdpi/abc_spinner_ab_default_holo_light.9.png
 1387919503000 756 1f7775ed76f24d7530fb6bab5de54d6078da7797 /Users/babakpourkazemi/Documents/Coding Projects/Github/EncoreMobile/res/drawable/like_red_invert.png
@@ -385,7 +388,7 @@
 1387849868000 2043 12fb054a2d6585d77d12dbf12efa6479f58b212c /Users/babakpourkazemi/Documents/Coding Projects/Github/EncoreMobile/build/exploded-bundles/ComAndroidSupportAppcompatV71800.aar/res/drawable/abc_item_background_holo_light.xml
 1387849867000 712 a908775db237d113303915cfebf92357c07d0b4a /Users/babakpourkazemi/Documents/Coding Projects/Github/EncoreMobile/build/exploded-bundles/ComAndroidSupportAppcompatV71800.aar/res/drawable-xhdpi/abc_ic_commit_search_api_holo_light.png
 1386622277000 39458 d2b250f83a4b08f0b410100f40712c27925310ee /Users/babakpourkazemi/Documents/Coding Projects/Github/EncoreMobile/res/drawable/rapchat_logo.png
-1389154601000 5543 84450e2d1250708af7ae7dd8005e480aa96c0581 /Users/babakpourkazemi/Documents/Coding Projects/Github/EncoreMobile/res/layout/profile_fragment.xml
+1389286392000 6958 f900b13c02e70f223a6b5889c8832df0d6dc7685 /Users/babakpourkazemi/Documents/Coding Projects/Github/EncoreMobile/res/layout/profile_fragment.xml
 1386113980000 759 00c27b8fd31e92e37975371c62fe36520ab8c0b8 /Users/babakpourkazemi/Documents/Coding Projects/Github/EncoreMobile/res/drawable/ic_action_send_now_pressed.png
 1387849867000 171 462dee9d1b2fff489a8f9be4fe5602be15a0ac37 /Users/babakpourkazemi/Documents/Coding Projects/Github/EncoreMobile/build/exploded-bundles/ComAndroidSupportAppcompatV71800.aar/res/drawable-mdpi/abc_list_selector_disabled_holo_light.9.png
 1387849867000 109 789751ddbd7f1b3dc189029947d5875710c0e2de /Users/babakpourkazemi/Documents/Coding Projects/Github/EncoreMobile/build/exploded-bundles/ComAndroidSupportAppcompatV71800.aar/res/drawable-mdpi/abc_textfield_search_selected_holo_light.9.png
@@ -394,6 +397,7 @@
 1387849868000 1991 fb5d08243d922f7c94c93754023f59124309fc5a /Users/babakpourkazemi/Documents/Coding Projects/Github/EncoreMobile/build/exploded-bundles/ComAndroidSupportAppcompatV71800.aar/res/drawable/abc_list_selector_holo_light.xml
 1387849868000 449 b8358af9d1df11a1d70097143b7ec75f5db999be /Users/babakpourkazemi/Documents/Coding Projects/Github/EncoreMobile/build/exploded-bundles/ComGithubChrisbanesActionbarpulltorefreshLibrary093.aar/res/values-ko/values.xml
 1387849867000 566 dd607d82af68322f34376d8d132f0c102dd79c6b /Users/babakpourkazemi/Documents/Coding Projects/Github/EncoreMobile/build/exploded-bundles/ComAndroidSupportAppcompatV71800.aar/res/drawable-mdpi/abc_ic_cab_done_holo_dark.png
+1389226876000 32219 e7b3d61aad8a14594656da6bd5b71b7d659c3586 /Users/babakpourkazemi/Documents/Coding Projects/Github/EncoreMobile/res/drawable/landing_screen.png
 1387662268000 669 e9b8ab622ae235a42ea552f729f782052a964ea7 /Users/babakpourkazemi/Documents/Coding Projects/Github/EncoreMobile/res/layout/users_fragment.xml
 1387849867000 2558 d2e6f6e2f92aa57e4f68bd15036690ef1b65683d /Users/babakpourkazemi/Documents/Coding Projects/Github/EncoreMobile/build/exploded-bundles/ComAndroidSupportAppcompatV71800.aar/res/drawable-hdpi/abc_ic_search.png
 1387849867000 1881 206696df74e2024e0e5bfa699f62c97073bc9b62 /Users/babakpourkazemi/Documents/Coding Projects/Github/EncoreMobile/build/exploded-bundles/ComAndroidSupportAppcompatV71800.aar/res/drawable-xhdpi/abc_menu_dropdown_panel_holo_dark.9.png
@@ -404,7 +408,7 @@
 1387849868000 127 50e5c5484b15faa808b32ff4ec6c5e34f0ab11e2 /Users/babakpourkazemi/Documents/Coding Projects/Github/EncoreMobile/build/exploded-bundles/ComAndroidSupportAppcompatV71800.aar/res/drawable-xhdpi/abc_textfield_search_right_default_holo_light.9.png
 1389080545000 427 ef3554b06e19da2cfe2a2a10be643d46018eabcc /Users/babakpourkazemi/Documents/Coding Projects/Github/EncoreMobile/res/drawable/blue_button_focused.xml
 1387849867000 163 1ee8132065e9146b7e359700836c46ca4825a16a /Users/babakpourkazemi/Documents/Coding Projects/Github/EncoreMobile/build/exploded-bundles/ComAndroidSupportAppcompatV71800.aar/res/drawable-xhdpi/abc_ab_stacked_solid_light_holo.9.png
-1389217674000 2388 44d491d777e0840f92225bb74e6cd859612b2429 /Users/babakpourkazemi/Documents/Coding Projects/Github/EncoreMobile/res/layout/intro_fragment.xml
+1389227150000 2428 f7c0f6b0881541efa86bb88d6ebf9aa76c0e6c88 /Users/babakpourkazemi/Documents/Coding Projects/Github/EncoreMobile/res/layout/intro_fragment.xml
 1387849867000 1945 826c269d46d3de24e70c766dcebbed8f7e1a6e70 /Users/babakpourkazemi/Documents/Coding Projects/Github/EncoreMobile/build/exploded-bundles/ComAndroidSupportAppcompatV71800.aar/res/drawable-hdpi/abc_ic_clear_normal.png
 1387849868000 449 d6de90d14f14a659c2c4200e51bae466618e6293 /Users/babakpourkazemi/Documents/Coding Projects/Github/EncoreMobile/build/exploded-bundles/ComGithubChrisbanesActionbarpulltorefreshLibrary093.aar/res/values-de/values.xml
 1386622277000 1788 9b36cca4fc56ad1bd9213aba6fd53a824291380f /Users/babakpourkazemi/Documents/Coding Projects/Github/EncoreMobile/res/layout/newsfeed_list_row.xml

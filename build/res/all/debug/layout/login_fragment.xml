@@ -18,12 +18,12 @@
         android:layout_height="wrap_content"
         android:layout_width="match_parent"
         android:orientation="vertical"
-        android:background="#fff"
         android:layout_below="@id/login_title"
         android:layout_marginLeft="25dp"
         android:layout_marginRight="25dp"
-        android:paddingBottom="15dp"
-        android:layout_centerHorizontal="true">
+        android:background="#fff"
+        android:layout_centerHorizontal="true"
+        android:paddingBottom="15dp">
         
         <EditText
             android:id="@+id/username_login"
@@ -51,13 +51,5 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Log In" />
-
-    <Button
-        android:id="@+id/skip_login"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_above="@id/login"
-        android:layout_alignParentRight="true"
-        android:text="Skip" />
 
 </RelativeLayout><!-- From: file:/Users/babakpourkazemi/Documents/Coding%20Projects/Github/EncoreMobile/res/layout/login_fragment.xml -->

@@ -2,6 +2,7 @@ package com.encore.util;
 
 public class T {
 	public static final String USERNAME = "username";
+    public static final String MY_USERNAME = "my_username";
 	public static final String PASSWORD = "password";
 	public static final String FIRST_NAME = "first_name";
 	public static final String LAST_NAME = "last_name";
@@ -17,6 +18,7 @@ public class T {
 	public static final String THUMBNAIL_FILEPATH = "thumbnail_filepath";
     public static final String NEXT_SESSION_URL= "next_session_url";
     public static final String PREVIOUS_SESSION_URL = "previous_session_url";
+    public static final String PENDING_THEM = "pending_them";
 
 	// API call types
 	public static final int SIGN_IN = 0;
@@ -39,6 +41,7 @@ public class T {
     public static final int UPDATE_USER = 17;
     public static final int SEARCH_USERNAME = 18;
     public static final int PAGINATE_NEXT_SESSION = 19;
+    public static final int GET_OTHER_PROFILE = 20;
 	
 	// Column names for newsfeed query
 	public static final String SESSION_TITLE = "title";
