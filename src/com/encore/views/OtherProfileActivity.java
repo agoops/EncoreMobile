@@ -57,8 +57,6 @@ public class OtherProfileActivity extends Activity implements View.OnClickListen
     private ArrayList<Profile> friendsList;
     private HashSet<String> pendingThemSet;
 
-    private boolean flagProfileLoading, flagPendingThemLoading;
-
     // TODO: Change the friends tab to raps tab + support profile pics
 
     public void onCreate(Bundle savedInstanceState) {
@@ -104,9 +102,6 @@ public class OtherProfileActivity extends Activity implements View.OnClickListen
 
     // Get the user's profile information
     private void initData() {
-        flagProfileLoading = false;
-        flagPendingThemLoading = false;
-
         Bundle arguments = getIntent().getExtras();
         myUsername = arguments.getString(T.MY_USERNAME);
         pendingThemSet = (HashSet) arguments.getSerializable(T.PENDING_THEM);
@@ -150,6 +145,12 @@ public class OtherProfileActivity extends Activity implements View.OnClickListen
         button.setEnabled(false);
         button.setText(disabledText);
         button.setBackgroundResource(R.drawable.disabled_state);
+    }
+
+    private void enableButton(Button button, String enabledText) {
+        button.setEnabled(true);
+        button.setText(enabledText);
+        button.setBackgroundResource(R.drawable.button_style);
     }
 
     @Override
@@ -240,7 +241,6 @@ public class OtherProfileActivity extends Activity implements View.OnClickListen
     // Our api requests
     private void getProfileInfo(String username) {
         setProfileVisibility(0);
-        flagProfileLoading = true;
 
         // Make an api call to get the user's information
         Intent api = new Intent(this, APIService.class);
@@ -253,7 +253,6 @@ public class OtherProfileActivity extends Activity implements View.OnClickListen
 
     private void getPendingRequests() {
         setProfileVisibility(0);
-        flagPendingThemLoading = true;
 
         Intent api = new Intent(context, APIService.class);
         ResultReceiver receiver = new RequestsReceiver(new Handler());
@@ -306,7 +305,7 @@ public class OtherProfileActivity extends Activity implements View.OnClickListen
 
                 // Save likes
                 likedSessions = (ArrayList) otherUser.getLikedSessions();
-//
+
                 // Save and set friends by default
                 friendsList = (ArrayList) otherUser.getFriendsProfilesAsList();
                 setTabPressed(1);
@@ -318,9 +317,10 @@ public class OtherProfileActivity extends Activity implements View.OnClickListen
                     disableButton(addFriendButton, "Friends");
                 } else if(pendingThemSet.contains(otherUser.getUsername())) {
                     // If we've sent a friend request, disable the button
-                    disableButton(addFriendButton, "Sent Request");
+                    disableButton(addFriendButton, "Sent");
                 } else {
-                    addFriendButton.setText("Add Friend");
+                    // By default
+                    enableButton(addFriendButton, "Add Friend");
                 }
 
                 // Show data
@@ -349,8 +349,6 @@ public class OtherProfileActivity extends Activity implements View.OnClickListen
                 pendingThemSet = new HashSet<String>(pendingThemList);
 
                 // Show data
-                setProfileVisibility(1);
-                setTabVisibility(1);
             } else {
                 Log.d(TAG, "GET friends unsuccessful");
             }
