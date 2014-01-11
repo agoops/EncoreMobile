@@ -2,6 +2,7 @@ package com.encore.util;
 
 public class T {
 	public static final String USERNAME = "username";
+    public static final String MY_USERNAME = "my_username";
 	public static final String PASSWORD = "password";
 	public static final String FIRST_NAME = "first_name";
 	public static final String LAST_NAME = "last_name";
@@ -14,14 +15,17 @@ public class T {
 	public static final String DURATION = "duration";
 	public static final String FILEPATH = "filepath";
 	public static final String ACCEPTED = "accepted";
-	public static final String THUMBNAIL_FILEPATH = "thumbnail_filepath"; 
+	public static final String THUMBNAIL_FILEPATH = "thumbnail_filepath";
+    public static final String NEXT_SESSION_URL= "next_session_url";
+    public static final String PREVIOUS_SESSION_URL = "previous_session_url";
+    public static final String PENDING_THEM = "pending_them";
 
 	// API call types
 	public static final int SIGN_IN = 0;
 	public static final int SIGN_UP = 1;
 	public static final int ADD_CLIP = 2;
 	public static final int CREATE_SESSION = 3;
-	public static final int FRIENDS = 4;
+	public static final int GET_FRIENDS = 4;
 	public static final int USERS = 5;
 	public static final int FRIEND_REQUEST = 6;
 	public static final int GET_CROWDS = 7;
@@ -34,6 +38,10 @@ public class T {
 	public static final int GET_ME = 14;
 	public static final int GET_CLIP_STREAM = 15;
     public static final int GET_LIKES = 16;
+    public static final int UPDATE_USER = 17;
+    public static final int SEARCH_USERNAME = 18;
+    public static final int PAGINATE_NEXT_SESSION = 19;
+    public static final int GET_OTHER_PROFILE = 20;
 	
 	// Column names for newsfeed query
 	public static final String SESSION_TITLE = "title";

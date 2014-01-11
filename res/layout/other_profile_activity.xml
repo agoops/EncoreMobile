@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+
+    <ProgressBar
+        android:id="@+id/progress_other"
+        android:layout_height="match_parent"
+        android:layout_width="wrap_content"
+        android:layout_centerHorizontal="true"
+        style="?android:attr/progressBarStyleLarge" />
+
+    <RelativeLayout
+        android:id="@+id/other_top_container"
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:layout_below="@id/progress_other"
+        android:background="#e6e6e6"
+        android:paddingBottom="20dp">
+
+        <ImageView
+            android:id="@+id/other_profile_picture"
+            android:layout_height="100dp"
+            android:layout_width="100dp"
+            android:src="@drawable/bobby_prof"
+            android:layout_margin="20dp"/>
+
+        <TextView
+            android:id="@+id/other_username"
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:textAppearance="?android:textAppearanceLarge"
+            android:textStyle="bold"
+            android:layout_toRightOf="@id/other_profile_picture"
+            android:layout_alignTop="@id/other_profile_picture"
+            android:layout_marginRight="20dp"
+            android:layout_marginBottom="5dp"
+            android:text="Babs"/>
+
+        <TextView
+            android:id="@+id/other_fullname"
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:textColor="#777"
+            android:textAppearance="?android:textAppearanceSmall"
+            android:layout_below="@id/other_username"
+            android:layout_toRightOf="@id/other_profile_picture"
+            android:layout_marginRight="20dp"
+            android:text="Babak Pourkazemi"/>
+
+        <Button
+            android:id="@+id/other_add_friend_button"
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:layout_toRightOf="@id/other_profile_picture"
+            android:layout_below="@id/other_fullname"
+            android:layout_alignBottom="@id/other_profile_picture"
+            android:text="Friends"
+            android:layout_marginTop="7dp"
+            android:layout_marginRight="20dp" />
+
+        <LinearLayout
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:layout_below="@id/other_profile_picture"
+            android:layout_alignLeft="@id/other_profile_picture"
+            android:layout_alignRight="@id/other_add_friend_button"
+            android:orientation="horizontal">
+            <TextView
+                android:id="@+id/otherNumRapsTv"
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:text="0 \nRaps"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:textAppearance="?android:textAppearanceMedium" />
+
+            <TextView
+                android:id="@+id/otherNumLikesTv"
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:text="0 \nLikes"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:textAppearance="?android:textAppearanceMedium" />
+
+            <TextView
+                android:id="@+id/otherNumFriendsTv"
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:text="0 \nFriends"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:textAppearance="?android:textAppearanceMedium" />
+        </LinearLayout>
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_below="@id/other_top_container"
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:background="#fff">
+
+        <LinearLayout
+            android:id="@+id/otherTabsHolder"
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:orientation="horizontal" >
+            <Button
+                style="@style/ProfileButtonsStyle"
+                android:id="@+id/other_friends_button"
+                android:layout_height="wrap_content"
+                android:layout_width="match_parent"
+                android:layout_weight="1"
+                android:text="Friends" />
+            <Button
+                style="@style/ProfileButtonsStyle"
+                android:id="@+id/other_likes_button"
+                android:layout_height="wrap_content"
+                android:layout_width="match_parent"
+                android:layout_weight="1"
+                android:text="Likes" />
+        </LinearLayout>
+
+        <ProgressBar
+            android:id="@+id/progress_other_tabs"
+            android:layout_height="match_parent"
+            android:layout_width="wrap_content"
+            android:layout_below="@id/otherTabsHolder"
+            android:layout_centerHorizontal="true"/>
+
+        <ListView
+            android:id="@+id/other_tabs_lv"
+            android:layout_height="match_parent"
+            android:layout_width="match_parent"
+            android:layout_below="@id/progress_other_tabs" />
+
+        <!--<FrameLayout-->
+            <!--android:id="@+id/otherNestedFragmentsHolder"-->
+            <!--android:layout_below="@id/otherTabsHolder"-->
+            <!--android:layout_height="match_parent"-->
+            <!--android:layout_width="match_parent" />-->
+    </RelativeLayout>
+
+</RelativeLayout>

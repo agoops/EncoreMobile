@@ -11,6 +11,7 @@ import com.encore.models.Crowd;
 import com.encore.models.PostComment;
 import com.encore.models.PostCrowd;
 import com.encore.models.PostLike;
+import com.encore.models.UpdateUser;
 import com.encore.util.T;
 import com.google.gson.Gson;
 import com.squareup.okhttp.OkHttpClient;
@@ -48,61 +49,74 @@ public class APIService extends IntentService {
 		api = new API(new OkHttpClient(), this);
 		// Where processing occurs
 		int apiType = intent.getIntExtra(T.API_TYPE, -1);
-		switch (apiType) {
-		case T.SIGN_IN:
-			signIn(intent.getExtras());
-			break;
-		case T.SIGN_UP:
-			signUp(intent.getExtras());
-			break;
-		case T.CREATE_SESSION:
-			createSession(intent.getExtras());
-			break;
-		case T.FRIENDS:
-			getFriends(intent.getExtras());
-			break;
-		case T.FRIEND_REQUEST:
-			sendFriendRequest(intent.getExtras());
-			break;
-		case T.FRIEND_REQUESTS_PENDING:
-			getPendingFriendRequests(intent.getExtras());
-			break;
-		case T.USERS:
-			getUsers(intent.getExtras());
-			break;
-		case T.GET_CROWDS:
-			getCrowds(intent.getExtras());
-			break;
-		case T.CREATE_CROWD:
-			createCrowd(intent.getExtras());
-			break;
-		case T.ADD_CLIP:
-			Log.d(TAG, "case ADD_CLIP in API Service");
-			addClip(intent.getExtras());
-			break;
-		case T.ACCEPT_FRIEND_REQUEST:
-			acceptFriendRequest(intent.getExtras());
-			break;
-		case T.GET_SESSIONS:
-			getSessions();
-			break;
-		case T.CREATE_COMMENT:
-			createComment(intent.getExtras());
-			break;
-		case T.CREATE_LIKE:
-			createLike(intent.getExtras());
-			break;
-		case T.GET_CLIP_STREAM:
-			getClipStream(intent.getExtras());
-            break;
-		case T.GET_ME:
-			getMe(intent.getExtras());
-            break;
-        case T.GET_LIKES:
-            getLikes(intent.getExtras());
-            break;
-		default:
-			break;
+		switch (apiType)
+        {
+            case T.SIGN_IN:
+                logIn(intent.getExtras());
+                break;
+            case T.SIGN_UP:
+                signUp(intent.getExtras());
+                break;
+            case T.CREATE_SESSION:
+                createSession(intent.getExtras());
+                break;
+            case T.GET_FRIENDS:
+                getFriends(intent.getExtras());
+                break;
+            case T.FRIEND_REQUEST:
+                sendFriendRequest(intent.getExtras());
+                break;
+            case T.FRIEND_REQUESTS_PENDING:
+                getPendingFriendRequests(intent.getExtras());
+                break;
+            case T.USERS:
+                getUsers(intent.getExtras());
+                break;
+            case T.GET_CROWDS:
+                getCrowds(intent.getExtras());
+                break;
+            case T.CREATE_CROWD:
+                createCrowd(intent.getExtras());
+                break;
+            case T.ADD_CLIP:
+                Log.d(TAG, "case ADD_CLIP in API Service");
+                addClip(intent.getExtras());
+                break;
+            case T.ACCEPT_FRIEND_REQUEST:
+                acceptFriendRequest(intent.getExtras());
+                break;
+            case T.GET_SESSIONS:
+                getSessions();
+                break;
+            case T.CREATE_COMMENT:
+                createComment(intent.getExtras());
+                break;
+            case T.CREATE_LIKE:
+                createLike(intent.getExtras());
+                break;
+            case T.GET_CLIP_STREAM:
+                getClipStream(intent.getExtras());
+                break;
+            case T.GET_ME:
+                getMe(intent.getExtras());
+                break;
+            case T.GET_LIKES:
+                getLikes(intent.getExtras());
+                break;
+            case T.UPDATE_USER:
+                updateUser(intent.getExtras());
+                break;
+            case T.SEARCH_USERNAME:
+                searchUsername(intent.getExtras());
+                break;
+            case T.PAGINATE_NEXT_SESSION:
+                paginateNextSession(intent.getExtras());
+                break;
+            case T.GET_OTHER_PROFILE:
+                getOtherProfile(intent.getExtras());
+                break;
+            default:
+                break;
 		}
 	}
 	
@@ -178,7 +192,6 @@ public class APIService extends IntentService {
 			e.printStackTrace();;
 		}
 		
-		
 		try {
 			String result = api.sendFriendRequest(token, entity);
 			Log.d(TAG, "response from sendFriendRequest: " + result);
@@ -225,27 +238,27 @@ public class APIService extends IntentService {
 		}
 	}
 
-	private void signIn(Bundle data) {
-		Log.d(TAG, "signIn called");
+	private void logIn(Bundle data) {
+		Log.d(TAG, "logIn called");
+        String username = data.getString(T.USERNAME);
+        String password = data.getString(T.PASSWORD);
+        String firstName = data.getString(T.FIRST_NAME);
+        String lastName = data.getString(T.LAST_NAME);
+        String email = data.getString(T.EMAIL);
+        String phoneNumber = data.getString(T.PHONE_NUMBER);
 
-		try {
-			String username = data.getString(T.USERNAME);
-			String password = data.getString(T.PASSWORD);
-			Log.d(TAG, "username, pass: " + username + ", " + password);
+        try {
 			JSONObject json = new JSONObject();
 			json.put(T.USERNAME, username);
 			json.put(T.PASSWORD, password);
 			StringEntity entity = new StringEntity(json.toString());
 
-			String result = api.signIn(entity);
-
+			String result = api.logIn(entity);
 			String token = (new JSONObject(result)).getString("token");
-
 			TokenHelper.updateToken(this, token);
 
 			Log.d(TAG, "result from api: " + result);
 			resultReceiver.send(1, new Bundle());
-
 		} catch (Exception e) {
 			Log.e(TAG, e.getMessage() + " ");
 			e.printStackTrace();
@@ -257,17 +270,25 @@ public class APIService extends IntentService {
 	private void signUp(Bundle data) {
 		Log.d(TAG, "signUp called");
 		String result = "FAILED";
+        String username = data.getString(T.USERNAME);
+        String password = data.getString(T.PASSWORD);
+        String firstName = data.getString(T.FIRST_NAME);
+        String lastName = data.getString(T.LAST_NAME);
+        String email = data.getString(T.EMAIL);
+        String phoneNumber = data.getString(T.PHONE_NUMBER);
+
 		try {
 			JSONObject json = new JSONObject();
-			json.put("username", data.get(T.USERNAME));
-			json.put("password", data.get(T.PASSWORD));
-			json.put("first_name", data.get(T.FIRST_NAME));
-			json.put("last_name", data.get(T.LAST_NAME));
-			json.put("email", data.get(T.EMAIL));
-			json.put("phone_number", data.get(T.PHONE_NUMBER));
+            json.put(T.USERNAME, username);
+            json.put(T.PASSWORD, password);
+            json.put(T.FIRST_NAME, firstName);
+            json.put(T.LAST_NAME, lastName);
+            json.put(T.EMAIL, email);
+            json.put(T.PHONE_NUMBER, phoneNumber);
+
 			StringEntity entity = new StringEntity(json.toString());
 			result = api.signUp(entity);
-			String token = (new JSONObject(result)).getString("access_token");
+			String token = (new JSONObject(result)).getString("token");
 			
 			TokenHelper.updateToken(this, token);
 			Bundle bundle = new Bundle();
@@ -433,6 +454,91 @@ public class APIService extends IntentService {
 
         try {
             resultJSON = api.getLikes(token);
+
+            Bundle b = new Bundle();
+            b.putString("result", resultJSON);
+            resultReceiver.send(1, b);
+        } catch(Exception e) {
+            Log.e(TAG, e.getMessage() + " ");
+            e.printStackTrace();
+            resultReceiver.send(0, null);
+        }
+    }
+
+    private void updateUser(Bundle data) {
+        Log.d(TAG, "updateUser called");
+        String token = TokenHelper.getToken(this);
+        String firstName = data.getString(T.FIRST_NAME);
+        String lastName = data.getString(T.LAST_NAME);
+        String email = data.getString(T.EMAIL);
+        String phoneNumber = data.getString(T.PHONE_NUMBER);
+
+        String resultJSON = null;
+        UpdateUser user = new UpdateUser(firstName, lastName, email, phoneNumber);
+
+        try {
+            resultJSON = api.updateUser(token, user);
+            Log.d(TAG, "updateUser result: " + resultJSON);
+
+        } catch(Exception e) {
+            Log.e(TAG, e.getMessage() + " ");
+            e.printStackTrace();
+        }
+    }
+
+    private void searchUsername(Bundle data) {
+        Log.d(TAG, "searchUsername called");
+        String token = TokenHelper.getToken(this);
+        String username = data.getString(T.USERNAME);
+
+        String resultJSON = null;
+
+        try {
+            resultJSON = api.searchUsername(token, username);
+            Log.d(TAG, "resultJSON result: " + resultJSON);
+
+            Bundle b = new Bundle();
+            b.putString("result", resultJSON);
+            resultReceiver.send(1, b);
+        } catch(Exception e) {
+            Log.e(TAG, e.getMessage() + " ");
+            e.printStackTrace();
+            resultReceiver.send(0, null);
+        }
+    }
+
+    private void paginateNextSession(Bundle data) {
+        Log.d(TAG, "paginateNextSession called");
+        String token = TokenHelper.getToken(this);
+
+        // The URL must be toString()'d from a paginator
+        String nextSessionUrl = data.getString(T.NEXT_SESSION_URL);
+
+        String resultJSON = null;
+
+        try {
+            resultJSON = api.paginateNextSession(token, nextSessionUrl);
+            Log.d(TAG, "resultJSON result: " + resultJSON);
+
+            Bundle b = new Bundle();
+            b.putString("result", resultJSON);
+            resultReceiver.send(1, b);
+        } catch(Exception e) {
+            Log.e(TAG, e.getMessage() + " ");
+            e.printStackTrace();
+            resultReceiver.send(0, null);
+        }
+    }
+
+    private void getOtherProfile(Bundle data) {
+        Log.d(TAG, "getOtherProfile called");
+        String username = data.getString(T.USERNAME);
+        String token = TokenHelper.getToken(this);
+        String resultJSON = null;
+
+        try {
+            resultJSON = api.getOtherProfile(token, username);
+            Log.d(TAG, "result: " + resultJSON);
 
             Bundle b = new Bundle();
             b.putString("result", resultJSON);

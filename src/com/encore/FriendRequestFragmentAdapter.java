@@ -86,7 +86,7 @@ public class FriendRequestFragmentAdapter extends ArrayAdapter<User> {
 				FriendView fv = (FriendView) v.getParent();
 				Button button = (Button) v;
 				String username = fv.getUser().getUsername();
-				Log.d(tag, "username in adapter: " + username);
+				Log.d(tag, "sessionTitle in adapter: " + username);
 				Intent apiIntent = new Intent(mContext, APIService.class);
 				apiIntent.putExtra(T.API_TYPE, T.ACCEPT_FRIEND_REQUEST);
 				apiIntent.putExtra(T.ACCEPTED, true);

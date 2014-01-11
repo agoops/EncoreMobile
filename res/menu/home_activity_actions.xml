@@ -2,8 +2,19 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android" >
 
     <item
-        android:id="@+id/action_video"
-        android:icon="@drawable/ic_action_video"
+        android:id="@+id/action_inbox"
+        android:icon="@drawable/actionbar_inbox_selector"
         android:showAsAction="always"/>
+
+    <item
+        android:id="@+id/action_profile"
+        android:icon="@drawable/actionbar_profile_selector"
+        android:showAsAction="always"/>
+
+    <item
+        android:id="@+id/action_video"
+        android:icon="@drawable/actionbar_video_selector"
+        android:showAsAction="always"/>
+
 
 </menu>

@@ -26,12 +26,15 @@ import com.encore.InboxViewAdapter;
 import com.encore.R;
 import com.encore.SessionView;
 import com.encore.VideoPlayer;
+import com.encore.models.Paginator;
 import com.encore.models.Session;
-import com.encore.models.Sessions;
 import com.encore.util.T;
+import com.encore.widget.EndlessScrollListener;
 import com.google.gson.Gson;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 import uk.co.senab.actionbarpulltorefresh.library.ActionBarPullToRefresh;
 import uk.co.senab.actionbarpulltorefresh.library.Options;
@@ -47,18 +50,23 @@ public class InboxListViewFragment extends Fragment implements OnRefreshListener
 	private ProgressBar progressBar;
     private static ResultReceiver receiver;
 	private PullToRefreshLayout pullToRefreshLayout;
+    private Paginator paginator;
+
+    private boolean flagLoading = false;
+    private List<Session> sessionsList;
 
 	@Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
         Bundle savedInstanceState) {
         // Inflate the layout for this fragment
 		View view = inflater.inflate(R.layout.video_list_fragment, container, false);
+        sessionsList = new ArrayList<Session>();
 
 		// Show Progress Bar
 		progressBar = (ProgressBar) view.findViewById(R.id.progress_inbox);
 		progressBar.setVisibility(View.VISIBLE);
 
-//		// Setup pull to refresh
+		// Setup pull to refresh
 		pullToRefreshLayout = (PullToRefreshLayout) view.findViewById(R.id.pulltorefresh_inbox);
 		ActionBarPullToRefresh.from(getActivity())
             .options(Options.create().refreshOnUp(true).build())
@@ -74,6 +82,37 @@ public class InboxListViewFragment extends Fragment implements OnRefreshListener
 
 	    receiver = new SessionListReceiver(new Handler());
 	    getRaps(receiver);
+
+        // Infinite listview loading!
+        listView.setOnScrollListener(new EndlessScrollListener() {
+            @Override
+            public void onLoadMore(int page, int totalItemsCount) {
+                if(flagLoading == false) {
+                    flagLoading = true;
+                    paginateNextSessions(receiver);
+                }
+            }
+        });
+//        listView.setOnScrollListener(new AbsListView.OnScrollListener() {
+//            @Override
+//            public void onScrollStateChanged(AbsListView absListView, int i) {
+//
+//            }
+//
+//            @Override
+//            public void onScroll(AbsListView view, int firstVisibleItem,
+//                                 int visibleItemCount, int totalItemCount) {
+//                if(firstVisibleItem + visibleItemCount == totalItemCount && totalItemCount!=0)
+//                {
+//                    if(flagLoading == false)
+//                    {
+//                        listView.addFooterView(footerView);
+//                        flagLoading = true;
+//                        paginateNextSessions(receiver);
+//                    }
+//                }
+//            }
+//        });
 
 	    return view;
     }
@@ -91,6 +130,29 @@ public class InboxListViewFragment extends Fragment implements OnRefreshListener
 
 		getActivity().startService(api);
 	}
+
+    public void paginateNextSessions(ResultReceiver receiver) {
+        Log.d(TAG, "Paginating next sessions");
+        if(paginator == null) {
+            return;
+        }
+
+        if(paginator.getNext() == null) {
+            // Only load sessions if we can
+            Log.d(TAG, "No data");
+            Toast.makeText(getActivity(), "No more sessions", Toast.LENGTH_LONG)
+                    .show();
+            return;
+        }
+        String nextUrl = paginator.getNext().toString();
+
+        Intent api = new Intent(getActivity(), APIService.class);
+        api.putExtra(T.API_TYPE, T.PAGINATE_NEXT_SESSION);
+        api.putExtra(T.RECEIVER, receiver);
+        api.putExtra(T.NEXT_SESSION_URL, nextUrl);
+
+        getActivity().startService(api);
+    }
 
 	public InboxViewAdapter getAdapter () {
 		return adapter;
@@ -133,15 +195,7 @@ public class InboxListViewFragment extends Fragment implements OnRefreshListener
         VideoPlayer vp = new VideoPlayer(this.videoView, getActivity());
         vp.playVideo(uri);
 
-        //set up button
-//        Button button = (Button) dialog.findViewById(R.id.cancel);
-//        button.setOnClickListener(new OnClickListener() {
-//        @Override
-//            public void onClick(View v) {
-//                dialog.cancel();;
-//            }
-//        });
-        //now that the dialog is set up, it's time to show it
+        // now that the dialog is set up, it's time to show it
         dialog.show();
 	}
 
@@ -152,19 +206,24 @@ public class InboxListViewFragment extends Fragment implements OnRefreshListener
 
         @Override
         protected void onReceiveResult(int resultCode, Bundle resultData) {
-                if (resultCode == 1) {
-                        Log.d(TAG, "APIService returned successfully with sessions");
-                        // hide progress bar
-                        progressBar.setVisibility(View.GONE);
-                        
-                        String result = resultData.getString("result");
-                        sessions = (new Gson()).fromJson(result, Sessions.class).getSessions();
-                        adapter.setItemList(Arrays.asList(sessions));
-                        adapter.notifyDataSetChanged();
-                        pullToRefreshLayout.setRefreshComplete();
-                } else {
-                        Log.d(TAG, "APIService get session failed?");
-                }
+            if (resultCode == 1) {
+                Log.d(TAG, "APIService returned successfully with sessions");
+                // hide progress bar
+                progressBar.setVisibility(View.GONE);
+
+                String result = resultData.getString("result");
+                paginator = (new Gson()).fromJson(result, Paginator.class);
+
+                sessions = paginator.getResults();
+                sessionsList.addAll(Arrays.asList(sessions));
+                adapter.setItemList(sessionsList);
+                adapter.notifyDataSetChanged();
+
+                flagLoading = false;
+                pullToRefreshLayout.setRefreshComplete();
+            } else {
+                Log.d(TAG, "APIService get session failed?");
+            }
         }
 	}
 

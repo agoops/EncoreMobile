@@ -8,6 +8,7 @@ import com.encore.models.Crowd;
 import com.encore.models.PostComment;
 import com.encore.models.PostCrowd;
 import com.encore.models.PostLike;
+import com.encore.models.UpdateUser;
 import com.encore.util.Constants;
 import com.google.gson.Gson;
 import com.squareup.okhttp.OkHttpClient;
@@ -53,6 +54,7 @@ public class API {
 	// Common URLs
 	private static final String USERS = BASE_URL + "users/";
     private static final String USER_ME = USERS + "me/";
+    private static final String USER_OTHER = USERS + "%s";
     private static final String SESSIONS = USER_ME + "sessions/";
     private static final String FRIENDS = USER_ME + "friends/";
     private static final String CROWDS = USER_ME + "crowds/";
@@ -60,15 +62,13 @@ public class API {
     private static final String REPLY = REQUESTS + "reply/";
     private static final String LIKES = USER_ME + "likes/";
     private static final String CLIP = BASE_URL + "sessions/%s/clips/";
-    // Users
-	private static final String SIGN_IN = USERS + "obtain-token/";
+    // Sign up / Log in
+	private static final String LOG_IN = USERS + "obtain-token/";
     private static final String SIGN_UP = USERS;
-    private static final String UPDATE_USER = USERS + "%s/";
-    private static final String DELETE_USER = USERS + "%s/";
     // Sessions
     private static final String GET_SESSIONS = SESSIONS;
     private static final String CREATE_SESSION = SESSIONS;
-    private static final String GET_SESSION = BASE_URL + "sessions/%s/";
+    private static final String SESSION_PAGE = SESSIONS + "?page=%s";
     // Clips
     private static final String GET_CLIP = CLIP;
     private static final String ADD_CLIP = CLIP;
@@ -79,6 +79,8 @@ public class API {
     private static final String CREATE_CROWD = CROWDS;
     // Comments
 	private static final String CREATE_COMMENT = BASE_URL + "sessions/%s/comments/";
+    // Search
+    private static final String SEARCH_USERNAME = BASE_URL + "search/?username=%s";
 
 	public API(OkHttpClient client, Context context) {
 		this.client = client;
@@ -139,6 +141,7 @@ public class API {
 			connection.setRequestProperty(AUTHORIZATION, ACCESS_TOKEN);
 		}
 		isSigningIn = false; // Reset to !isSigningIn
+        Log.d(TAG, "Auth header is: " + connection.getRequestProperty(AUTHORIZATION));
 		connection.setRequestProperty("Content-Type", "application/json");
 		connection.setDoOutput(true);
 		OutputStream out = null;
@@ -216,6 +219,7 @@ public class API {
 			throws IOException {
 		URL postUrl = new URL(url);
 		HttpURLConnection connection = client.open(postUrl);
+        connection.setRequestProperty(AUTHORIZATION, ACCESS_TOKEN);
 		connection.setRequestProperty("Content-Type", "application/json");
 		connection.setDoOutput(true);
 		OutputStream out = null;
@@ -238,9 +242,20 @@ public class API {
 						+ connection.getResponseMessage());
 			}
 
-			// Return the response as the given type
-			in = connection.getInputStream();
-			return getGson().fromJson(new InputStreamReader(in), type);
+            // Return the response as the given type
+                    in = connection.getInputStream();
+
+            // return getGson().fromJson(new InputStreamReader(in), type);
+            Log.d(TAG, "Just got input stream: " + in.toString());
+			/* Adding this section to see response */
+            BufferedReader r = new BufferedReader(new InputStreamReader(in));
+            StringBuilder total = new StringBuilder();
+            String line;
+            while ((line = r.readLine()) != null) {
+                total.append(line);
+            }
+            return (T) total.toString();
+
 		} finally {
 			if (out != null)
 				out.close();
@@ -319,17 +334,23 @@ public class API {
 	}
 
 	public String signUp(StringEntity entity) throws Exception {
-		Log.d(TAG, "signUp called, body: ");
-
+		Log.d(TAG, "signUp called, body: " + entity.toString());
+        isSigningIn = true;
 		String url = SIGN_UP;
-		String result = post(url, entity, String.class);
+        String result = "";
+        try {
+            result = post(url, entity, String.class);
+            isSigningIn = false;
+        } catch (Exception e) {
+            throw e;
+        }
 
 		return result;
 	}
 
-	public String signIn(StringEntity entity) throws Exception {
-		Log.d(TAG, "signIn called with entity: " + entity.toString());
-		String url = SIGN_IN;
+	public String logIn(StringEntity entity) throws Exception {
+		Log.d(TAG, "logIn called with entity: " + entity.toString());
+		String url = LOG_IN;
 		isSigningIn = true;
 		String result = "emptystringdawg-API.signin worked?";
 		try {
@@ -561,6 +582,72 @@ public class API {
             Log.d(TAG, "getLikes result: " + resultJSON);
         } catch(Exception e) {
             Log.d(TAG, "getLikes() error");
+            throw e;
+        }
+        return resultJSON;
+    }
+
+    public String updateUser(String token, UpdateUser user) throws Exception {
+        Log.d(TAG, "updateUser called");
+        String url = USER_ME;
+        ACCESS_TOKEN = "Token " + token;
+        String resultJSON = null;
+
+        try {
+            String JSON = getGson().toJson(user);
+            Log.d(TAG, "Posting JSON: " + JSON);
+
+            resultJSON = put(url, new StringEntity(JSON), String.class);
+            Log.d(TAG, "updateUser result: " + resultJSON);
+        } catch(Exception e) {
+            Log.d(TAG, "updateUser error");
+            throw e;
+        }
+        return resultJSON;
+    }
+
+    public String searchUsername(String token, String username) throws Exception {
+        Log.d(TAG, "searchUsername called");
+        String url = String.format(SEARCH_USERNAME, username);
+        ACCESS_TOKEN = "Token " + token;
+        String resultJSON = null;
+
+        try {
+            resultJSON = get(url, String.class);
+            Log.d(TAG, "searchUsername result: " + resultJSON);
+        } catch(Exception e) {
+            Log.d(TAG, "searchUsername error");
+            throw e;
+        }
+        return resultJSON;
+    }
+
+    public String paginateNextSession(String token, String nextUrl) throws Exception {
+        Log.d(TAG, "paginateNextSession called");
+        ACCESS_TOKEN = "Token " + token;
+        String resultJSON = null;
+
+        try {
+            resultJSON = get(nextUrl, String.class);
+            Log.d(TAG, "paginateNextSession result: " + resultJSON);
+        } catch(Exception e) {
+            Log.d(TAG, "paginateNextSession error");
+            throw e;
+        }
+        return resultJSON;
+    }
+
+    public String getOtherProfile(String token, String username) throws Exception {
+        Log.d(TAG, "getOtherProfile called");
+        String url = String.format(USER_OTHER, username);
+        ACCESS_TOKEN = "Token " + token;
+        String resultJSON = null;
+
+        try {
+            resultJSON = get(url, String.class);
+            Log.d(TAG, "getOtherProfile result: " + resultJSON);
+        } catch(Exception e) {
+            Log.d(TAG, "getOtherProfile error");
             throw e;
         }
         return resultJSON;

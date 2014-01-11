@@ -56,7 +56,7 @@ public class CameraFragment extends Fragment implements
         context = getActivity();
 
         // Get sessionId. -1 means we need to create a new session
-        sessionId = getArguments().getInt("sessionId");
+        sessionId = getArguments().getInt("sessionId", -1);
 
         surfaceView = (SurfaceView) view.findViewById(R.id.videoview);
         surfaceHolder = surfaceView.getHolder();
@@ -291,7 +291,7 @@ public class CameraFragment extends Fragment implements
             bitmap.compress(Bitmap.CompressFormat.JPEG, 100, stream); // 100 is highest quality
             Log.d(TAG, "jpeg thumbnail successfully generated!");
         } catch (FileNotFoundException e) {
-            Log.d(TAG, "Error creating FileOutputStream.");
+            Log.d(TAG, "ApiError creating FileOutputStream.");
             e.printStackTrace();
         }
     }

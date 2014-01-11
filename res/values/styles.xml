@@ -17,13 +17,14 @@
     <style name="AppTheme" parent="AppBaseTheme">
         <!-- All customizations that are NOT specific to a particular API-level can go here. -->
         <item name="android:actionBarStyle">@style/RapbackActionBar</item>
-        <item name="android:actionBarTabTextStyle">@style/RapbackTabs</item>
+        <item name="android:actionBarTabStyle">@style/RapbackTabStyle</item>
+        <!--<item name="android:actionBarTabTextStyle">@style/RapbackTabs</item>-->
         <item name="actionBarTabTextStyle">@style/RapbackTabs</item>
         <item name="android:buttonStyle">@style/RapbackButtons</item>
         <item name="android:dialogTheme">@style/CustomDialogTheme</item>
         <!--<item name="de.ankri:switchStyle">@style/switch_light</item>-->
     </style>
-
+    
     
     <!--  ========= Action Bar =========  -->
     
@@ -35,13 +36,17 @@
         <item name="titleTextStyle">@style/TitleTextStyle</item>
         <item name="background">@color/flat_red</item>
     </style>
-
+    
     <style name="TitleTextStyle" parent="@style/TextAppearance.AppCompat.Widget.ActionBar.Title">
         <item name="android:textColor">@color/off_white</item>
     </style>
-
+    
     <!-- ========= Tabs ========= -->
 
+    <style name="RapbackTabStyle" parent="@style/Widget.AppCompat.ActionBar.TabView">
+        <item name="android:background">@drawable/rapback_tab_indicator</item>
+    </style>
+    
     <style name="RapbackTabs" parent="@style/Widget.AppCompat.ActionBar.TabText">
         <item name="android:textColor">@color/dark_grey</item>
     </style>
@@ -61,6 +66,34 @@
         <item name="android:fontFamily">sans-serif-light</item>
         <item name="android:textStyle">italic</item>
         <item name="android:textColor">@color/button_text_color</item>
+    </style>
+
+    <style name="AcceptButtonStyle" parent="@android:Widget.Holo.Button">
+        <item name="android:background">@drawable/blue_button_selector</item>
+        <item name="android:fontFamily">sans-serif-light</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textColor">@color/accept_button_text_color</item>
+    </style>
+
+    <style name="DeclineButtonStyle" parent="@android:Widget.Holo.Button">
+        <item name="android:background">@drawable/decline_button_style</item>
+        <item name="android:fontFamily">sans-serif-light</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textColor">@color/decline_button_text_color</item>
+    </style>
+
+    <style name="ProfileButtonsStyle" parent="@android:Widget.Holo.Button">
+        <item name="android:background">@drawable/profile_button_style</item>
+        <item name="android:fontFamily">sans-serif-light</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textColor">@color/profile_button_text_color</item>
+    </style>
+
+    <style name="BlueButtonStyle" parent="@android:Widget.Holo.Button">
+        <item name="android:background">@drawable/blue_button_selector</item>
+        <item name="android:fontFamily">sans-serif-light</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textColor">@color/accept_button_text_color</item>
     </style>
 
     <!-- ========= Dialogs ========= -->

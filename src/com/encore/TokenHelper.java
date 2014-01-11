@@ -19,5 +19,4 @@ public class TokenHelper {
 				Context.MODE_PRIVATE);
 		return prefs.getString(TOKEN_KEY, null);
 	}
-
 }

@@ -214,7 +214,7 @@ public class CameraActivity2 extends Activity implements
 			bitmap.compress(Bitmap.CompressFormat.JPEG, 100, stream); // 100 is highest quality
 			Log.d(TAG, "jpeg generated!!!");
 		} catch (FileNotFoundException e) {
-			Log.d(TAG, "Error creating FileOutputStream.");
+			Log.d(TAG, "ApiError creating FileOutputStream.");
 			e.printStackTrace();
 		}
 	}

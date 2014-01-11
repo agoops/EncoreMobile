@@ -6,6 +6,8 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.ResultReceiver;
 import android.support.v4.app.Fragment;
+import android.telephony.PhoneNumberUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -20,6 +22,7 @@ import com.encore.util.T;
 import com.encore.views.HomeActivity;
 
 public class SignupFragment extends Fragment implements OnClickListener {
+    private static final String TAG = "SignupFragment";
 	EditText username, password, first_name, 
 		last_name, email, phone_number;
 	Button next_step;
@@ -43,7 +46,7 @@ public class SignupFragment extends Fragment implements OnClickListener {
 		api = new APIService();
 		
 		Button nextStep = (Button) view.findViewById(R.id.next_step);
-		nextStep.setOnClickListener((OnClickListener) this);
+		nextStep.setOnClickListener(this);
 		
 		return view;
 	}
@@ -62,21 +65,67 @@ public class SignupFragment extends Fragment implements OnClickListener {
 	
 	// Signup using our APIService
 	public void signUp(View view) {
-		
-		// This should be moved into APIService, and an APIService instance should be instantiated on top
-		Intent apiIntent = new Intent(getActivity(), APIService.class);
-		SignUpReceiver receiver = new SignUpReceiver(new Handler()); 
-		apiIntent.putExtra(T.API_TYPE, T.SIGN_UP);
-		apiIntent.putExtra(T.RECEIVER, receiver);
-		apiIntent.putExtra(T.USERNAME, username.getText().toString());
-		apiIntent.putExtra(T.PASSWORD, password.getText().toString());
-		apiIntent.putExtra(T.FIRST_NAME, first_name.getText().toString());
-		apiIntent.putExtra(T.LAST_NAME, last_name.getText().toString());
-		apiIntent.putExtra(T.EMAIL, email.getText().toString());
-		apiIntent.putExtra(T.PHONE_NUMBER, phone_number.getText().toString());
-		
-		getActivity().startService(apiIntent);
+        String usernameField = username.getText().toString();
+        String passwordField = password.getText().toString();
+        String firstNameField = first_name.getText().toString();
+        String lastNameField = last_name.getText().toString();
+        String emailField = email.getText().toString();
+        String phoneNumberField = phone_number.getText().toString();
+
+        if(validateFields(usernameField, passwordField, firstNameField,
+                lastNameField, emailField, phoneNumberField)) {
+            // This should be moved into APIService, and an APIService instance should be instantiated on top
+            Intent apiIntent = new Intent(getActivity(), APIService.class);
+            SignUpReceiver receiver = new SignUpReceiver(new Handler());
+            apiIntent.putExtra(T.API_TYPE, T.SIGN_UP);
+            apiIntent.putExtra(T.RECEIVER, receiver);
+            apiIntent.putExtra(T.USERNAME, usernameField);
+            apiIntent.putExtra(T.PASSWORD, passwordField);
+            apiIntent.putExtra(T.FIRST_NAME, firstNameField);
+            apiIntent.putExtra(T.LAST_NAME, lastNameField);
+            apiIntent.putExtra(T.EMAIL, emailField);
+            apiIntent.putExtra(T.PHONE_NUMBER, phoneNumberField);
+
+            getActivity().startService(apiIntent);
+        }
 	}
+
+    // Basic checking of fields
+    public boolean validateFields(String username, String password, String firstName,
+                                  String lastName, String email, String phone) {
+        // First, we validate all of our fields
+        String invalidMessage = "";
+        if(username.length() < 3) {
+            invalidMessage = "Username must be at least 3 characters";
+        } else if (password.length() < 5) {
+            invalidMessage = "Password must be at least 5 characters";
+        } else if (firstName.length() <= 0) {
+            invalidMessage = "Forgetting a first name?";
+        } else if (lastName.length() <= 0) {
+            invalidMessage = "Forgetting a last name?";
+        } else if (!isValidEmail(email)) {
+            invalidMessage = "Invalid email";
+        } else if (!PhoneNumberUtils.isGlobalPhoneNumber(phone)) {
+            invalidMessage = "Invalid phone number";
+        }
+
+        if(invalidMessage.equals("")) {
+            Log.d(TAG, "All fields are valid");
+            return true;
+        } else {
+            Toast.makeText(getActivity(), invalidMessage, Toast.LENGTH_LONG).show();
+            return false;
+        }
+    }
+
+    // Thank you, stackoverflow
+    public final static boolean isValidEmail(CharSequence target) {
+        if (target == null) {
+            return false;
+        } else {
+            return android.util.Patterns.EMAIL_ADDRESS.matcher(target).matches();
+        }
+    }
 	
 	private class SignUpReceiver extends ResultReceiver{
 

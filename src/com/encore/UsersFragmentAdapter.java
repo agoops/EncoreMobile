@@ -78,7 +78,7 @@ public class UsersFragmentAdapter extends ArrayAdapter<Profile> {
 				FriendView fv = (FriendView) v.getParent();
 				Button button = (Button) v;
 				String username = fv.getUser().getUsername();
-				Log.d(tag, "username in adapter: " + username);
+				Log.d(tag, "sessionTitle in adapter: " + username);
 				Intent apiIntent = new Intent(mContext, APIService.class);
 				apiIntent.putExtra(T.API_TYPE, T.FRIEND_REQUEST);
 				apiIntent.putExtra(T.USERNAME, username);

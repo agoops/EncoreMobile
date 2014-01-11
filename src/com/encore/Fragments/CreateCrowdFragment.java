@@ -52,7 +52,7 @@ public class CreateCrowdFragment extends Fragment implements OnClickListener {
 		
 		Intent apiIntent = new Intent(getActivity(), APIService.class);
 		apiIntent.putExtra("receiver", receiver);
-		apiIntent.putExtra(T.API_TYPE, T.FRIENDS);
+		apiIntent.putExtra(T.API_TYPE, T.GET_FRIENDS);
 		getActivity().startService(apiIntent);
 		
 		// Click listeners
