@@ -101,7 +101,7 @@ public class CameraFragment extends Fragment implements
 
     private final int maxDurationInMs = 900000;
     private final long maxFileSizeInBytes = Long.MAX_VALUE;
-    private final int videoFramesPerSecond = 20;
+    private final int videoFramesPerSecond = 30;
 
 
 
@@ -310,10 +310,11 @@ public class CameraFragment extends Fragment implements
         mediaRecorder.setMaxDuration(maxDurationInMs);
         mediaRecorder.setOutputFile(getOutputMediaFile().getAbsolutePath());
         mediaRecorder.setVideoFrameRate(videoFramesPerSecond);
-        mediaRecorder.setVideoSize(surfaceView.getWidth(), surfaceView.getHeight());
-
-        mediaRecorder.setAudioEncoder(MediaRecorder.AudioEncoder.DEFAULT);
-        mediaRecorder.setVideoEncoder(MediaRecorder.VideoEncoder.DEFAULT);
+        //mediaRecorder.setVideoSize(surfaceView.getWidth(), surfaceView.getHeight());
+        mediaRecorder.setVideoSize(640,480);
+        mediaRecorder.setVideoEncodingBitRate(3000000);
+        mediaRecorder.setAudioEncoder(MediaRecorder.AudioEncoder.AAC);
+        mediaRecorder.setVideoEncoder(MediaRecorder.VideoEncoder.H264);
 
         mediaRecorder.setPreviewDisplay(surfaceHolder.getSurface());
 
