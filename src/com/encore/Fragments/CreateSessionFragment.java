@@ -106,7 +106,6 @@ public class CreateSessionFragment extends Fragment implements View.OnClickListe
         Log.d(TAG, "Send button clicked");
         switch(v.getId())
         {
-            // TODO: Return to HomeActivity onSend
             case R.id.send_button:
                 String sessionTitle, crowdId, crowdTitle;
                 List<String> crowdUsernames;
@@ -118,7 +117,6 @@ public class CreateSessionFragment extends Fragment implements View.OnClickListe
                 Intent api = new Intent(getActivity(), APIService.class);
                 api.putExtra(T.API_TYPE, T.CREATE_SESSION);
                 if(useExistingCrowd) {
-                    Log.d(TAG, "Send clicked, switch checked = use an existing crowd");
                     // sessionTitle, useExistingCrowd, Filepath, and crowdId
                     sessionTitle = newSessionTitle.getText().toString();
                     crowdId = Integer.toString(crowdAdapter.getSelectedCrowdId());
@@ -131,7 +129,6 @@ public class CreateSessionFragment extends Fragment implements View.OnClickListe
 
                     getActivity().startService(api);
                 } else {
-                    Log.d(TAG, "Send clicked, switch not checked = create crowd");
                     // sessionTitle, useExistingCrowd, Filepath, crowdTitle, crowdMembers
                     sessionTitle = newSessionTitle.getText().toString();
                     crowdTitle = newCrowdTitle.getText().toString();

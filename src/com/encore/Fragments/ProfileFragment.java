@@ -1,5 +1,6 @@
 package com.encore.Fragments;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
@@ -41,6 +42,8 @@ import java.util.HashSet;
 
 public class ProfileFragment extends Fragment implements View.OnClickListener{
 	private static final String TAG = "ProfileFragment";
+    private Context mContext;
+
     private View view;
     private Button rapsButton, crowdsButton, likesButton, requestsButton, editProfileButton, findFriendsButton;
     private ListView listview;
@@ -64,6 +67,7 @@ public class ProfileFragment extends Fragment implements View.OnClickListener{
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
 		view = inflater.inflate(R.layout.profile_fragment, container, false);
+        mContext = getActivity();
 
         getViews();
         setOnClickListeners();
@@ -114,6 +118,10 @@ public class ProfileFragment extends Fragment implements View.OnClickListener{
 
         // The default first tab means we want to pull in our friends
         getFriends();
+
+        // Set the typeface
+//        T.setTypeFace(mContext, myUsernameTv, myFullNameTv, numRapsTv, numLikesTv, numFriendsTv,
+//                rapsButton, crowdsButton, likesButton, requestsButton, editProfileButton, findFriendsButton);
     }
 
     @Override
@@ -166,6 +174,7 @@ public class ProfileFragment extends Fragment implements View.OnClickListener{
                 Intent launchFriendFinder = new Intent(getActivity(), FindFriendsActivity.class);
                 launchFriendFinder.putExtra(T.MY_USERNAME, myUsername);
                 launchFriendFinder.putExtra("friendsUsernames", friendsUsernames);
+                launchFriendFinder.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
                 startActivity(launchFriendFinder);
                 break;
             default:
@@ -366,6 +375,7 @@ public class ProfileFragment extends Fragment implements View.OnClickListener{
 //                friendsAdapter.notifyDataSetChanged();
 
 
+                // Prevents a contextual null-pointer
                 // Update the data on our listview
                 friendsAdapter = new TabFriendsAdapter(getActivity(), R.layout.tab_friends_list_row, null);
                 listview.setAdapter(friendsAdapter);
@@ -376,6 +386,7 @@ public class ProfileFragment extends Fragment implements View.OnClickListener{
                 for(Profile profile : friendsList) {
                     friendsUsernames.add(profile.getUsername());
                 }
+
 
                 // Show data
                 setTabVisibility(1);

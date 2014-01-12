@@ -157,6 +157,9 @@ public class InboxViewAdapter extends ArrayAdapter<Session> implements OnClickLi
                     (com.encore.widget.AspectRatioImageView) convertView.findViewById(R.id.inboxImageView), thumbnailProgressBar)
                     .execute(entry.getThumbnailUrl());
         }
+
+        // Set typeface for all textviews
+//        T.setTypeFace(mContext, titleTextView, crowdMembersTextView, likesTv, commentsTv);
     }
 
     @Override

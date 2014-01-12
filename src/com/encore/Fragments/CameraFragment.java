@@ -21,6 +21,7 @@ import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 
 import com.encore.API.APIService;
@@ -41,8 +42,9 @@ public class CameraFragment extends Fragment implements
     private SurfaceView surfaceView;
     private SurfaceHolder surfaceHolder;
     private Camera camera;
-    private ImageView record, send;
+    private ImageView send;
     private View view;
+    private Button record;
 
     private File mediaFile;
     boolean isRecording;
@@ -138,7 +140,7 @@ public class CameraFragment extends Fragment implements
     }
 
     private void setUpButtons() {
-        record = (ImageView) view.findViewById(R.id.record);
+        record = (Button) view.findViewById(R.id.record);
         send = (ImageView) view.findViewById(R.id.send);
 
 //        record.setOnClickListener(this);
@@ -151,14 +153,18 @@ public class CameraFragment extends Fragment implements
                     // Record
                     Log.d(TAG, "Start recording");
                     startRecording();
-                    ImageView button = (ImageView) v;
-                    button.setBackgroundResource(R.drawable.button_recording_pressed);
+                    Button button = (Button) v;
+                    button.setBackgroundColor(getResources().getColor(R.color.button_pressed));
+//                    ImageView button = (ImageView) v;
+//                    button.setBackgroundResource(R.drawable.button_recording_pressed);
                 } else if (event.getAction() == MotionEvent.ACTION_UP) {
                     // Stop recording, show preview
                     Log.d(TAG, "Stop recording");
                     stopRecording();
-                    ImageView button = (ImageView) v;
-                    button.setBackgroundResource(R.drawable.button_recording_default);
+                    Button button = (Button) v;
+                    button.setBackgroundColor(getResources().getColor(R.color.button_default));
+//                    ImageView button = (ImageView) v;
+//                    button.setBackgroundResource(R.drawable.button_recording_default);
                     goToPreview();
                 }
                 return true;

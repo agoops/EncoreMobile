@@ -60,28 +60,43 @@ public class InboxListViewFragment extends Fragment implements OnRefreshListener
         Bundle savedInstanceState) {
         // Inflate the layout for this fragment
 		View view = inflater.inflate(R.layout.video_list_fragment, container, false);
+
+        initData();
+        getViews(view);
+        setupListView(view);
+
+	    return view;
+    }
+
+    private void initData() {
         sessionsList = new ArrayList<Session>();
 
-		// Show Progress Bar
-		progressBar = (ProgressBar) view.findViewById(R.id.progress_inbox);
-		progressBar.setVisibility(View.VISIBLE);
+        getFragmentManager().popBackStack();
+    }
 
-		// Setup pull to refresh
-		pullToRefreshLayout = (PullToRefreshLayout) view.findViewById(R.id.pulltorefresh_inbox);
-		ActionBarPullToRefresh.from(getActivity())
-            .options(Options.create().refreshOnUp(true).build())
-			.allChildrenArePullable()
-			.listener(this)
-			.setup(pullToRefreshLayout);
+    private void getViews(View view) {
+        // Show Progress Bar
+        progressBar = (ProgressBar) view.findViewById(R.id.progress_inbox);
+        progressBar.setVisibility(View.VISIBLE);
+    }
 
-		listView = (ListView) view.findViewById(R.id.video_list_view2);
+    private void setupListView(View view) {
+        // Setup pull to refresh
+        pullToRefreshLayout = (PullToRefreshLayout) view.findViewById(R.id.pulltorefresh_inbox);
+        ActionBarPullToRefresh.from(getActivity())
+                .options(Options.create().refreshOnUp(true).build())
+                .allChildrenArePullable()
+                .listener(this)
+                .setup(pullToRefreshLayout);
 
-		// Populate inbox
-		adapter = new InboxViewAdapter(getActivity(), 0, null);
-		listView.setAdapter(adapter);
+        listView = (ListView) view.findViewById(R.id.video_list_view2);
 
-	    receiver = new SessionListReceiver(new Handler());
-	    getRaps(receiver);
+        // Populate inbox
+        adapter = new InboxViewAdapter(getActivity(), 0, null);
+        listView.setAdapter(adapter);
+
+        receiver = new SessionListReceiver(new Handler());
+        getRaps(receiver);
 
         // Infinite listview loading!
         listView.setOnScrollListener(new EndlessScrollListener() {
@@ -93,28 +108,6 @@ public class InboxListViewFragment extends Fragment implements OnRefreshListener
                 }
             }
         });
-//        listView.setOnScrollListener(new AbsListView.OnScrollListener() {
-//            @Override
-//            public void onScrollStateChanged(AbsListView absListView, int i) {
-//
-//            }
-//
-//            @Override
-//            public void onScroll(AbsListView view, int firstVisibleItem,
-//                                 int visibleItemCount, int totalItemCount) {
-//                if(firstVisibleItem + visibleItemCount == totalItemCount && totalItemCount!=0)
-//                {
-//                    if(flagLoading == false)
-//                    {
-//                        listView.addFooterView(footerView);
-//                        flagLoading = true;
-//                        paginateNextSessions(receiver);
-//                    }
-//                }
-//            }
-//        });
-
-	    return view;
     }
 
 

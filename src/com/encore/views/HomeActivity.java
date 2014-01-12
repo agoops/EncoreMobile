@@ -159,7 +159,6 @@ public class HomeActivity extends FragmentActivity {
                 Intent intent = new Intent(this, StartSession.class);
                 startActivity(intent);
 
-//                viewPager.setCurrentItem(CAMERA);
                 return true;
             case R.id.action_inbox:
                 viewPager.setCurrentItem(INBOX);
@@ -174,6 +173,7 @@ public class HomeActivity extends FragmentActivity {
         }
     }
 
+    // Set the drawable states for each action menu item
     public void setActionItemSelected(int selectedId) {
         View inboxItem = findViewById(R.id.action_inbox);
         View profileItem = findViewById(R.id.action_profile);

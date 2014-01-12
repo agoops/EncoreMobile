@@ -1,5 +1,9 @@
 package com.encore.util;
 
+import android.content.Context;
+import android.graphics.Typeface;
+import android.widget.TextView;
+
 public class T {
 	public static final String USERNAME = "username";
     public static final String MY_USERNAME = "my_username";
@@ -55,4 +59,12 @@ public class T {
 	public static final String CROWD_MEMBERS = "members";
 	
 	public static final String COMMENT_TEXT = "comment_text";
+
+    public static void setTypeFace(Context c, TextView... views) {
+        Typeface typeface = Typeface.createFromAsset(c.getAssets(),
+                "Raleway-Bold.ttf");
+        for(TextView view : views) {
+            view.setTypeface(typeface);
+        }
+    }
 }

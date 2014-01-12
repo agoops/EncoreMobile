@@ -26,45 +26,72 @@
         android:label="@string/app_name"
         android:theme="@style/AppTheme"
         android:debuggable="true" >
-        <activity android:name="com.encore.MainActivity" >
+        <activity android:name="com.encore.MainActivity"
+            android:configChanges="orientation"
+            android:screenOrientation="portrait">
         </activity>
         <activity android:name="com.encore.views.WelcomeActivity"
-            android:windowSoftInputMode="adjustResize">
+            android:windowSoftInputMode="adjustResize"
+            android:noHistory="true"
+            android:configChanges="orientation"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name="com.encore.AndroidVideoCapture" >
+        <activity android:name="com.encore.AndroidVideoCapture"
+            android:configChanges="orientation"
+            android:screenOrientation="portrait">
         </activity>
         <activity
-            android:name=".CameraActivity" >
+            android:name=".CameraActivity"
+            android:configChanges="orientation"
+            android:screenOrientation="portrait">
         </activity>
         <activity
             android:name=".CameraActivity2"
+            android:configChanges="orientation"
             android:screenOrientation="portrait">
         </activity>
        
-        <activity android:name="com.encore.VideoPlayback" >
+        <activity android:name="com.encore.VideoPlayback"
+            android:configChanges="orientation"
+            android:screenOrientation="portrait">
         </activity>
-        <activity android:name="com.encore.StartSession" >
+        <activity android:name="com.encore.StartSession"
+            android:configChanges="orientation"
+            android:screenOrientation="portrait">
         </activity>
-          <activity android:name="com.encore.StartSession2" >
+          <activity android:name="com.encore.StartSession2"
+              android:configChanges="orientation"
+              android:screenOrientation="portrait">
         </activity>
-        <activity android:name="com.encore.views.NewsfeedActivity" >
+        <activity android:name="com.encore.views.NewsfeedActivity"
+            android:configChanges="orientation"
+            android:screenOrientation="portrait">
         </activity>
         <activity android:name="com.encore.views.HomeActivity" 
-            android:windowSoftInputMode="adjustPan">
+            android:windowSoftInputMode="adjustPan"
+            android:configChanges="orientation"
+            android:screenOrientation="portrait">
         </activity>
         <activity android:name="com.encore.views.EditProfileActivity"
-            android:parentActivityName="com.encore.views.HomeActivity"/>
+            android:parentActivityName="com.encore.views.HomeActivity"
+            android:configChanges="orientation"
+            android:screenOrientation="portrait"/>
         <activity android:name="com.encore.views.OtherProfileActivity"
-            android:parentActivityName="com.encore.views.HomeActivity"/>
+            android:parentActivityName="com.encore.views.HomeActivity"
+            android:configChanges="orientation"
+            android:screenOrientation="portrait"/>
 
         <activity android:name="com.encore.views.FindFriendsActivity"
             android:parentActivityName="com.encore.views.HomeActivity"
-            android:launchMode="singleTop">
+            android:launchMode="singleTop"
+            android:noHistory="true"
+            android:configChanges="orientation"
+            android:screenOrientation="portrait">
 
             <intent-filter>
                 <action android:name="android.intent.action.SEARCH" />

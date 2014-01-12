@@ -33,27 +33,27 @@
 
     <TextView
         android:id="@+id/session_title_tv"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center_vertical"
         android:textStyle="bold"
-        android:textAppearance="?android:attr/textAppearanceMedium"
         android:text="Session Title"
+        android:textSize="30sp"
         android:padding="10dp"
         android:textColor="#fff"
-        android:background="#333"
-        android:alpha="0.6"
+        android:background="@drawable/background_333_transparent"
         android:layout_alignTop="@id/thumbnail_container" />
 
     <TextView
         android:id="@+id/crowd_members_tv"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Member 1, Member 2, Member 3"
-        android:padding="10dp"
+        android:paddingRight="10dp"
+        android:paddingBottom="10dp"
+        android:paddingLeft="15dp"
         android:textColor="#fff"
-        android:background="#333"
-        android:alpha="0.6"
+        android:background="@drawable/background_333_transparent"
         android:layout_below="@id/session_title_tv" />
 
 

@@ -6,7 +6,7 @@
     <EditText
         android:id="@+id/new_session_title"
         android:layout_height="wrap_content"
-        android:layout_width="match_parent"
+        android:layout_width="250dp"
         android:hint="Session Title"
         android:textSize="25sp"
         android:gravity="center"

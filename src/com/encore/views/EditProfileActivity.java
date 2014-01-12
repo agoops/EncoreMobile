@@ -99,6 +99,11 @@ public class EditProfileActivity extends Activity implements View.OnClickListene
             case R.id.edit_profile_logout_button:
                 TokenHelper.updateToken(this, null);
                 Intent introScreen = new Intent(this, WelcomeActivity.class);
+                // Prevent the back button from going back to logged-in activities
+                introScreen.setFlags(
+                        Intent.FLAG_ACTIVITY_CLEAR_TOP |
+                        Intent.FLAG_ACTIVITY_CLEAR_TASK |
+                        Intent.FLAG_ACTIVITY_NEW_TASK);
                 startActivity(introScreen);
                 break;
             default:
