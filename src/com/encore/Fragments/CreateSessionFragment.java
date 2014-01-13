@@ -15,6 +15,7 @@ import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.Switch;
+import android.widget.Toast;
 
 import com.encore.API.APIService;
 import com.encore.FriendsFragmentAdapter;
@@ -103,31 +104,41 @@ public class CreateSessionFragment extends Fragment implements View.OnClickListe
 
     @Override
     public void onClick(View v) {
+        boolean isValid = true;
         Log.d(TAG, "Send button clicked");
+        String invalidMessage = "";
         switch(v.getId())
         {
             case R.id.send_button:
                 String sessionTitle, crowdId, crowdTitle;
                 List<String> crowdUsernames;
-                boolean useExistingCrowd;
-
-                sessionTitle = newSessionTitle.getText().toString();
-                useExistingCrowd = !isChecked;
+                boolean useExistingCrowd = !isChecked;
 
                 Intent api = new Intent(getActivity(), APIService.class);
                 api.putExtra(T.API_TYPE, T.CREATE_SESSION);
+
                 if(useExistingCrowd) {
                     // sessionTitle, useExistingCrowd, Filepath, and crowdId
                     sessionTitle = newSessionTitle.getText().toString();
                     crowdId = Integer.toString(crowdAdapter.getSelectedCrowdId());
 
-                    api.putExtra(T.SESSION_TITLE, sessionTitle);
-                    api.putExtra(T.SESSION_USE_EXISTING_CROWD, useExistingCrowd);
-                    api.putExtra(T.FILEPATH, videoFilepath);
-                    api.putExtra(T.SESSION_CROWD_ID, crowdId);
-                    api.putExtra(T.THUMBNAIL_FILEPATH, thumbnailFilepath);
+                    // Validate fields
+                    if(sessionTitle.length() <= 0) {
+                        invalidMessage = "Forgetting a session title?";
+                    } else if(crowdId.equals("-1")) {
+                        invalidMessage = "Forgetting to pick a crowd?";
+                    }
 
-                    getActivity().startService(api);
+                    // Create session if fields are valid
+                    if (invalidMessage.length() == 0) {
+                        api.putExtra(T.SESSION_TITLE, sessionTitle);
+                        api.putExtra(T.SESSION_USE_EXISTING_CROWD, useExistingCrowd);
+                        api.putExtra(T.FILEPATH, videoFilepath);
+                        api.putExtra(T.SESSION_CROWD_ID, crowdId);
+                        api.putExtra(T.THUMBNAIL_FILEPATH, thumbnailFilepath);
+
+                        getActivity().startService(api);
+                    }
                 } else {
                     // sessionTitle, useExistingCrowd, Filepath, crowdTitle, crowdMembers
                     sessionTitle = newSessionTitle.getText().toString();
@@ -135,18 +146,38 @@ public class CreateSessionFragment extends Fragment implements View.OnClickListe
                     crowdUsernames = friendsAdapter.getSelectedUsernames();
                     String crowdMembers = new Gson().toJson(crowdUsernames);
 
-                    api.putExtra(T.SESSION_TITLE, sessionTitle);
-                    api.putExtra(T.SESSION_USE_EXISTING_CROWD, useExistingCrowd);
-                    api.putExtra(T.FILEPATH, videoFilepath);
-                    api.putExtra(T.SESSION_CROWD_TITLE, crowdTitle);
-                    api.putExtra(T.SESSION_CROWD_MEMBERS, crowdMembers);
-                    api.putExtra(T.THUMBNAIL_FILEPATH, thumbnailFilepath);
+                    // Validate fields
+                    if(sessionTitle.length() <= 0) {
+                        invalidMessage = "Forgetting a session title?";
+                    }
+                    if(crowdTitle.length() <= 0) {
+                        invalidMessage = "Forgetting a crowd title?";
+                    }
+                    if(crowdUsernames.size() <= 0) {
+                        invalidMessage = "Add some friends to your crowd";
+                    }
 
-                    getActivity().startService(api);
+                    // Create session if fields are valid
+                    if(invalidMessage.length() == 0) {
+                        api.putExtra(T.SESSION_TITLE, sessionTitle);
+                        api.putExtra(T.SESSION_USE_EXISTING_CROWD, useExistingCrowd);
+                        api.putExtra(T.FILEPATH, videoFilepath);
+                        api.putExtra(T.SESSION_CROWD_TITLE, crowdTitle);
+                        api.putExtra(T.SESSION_CROWD_MEMBERS, crowdMembers);
+                        api.putExtra(T.THUMBNAIL_FILEPATH, thumbnailFilepath);
+
+                        getActivity().startService(api);
+                    }
                 }
 
-                Intent homeActivity = new Intent(getActivity(), HomeActivity.class);
-                getActivity().startActivity(homeActivity);
+                if(invalidMessage.length() > 0) {
+                    // If fields were invalid, display toast warning
+                    Toast.makeText(getActivity(), invalidMessage, Toast.LENGTH_SHORT).show();
+                } else {
+                    // Else go home
+                    Intent homeActivity = new Intent(getActivity(), HomeActivity.class);
+                    getActivity().startActivity(homeActivity);
+                }
                 break;
             default:
                 break;

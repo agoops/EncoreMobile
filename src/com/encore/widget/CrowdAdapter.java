@@ -93,7 +93,10 @@ public class CrowdAdapter extends ArrayAdapter<Crowd> implements OnCheckedChange
 	}
 
     public int getSelectedCrowdId() {
-        return selectedCrowds.get(0).getId();
+        if(selectedCrowds != null && selectedCrowds.size() > 0) {
+            return selectedCrowds.get(0).getId();
+        }
+        return -1;
     }
 
     public void setItemList(ArrayList<Crowd> crowds) {

@@ -61,6 +61,7 @@
             android:screenOrientation="portrait">
         </activity>
         <activity android:name="com.encore.StartSession"
+            android:parentActivityName="com.encore.views.HomeActivity"
             android:configChanges="orientation"
             android:screenOrientation="portrait">
         </activity>

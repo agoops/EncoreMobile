@@ -100,11 +100,10 @@ public class FriendsFragmentAdapter extends ArrayAdapter<Profile> implements OnC
 	public void onCheckedChanged(CompoundButton buttonView, 
 			boolean isChecked) {
 
-        // TODO: Add user's own id!!!! Otherwise they'll never be in their sessions
 		int position = (Integer) buttonView.getTag();
 
         // Get the checked friend's uid
-        String selectedUsername= mFriendList.get(position).getUser().getUsername();
+        String selectedUsername = mFriendList.get(position).getUser().getUsername();
 
         if(isChecked) {
             selectedUsernamesSet.add(selectedUsername);

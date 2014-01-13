@@ -1,40 +1,34 @@
 package com.encore.Fragments;
 
-import android.animation.AnimatorInflater;
-import android.animation.AnimatorSet;
 import android.content.Context;
-import android.content.Intent;
-import android.graphics.Bitmap;
 import android.hardware.Camera;
+import android.media.AudioManager;
+import android.media.MediaPlayer;
 import android.media.MediaRecorder;
-import android.media.ThumbnailUtils;
-import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
-import android.provider.MediaStore;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.ImageView;
 
-import com.encore.API.APIService;
 import com.encore.R;
 import com.encore.util.T;
 
 import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.IOException;
 
 public class CameraFragment extends Fragment implements
-        SurfaceHolder.Callback, View.OnClickListener {
+        SurfaceHolder.Callback {
 
     private static final String TAG = "CameraFragment";
     private Context context;
@@ -42,7 +36,6 @@ public class CameraFragment extends Fragment implements
     private SurfaceView surfaceView;
     private SurfaceHolder surfaceHolder;
     private Camera camera;
-    private ImageView send;
     private View view;
     private Button record;
 
@@ -51,13 +44,57 @@ public class CameraFragment extends Fragment implements
     boolean oneRecorded;
     int sessionId;
     private String thumbnailFilepath;
+    private int[] beatIds;
+    private static int curBeatIndex;
+    private static MediaPlayer mp;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.capture_video, container, false);
+        setHasOptionsMenu(true);
         context = getActivity();
 
+        initData();
+        playFirstBeat();
+
+        return view;
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        Log.d(TAG, "onPause()");
+        if(mp != null) {
+            mp.stop();
+            mp.release();
+            mp = null;
+        }
+
+        if(camera != null) {
+            try {
+                camera.reconnect();
+                camera.stopPreview();
+                camera.release();
+
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    private void initData() {
         // Get sessionId. -1 means we need to create a new session
+        sessionId = getArguments().getInt("sessionId", -1);
+
+        // Stores beat ids
+        beatIds = new int[]
+                {
+                        R.raw.simple_beat1, R.raw.simple_beat2,
+                        R.raw.simple_beat1, R.raw.simple_beat4,
+                        R.raw.simple_beat5
+                };
+        curBeatIndex = 0;
+
         sessionId = getArguments().getInt("sessionId", -1);
 
         surfaceView = (SurfaceView) view.findViewById(R.id.videoview);
@@ -68,29 +105,28 @@ public class CameraFragment extends Fragment implements
         isRecording = false;
         oneRecorded = false;
         camera = setUpCamera();
-        // try {
-        // camera.setPreviewDisplay(surfaceHolder);
-        // camera.startPreview();
-        // } catch (IOException e) {
-        // e.printStackTrace();
-        // }
-        //
-        // mediaRecorder = setUpMediaRecorder();
-
-        return view;
     }
 
-    @Override
-    public void onPause() {
-        super.onPause();
-        Log.d(TAG, "onPause()");
-        try {
-            camera.reconnect();
-            camera.stopPreview();
-            camera.release();
+    private void playFirstBeat() {
+        int beatId = beatIds[curBeatIndex];
+        playBeat(beatId);
+        incrementBeatIndex();
+    }
 
-        } catch (IOException e) {
-            e.printStackTrace();
+    private void playBeat(int beatId) {
+        if(mp != null) {
+            mp.stop();
+        }
+        mp = MediaPlayer.create(context, beatId);
+        mp.setAudioStreamType(AudioManager.STREAM_MUSIC);
+        mp.setLooping(true);
+        mp.start();
+    }
+
+    private void incrementBeatIndex() {
+        curBeatIndex++;
+        if(curBeatIndex > 4) {
+            curBeatIndex = 0;
         }
     }
 
@@ -101,11 +137,33 @@ public class CameraFragment extends Fragment implements
         return c;
     }
 
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        // Inflate the menu items in the action bar
+        inflater.inflate(R.menu.camera_menu, menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        Log.d(TAG, "Action Item selected");
+        // Handle presses on action bar items
+        switch(item.getItemId())
+        {
+            case R.id.action_beats:
+                // Launch a new session
+                Log.d(TAG, "Changing beat");
+                playBeat(beatIds[curBeatIndex]);
+                incrementBeatIndex();
+
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
+
     private final int maxDurationInMs = 900000;
     private final long maxFileSizeInBytes = Long.MAX_VALUE;
     private final int videoFramesPerSecond = 30;
-
-
 
     @Override
     public void surfaceChanged(SurfaceHolder holder, int format, int width,
@@ -141,10 +199,6 @@ public class CameraFragment extends Fragment implements
 
     private void setUpButtons() {
         record = (Button) view.findViewById(R.id.record);
-        send = (ImageView) view.findViewById(R.id.send);
-
-//        record.setOnClickListener(this);
-        send.setOnClickListener(this);
 
         record.setOnTouchListener(new View.OnTouchListener() {
             @Override
@@ -155,16 +209,12 @@ public class CameraFragment extends Fragment implements
                     startRecording();
                     Button button = (Button) v;
                     button.setBackgroundColor(getResources().getColor(R.color.button_pressed));
-//                    ImageView button = (ImageView) v;
-//                    button.setBackgroundResource(R.drawable.button_recording_pressed);
                 } else if (event.getAction() == MotionEvent.ACTION_UP) {
                     // Stop recording, show preview
                     Log.d(TAG, "Stop recording");
                     stopRecording();
                     Button button = (Button) v;
                     button.setBackgroundColor(getResources().getColor(R.color.button_default));
-//                    ImageView button = (ImageView) v;
-//                    button.setBackgroundResource(R.drawable.button_recording_default);
                     goToPreview();
                 }
                 return true;
@@ -196,7 +246,6 @@ public class CameraFragment extends Fragment implements
     public void goToPreview() {
         FragmentTransaction ft = getFragmentManager().beginTransaction();
         PreviewFragment previewFragment = new PreviewFragment();
-//        TestCameraFragment previewFragment = new TestCameraFragment();
 
         // Pass along the filepath for it to play
         Bundle args = new Bundle();
@@ -207,99 +256,6 @@ public class CameraFragment extends Fragment implements
         ft.replace(R.id.fragment_placeholder, previewFragment);
         ft.addToBackStack(null);
         ft.commit();
-    }
-
-    @Override
-    public void onClick(View v) {
-        Log.d(TAG, "Something clicked");
-        switch (v.getId()) {
-            case R.id.record:
-                Log.d(TAG, "record clicked");
-                if (isRecording) {
-                    mediaRecorder.stop();
-                    isRecording = false;
-                    oneRecorded = true;
-                    ImageView button = (ImageView) v;
-                    button.setBackgroundResource(R.drawable.button_recording_default);
-
-                    send.setVisibility(View.VISIBLE);
-                    // Show the send button, and animate its appearance
-                    AnimatorSet set = (AnimatorSet) AnimatorInflater.loadAnimator(context,
-                            R.animator.rotate_and_fadein);
-                    Log.d(TAG, "send.toString(): " + send.toString() + ", set.toString(): " + set.toString());
-                    set.setTarget(send);
-                    set.start();
-                } else {
-                    try {
-                        setUpMediaRecorder();
-                        mediaRecorder.prepare();
-                        mediaRecorder.start();
-                        isRecording = true;
-                        ImageView button = (ImageView) v;
-                        button.setBackgroundResource(R.drawable.button_recording_pressed);
-                    } catch (IllegalStateException e) {
-                        e.printStackTrace();
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                }
-                break;
-
-            case R.id.send:
-                Log.d(TAG, "send clicked");
-                if (isRecording || !oneRecorded || !mediaFile.exists()) {
-                    return;
-                }
-                if (sessionId == -1) {
-                    // Update the image
-                    ImageView sendButton = (ImageView) v;
-                    sendButton.setBackgroundResource(R.drawable.ic_action_send_now_pressed);
-
-                    // Start new session flow
-                    Log.d(TAG, "Creating new session");
-                    generateThumbnail();
-                    FragmentTransaction ft = getFragmentManager().beginTransaction();
-                    CreateSessionFragment createSessionFragment = new CreateSessionFragment();
-
-                    // Pass the filepath to the session
-                    Bundle args = new Bundle();
-                    args.putString(T.FILEPATH, mediaFile.getAbsolutePath());
-                    args.putString(T.THUMBNAIL_FILEPATH, thumbnailFilepath);
-                    createSessionFragment.setArguments(args);
-
-                    ft.replace(R.id.fragment_placeholder, createSessionFragment);
-                    ft.addToBackStack(null);
-                    ft.commit();
-                }
-                else {
-                    //add recorded clip to current session
-                    generateThumbnail();
-
-                    Intent addClipIntent = new Intent(getActivity(), APIService.class);
-                    addClipIntent.putExtra(T.API_TYPE, T.ADD_CLIP);
-                    addClipIntent.putExtra(T.SESSION_ID, sessionId);
-                    addClipIntent.putExtra(T.FILEPATH, mediaFile.getAbsolutePath());
-                    addClipIntent.putExtra(T.THUMBNAIL_FILEPATH, thumbnailFilepath);
-                    getActivity().startService(addClipIntent);
-                    getActivity().finish();
-                }
-
-                break;
-        }
-    }
-
-    // Creates a thumbnail from a user's recording
-    private void generateThumbnail() {
-        FileOutputStream stream;
-        try {
-            stream = new FileOutputStream(thumbnailFilepath);
-            Bitmap bitmap = ThumbnailUtils.createVideoThumbnail(mediaFile.getAbsolutePath(), MediaStore.Video.Thumbnails.MINI_KIND);
-            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, stream); // 100 is highest quality
-            Log.d(TAG, "jpeg thumbnail successfully generated!");
-        } catch (FileNotFoundException e) {
-            Log.d(TAG, "ApiError creating FileOutputStream.");
-            e.printStackTrace();
-        }
     }
 
     private void setUpMediaRecorder() {
@@ -326,11 +282,6 @@ public class CameraFragment extends Fragment implements
 
         mediaRecorder.setMaxFileSize(maxFileSizeInBytes);
         mediaRecorder.setOrientationHint(270);
-    }
-
-    /** Create a file Uri for saving a video */
-    private Uri getOutputMediaFileUri(){
-        return Uri.fromFile(getOutputMediaFile());
     }
 
     private  File getOutputMediaFile(){
@@ -374,5 +325,4 @@ public class CameraFragment extends Fragment implements
         this.mediaFile = mediaFile;
         return mediaFile;
     }
-
 }
