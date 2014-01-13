@@ -4,11 +4,8 @@ import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.media.MediaPlayer;
 import android.net.Uri;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.ResultReceiver;
@@ -21,9 +18,7 @@ import android.view.Window;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.ImageView.ScaleType;
 import android.widget.MediaController;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.VideoView;
 
@@ -36,8 +31,8 @@ import com.encore.widget.CommentDialog;
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonParser;
+import com.squareup.picasso.Picasso;
 
-import java.io.InputStream;
 import java.util.HashSet;
 import java.util.List;
 
@@ -52,7 +47,7 @@ public class InboxViewAdapter extends ArrayAdapter<Session> implements OnClickLi
     private ImageView commentsIcon;
     private Button reply, likeButton;
     private com.encore.widget.AspectRatioImageView thumbnailIv;
-    private ProgressBar thumbnailProgressBar;
+    private double width, height;
 
     private HashSet<Integer> likedSessionIds;
 
@@ -92,7 +87,6 @@ public class InboxViewAdapter extends ArrayAdapter<Session> implements OnClickLi
         commentsIcon = (ImageView) convertView.findViewById(R.id.comments_icon);
         thumbnailIv = (com.encore.widget.AspectRatioImageView) convertView.findViewById(R.id.inboxImageView);
         crowdMembersTextView = (TextView) convertView.findViewById(R.id.crowd_members_tv);
-        thumbnailProgressBar = (ProgressBar) convertView.findViewById(R.id.progress_thumbnail);
     }
 
     public void setTags(Session entry) {
@@ -153,9 +147,10 @@ public class InboxViewAdapter extends ArrayAdapter<Session> implements OnClickLi
 
         // Set the thumbnail
         if(entry.getThumbnailUrl() != null) {
-            new DownloadImageTask(
-                    (com.encore.widget.AspectRatioImageView) convertView.findViewById(R.id.inboxImageView), thumbnailProgressBar)
-                    .execute(entry.getThumbnailUrl());
+            Picasso.with(mContext)
+                    .load(entry.getThumbnailUrl())
+                    .resize((int) width,(int) height)
+                    .into(thumbnailIv);
         }
 
         // Set typeface for all textviews
@@ -284,10 +279,6 @@ public class InboxViewAdapter extends ArrayAdapter<Session> implements OnClickLi
         mContext.startService(api);
     }
 
-    private void hideProgressBar(ProgressBar thumbnailPb) {
-        thumbnailPb.setVisibility(View.GONE);;
-    }
-
 	private class ClipStreamReceiver extends ResultReceiver {
         public ClipStreamReceiver(Handler handler) {
                 super(handler);
@@ -338,35 +329,6 @@ public class InboxViewAdapter extends ArrayAdapter<Session> implements OnClickLi
         }
     }
 
-    private class DownloadImageTask extends AsyncTask<String, Void, Bitmap> {
-        com.encore.widget.AspectRatioImageView thumbnailIv;
-        ProgressBar thumbnailPb;
-
-        public DownloadImageTask(com.encore.widget.AspectRatioImageView bitmapImage, ProgressBar thumbnailPb) {
-            this.thumbnailIv = bitmapImage;
-            this.thumbnailPb = thumbnailPb;
-        }
-
-        protected Bitmap doInBackground(String... urls) {
-            String urldisplay = urls[0];
-            Bitmap thumbnail = null;
-            try {
-                InputStream in = new java.net.URL(urldisplay).openStream();
-                thumbnail = BitmapFactory.decodeStream(in);
-                thumbnailIv.setScaleType(ScaleType.FIT_XY);
-            } catch (Exception e) {
-                Log.e("ApiError", e.getMessage());
-                e.printStackTrace();
-            }
-            return thumbnail;
-        }
-
-        protected void onPostExecute(Bitmap result) {
-            thumbnailIv.setImageBitmap(result);
-            hideProgressBar(thumbnailPb);
-        }
-    }
-
 	private void showVideoDialog(Uri uri) {
 
 		final Dialog dialog = new Dialog(mContext);
@@ -412,4 +374,9 @@ public class InboxViewAdapter extends ArrayAdapter<Session> implements OnClickLi
 	public void setItemList(List<Session> sessions) {
 		this.mSessionList = sessions;
 	}
+
+    public void setThumbnailScreenWidth(double width) {
+        this.width = width;
+        this.height = 1.3*width;
+    }
 }

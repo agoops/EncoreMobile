@@ -3,6 +3,6 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
         android:id="@+id/action_beats"
-        android:icon="@drawable/ic_beats"
+        android:icon="@drawable/ic_beats2"
         android:showAsAction="always"/>
 </menu>

@@ -2,6 +2,7 @@ package com.encore.views;
 
 import android.app.Dialog;
 import android.content.Intent;
+import android.graphics.Point;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.net.Uri;
@@ -10,6 +11,7 @@ import android.os.Handler;
 import android.os.ResultReceiver;
 import android.support.v4.app.Fragment;
 import android.util.Log;
+import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -93,6 +95,7 @@ public class InboxListViewFragment extends Fragment implements OnRefreshListener
 
         // Populate inbox
         adapter = new InboxViewAdapter(getActivity(), 0, null);
+        adapter.setThumbnailScreenWidth(getScreenWidth());
         listView.setAdapter(adapter);
 
         receiver = new SessionListReceiver(new Handler());
@@ -145,6 +148,14 @@ public class InboxListViewFragment extends Fragment implements OnRefreshListener
         api.putExtra(T.NEXT_SESSION_URL, nextUrl);
 
         getActivity().startService(api);
+    }
+
+    public double getScreenWidth() {
+        Display display = getActivity().getWindowManager().getDefaultDisplay();
+        Point size = new Point();
+        display.getSize(size);
+        double width = size.x;
+        return width;
     }
 
 	public InboxViewAdapter getAdapter () {
