@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <ProgressBar
+        android:id="@+id/progress_clip_playback"
+        android:layout_height="match_parent"
+        android:layout_width="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_above="@+id/reply_rapback_button"/>
+
+    <VideoView
+        android:id="@+id/reply_clip_preview"
+        android:layout_height="match_parent"
+        android:layout_width="match_parent"
+        android:layout_below="@id/progress_clip_playback"/>
+
+    <Button
+        android:id="@+id/reply_rapback_button"
+        android:layout_height="75dp"
+        android:layout_width="match_parent"
+        android:layout_alignParentBottom="true"
+        android:text="Rapback" />
+
+</RelativeLayout>

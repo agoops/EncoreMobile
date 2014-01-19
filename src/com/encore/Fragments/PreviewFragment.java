@@ -52,6 +52,8 @@ public class PreviewFragment extends Fragment implements View.OnClickListener {
         videoView = (VideoView) view.findViewById(R.id.vidView);
         sendButton = (Button) view.findViewById(R.id.sendBtn);
 
+        Log.d(TAG, "Session id: " + sessionId);
+
         //Just here for debugging
         File file = new File(uriString);
         boolean ready = file.canRead();

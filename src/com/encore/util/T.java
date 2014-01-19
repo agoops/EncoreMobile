@@ -23,6 +23,7 @@ public class T {
     public static final String NEXT_SESSION_URL= "next_session_url";
     public static final String PREVIOUS_SESSION_URL = "previous_session_url";
     public static final String PENDING_THEM = "pending_them";
+    public static final String CLIP_URL = "clip_url";
 
 	// API call types
 	public static final int SIGN_IN = 0;

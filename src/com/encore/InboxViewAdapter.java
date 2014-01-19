@@ -258,13 +258,20 @@ public class InboxViewAdapter extends ArrayAdapter<Session> implements OnClickLi
     }
 
     private void playVideo(Session sesh) {
-        Intent clipApi = new Intent(mContext, APIService.class);
-        ResultReceiver receiver = new ClipStreamReceiver(new Handler());
+//        Intent clipApi = new Intent(mContext, APIService.class);
+//        ResultReceiver receiver = new ClipStreamReceiver(new Handler());
         int sessionId = sesh.getId();
         String clipUrl = sesh.getClipUrl();
         Log.d(TAG, "clip url:  " + clipUrl);
-        Uri uri = Uri.parse(clipUrl);
-        showVideoDialog(uri);
+//        Uri uri = Uri.parse(clipUrl);
+        // Launch reply flow, pass sessionId and crowdId to
+        Intent startSession = new Intent(mContext, StartSession.class);
+        startSession.putExtra(T.SESSION_ID, sessionId);
+        startSession.putExtra(T.CLIP_URL, clipUrl);
+        mContext.startActivity(startSession);
+
+
+//        showVideoDialog(uri);
 //        clipApi.putExtra(T.API_TYPE, T.GET_CLIP_STREAM);
 //        clipApi.putExtra(T.SESSION_ID, sessionId);
 //        clipApi.putExtra(T.RECEIVER, receiver);
@@ -330,12 +337,13 @@ public class InboxViewAdapter extends ArrayAdapter<Session> implements OnClickLi
     }
 
 	private void showVideoDialog(Uri uri) {
-
+        // Setup dialog
 		final Dialog dialog = new Dialog(mContext);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.setContentView(R.layout.video_dialog);
         dialog.setCancelable(true);
 
+        // Setup videoview
         VideoView videoView = (VideoView) dialog.findViewById(R.id.video_dialog_video_view);
         videoView.setZOrderOnTop(true);
         videoView.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {

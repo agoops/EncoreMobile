@@ -84,7 +84,7 @@ public class CameraFragment extends Fragment implements
 
     private void initData() {
         // Get sessionId. -1 means we need to create a new session
-        sessionId = getArguments().getInt("sessionId", -1);
+        sessionId = getArguments().getInt(T.SESSION_ID, -1);
 
         // Stores beat ids
         beatIds = new int[]
@@ -94,8 +94,6 @@ public class CameraFragment extends Fragment implements
                         R.raw.simple_beat5
                 };
         curBeatIndex = 0;
-
-        sessionId = getArguments().getInt("sessionId", -1);
 
         surfaceView = (SurfaceView) view.findViewById(R.id.videoview);
         surfaceHolder = surfaceView.getHolder();
