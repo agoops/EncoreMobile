@@ -43,7 +43,7 @@ public class InboxViewAdapter extends ArrayAdapter<Session> implements OnClickLi
 	private List<Session> mSessionList;
 	private static LayoutInflater inflater = null;
 	private SessionView rowView;
-    private TextView titleTextView, crowdMembersTextView, likesTv, commentsTv;
+    private TextView titleTextView, crowdTextView, likesTv, commentsTv, crowdSizeTv, dateTv;
     private ImageView commentsIcon;
     private Button reply, likeButton;
     private com.encore.widget.AspectRatioImageView thumbnailIv;
@@ -86,7 +86,9 @@ public class InboxViewAdapter extends ArrayAdapter<Session> implements OnClickLi
         commentsTv = (TextView) convertView.findViewById(R.id.comments_tv);
         commentsIcon = (ImageView) convertView.findViewById(R.id.comments_icon);
         thumbnailIv = (com.encore.widget.AspectRatioImageView) convertView.findViewById(R.id.inboxImageView);
-        crowdMembersTextView = (TextView) convertView.findViewById(R.id.crowd_members_tv);
+        crowdTextView = (TextView) convertView.findViewById(R.id.crowd_tv);
+        crowdSizeTv = (TextView) convertView.findViewById(R.id.crowd_size_tv);
+        dateTv = (TextView) convertView.findViewById(R.id.inbox_date_tv);
     }
 
     public void setTags(Session entry) {
@@ -120,9 +122,16 @@ public class InboxViewAdapter extends ArrayAdapter<Session> implements OnClickLi
         // Set session title
         titleTextView.setText(entry.getTitle());
 
-        // Get the crowd members' names
-        String names = entry.getMembersFirstNames();
-        crowdMembersTextView.setText(names);
+        // Get the crowd members' names and size
+//        String names = entry.getMembersFirstNames();
+        String[] names = entry.getMembersFirstNamesAsArray();
+        String crowdTitle = entry.getCrowdTitle();
+        crowdTextView.setText("Crowd: " + crowdTitle);
+        crowdSizeTv.setText(Integer.toString(names.length) + " members");
+
+        // Set date
+        String date = formatDate(entry.getModifiedDate());
+        dateTv.setText(formatDate(date));
 
         // Set the like icon if the session is liked
         int sessionId = entry.getId();
@@ -154,7 +163,7 @@ public class InboxViewAdapter extends ArrayAdapter<Session> implements OnClickLi
         }
 
         // Set typeface for all textviews
-//        T.setTypeFace(mContext, titleTextView, crowdMembersTextView, likesTv, commentsTv);
+//        T.setTypeFace(mContext, titleTextView, crowdTextView, likesTv, commentsTv);
     }
 
     @Override
@@ -286,6 +295,63 @@ public class InboxViewAdapter extends ArrayAdapter<Session> implements OnClickLi
         mContext.startService(api);
     }
 
+    private String formatDate(String date) {
+        if(date != null && date.split("-").length >= 2) {
+            String[] pieces = date.split("-");
+            String year = pieces[0];
+            int month = Integer.parseInt(pieces[1]);
+            String day = pieces[2].split("T")[0];
+
+            String formatted = "";
+            switch(month)
+            {
+                case 1:
+                    formatted = "Jan ";
+                    break;
+                case 2:
+                    formatted = "Feb ";
+                    break;
+                case 3:
+                    formatted = "Mar ";
+                    break;
+                case 4:
+                    formatted = "Apr ";
+                    break;
+                case 5:
+                    formatted = "May ";
+                    break;
+                case 6:
+                    formatted = "Jun ";
+                    break;
+                case 7:
+                    formatted = "Jul ";
+                    break;
+                case 8:
+                    formatted = "Aug ";
+                    break;
+                case 9:
+                    formatted = "Sep ";
+                    break;
+                case 10:
+                    formatted = "Oct ";
+                    break;
+                case 11:
+                    formatted = "Nov ";
+                    break;
+                case 12:
+                    formatted = "Dec ";
+                    break;
+                default:
+                    break;
+            }
+
+            formatted += day;
+            return formatted;
+        } else {
+            return "";
+        }
+    }
+
 	private class ClipStreamReceiver extends ResultReceiver {
         public ClipStreamReceiver(Handler handler) {
                 super(handler);
@@ -387,4 +453,6 @@ public class InboxViewAdapter extends ArrayAdapter<Session> implements OnClickLi
         this.width = width;
         this.height = 1.3*width;
     }
+
+
 }

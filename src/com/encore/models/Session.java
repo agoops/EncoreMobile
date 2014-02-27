@@ -30,6 +30,10 @@ public class Session {
 
     @SerializedName("clip_url")
     private String clipUrl;
+
+    @SerializedName("modified")
+    private String modified;
+
 	// GET only, use PostSession for POST
 	public Session() {
 		this.title = null;
@@ -39,6 +43,7 @@ public class Session {
 		this.numLikes = 0;
 		this.thumbnailUrl = null;
         this.clipUrl = null;
+        this.modified = null;
 	}
 	
 	public Session(String title, Crowd crowd) {
@@ -106,6 +111,10 @@ public class Session {
 
     public void setClipUrl(String url) { this.clipUrl=url;}
 
+    public String[] getMembersFirstNamesAsArray() {
+        return crowd.getMembersFirstNames();
+    }
+
     public String getMembersFirstNames() {
         String[] namesArray = crowd.getMembersFirstNames();
         StringBuilder sb = new StringBuilder();
@@ -116,6 +125,10 @@ public class Session {
             }
         }
         return sb.toString();
+    }
+
+    public String getModifiedDate() {
+        return modified;
     }
 	
 	public String toString() {
