@@ -47,8 +47,8 @@ public class API {
 	private boolean isSigningIn = false;
 	private static final String AUTHORIZATION = "Authorization";
 	private static String ACCESS_TOKEN = "invalidaccesstoken";
-	private static final String PROD = "http://rapchat-django.herokuapp.com/";
-	private static final String QA = "http://rapchat-django.herokuapp.com/";
+	private static final String PROD = "http://rapback.herokuapp.com/";
+	private static final String QA = "http://rapback.herokuapp.com/";
 	private static final String BASE_URL = Constants.DEBUG ? QA:PROD;
 
 	// Common URLs

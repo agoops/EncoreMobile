@@ -11,6 +11,11 @@
         <item>Friend Requests</item>
         <item>Users</item>
     </string-array>
+
+    <string-array name="drawer_titles">
+        <item>Unfinished</item>
+        <item>Profile</item>
+    </string-array>
     
     <string name="drawer_open">Open navigation drawer</string>
     <string name="drawer_close">Close navigation drawer</string>
