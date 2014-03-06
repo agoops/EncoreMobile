@@ -9,7 +9,6 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -105,18 +104,18 @@ public class PreviewFragment extends Fragment implements View.OnClickListener {
                     // Start new session flow
                     Log.d(TAG, "Creating new session");
                     generateThumbnail();
-                    FragmentTransaction ft = getFragmentManager().beginTransaction();
-                    CreateSessionFragment createSessionFragment = new CreateSessionFragment();
-
-                    // Pass the filepath to the session
-                    Bundle args = new Bundle();
-                    args.putString(T.FILEPATH, uriString);
-                    args.putString(T.THUMBNAIL_FILEPATH, thumbnailFilepath);
-                    createSessionFragment.setArguments(args);
-
-                    ft.replace(R.id.fragment_placeholder, createSessionFragment);
-                    ft.addToBackStack(null);
-                    ft.commit();
+//                    FragmentTransaction ft = getFragmentManager().beginTransaction();
+//                    Fragment createSessionFragment = new CreateSessionFragment();
+//
+//                    // Pass the filepath to the session
+//                    Bundle args = new Bundle();
+//                    args.putString(T.FILEPATH, uriString);
+//                    args.putString(T.THUMBNAIL_FILEPATH, thumbnailFilepath);
+//                    createSessionFragment.setArguments(args);
+//
+//                    ft.replace(R.id.fragment_placeholder, createSessionFragment);
+//                    ft.addToBackStack(null);
+//                    ft.commit();
                 }
                 else {
                     //add recorded clip to current session

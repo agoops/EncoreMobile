@@ -30,18 +30,24 @@ public class HomeActivity extends FragmentActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.home_activity);
 
-        // Show inbox by default
-        Fragment inboxFragment = new InboxListViewFragment();
+        // Show live sessions by default
+        Fragment liveFragment = new LiveFragment();
         FragmentManager fm = getSupportFragmentManager();
         fm.beginTransaction()
-                .replace(R.id.home_content_frame, inboxFragment)
+                .replace(R.id.home_content_frame, liveFragment)
                 .commit();
 
-        // Get views
+        getViews();
+        setupNavDrawer();
+    }
+
+    private void getViews() {
         drawerTitles = getResources().getStringArray(R.array.drawer_titles);
         drawerLayout = (DrawerLayout) findViewById(R.id.home_drawer_layout);
         drawerList = (ListView) findViewById(R.id.home_left_drawer);
+    }
 
+    private void setupNavDrawer() {
         drawerToggle = new ActionBarDrawerToggle(
                 this,
                 drawerLayout,
@@ -83,19 +89,25 @@ public class HomeActivity extends FragmentActivity {
             switch(position)
             {
                 case 0:
-                    Fragment inboxFragment = new InboxListViewFragment();
+                    Fragment liveFragment = new LiveFragment();
                     fm.beginTransaction()
-                            .replace(R.id.home_content_frame, inboxFragment)
+                            .replace(R.id.home_content_frame, liveFragment)
                             .commit();
                     break;
                 case 1:
+                    Fragment completeFragment = new CompleteFragment();
+                    fm.beginTransaction()
+                            .replace(R.id.home_content_frame, completeFragment)
+                            .commit();
+                    break;
+                case 2:
                     Fragment profileFragment = new ProfileFragment();
                     fm.beginTransaction()
                             .replace(R.id.home_content_frame, profileFragment)
                             .commit();
                     break;
                 default:
-                    Fragment defaultFragment = new InboxListViewFragment();
+                    Fragment defaultFragment = new LiveFragment();
                     fm.beginTransaction()
                             .replace(R.id.home_content_frame, defaultFragment)
                             .commit();
@@ -124,7 +136,7 @@ public class HomeActivity extends FragmentActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (drawerToggle.onOptionsItemSelected(item)) {
-            // If drawerToggle returne true, it has handled the touch event
+            // If drawerToggle returned true, it has handled the touch event
             return true;
         }
 

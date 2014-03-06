@@ -11,7 +11,14 @@ import android.view.MenuItem;
 
 import com.encore.Fragments.CameraFragment;
 import com.encore.Fragments.ReplyFragment;
+import com.encore.models.Clip;
 import com.encore.util.T;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+
+import java.lang.reflect.Type;
+import java.util.ArrayList;
+import java.util.List;
 
 public class StartSession extends FragmentActivity {
     private static final String TAG = "StartSession";
@@ -25,6 +32,8 @@ public class StartSession extends FragmentActivity {
         // Inbox > StartSession:ClipPreview > StartSession:Camera > StartSession:Preview > Send clip, HomeActivity
         // StartSession:Camera > StartSession:Preview > StartSession:CrowdPicker
         int sessionId = getIntent().getIntExtra(T.SESSION_ID, -1);
+        int feedType = getIntent().getIntExtra(T.FEED_TYPE, -1);
+        boolean isComplete = getIntent().getBooleanExtra(T.IS_COMPLETE, false);
 
         // Add UP navigation
         getActionBar().setDisplayHomeAsUpEnabled(true);
@@ -41,7 +50,6 @@ public class StartSession extends FragmentActivity {
             // Open the camera fragment
             Intent intent = getIntent();
             Bundle bundle = new Bundle();
-            bundle.putInt("crowdId", intent.getIntExtra("crowdId", -1));
             bundle.putString("sessionTitle", intent.getStringExtra("sessionTitle"));
             bundle.putInt("sessionId", intent.getIntExtra("sessionId", -1));
             cameraFragment.setArguments(bundle);
@@ -49,20 +57,45 @@ public class StartSession extends FragmentActivity {
             ft.add(R.id.fragment_placeholder, cameraFragment);
             ft.commit();
         } else {
-            // Reply to new session
             FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
             ReplyFragment replyFragment = new ReplyFragment();
 
-            Log.d(TAG, "Clip URL: " + getIntent().getStringExtra(T.CLIP_URL));
+            if(isComplete) {
+                // Complete sessions can only be viewed, not rapbacked
+                Intent intent = getIntent();
 
-            Intent intent = getIntent();
-            Bundle bundle = new Bundle();
-            bundle.putInt(T.SESSION_ID, sessionId);
-            bundle.putString(T.CLIP_URL, intent.getStringExtra(T.CLIP_URL));
-            replyFragment.setArguments(bundle);
+                // Get clip urls
+                String clipsJson = intent.getStringExtra(T.ALL_CLIPS);
+                Type listType = new TypeToken<ArrayList<Clip>>() {}.getType();
+                List<Clip> clips = (new Gson()).fromJson(clipsJson, listType);
 
-            ft.add(R.id.fragment_placeholder, replyFragment);
-            ft.commit();
+                ArrayList<String> clipURLs = new ArrayList<String>();
+                for (Clip c : clips) {
+                    clipURLs.add(c.getUrl());
+                }
+
+                Bundle bundle = new Bundle();
+                bundle.putInt(T.SESSION_ID, sessionId);
+                bundle.putStringArrayList(T.CLIP_URL, clipURLs);
+                bundle.putBoolean(T.IS_COMPLETE, isComplete);
+                replyFragment.setArguments(bundle);
+
+                ft.add(R.id.fragment_placeholder, replyFragment);
+                ft.commit();
+            } else {
+                // Live session - reply to the new session
+                Log.d(TAG, "Clip URL: " + getIntent().getStringExtra(T.CLIP_URL));
+
+                Intent intent = getIntent();
+                Bundle bundle = new Bundle();
+                bundle.putInt(T.SESSION_ID, sessionId);
+                bundle.putString(T.CLIP_URL, intent.getStringExtra(T.CLIP_URL));
+                bundle.putBoolean(T.IS_COMPLETE, isComplete);
+                replyFragment.setArguments(bundle);
+
+                ft.add(R.id.fragment_placeholder, replyFragment);
+                ft.commit();
+            }
         }
 
     }

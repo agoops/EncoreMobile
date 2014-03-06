@@ -45,4 +45,6 @@ public class Paginator {
     public URL getPrevious() {
         return previous;
     }
+
+    public int getCount() { return count; }
 }

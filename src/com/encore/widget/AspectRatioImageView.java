@@ -5,6 +5,8 @@ import android.util.AttributeSet;
 import android.widget.ImageView;
 
 public class AspectRatioImageView extends ImageView {
+    private boolean isComplete;
+
     public AspectRatioImageView(Context context) {
         super(context);
     }

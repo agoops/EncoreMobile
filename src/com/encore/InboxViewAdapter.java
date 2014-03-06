@@ -1,11 +1,7 @@
 package com.encore;
 
-import android.app.Activity;
-import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
-import android.media.MediaPlayer;
-import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.ResultReceiver;
@@ -14,25 +10,25 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
-import android.view.Window;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.MediaController;
 import android.widget.TextView;
-import android.widget.VideoView;
 
 import com.encore.API.APIService;
+import com.encore.models.Clip;
 import com.encore.models.Comment;
 import com.encore.models.Likes;
 import com.encore.models.Session;
 import com.encore.util.T;
 import com.encore.widget.CommentDialog;
 import com.google.gson.Gson;
-import com.google.gson.JsonArray;
-import com.google.gson.JsonParser;
+import com.google.gson.reflect.TypeToken;
 import com.squareup.picasso.Picasso;
 
+import java.lang.reflect.Type;
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 
@@ -45,7 +41,7 @@ public class InboxViewAdapter extends ArrayAdapter<Session> implements OnClickLi
 	private SessionView rowView;
     private TextView titleTextView, crowdTextView, likesTv, commentsTv, crowdSizeTv, dateTv;
     private ImageView commentsIcon;
-    private Button reply, likeButton;
+    private Button likeButton;
     private com.encore.widget.AspectRatioImageView thumbnailIv;
     private double width, height;
 
@@ -69,7 +65,7 @@ public class InboxViewAdapter extends ArrayAdapter<Session> implements OnClickLi
         // Get the most recently loaded session
         Session entry = mSessionList.get(position);
 
-        initializeViews(convertView);
+        getViews(convertView);
         setTags(entry);
         assignOnClickListeners();
         populateViewsWithData(convertView, entry);
@@ -77,10 +73,9 @@ public class InboxViewAdapter extends ArrayAdapter<Session> implements OnClickLi
         return convertView;
     }
 
-    public void initializeViews(View convertView) {
+    public void getViews(View convertView) {
         // Get the row views
         titleTextView = (TextView) convertView.findViewById(R.id.session_title_tv);
-        reply = (Button) convertView.findViewById(R.id.reply);
         likeButton = (Button) convertView.findViewById(R.id.like_button);
         likesTv = (TextView) convertView.findViewById(R.id.likes_tv);
         commentsTv = (TextView) convertView.findViewById(R.id.comments_tv);
@@ -95,7 +90,6 @@ public class InboxViewAdapter extends ArrayAdapter<Session> implements OnClickLi
         // Assign the appropriate data to each view
         int numLikes = entry.getLikes();
 
-        reply.setTag(R.string.first_key, entry);
         likeButton.setTag(R.string.first_key, entry);
         likesTv.setTag(R.string.first_key, entry);
         commentsTv.setTag(R.string.first_key, entry);
@@ -110,7 +104,6 @@ public class InboxViewAdapter extends ArrayAdapter<Session> implements OnClickLi
 
     public void assignOnClickListeners() {
         // Assign click listeners
-        reply.setOnClickListener(this);
         likesTv.setOnClickListener(this);
         commentsTv.setOnClickListener(this);
         commentsIcon.setOnClickListener(this);
@@ -122,15 +115,12 @@ public class InboxViewAdapter extends ArrayAdapter<Session> implements OnClickLi
         // Set session title
         titleTextView.setText(entry.getTitle());
 
-        // Get the crowd members' names and size
-//        String names = entry.getMembersFirstNames();
-        String[] names = entry.getMembersFirstNamesAsArray();
-        String crowdTitle = entry.getCrowdTitle();
-        crowdTextView.setText("Crowd: " + crowdTitle);
-        crowdSizeTv.setText(Integer.toString(names.length) + " members");
+        // Get the members' names and size
+        crowdTextView.setText("Crowd: NO CROWD DATA HERE");
+        crowdSizeTv.setText("NO CROWD DATA members");
 
         // Set date
-        String date = formatDate(entry.getModifiedDate());
+        String date = formatDate(entry.getModified());
         dateTv.setText(formatDate(date));
 
         // Set the like icon if the session is liked
@@ -154,16 +144,26 @@ public class InboxViewAdapter extends ArrayAdapter<Session> implements OnClickLi
             likesTv.setText(numLikes + " likes");
         }
 
-        // Set the thumbnail
-        if(entry.getThumbnailUrl() != null) {
-            Picasso.with(mContext)
-                    .load(entry.getThumbnailUrl())
-                    .resize((int) width,(int) height)
-                    .into(thumbnailIv);
+        if(entry.isComplete()) {
+            Clip firstClip = entry.getClips().get(0);
+
+            // Set the thumbnail
+            if(firstClip.getThumbnail_url() != null) {
+                Picasso.with(mContext)
+                        .load(firstClip.getThumbnail_url())
+                        .resize((int) width,(int) height)
+                        .into(thumbnailIv);
+            }
+        } else {
+            // Set the thumbnail
+            if(entry.getThumbnailUrl() != null) {
+                Picasso.with(mContext)
+                        .load(entry.getThumbnailUrl())
+                        .resize((int) width,(int) height)
+                        .into(thumbnailIv);
+            }
         }
 
-        // Set typeface for all textviews
-//        T.setTypeFace(mContext, titleTextView, crowdTextView, likesTv, commentsTv);
     }
 
     @Override
@@ -182,45 +182,55 @@ public class InboxViewAdapter extends ArrayAdapter<Session> implements OnClickLi
 
         switch(v.getId())
 		{
-        case R.id.reply:
-            // Pass crowdId and sessionTitle on to StartSession2
-            // who in turn passes it on to RecordFragment
-            launchSessionActivity(sesh);
-            break;
-		case R.id.comments_tv:
-			// Open an AlertDialog to show comments
-			openComments(sesh);
-			break;
-        case R.id.comments_icon:
-            // Open an AlertDialog to show comments
-            openComments(sesh);
-            break;
-		case R.id.likes_tv:
-            likeServerSide(sesh); // POST like
-            likeClientSide(sesh, v); // Update count & toggle icon
-			break;
-        case R.id.like_button:
-            likeServerSide(sesh); // POST like
-            likeClientSide(sesh, v); // Update count & toggle icon
-            break;
-		case R.id.inboxImageView:
-			// Clicking the thumbnail will play the video
-			playVideo(sesh);
-            break;
-        default:
-            break;
+            case R.id.comments_tv:
+                // Open an AlertDialog to show comments
+                openComments(sesh);
+                break;
+            case R.id.comments_icon:
+                // Open an AlertDialog to show comments
+                openComments(sesh);
+                break;
+            case R.id.likes_tv:
+                likeServerSide(sesh); // POST like
+                likeClientSide(sesh, v); // Update count & toggle icon
+                break;
+            case R.id.like_button:
+                likeServerSide(sesh); // POST like
+                likeClientSide(sesh, v); // Update count & toggle icon
+                break;
+            case R.id.inboxImageView:
+                // Clicking the thumbnail will play the video
+                // TODO: Play automatically
+                playVideo(sesh);
+                break;
+            default:
+                break;
 		}
 	}
 
-    private void launchSessionActivity(Session sesh) {
-        int crowdId = sesh.getCrowdId();
-//        Intent launchSessionActivity = new Intent(mContext, CameraActivity2.class);
-        Intent startSessionActivity = new Intent(mContext, StartSession.class);
-        startSessionActivity.putExtra("crowdId", crowdId);
-        startSessionActivity.putExtra("sessionTitle", sesh.getTitle());
-        startSessionActivity.putExtra("sessionId", sesh.getId());
-        ((Activity) mContext).startActivity(startSessionActivity);
-    }
+    // TODO: Thumbnail stitching
+//    private void setCompleteThumbnail(Session session) {
+//        List<Clip> clips = session.getClips();
+//        List<String> thumbnails = new ArrayList<String>();
+//
+//        for (Clip clip : clips) {
+//            thumbnails.add(clip.getThumbnail_url());
+//        }
+//
+//        Bitmap finalImage = downloadAndStichThumbnails(thumbnails);
+//
+//        if(entry.getThumbnailUrl() != null) {
+//            Picasso.with(mContext)
+//                    .load(entry.getThumbnailUrl())
+//                    .resize((int) width,(int) height)
+//                    .into(thumbnailIv);
+//        }
+//    }
+//
+//    private Bitmap downloadAndStichThumbnails(List<String> thumbnails) {
+//
+//    }
+
 
     private void likeServerSide(Session sesh) {
         Log.d(TAG, "Making like request");
@@ -267,24 +277,29 @@ public class InboxViewAdapter extends ArrayAdapter<Session> implements OnClickLi
     }
 
     private void playVideo(Session sesh) {
-//        Intent clipApi = new Intent(mContext, APIService.class);
-//        ResultReceiver receiver = new ClipStreamReceiver(new Handler());
-        int sessionId = sesh.getId();
-        String clipUrl = sesh.getClipUrl();
-        Log.d(TAG, "clip url:  " + clipUrl);
-//        Uri uri = Uri.parse(clipUrl);
-        // Launch reply flow, pass sessionId and crowdId to
-        Intent startSession = new Intent(mContext, StartSession.class);
-        startSession.putExtra(T.SESSION_ID, sessionId);
-        startSession.putExtra(T.CLIP_URL, clipUrl);
-        mContext.startActivity(startSession);
+        if(sesh.isComplete()) {
+            int sessionId = sesh.getId();
+            List<Clip> clips = sesh.getClips();
+            Type listType = new TypeToken<ArrayList<Clip>>() {}.getType();
+            String clipsJson = (new Gson()).toJson(clips, listType);
 
+            // Playback all clips
+            Intent startSession = new Intent(mContext, StartSession.class);
+            startSession.putExtra(T.SESSION_ID, sessionId);
+            startSession.putExtra(T.ALL_CLIPS, clipsJson);
+            startSession.putExtra(T.IS_COMPLETE, sesh.isComplete());
+            mContext.startActivity(startSession);
+        } else {
+            int sessionId = sesh.getId();
+            String clipUrl = sesh.getClipUrl();
 
-//        showVideoDialog(uri);
-//        clipApi.putExtra(T.API_TYPE, T.GET_CLIP_STREAM);
-//        clipApi.putExtra(T.SESSION_ID, sessionId);
-//        clipApi.putExtra(T.RECEIVER, receiver);
-//        mContext.startService(clipApi);
+            // Playback most recent clip, allow for reply flow
+            Intent startSession = new Intent(mContext, StartSession.class);
+            startSession.putExtra(T.SESSION_ID, sessionId);
+            startSession.putExtra(T.CLIP_URL, clipUrl);
+            startSession.putExtra(T.IS_COMPLETE, sesh.isComplete());
+            mContext.startActivity(startSession);
+        }
     }
 
     private void getUsersLikes() {
@@ -352,37 +367,6 @@ public class InboxViewAdapter extends ArrayAdapter<Session> implements OnClickLi
         }
     }
 
-	private class ClipStreamReceiver extends ResultReceiver {
-        public ClipStreamReceiver(Handler handler) {
-                super(handler);
-        }
-
-        @Override
-        protected void onReceiveResult(int resultCode, Bundle resultData) {
-            if (resultCode == 1) {
-                Log.d(TAG, "APIService returned successful with clip stream");
-                Log.d(TAG, "Attempting to play clip");
-                String result = resultData.getString("result");
-                Log.d(TAG, "result from apiservice is: " + result);
-                JsonParser jsonParser = new JsonParser();
-                JsonArray jsonClipsArray = jsonParser.parse(result).getAsJsonArray();
-
-                int numClipsInSession = jsonClipsArray.size();
-
-                // Get last clipElement, get clip url
-                String url = jsonClipsArray.get(0).getAsJsonObject().get("url").getAsString();
-                Log.d(TAG, "url is: " + url);
-                Uri uri = Uri.parse(url);
-
-                //Problems: can stream back a video from android, but not from what michael made.
-                //I know android records in mpeg4.
-                showVideoDialog(uri);
-            } else {
-                Log.d(TAG, "APIService get session clip url failed?");
-            }
-        }
-	}
-
     private class LikesReceiver extends ResultReceiver {
         public LikesReceiver(Handler handler) {
             super(handler);
@@ -402,50 +386,8 @@ public class InboxViewAdapter extends ArrayAdapter<Session> implements OnClickLi
         }
     }
 
-	private void showVideoDialog(Uri uri) {
-        // Setup dialog
-		final Dialog dialog = new Dialog(mContext);
-        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-        dialog.setContentView(R.layout.video_dialog);
-        dialog.setCancelable(true);
-
-        // Setup videoview
-        VideoView videoView = (VideoView) dialog.findViewById(R.id.video_dialog_video_view);
-        videoView.setZOrderOnTop(true);
-        videoView.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
-
-			@Override
-			public void onCompletion(MediaPlayer mp) {
-				dialog.cancel();
-			}
-		});
-//        All these methods play android, but don't play iOS
-//        -------- 1st method ----------
-        VideoPlayer vp = new VideoPlayer(videoView, mContext);
-        Log.d(TAG, "URI is: " + uri.toString());
-        vp.playVideo(uri);
-
-//        -------- 2nd method ----------
-//        mc = new MediaController(mContext);
-//        mc.setMediaPlayer(videoView);
-//        videoView.setMediaController(mc);
-//        videoView.setVideoURI(uri);
-//        videoView.requestFocus();
-//        videoView.start();
-
-//        --------- 3rd method ---------
-//        mc = new MediaController(mContext);
-//        mc.setAnchorView(videoView);
-//        videoView.setMediaController(mc);
-//        videoView.setVideoURI(uri);
-//        videoView.requestFocus();
-//        videoView.start();
-
-        dialog.show();
-	}
-
-    // Used in InboxListViewFragment
-	public void setItemList(List<Session> sessions) {
+    // Used in LiveFragment and CompleteFragment
+	public void setSessionsList(List<Session> sessions) {
 		this.mSessionList = sessions;
 	}
 
@@ -453,6 +395,4 @@ public class InboxViewAdapter extends ArrayAdapter<Session> implements OnClickLi
         this.width = width;
         this.height = 1.3*width;
     }
-
-
 }

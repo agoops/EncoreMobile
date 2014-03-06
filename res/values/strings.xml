@@ -13,7 +13,8 @@
     </string-array>
 
     <string-array name="drawer_titles">
-        <item>Unfinished</item>
+        <item>Live</item>
+        <item>Complete</item>
         <item>Profile</item>
     </string-array>
     

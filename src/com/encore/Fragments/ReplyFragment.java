@@ -6,6 +6,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,6 +18,9 @@ import com.encore.R;
 import com.encore.VideoPlayer;
 import com.encore.util.T;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Created by babakpourkazemi on 1/14/14.
  */
@@ -26,9 +30,12 @@ public class ReplyFragment extends Fragment implements View.OnClickListener {
     Context context;
     private int sessionId;
     private Uri clipUri;
+    private List<Uri> clipUris;
     private VideoView clipVideoView;
     private Button rapbackButton;
     private ProgressBar progressBar;
+    private Boolean isComplete;
+    private VideoPlayer vp;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -39,30 +46,52 @@ public class ReplyFragment extends Fragment implements View.OnClickListener {
         initData();
         getViews();
         setOnClickListeners();
-        playVideo();
+
+        if(isComplete) {
+            playVideoList(0);
+        } else {
+            playVideo();
+        }
 
         return view;
     }
 
     private void initData() {
+        clipUris = new ArrayList<Uri>();
+
         // Get arguments
+        isComplete = getArguments().getBoolean(T.IS_COMPLETE);
         sessionId = getArguments().getInt(T.SESSION_ID);
-        String clipUriString = getArguments().getString(T.CLIP_URL);
-        clipUri = Uri.parse(clipUriString);
+
+        if(isComplete) {
+            List<String> clipURLs = getArguments().getStringArrayList(T.CLIP_URL);
+            for (String uri : clipURLs) {
+                clipUris.add(Uri.parse(uri));
+            }
+        } else {
+            String clipUriString = getArguments().getString(T.CLIP_URL);
+            clipUri = Uri.parse(clipUriString);
+        }
     }
 
     private void getViews() {
         clipVideoView = (VideoView) view.findViewById(R.id.reply_clip_preview);
         rapbackButton = (Button) view.findViewById(R.id.reply_rapback_button);
         progressBar = (ProgressBar) view.findViewById(R.id.progress_clip_playback);
+
+        vp = new VideoPlayer(clipVideoView, context);
+        if(isComplete) {
+            rapbackButton.setVisibility(View.GONE);
+        }
     }
 
     private void setOnClickListeners() {
-        rapbackButton.setOnClickListener(this);
+        if(!isComplete) {
+            rapbackButton.setOnClickListener(this);
+        }
     }
 
     private void playVideo() {
-        VideoPlayer vp = new VideoPlayer(clipVideoView, context);
         vp.playVideo(clipUri);
 
         // Loop video
@@ -73,6 +102,31 @@ public class ReplyFragment extends Fragment implements View.OnClickListener {
                 mp.setLooping(true);
             }
         });
+    }
+
+    private void playVideoList(int curClipIndex) {
+        progressBar.setVisibility(View.GONE);
+        vp.playVideo(clipUris.get(curClipIndex));
+
+//        clipVideoView.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
+//            @Override
+//            public void onPrepared(MediaPlayer mp) {
+//                mp.setLooping(true);
+//            }
+//        });
+
+        MediaPlayer.OnCompletionListener onCompletionListener = new MediaPlayer.OnCompletionListener() {
+            @Override
+            public void onCompletion(MediaPlayer mediaPlayer) {
+                int curClipIndex = ((vp.getCurClip() + 1) % clipUris.size());
+                vp.setCurClip(curClipIndex);
+
+                Log.d(TAG, "about to play index: " + curClipIndex);
+                playVideoList(curClipIndex);
+            }
+        };
+
+        clipVideoView.setOnCompletionListener(onCompletionListener);
     }
 
     @Override

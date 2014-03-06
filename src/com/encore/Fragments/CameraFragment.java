@@ -196,6 +196,7 @@ public class CameraFragment extends Fragment implements
     }
 
     private void setUpButtons() {
+        // TODO: Moving action bar
         record = (Button) view.findViewById(R.id.record);
 
         record.setOnTouchListener(new View.OnTouchListener() {

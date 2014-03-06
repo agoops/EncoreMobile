@@ -13,9 +13,6 @@ public class Session {
 	@SerializedName("title")
 	private String title;
 	
-	@SerializedName("crowd")
-	private Crowd crowd;
-	
 	@SerializedName("is_complete")
 	private boolean complete;
 	
@@ -31,24 +28,35 @@ public class Session {
     @SerializedName("clip_url")
     private String clipUrl;
 
+    @SerializedName("clips")
+    private List<Clip> clips = new ArrayList<Clip>();
+
+    @SerializedName("created")
+    private String created;
+
     @SerializedName("modified")
     private String modified;
 
 	// GET only, use PostSession for POST
-	public Session() {
-		this.title = null;
-		this.crowd = null;
-		this.complete = false;
-		this.comments = null;
-		this.numLikes = 0;
-		this.thumbnailUrl = null;
-        this.clipUrl = null;
-        this.modified = null;
-	}
-	
-	public Session(String title, Crowd crowd) {
+
+
+    public Session(int id, String title, boolean complete, List<Comment> comments,
+                   int numLikes, String thumbnailUrl, String clipUrl,
+                   List<Clip> clips, String created, String modified) {
+        this.id = id;
+        this.title = title;
+        this.complete = complete;
+        this.comments = comments;
+        this.numLikes = numLikes;
+        this.thumbnailUrl = thumbnailUrl;
+        this.clipUrl = clipUrl;
+        this.clips = clips;
+        this.created = created;
+        this.modified = modified;
+    }
+
+    public Session(String title) {
 		this.title = title;
-		this.crowd = crowd;
 	}
 
 	public int getId() {
@@ -67,14 +75,6 @@ public class Session {
 		this.title = title;
 	}
 	
-	public String getCrowdTitle() {
-		return this.crowd.getTitle();
-	}
-	
-	public int getCrowdId() {
-		return this.crowd.getId();
-	}
-
 	public boolean isComplete() {
 		return complete;
 	}
@@ -109,30 +109,38 @@ public class Session {
 
     public String getClipUrl() { return this.clipUrl;}
 
+    public List<Clip> getClips() {
+        return clips;
+    }
+
     public void setClipUrl(String url) { this.clipUrl=url;}
 
-    public String[] getMembersFirstNamesAsArray() {
-        return crowd.getMembersFirstNames();
-    }
+//    public String[] getMembersFirstNamesAsArray() {
+//        return crowd.getMembersFirstNames();
+//    }
 
-    public String getMembersFirstNames() {
-        String[] namesArray = crowd.getMembersFirstNames();
-        StringBuilder sb = new StringBuilder();
-        for(int i=0; i<namesArray.length; i++) {
-            sb.append(namesArray[i]);
-            if(i < namesArray.length-1) {
-                sb.append(", ");
-            }
-        }
-        return sb.toString();
-    }
+//    public String getMembersFirstNames() {
+//        String[] namesArray = crowd.getMembersFirstNames();
+//        StringBuilder sb = new StringBuilder();
+//        for(int i=0; i<namesArray.length; i++) {
+//            sb.append(namesArray[i]);
+//            if(i < namesArray.length-1) {
+//                sb.append(", ");
+//            }
+//        }
+//        return sb.toString();
+//    }
 
-    public String getModifiedDate() {
+    public String getCreated() { return created; }
+
+    public String getModified() {
         return modified;
     }
 	
 	public String toString() {
-		return "[" + "Title: " + this.title + ", \nCrowd Title" + this.crowd.getTitle() + ", \nCrowd ID: " + this.crowd.getId() +
-				", \nThumbnail URL: " + this.thumbnailUrl + " \nClip URL: " + this.clipUrl + " \n]";
+//		return "[" + "Title: " + this.title + ", \nCrowd Title" + this.crowd.getTitle() + ", \nCrowd ID: " + this.crowd.getId() +
+//				", \nThumbnail URL: " + this.thumbnailUrl + " \nClip URL: " + this.clipUrl + " \n]";
+        return "[" + "Title: " + this.title + ", \nThumbnail URL: " + this.thumbnailUrl +
+                " \nClip URL: " + this.clipUrl + " \n]";
 	}
 }

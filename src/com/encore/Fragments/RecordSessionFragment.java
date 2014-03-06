@@ -8,7 +8,6 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -99,16 +98,8 @@ public class RecordSessionFragment extends Fragment implements OnClickListener {
 		}
 		case R.id.next_button: {
 			// TODO: First check if a recording has been made!
-			// Create a new fragment transaction and PickCrowdFragment
-			FragmentTransaction ft = getFragmentManager().beginTransaction();
-			ft.setCustomAnimations(R.anim.enter, R.anim.exit, R.anim.pop_enter, R.anim.pop_exit);
-			PickCrowdFragment pickCrowdFragment = new PickCrowdFragment();
-			pickCrowdFragment.setPath(path);
-			
-			// Replace the RecordSessionFragment with a PickCrowdFragment
-			ft.replace(R.id.fragment_placeholder, pickCrowdFragment);
-			ft.addToBackStack(null);
-			ft.commit();
+            // TODO: Modify to support new flow
+			// Create a new fragment transaction
 			break;
 		}
 		case R.id.send_clip_btn:

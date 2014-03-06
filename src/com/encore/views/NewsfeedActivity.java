@@ -56,7 +56,7 @@ public class NewsfeedActivity extends FragmentActivity {
 	
 //	private void getAllSessions() {
 //		Intent apiIntent = new Intent(this, APIService.class);
-//		apiIntent.putExtra(T.API_TYPE, T.GET_SESSIONS);
+//		apiIntent.putExtra(T.API_TYPE, T.GET_LIVE_SESSIONS);
 //		SessionListReceiver mReceiver = new SessionListReceiver(new Handler());
 //		apiIntent.putExtra(T.RECEIVER, mReceiver);
 //		startService(apiIntent);
@@ -78,11 +78,11 @@ public class NewsfeedActivity extends FragmentActivity {
 //				
 //				SessionViewAdapter nAdapter = ((VideoListViewFragment) fragments[NEWSFEED])
 //						.getAdapter();
-//				nAdapter.setItemList(sessions.get(NEWSFEED));
+//				nAdapter.setSessionsList(sessions.get(NEWSFEED));
 //				nAdapter.notifyDataSetChanged();
 //				
-//				InboxViewAdapter iAdapter = ((InboxListViewFragment) fragments[INBOX]).getAdapter();
-//				iAdapter.setItemList(sessions.get(INBOX));
+//				InboxViewAdapter iAdapter = ((LiveFragment) fragments[INBOX]).getAdapter();
+//				iAdapter.setSessionsList(sessions.get(INBOX));
 //				iAdapter.notifyDataSetChanged();
 //				
 //			} else {
@@ -178,7 +178,7 @@ public class NewsfeedActivity extends FragmentActivity {
 //				fragments[NEWSFEED] = fragment3;
 //				return fragment3;
 //			case 1:
-//				Fragment fragment4 = new InboxListViewFragment();
+//				Fragment fragment4 = new LiveFragment();
 //				fragments[INBOX] = fragment4;
 //				return fragment4;
 //			}

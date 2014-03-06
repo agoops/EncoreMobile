@@ -4,9 +4,7 @@ import android.content.Context;
 import android.util.Log;
 
 import com.encore.TokenHelper;
-import com.encore.models.Crowd;
 import com.encore.models.PostComment;
-import com.encore.models.PostCrowd;
 import com.encore.models.PostLike;
 import com.encore.models.UpdateUser;
 import com.encore.util.Constants;
@@ -29,7 +27,6 @@ import java.io.OutputStream;
 import java.lang.reflect.Type;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.util.ArrayList;
 //import com.encore.models.Crowds;
 
 public class API {
@@ -57,7 +54,6 @@ public class API {
     private static final String USER_OTHER = USERS + "%s";
     private static final String SESSIONS = USER_ME + "sessions/";
     private static final String FRIENDS = USER_ME + "friends/";
-    private static final String CROWDS = USER_ME + "crowds/";
     private static final String REQUESTS = FRIENDS + "requests/";
     private static final String REPLY = REQUESTS + "reply/";
     private static final String LIKES = USER_ME + "likes/";
@@ -66,7 +62,8 @@ public class API {
 	private static final String LOG_IN = USERS + "obtain-token/";
     private static final String SIGN_UP = USERS;
     // Sessions
-    private static final String GET_SESSIONS = SESSIONS;
+    private static final String GET_LIVE_SESSIONS = SESSIONS;
+    private static final String GET_COMPLETE_SESSIONS = SESSIONS + "complete/";
     private static final String CREATE_SESSION = SESSIONS;
     private static final String SESSION_PAGE = SESSIONS + "?page=%s";
     // Clips
@@ -74,9 +71,6 @@ public class API {
     private static final String ADD_CLIP = CLIP;
     // Friends
 	private static final String SEND_FRIEND_REQUEST = FRIENDS + "requests/";
-    // Crowds
-	private static final String GET_CROWDS = CROWDS;
-    private static final String CREATE_CROWD = CROWDS;
     // Comments
 	private static final String CREATE_COMMENT = BASE_URL + "sessions/%s/comments/";
     // Search
@@ -440,71 +434,35 @@ public class API {
 		return result;
 	}
 	
-	// GET crowds/
-	// Returns all crowds
-	public String getCrowds(String token) throws Exception {
-		Log.d(TAG, "getCrowds called");
-		ACCESS_TOKEN = "Token " + token;
-		String url = GET_CROWDS;
-		String json = "";
-        ArrayList<Crowd> result;
+	public String getLiveSessions() throws IOException {
+		Log.d(TAG, "getLiveSessions called");
 
-		// try {
-		// json = get(url, Crowds.class);
-		// result = getGson().fromJson(json, Crowds.class);
-		// } catch(Exception e) {
-		// Log.e(TAG, "getCrowds() error");
-		// throw e;
-		// }
-
-		try {
-			json = get(url, Crowd.class);
-			Log.d(TAG, "get crowds JSON: " + json);
-		} catch(Exception e) {
-			Log.e(TAG, "getCrowds() error");
-			throw e;
-		}
-		
-		return json;
-	}
-	
-	// POST crowds/
-	// Creates a new crowd
-	public Crowd createCrowd(PostCrowd pCrowd, String token) throws Exception {
-		Log.d(TAG, "createCrowd called");
-		ACCESS_TOKEN = "Token " + token;
-		String url = CREATE_CROWD;
-		String postResult = null;
-		Crowd resultCrowd = null;
-		
-		try {
-			String JSON = getGson().toJson(pCrowd);
-			Log.d(TAG, "Posting JSON: " + JSON);
-			
-			postResult = post(url, new StringEntity(JSON), String.class);
-			
-			resultCrowd = getGson().fromJson(postResult, Crowd.class);
-		} catch (Exception e) {
-			Log.e(TAG, "createCrowd() error");
-			throw e;
-		}
-		return resultCrowd;
-	}
-	
-	public String getSessions() throws IOException {
-		Log.d(TAG, "getSessions called");
-
-		String url = GET_SESSIONS;
+		String url = GET_LIVE_SESSIONS;
 		String result = "emptyresult";
 		try {
 			result = get(url, String.class);
-			Log.d(TAG, "getSessions resulting JSON: " + result);
+			Log.d(TAG, "getLiveSessions resulting JSON: " + result);
 		} catch (IOException e) {
-			Log.d(TAG, "getSessions() error");
+			Log.d(TAG, "getLiveSessions() error");
 			throw e;
 		}
 		return result;
 	}
+
+    public String getCompleteSessions() throws IOException {
+        Log.d(TAG, "getCompleteSessions called");
+
+        String url = GET_COMPLETE_SESSIONS;
+        String result = "emptyresult";
+        try {
+            result = get(url, String.class);
+            Log.d(TAG, "getCompleteSessions resulting JSON: " + result);
+        } catch (IOException e) {
+            Log.d(TAG, "getLiveSessions() error");
+            throw e;
+        }
+        return result;
+    }
 	
 	public String createComment(PostComment pComment, String token, int sessionId) throws Exception {
 		Log.d(TAG, "createComment called");

@@ -18,12 +18,9 @@ import android.widget.TextView;
 
 import com.encore.API.APIService;
 import com.encore.R;
-import com.encore.TabCrowdAdapter;
 import com.encore.TabFriendsAdapter;
 import com.encore.TabLikesAdapter;
 import com.encore.TabRequestsAdapter;
-import com.encore.models.Crowd;
-import com.encore.models.Crowds;
 import com.encore.models.FriendRequest;
 import com.encore.models.FriendRequestProfile;
 import com.encore.models.Friends;
@@ -45,12 +42,12 @@ public class ProfileFragment extends Fragment implements View.OnClickListener{
     private Context mContext;
 
     private View view;
-    private Button rapsButton, crowdsButton, likesButton, requestsButton, editProfileButton, findFriendsButton;
+    private Button rapsButton, likesButton, requestsButton, editProfileButton, findFriendsButton;
     private ListView listview;
     private TextView myUsernameTv, myFullNameTv, numRapsTv, numLikesTv, numFriendsTv;
     private ProgressBar progressProfile, progressTabs;
     private TabFriendsAdapter friendsAdapter;
-    private TabCrowdAdapter crowdsAdapter;
+//    private TabCrowdAdapter crowdsAdapter;
     private TabLikesAdapter likesAdapter;
     private TabRequestsAdapter requestsAdapter;
     private ResultReceiver receiver;
@@ -78,7 +75,7 @@ public class ProfileFragment extends Fragment implements View.OnClickListener{
 
     private void getViews() {
         rapsButton = (Button) view.findViewById(R.id.profile_raps_button);
-        crowdsButton = (Button) view.findViewById(R.id.profile_crowds_button);
+//        crowdsButton = (Button) view.findViewById(R.id.profile_crowds_button);
         likesButton = (Button) view.findViewById(R.id.profile_likes_button);
         requestsButton = (Button) view.findViewById(R.id.profile_requests_button);
         editProfileButton = (Button) view.findViewById(R.id.profileEditButton);
@@ -98,7 +95,7 @@ public class ProfileFragment extends Fragment implements View.OnClickListener{
 
     private void setOnClickListeners() {
         rapsButton.setOnClickListener(this);
-        crowdsButton.setOnClickListener(this);
+//        crowdsButton.setOnClickListener(this);
         likesButton.setOnClickListener(this);
         requestsButton.setOnClickListener(this);
         editProfileButton.setOnClickListener(this);
@@ -137,14 +134,14 @@ public class ProfileFragment extends Fragment implements View.OnClickListener{
                 getFriends();
 
                 break;
-            case R.id.profile_crowds_button:
-                if(v.isSelected()) {
-                    break; // no need to make another request
-                }
-                setTabPressed(2);
-                getCrowds();
-
-                break;
+//            case R.id.profile_crowds_button:
+//                if(v.isSelected()) {
+//                    break; // no need to make another request
+//                }
+//                setTabPressed(2);
+//                getCrowds();
+//
+//                break;
             case R.id.profile_likes_button:
                 if(v.isSelected()) {
                     break; // no need to make another request
@@ -209,18 +206,18 @@ public class ProfileFragment extends Fragment implements View.OnClickListener{
         getActivity().startService(api);
     }
 
-    private void getCrowds() {
-        Log.d(TAG, "Making request to get crowds");
-
-        // Hide the tabs until we get some data
-        setTabVisibility(0);
-
-        Intent api = new Intent(getActivity(), APIService.class);
-        receiver = new CrowdReceiver(new Handler());
-        api.putExtra(T.API_TYPE, T.GET_CROWDS);
-        api.putExtra(T.RECEIVER, receiver);
-        getActivity().startService(api);
-    }
+//    private void getCrowds() {
+//        Log.d(TAG, "Making request to get crowds");
+//
+//        // Hide the tabs until we get some data
+//        setTabVisibility(0);
+//
+//        Intent api = new Intent(getActivity(), APIService.class);
+//        receiver = new CrowdReceiver(new Handler());
+//        api.putExtra(T.API_TYPE, T.GET_CROWDS);
+//        api.putExtra(T.RECEIVER, receiver);
+//        getActivity().startService(api);
+//    }
 
     private void getLikes() {
         Log.d(TAG, "Making request to get likes");
@@ -251,7 +248,7 @@ public class ProfileFragment extends Fragment implements View.OnClickListener{
     // To visually simulate tabs, we "select" the given tab number
     private void setTabPressed(int tabNumber) {
         rapsButton.setSelected((tabNumber == 1));
-        crowdsButton.setSelected((tabNumber == 2));
+//        crowdsButton.setSelected((tabNumber == 2));
         likesButton.setSelected((tabNumber == 3));
         requestsButton.setSelected((tabNumber == 4));
     }
@@ -396,36 +393,36 @@ public class ProfileFragment extends Fragment implements View.OnClickListener{
         }
     }
 
-    public class CrowdReceiver extends ResultReceiver {
-        public CrowdReceiver(Handler handler) {
-            super(handler);
-        }
-
-        @Override
-        public void onReceiveResult(int resultCode, Bundle resultData) {
-            if (resultCode == T.GET_CROWDS) {
-                // Convert the api request from JSON
-                Log.d(TAG, "APIService returned successful with crowds");
-                String result = resultData.getString("crowdsJson");
-
-                Log.d(TAG, "result from apiservice is: " + result);
-                Crowd[] temp = new Gson().fromJson(result, Crowds.class).getCrowds();
-                ArrayList<Crowd> crowds = new ArrayList<Crowd>(Arrays.asList(temp));
-
-                // Update the data on our listview
-                crowdsAdapter = new TabCrowdAdapter(getActivity(), R.layout.tab_crowd_list_row, null);
-                listview.setAdapter(crowdsAdapter);
-                crowdsAdapter.setItemList(crowds);
-                crowdsAdapter.notifyDataSetChanged();
-
-                // Show data
-                setTabVisibility(1);
-            }
-            else {
-                Log.d(TAG, "getCrowds() failed");
-            }
-        }
-    }
+//    public class CrowdReceiver extends ResultReceiver {
+//        public CrowdReceiver(Handler handler) {
+//            super(handler);
+//        }
+//
+//        @Override
+//        public void onReceiveResult(int resultCode, Bundle resultData) {
+//            if (resultCode == T.GET_CROWDS) {
+//                // Convert the api request from JSON
+//                Log.d(TAG, "APIService returned successful with crowds");
+//                String result = resultData.getString("crowdsJson");
+//
+//                Log.d(TAG, "result from apiservice is: " + result);
+//                Crowd[] temp = new Gson().fromJson(result, Crowds.class).getCrowds();
+//                ArrayList<Crowd> crowds = new ArrayList<Crowd>(Arrays.asList(temp));
+//
+//                // Update the data on our listview
+//                crowdsAdapter = new TabCrowdAdapter(getActivity(), R.layout.tab_crowd_list_row, null);
+//                listview.setAdapter(crowdsAdapter);
+//                crowdsAdapter.setSessionsList(crowds);
+//                crowdsAdapter.notifyDataSetChanged();
+//
+//                // Show data
+//                setTabVisibility(1);
+//            }
+//            else {
+//                Log.d(TAG, "getCrowds() failed");
+//            }
+//        }
+//    }
 
     private class LikesReceiver extends ResultReceiver {
         public LikesReceiver(Handler handler) {

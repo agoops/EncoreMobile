@@ -53,7 +53,7 @@ public class NewsfeedFragment extends ListFragment { // implements LoaderManager
 //		Bus related shiz
 		
 //		Intent apiIntent = new Intent(getActivity(), APIService.class);
-//		apiIntent.putExtra(T.API_TYPE, T.GET_SESSIONS);
+//		apiIntent.putExtra(T.API_TYPE, T.GET_LIVE_SESSIONS);
 		
 //		getActivity().startService(apiIntent);
 		
@@ -81,9 +81,9 @@ public class NewsfeedFragment extends ListFragment { // implements LoaderManager
 		super.onCreate(savedInstanceState);
 		
 		List<Session> dummy = new ArrayList<Session>();
-		dummy.add(new Session());
-		dummy.add(new Session());
-		dummy.add(new Session());
+//		dummy.add(new Session());
+//		dummy.add(new Session());
+//		dummy.add(new Session());
 		
 		mAdapter = new SessionsAdapter(getActivity(), 0, dummy);
 		setListAdapter(mAdapter);

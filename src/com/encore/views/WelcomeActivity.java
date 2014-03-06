@@ -11,7 +11,8 @@ import com.encore.R;
 import com.encore.TokenHelper;
 
 public class WelcomeActivity extends FragmentActivity {
-	
+	private static final String TAG = "WelcomeActivity";
+
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -19,17 +20,17 @@ public class WelcomeActivity extends FragmentActivity {
         requestWindowFeature(Window.FEATURE_NO_TITLE);
 
         setContentView(R.layout.placeholder);
-		String token = TokenHelper.getToken(this);
+        String token = TokenHelper.getToken(this);
 		if(token == null) {
 			// Create a new transaction and welcome screen fragment
 			FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
 			IntroFragment introFragment = new IntroFragment();
-			// Add the fragment to and commit the transaction
 			ft.add(R.id.fragment_placeholder, introFragment);
 			ft.commit();
 		} else {
-			// Token is set! Go straight home.
-			FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+			// Token is set! Goto home.
+//            Log.d(TAG, "Token is: " + token);
+            FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
 			Intent homeActivity = new Intent(this, HomeActivity.class);
 			startActivity(homeActivity);
 		}

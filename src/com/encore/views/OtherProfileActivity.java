@@ -19,7 +19,6 @@ import android.widget.TextView;
 
 import com.encore.API.APIService;
 import com.encore.R;
-import com.encore.TabCrowdAdapter;
 import com.encore.TabFriendsAdapter;
 import com.encore.TabLikesAdapter;
 import com.encore.models.FriendRequest;
@@ -50,7 +49,7 @@ public class OtherProfileActivity extends Activity implements View.OnClickListen
     
     private ResultReceiver receiver;
     private TabFriendsAdapter friendsAdapter;
-    private TabCrowdAdapter crowdsAdapter;
+//    private TabCrowdAdapter crowdsAdapter;
     private TabLikesAdapter likesAdapter;
 
     private ArrayList<Session> likedSessions;

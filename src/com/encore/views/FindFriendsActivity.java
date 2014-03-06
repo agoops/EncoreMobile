@@ -175,6 +175,8 @@ public class FindFriendsActivity extends Activity implements View.OnClickListene
                 Log.d(TAG, "Search results received successfully");
                 String result = data.getString("result");
 
+                // TODO: Show visual indicator if no results
+
                 searchResults  =
                         (ArrayList) (new Gson().fromJson(result, SearchProfile.class).getAsList());
                 adapter.setItemList(searchResults);

@@ -110,7 +110,7 @@ public class FriendsFragment extends Fragment {
 //				 */
 //				String result = resultData.getString("result");
 //				ArrayList<Profile> profiles = convertJsonToListOfUser(result);
-//				adapter.setItemList(profiles);
+//				adapter.setSessionsList(profiles);
 //				adapter.notifyDataSetChanged();
 //			} else {
 //				Log.d(tag, "APIService get friends failed?");

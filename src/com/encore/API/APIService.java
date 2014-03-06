@@ -7,13 +7,10 @@ import android.os.ResultReceiver;
 import android.util.Log;
 
 import com.encore.TokenHelper;
-import com.encore.models.Crowd;
 import com.encore.models.PostComment;
-import com.encore.models.PostCrowd;
 import com.encore.models.PostLike;
 import com.encore.models.UpdateUser;
 import com.encore.util.T;
-import com.google.gson.Gson;
 import com.squareup.okhttp.OkHttpClient;
 
 import org.apache.http.HttpEntity;
@@ -72,12 +69,6 @@ public class APIService extends IntentService {
             case T.USERS:
                 getUsers(intent.getExtras());
                 break;
-            case T.GET_CROWDS:
-                getCrowds(intent.getExtras());
-                break;
-            case T.CREATE_CROWD:
-                createCrowd(intent.getExtras());
-                break;
             case T.ADD_CLIP:
                 Log.d(TAG, "case ADD_CLIP in API Service");
                 addClip(intent.getExtras());
@@ -85,8 +76,11 @@ public class APIService extends IntentService {
             case T.ACCEPT_FRIEND_REQUEST:
                 acceptFriendRequest(intent.getExtras());
                 break;
-            case T.GET_SESSIONS:
-                getSessions();
+            case T.GET_LIVE_SESSIONS:
+                getLiveSessions();
+                break;
+            case T.GET_COMPLETE_SESSIONS:
+                getCompleteSessions();
                 break;
             case T.CREATE_COMMENT:
                 createComment(intent.getExtras());
@@ -310,15 +304,6 @@ public class APIService extends IntentService {
         multipartEntity.addPart("clip", new FileBody(new File(data.getString(T.FILEPATH))));
         multipartEntity.addPart("thumbnail", new FileBody(new File(data.getString(T.THUMBNAIL_FILEPATH))));
 
-        boolean useExistingCrowd = data.getBoolean(T.SESSION_USE_EXISTING_CROWD);
-        multipartEntity.addTextBody("use_existing_crowd", (useExistingCrowd) ? "True":"False");
-        if(useExistingCrowd) {
-            multipartEntity.addTextBody("crowd", data.getString(T.SESSION_CROWD_ID));
-        } else {
-            multipartEntity.addTextBody("crowd_title", data.getString(T.SESSION_CROWD_TITLE));
-            multipartEntity.addTextBody("crowd_members", data.getString(T.SESSION_CROWD_MEMBERS));
-        }
-
 	    HttpEntity entity = multipartEntity.build();
 		try {
 			String result = api.createSession(entity);
@@ -328,47 +313,11 @@ public class APIService extends IntentService {
 		}
 	}
 	
-	// GET all crowds
-	private void getCrowds(Bundle data) {
-		Log.d(TAG, "getCrowds() called");
-		String token = TokenHelper.getToken(this);
-		String json = "";
-		try {
-			json = api.getCrowds(token);
-		} catch(Exception e) {
-			Log.e(TAG, e.getMessage() + " ");
-		}
-		Log.d(TAG, "Got here in getCrowds apiservice");
-		Bundle crowdBundle = new Bundle();
-		crowdBundle.putString("crowdsJson", json);
-		resultReceiver.send(T.GET_CROWDS, crowdBundle);
-	}
-	
-	// POST to crowds
-	private void createCrowd(Bundle data) {
-		Log.d(TAG, "createCrowd() called");
-		String token = TokenHelper.getToken(this);
-		Crowd resultCrowd = null;
-		
-		String crowdTitle = data.getString(T.CROWD_TITLE);
-		int[] members = data.getIntArray(T.CROWD_MEMBERS);
-		
-		PostCrowd pCrowd = new PostCrowd(crowdTitle, members);
-		
-		try {
-			resultCrowd = api.createCrowd(pCrowd, token);
-			String postJson = (new Gson()).toJson(resultCrowd);
-			Log.d(TAG, "createCrowd() result: " + postJson);
-		} catch( Exception e ) {
-			Log.e(TAG, e.getMessage() + " ");
-		}
-	}
-
-	private void getSessions() {
-		Log.d(TAG, "getSessions called");
+	private void getLiveSessions() {
+		Log.d(TAG, "getLiveSessions called");
 
 		try {
-			String result = api.getSessions();
+			String result = api.getLiveSessions();
 			Bundle b = new Bundle();
 			b.putString("result", result);
 			resultReceiver.send(1, b);
@@ -377,6 +326,20 @@ public class APIService extends IntentService {
 			resultReceiver.send(0,null);
 		}
 	}
+
+    private void getCompleteSessions() {
+        Log.d(TAG, "getCompleteSessions called");
+
+        try {
+            String result = api.getCompleteSessions();
+            Bundle b = new Bundle();
+            b.putString("result", result);
+            resultReceiver.send(1, b);
+        } catch (Exception e) {
+            e.printStackTrace();
+            resultReceiver.send(0,null);
+        }
+    }
 	
 	private void createComment(Bundle data) {
 		Log.d(TAG, "createComment called");
