@@ -1,5 +1,6 @@
 package com.encore.views;
 
+import android.content.Context;
 import android.content.res.Configuration;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -8,11 +9,13 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.widget.DrawerLayout;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.encore.Fragments.ProfileFragment;
 import com.encore.R;
@@ -21,9 +24,11 @@ public class HomeActivity extends FragmentActivity {
     private static final String TAG = "HomeActivity";
 
     private DrawerLayout drawerLayout;
-    private ListView drawerList;
-    private String[] drawerTitles;
-    private ActionBarDrawerToggle drawerToggle;
+    private ListView leftDrawerList, rightDrawerList;
+    private String[] leftDrawerTitles, rightDrawerTitles;
+    private ActionBarDrawerToggle leftDrawerToggle;
+
+    private Context context;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -37,18 +42,22 @@ public class HomeActivity extends FragmentActivity {
                 .replace(R.id.home_content_frame, liveFragment)
                 .commit();
 
+        this.context = this;
+
         getViews();
         setupNavDrawer();
     }
 
     private void getViews() {
-        drawerTitles = getResources().getStringArray(R.array.drawer_titles);
+        leftDrawerTitles = getResources().getStringArray(R.array.left_drawer_titles);
+        rightDrawerTitles = getResources().getStringArray(R.array.right_drawer_titles);
         drawerLayout = (DrawerLayout) findViewById(R.id.home_drawer_layout);
-        drawerList = (ListView) findViewById(R.id.home_left_drawer);
+        leftDrawerList = (ListView) findViewById(R.id.home_left_drawer);
+        rightDrawerList = (ListView) findViewById(R.id.home_right_drawer);
     }
 
     private void setupNavDrawer() {
-        drawerToggle = new ActionBarDrawerToggle(
+        leftDrawerToggle = new ActionBarDrawerToggle(
                 this,
                 drawerLayout,
                 R.drawable.ic_navigation_drawer,
@@ -61,22 +70,32 @@ public class HomeActivity extends FragmentActivity {
 
             public void onDrawerOpened(View drawerView) {
                 super.onDrawerOpened(drawerView);
+                Log.d(TAG, "onDrawerOpened called");
+                if(drawerLayout.isDrawerOpen(rightDrawerList) &&
+                        drawerView != rightDrawerList) {
+                    Log.d(TAG, "HEREHERE");
+                    drawerLayout.closeDrawer(rightDrawerList);
+                }
             }
         };
-        drawerLayout.setDrawerListener(drawerToggle);
+        drawerLayout.setDrawerListener(leftDrawerToggle);
         getActionBar().setDisplayHomeAsUpEnabled(true);
         getActionBar().setHomeButtonEnabled(true);
 
         // Set the adapter for the list view
-        drawerList.setAdapter(new ArrayAdapter<String>(this,
-                R.layout.drawer_list_item, drawerTitles));
-        drawerList.setOnItemClickListener(new DrawerItemClickListener());
+        leftDrawerList.setAdapter(new ArrayAdapter<String>(this,
+                R.layout.drawer_list_item, leftDrawerTitles));
+        leftDrawerList.setOnItemClickListener(new LeftDrawerItemClickListener());
+
+        rightDrawerList.setAdapter(new ArrayAdapter<String>(this,
+                R.layout.drawer_list_item, rightDrawerTitles));
+        rightDrawerList.setOnItemClickListener(new RightDrawerClickListener());
 
         // Hide overlay
         drawerLayout.setScrimColor(Color.TRANSPARENT);
     }
 
-    private class DrawerItemClickListener implements ListView.OnItemClickListener {
+    private class LeftDrawerItemClickListener implements ListView.OnItemClickListener {
         @Override
         public void onItemClick(AdapterView parent, View view, int position, long id) {
             selectItem(position);
@@ -114,9 +133,39 @@ public class HomeActivity extends FragmentActivity {
                     break;
             }
 
-            drawerList.setItemChecked(position, true);
-            setTitle(drawerTitles[position]);
-            drawerLayout.closeDrawer(drawerList);
+            leftDrawerList.setItemChecked(position, true);
+            setTitle(leftDrawerTitles[position]);
+            drawerLayout.closeDrawer(leftDrawerList);
+        }
+    }
+
+    private class RightDrawerClickListener implements ListView.OnItemClickListener {
+        @Override
+        public void onItemClick(AdapterView parent, View view, int position, long id) {
+            selectItem(position);
+        }
+
+        /* Swaps fragments in the main content view */
+        private void selectItem(int position) {
+            FragmentManager fm = getSupportFragmentManager();
+
+            switch(position)
+            {
+                case 0:
+                    Toast.makeText(context, "Rap Battle!", Toast.LENGTH_SHORT).show();
+                    break;
+                case 1:
+                    Toast.makeText(context, "Freestyle!", Toast.LENGTH_SHORT).show();
+                    break;
+                default:
+                    Toast.makeText(context, "Rap Battle!", Toast.LENGTH_SHORT).show();
+                    break;
+            }
+
+            // TODO: Prevent the item from remaining selected
+//            rightDrawerList.setItemChecked(position, true);
+            setTitle(rightDrawerTitles[position]);
+            drawerLayout.closeDrawer(rightDrawerList);
         }
     }
 
@@ -124,19 +173,19 @@ public class HomeActivity extends FragmentActivity {
     protected void onPostCreate(Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);
         // Sync the toggle state after onRestoreInstanceState has occurred.
-        drawerToggle.syncState();
+        leftDrawerToggle.syncState();
     }
 
     @Override
     public void onConfigurationChanged(Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
-        drawerToggle.onConfigurationChanged(newConfig);
+        leftDrawerToggle.onConfigurationChanged(newConfig);
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        if (drawerToggle.onOptionsItemSelected(item)) {
-            // If drawerToggle returned true, it has handled the touch event
+        if (leftDrawerToggle.onOptionsItemSelected(item)) {
+            // If leftDrawerToggle returned true, it has handled the touch event
             return true;
         }
 

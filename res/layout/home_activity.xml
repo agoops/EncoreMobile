@@ -24,4 +24,13 @@
         android:divider="@android:color/transparent"
         android:dividerHeight="0dp"
         android:background="#555"/>
+    <ListView
+        android:id="@+id/home_right_drawer"
+        android:layout_width="240dp"
+        android:layout_height="match_parent"
+        android:layout_gravity="end"
+        android:choiceMode="singleChoice"
+        android:divider="@android:color/transparent"
+        android:dividerHeight="0dp"
+        android:background="#555" />
 </android.support.v4.widget.DrawerLayout>

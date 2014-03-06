@@ -12,10 +12,15 @@
         <item>Users</item>
     </string-array>
 
-    <string-array name="drawer_titles">
+    <string-array name="left_drawer_titles">
         <item>Live</item>
         <item>Complete</item>
         <item>Profile</item>
+    </string-array>
+
+    <string-array name="right_drawer_titles">
+        <item>Battle</item>
+        <item>Freestyle</item>
     </string-array>
     
     <string name="drawer_open">Open navigation drawer</string>

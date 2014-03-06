@@ -104,6 +104,7 @@ public class ReplyFragment extends Fragment implements View.OnClickListener {
         });
     }
 
+    // TODO: Make this faster
     private void playVideoList(int curClipIndex) {
         progressBar.setVisibility(View.GONE);
         vp.playVideo(clipUris.get(curClipIndex));
