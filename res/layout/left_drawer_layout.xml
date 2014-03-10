@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <RelativeLayout
+        android:id="@+id/leftDrawerTopContainer"
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:background="#e6e6e6"
+        android:paddingBottom="20dp">
+
+        <ImageView
+            android:id="@+id/left_drawer_picture"
+            android:layout_height="100dp"
+            android:layout_width="100dp"
+            android:src="@drawable/bobby_prof"
+            android:layout_margin="20dp"/>
+
+        <TextView
+            android:id="@+id/left_drawer__username"
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:textAppearance="?android:textAppearanceLarge"
+            android:textStyle="bold"
+            android:layout_toRightOf="@id/left_drawer_picture"
+            android:layout_alignTop="@id/left_drawer_picture"
+            android:layout_marginRight="20dp"
+            android:layout_marginBottom="5dp"
+            android:text="Babs"/>
+
+        <TextView
+            android:id="@+id/left_drawer__fullname"
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:textColor="#777"
+            android:textAppearance="?android:textAppearanceSmall"
+            android:layout_below="@id/left_drawer__username"
+            android:layout_toRightOf="@id/left_drawer_picture"
+            android:layout_marginRight="20dp"
+            android:text="Babak Pourkazemi"/>
+
+        <Button
+            android:id="@+id/left_drawer__find_friends_button"
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:layout_toRightOf="@id/left_drawer_picture"
+            android:layout_below="@id/left_drawer__fullname"
+            android:layout_alignBottom="@id/left_drawer_picture"
+            android:layout_marginTop="7dp"
+            android:layout_marginRight="20dp"
+            android:text="Find Friends"/>
+
+        <Button
+            android:id="@+id/left_drawer_EditButton"
+            android:layout_height="35dp"
+            android:layout_width="wrap_content"
+            android:layout_alignRight="@id/left_drawer_picture"
+            android:layout_alignBottom="@id/left_drawer_picture"
+            android:layout_alignLeft="@id/left_drawer_picture"
+            android:background="@drawable/background_333_transparent"
+            android:text="Edit"/>
+
+        <LinearLayout
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:layout_below="@id/left_drawer_picture"
+            android:layout_alignLeft="@id/left_drawer_picture"
+            android:layout_alignRight="@id/left_drawer__find_friends_button"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/left_drawer_NumRapsTv"
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:text="0 \nRaps"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:textAppearance="?android:textAppearanceMedium" />
+
+            <TextView
+                android:id="@+id/left_drawer_NumLikesTv"
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:text="0 \nLikes"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:textAppearance="?android:textAppearanceMedium" />
+
+            <TextView
+                android:id="@+id/left_drawer_NumFriendsTv"
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:text="0 \nFriends"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:textAppearance="?android:textAppearanceMedium" />
+
+        </LinearLayout>
+
+    </RelativeLayout>
+    
+    <ListView
+        android:id="@+id/h_left_drawer"
+        android:layout_height="match_parent"
+        android:layout_width="match_parent" />
+
+</LinearLayout>

@@ -1,6 +1,7 @@
 package com.encore.views;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.res.Configuration;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -10,6 +11,8 @@ import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.widget.DrawerLayout;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
@@ -19,6 +22,7 @@ import android.widget.Toast;
 
 import com.encore.Fragments.ProfileFragment;
 import com.encore.R;
+import com.encore.StartSession;
 
 public class HomeActivity extends FragmentActivity {
     private static final String TAG = "HomeActivity";
@@ -70,10 +74,9 @@ public class HomeActivity extends FragmentActivity {
 
             public void onDrawerOpened(View drawerView) {
                 super.onDrawerOpened(drawerView);
-                Log.d(TAG, "onDrawerOpened called");
                 if(drawerLayout.isDrawerOpen(rightDrawerList) &&
                         drawerView != rightDrawerList) {
-                    Log.d(TAG, "HEREHERE");
+                    // Close right drawer if left is open
                     drawerLayout.closeDrawer(rightDrawerList);
                 }
             }
@@ -170,6 +173,15 @@ public class HomeActivity extends FragmentActivity {
     }
 
     @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu items in the action bar
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.home_activity_actions, menu);
+
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
     protected void onPostCreate(Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);
         // Sync the toggle state after onRestoreInstanceState has occurred.
@@ -187,6 +199,17 @@ public class HomeActivity extends FragmentActivity {
         if (leftDrawerToggle.onOptionsItemSelected(item)) {
             // If leftDrawerToggle returned true, it has handled the touch event
             return true;
+        }
+
+        switch(item.getItemId())
+        {
+            case R.id.action_video:
+                // Launch a new session
+                Log.d(TAG, "Launching StartSession");
+                Intent intent = new Intent(this, StartSession.class);
+                startActivity(intent);
+
+                return true;
         }
 
         return super.onOptionsItemSelected(item);

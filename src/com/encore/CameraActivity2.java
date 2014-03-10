@@ -254,7 +254,7 @@ public class CameraActivity2 extends Activity implements
 		
 		// Android's default directory for pictures and videos
 	    File mediaStorageDir = new File(Environment.getExternalStoragePublicDirectory(
-	              Environment.DIRECTORY_PICTURES), "RapchatVideos");
+	              Environment.DIRECTORY_PICTURES), "Rapback");
 	    
 	    // Create the storage directory if it does not exist
 	    if (!mediaStorageDir.exists()){
@@ -266,9 +266,9 @@ public class CameraActivity2 extends Activity implements
 	    }
 	    
 	    String path = mediaStorageDir.getPath() + File.separator +
-	    		"VID_TempRapchat.mp4";
+	    		"VID_TempRapback.mp4";
 	    thumbnailFilepath = mediaStorageDir.getPath() + File.separator
-	    		+ "VID_TempRapchat_Thumbnail.jpg";
+	    		+ "VID_TempRapback_Thumbnail.jpg";
 	    
 	    File mediaFile = new File(path);
 	    Log.d(TAG, "File path: " + path);

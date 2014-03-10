@@ -2,6 +2,8 @@ package com.encore.models;
 
 import com.google.gson.annotations.SerializedName;
 
+import java.net.URL;
+
 public class Profile implements UserInfo {
 	@SerializedName("id")
 	private int profileId;
@@ -23,7 +25,10 @@ public class Profile implements UserInfo {
 
     @SerializedName("num_raps")
     private int numRaps;
-	
+
+    @SerializedName("profile_picture")
+    private URL profilePicture;
+
 	public Profile() {
 		this.profileId =  -1;
 		this.user = new User();
@@ -95,8 +100,12 @@ public class Profile implements UserInfo {
 	public String getLastName() {
 		return user.getLastName();
 	}
-	
-	public String getFullName() {
+
+    public URL getProfilePicture() {
+        return profilePicture;
+    }
+
+    public String getFullName() {
 		String firstName = user.getFirstName();
 		String lastName = user.getLastName();
 		return firstName + " " + lastName;

@@ -283,14 +283,13 @@ public class CameraFragment extends Fragment implements
         mediaRecorder.setOrientationHint(270);
     }
 
-    private  File getOutputMediaFile(){
+    private File getOutputMediaFile(){
         Log.d(TAG, "getOutputMediaFile called");
-        // TODO: To be safe, you should check that the SDCard is mounted
-        // using Environment.getExternalStorageState() before doing this.
+        // TODO: Check the SDCard is mounted using Environment.getExternalStorageState()
 
         // Android's default directory for pictures and videos
         File mediaStorageDir = new File(Environment.getExternalStoragePublicDirectory(
-                Environment.DIRECTORY_PICTURES), "RapchatVideos");
+                Environment.DIRECTORY_PICTURES), "Rapback");
 
         // Create the storage directory if it does not exist
         if (!mediaStorageDir.exists()){
@@ -302,9 +301,9 @@ public class CameraFragment extends Fragment implements
         }
 
         String path = mediaStorageDir.getPath() + File.separator +
-                "VID_TempRapchat.mp4";
+                "VID_TempRapback.mp4";
         thumbnailFilepath = mediaStorageDir.getPath() + File.separator
-                + "VID_TempRapchat_Thumbnail.jpg";
+                + "VID_TempRapback_Thumbnail.jpg";
 
         File mediaFile = new File(path);
         Log.d(TAG, "File path: " + path);

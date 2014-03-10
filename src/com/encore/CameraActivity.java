@@ -1,20 +1,19 @@
 package com.encore;
 
-import java.io.File;
-import java.io.IOException;
-
 import android.app.Activity;
 import android.content.Context;
 import android.hardware.Camera;
 import android.media.CamcorderProfile;
 import android.media.MediaRecorder;
-import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.FrameLayout;
+
+import java.io.File;
+import java.io.IOException;
 
 public class CameraActivity extends Activity {
 	private static final String TAG = "CameraActivity";
@@ -170,7 +169,7 @@ public class CameraActivity extends Activity {
 		
 		// Android's default directory for pictures and videos
 	    File mediaStorageDir = new File(Environment.getExternalStoragePublicDirectory(
-	              Environment.DIRECTORY_PICTURES), "RapchatVideos");
+	              Environment.DIRECTORY_PICTURES), "Rapback");
 	    
 	    // Create the storage directory if it does not exist
 	    if (!mediaStorageDir.exists()){
@@ -182,7 +181,7 @@ public class CameraActivity extends Activity {
 	    }
 	    
 	    String path = mediaStorageDir.getPath() + File.separator +
-	    		"VID_TempRapchat.mp4";
+	    		"VID_TempRapback.mp4";
 	    mediaFile = new File(path);
 	    Log.d(TAG, "File path: " + path);
 	    try {

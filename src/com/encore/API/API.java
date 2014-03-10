@@ -6,7 +6,6 @@ import android.util.Log;
 import com.encore.TokenHelper;
 import com.encore.models.PostComment;
 import com.encore.models.PostLike;
-import com.encore.models.UpdateUser;
 import com.encore.util.Constants;
 import com.google.gson.Gson;
 import com.squareup.okhttp.OkHttpClient;
@@ -16,6 +15,7 @@ import org.apache.http.HttpResponse;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpPost;
+import org.apache.http.client.methods.HttpPut;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.DefaultHttpClient;
 
@@ -134,7 +134,7 @@ public class API {
 		if(!isSigningIn) {
 			connection.setRequestProperty(AUTHORIZATION, ACCESS_TOKEN);
 		}
-		isSigningIn = false; // Reset to !isSigningIn
+		isSigningIn = false;
         Log.d(TAG, "Auth header is: " + connection.getRequestProperty(AUTHORIZATION));
 		connection.setRequestProperty("Content-Type", "application/json");
 		connection.setDoOutput(true);
@@ -207,6 +207,33 @@ public class API {
 		}
 		return total.toString();
 	}
+
+    private String putUser(HttpEntity entity, String url) throws Exception {
+        HttpClient client = new DefaultHttpClient();
+        HttpPut put = new HttpPut(url);
+        put.addHeader(AUTHORIZATION, ACCESS_TOKEN);
+        put.setEntity(entity);
+
+        HttpResponse response;
+        try {
+            response = client.execute(put);
+        } catch (ClientProtocolException e) {
+            e.printStackTrace();
+            throw e;
+        } catch (IOException e) {
+            e.printStackTrace();
+            throw e;
+        }
+
+        entity = response.getEntity();
+        BufferedReader r = new BufferedReader(new InputStreamReader(entity.getContent()));
+        StringBuilder total = new StringBuilder();
+        String line;
+        while ((line = r.readLine()) != null) {
+            total.append(line);
+        }
+        return total.toString();
+    }
 
 	// ------------- PUT -----------
 	private <T> T put(String url, StringEntity entity, Type type)
@@ -342,8 +369,8 @@ public class API {
 		return result;
 	}
 
-	public String logIn(StringEntity entity) throws Exception {
-		Log.d(TAG, "logIn called with entity: " + entity.toString());
+	public String login(StringEntity entity) throws Exception {
+		Log.d(TAG, "login called with entity: " + entity.toString());
 		String url = LOG_IN;
 		isSigningIn = true;
 		String result = "emptystringdawg-API.signin worked?";
@@ -545,17 +572,14 @@ public class API {
         return resultJSON;
     }
 
-    public String updateUser(String token, UpdateUser user) throws Exception {
+    public String updateUser(String token, HttpEntity entity) throws Exception {
         Log.d(TAG, "updateUser called");
         String url = USER_ME;
         ACCESS_TOKEN = "Token " + token;
         String resultJSON = null;
 
         try {
-            String JSON = getGson().toJson(user);
-            Log.d(TAG, "Posting JSON: " + JSON);
-
-            resultJSON = put(url, new StringEntity(JSON), String.class);
+            resultJSON = putUser(entity, url);
             Log.d(TAG, "updateUser result: " + resultJSON);
         } catch(Exception e) {
             Log.d(TAG, "updateUser error");

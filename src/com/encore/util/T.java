@@ -26,6 +26,7 @@ public class T {
     public static final String CLIP_URL = "clip_url";
     public static final String ALL_CLIPS = "all_clips";
     public static final String IS_COMPLETE = "is_complete";
+    public static final String PROFILE_PICTURE = "profile_picture";
 
 	// API call types
 	public static final int SIGN_IN = 0;
@@ -59,6 +60,9 @@ public class T {
     public static final String FEED_TYPE = "feed_type";
     public static final int LIVE_FEED = 1;
     public static final int COMPLETE_FEED = 2;
+
+    // Request codes
+    public static final int IMAGE_PICKER_REQUEST_CODE = 100;
 
     public static void setTypeFace(Context c, TextView... views) {
         Typeface typeface = Typeface.createFromAsset(c.getAssets(),

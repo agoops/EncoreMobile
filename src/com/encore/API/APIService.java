@@ -2,6 +2,7 @@ package com.encore.API;
 
 import android.app.IntentService;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.ResultReceiver;
 import android.util.Log;
@@ -9,7 +10,6 @@ import android.util.Log;
 import com.encore.TokenHelper;
 import com.encore.models.PostComment;
 import com.encore.models.PostLike;
-import com.encore.models.UpdateUser;
 import com.encore.util.T;
 import com.squareup.okhttp.OkHttpClient;
 
@@ -49,7 +49,7 @@ public class APIService extends IntentService {
 		switch (apiType)
         {
             case T.SIGN_IN:
-                logIn(intent.getExtras());
+                login(intent.getExtras());
                 break;
             case T.SIGN_UP:
                 signUp(intent.getExtras());
@@ -192,7 +192,6 @@ public class APIService extends IntentService {
 		} catch (Exception e ){
 			e.printStackTrace();
 		}
-		
 	}
 	
 	
@@ -232,14 +231,10 @@ public class APIService extends IntentService {
 		}
 	}
 
-	private void logIn(Bundle data) {
-		Log.d(TAG, "logIn called");
+	private void login(Bundle data) {
+		Log.d(TAG, "login called");
         String username = data.getString(T.USERNAME);
         String password = data.getString(T.PASSWORD);
-        String firstName = data.getString(T.FIRST_NAME);
-        String lastName = data.getString(T.LAST_NAME);
-        String email = data.getString(T.EMAIL);
-        String phoneNumber = data.getString(T.PHONE_NUMBER);
 
         try {
 			JSONObject json = new JSONObject();
@@ -247,7 +242,7 @@ public class APIService extends IntentService {
 			json.put(T.PASSWORD, password);
 			StringEntity entity = new StringEntity(json.toString());
 
-			String result = api.logIn(entity);
+			String result = api.login(entity);
 			String token = (new JSONObject(result)).getString("token");
 			TokenHelper.updateToken(this, token);
 
@@ -271,6 +266,10 @@ public class APIService extends IntentService {
         String email = data.getString(T.EMAIL);
         String phoneNumber = data.getString(T.PHONE_NUMBER);
 
+        Uri defaultProfileUri = Uri.parse("R.drawable.default_profile_picture");
+        File defaultProfilePicture = new File(defaultProfileUri.getPath());
+        // TODO: Add some sort of profile picture flow
+
 		try {
 			JSONObject json = new JSONObject();
             json.put(T.USERNAME, username);
@@ -279,6 +278,7 @@ public class APIService extends IntentService {
             json.put(T.LAST_NAME, lastName);
             json.put(T.EMAIL, email);
             json.put(T.PHONE_NUMBER, phoneNumber);
+            json.put(T.PROFILE_PICTURE, defaultProfilePicture);
 
 			StringEntity entity = new StringEntity(json.toString());
 			result = api.signUp(entity);
@@ -435,12 +435,22 @@ public class APIService extends IntentService {
         String lastName = data.getString(T.LAST_NAME);
         String email = data.getString(T.EMAIL);
         String phoneNumber = data.getString(T.PHONE_NUMBER);
+        File profilePicture = (File)data.getSerializable(T.PROFILE_PICTURE);
 
-        String resultJSON = null;
-        UpdateUser user = new UpdateUser(firstName, lastName, email, phoneNumber);
+        MultipartEntityBuilder multipartEntity = MultipartEntityBuilder
+                .create();
+        multipartEntity.setMode(HttpMultipartMode.BROWSER_COMPATIBLE);
+
+        multipartEntity.setBoundary("---*******");
+        multipartEntity.addTextBody(T.FIRST_NAME, firstName);
+        multipartEntity.addTextBody(T.LAST_NAME, lastName);
+        multipartEntity.addTextBody(T.EMAIL, email);
+        multipartEntity.addTextBody(T.PHONE_NUMBER, phoneNumber);
+        multipartEntity.addPart(T.PROFILE_PICTURE, new FileBody(profilePicture));
+        HttpEntity entity = multipartEntity.build();
 
         try {
-            resultJSON = api.updateUser(token, user);
+            String resultJSON = api.updateUser(token, entity);
             Log.d(TAG, "updateUser result: " + resultJSON);
 
         } catch(Exception e) {

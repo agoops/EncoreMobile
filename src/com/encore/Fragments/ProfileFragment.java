@@ -2,6 +2,9 @@ package com.encore.Fragments;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.ResultReceiver;
@@ -12,6 +15,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -33,6 +37,13 @@ import com.encore.views.FindFriendsActivity;
 import com.encore.views.OtherProfileActivity;
 import com.google.gson.Gson;
 
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
@@ -45,6 +56,7 @@ public class ProfileFragment extends Fragment implements View.OnClickListener{
     private Button rapsButton, likesButton, requestsButton, editProfileButton, findFriendsButton;
     private ListView listview;
     private TextView myUsernameTv, myFullNameTv, numRapsTv, numLikesTv, numFriendsTv;
+    private ImageView profilePictureIv;
     private ProgressBar progressProfile, progressTabs;
     private TabFriendsAdapter friendsAdapter;
 //    private TabCrowdAdapter crowdsAdapter;
@@ -57,7 +69,9 @@ public class ProfileFragment extends Fragment implements View.OnClickListener{
     private Profile userMe;
     private String myUsername;
 
-    // TODO: Fix the listview only-loading-sometimes bug (try reloading/reinitializing the fragment?)
+    private File profilePictureFile;
+    private Bitmap profileBitmap;
+
     // TODO: Set the profile picture
 
 	@Override
@@ -88,6 +102,7 @@ public class ProfileFragment extends Fragment implements View.OnClickListener{
         progressTabs = (ProgressBar) view.findViewById(R.id.progress_profile_tabs);
         myUsernameTv = (TextView) view.findViewById(R.id.profile_username);
         myFullNameTv = (TextView) view.findViewById(R.id.profile_fullname);
+        profilePictureIv = (ImageView) view.findViewById(R.id.profilePicture);
 
         // Hide everything until we get some data
         setProfileVisibility(0);
@@ -105,6 +120,7 @@ public class ProfileFragment extends Fragment implements View.OnClickListener{
     public void initData() {
         // Init our friendsUsernames
         friendsUsernames = new HashSet<String>();
+
 
         // Populate the profile page's basic data
         getMe();
@@ -134,14 +150,6 @@ public class ProfileFragment extends Fragment implements View.OnClickListener{
                 getFriends();
 
                 break;
-//            case R.id.profile_crowds_button:
-//                if(v.isSelected()) {
-//                    break; // no need to make another request
-//                }
-//                setTabPressed(2);
-//                getCrowds();
-//
-//                break;
             case R.id.profile_likes_button:
                 if(v.isSelected()) {
                     break; // no need to make another request
@@ -164,6 +172,7 @@ public class ProfileFragment extends Fragment implements View.OnClickListener{
                 launchEditProfileActivity.putExtra(T.LAST_NAME, userMe.getLastName());
                 launchEditProfileActivity.putExtra(T.EMAIL, userMe.getEmail());
                 launchEditProfileActivity.putExtra(T.PHONE_NUMBER, userMe.getPhoneNumber());
+                launchEditProfileActivity.putExtra(T.PROFILE_PICTURE, profilePictureFile);
                 startActivity(launchEditProfileActivity);
 
                 break;
@@ -205,19 +214,6 @@ public class ProfileFragment extends Fragment implements View.OnClickListener{
         api.putExtra(T.RECEIVER, receiver);
         getActivity().startService(api);
     }
-
-//    private void getCrowds() {
-//        Log.d(TAG, "Making request to get crowds");
-//
-//        // Hide the tabs until we get some data
-//        setTabVisibility(0);
-//
-//        Intent api = new Intent(getActivity(), APIService.class);
-//        receiver = new CrowdReceiver(new Handler());
-//        api.putExtra(T.API_TYPE, T.GET_CROWDS);
-//        api.putExtra(T.RECEIVER, receiver);
-//        getActivity().startService(api);
-//    }
 
     private void getLikes() {
         Log.d(TAG, "Making request to get likes");
@@ -314,6 +310,55 @@ public class ProfileFragment extends Fragment implements View.OnClickListener{
         }
     }
 
+    // TODO: Add to T.java?
+    public class DownloadImagesTask extends AsyncTask<ImageView, Void, File> {
+        ImageView imageView = null;
+
+        @Override
+        protected File doInBackground(ImageView... imageViews) {
+            this.imageView = imageViews[0];
+            return downloadImage((URL) imageView.getTag());
+        }
+
+        @Override
+        protected void onPostExecute(File file) {
+            profilePictureIv.setImageBitmap(profileBitmap);
+            setProfileVisibility(1);
+        }
+
+        public File downloadImage(URL url) {
+            // TODO: Find a better way to encapsulate all the data for profile pictures (e.g., URIs, files, bitmaps)
+            try {
+                HttpURLConnection connection = (HttpURLConnection) url
+                        .openConnection();
+                connection.setDoInput(true);
+                connection.connect();
+                InputStream input = connection.getInputStream();
+                profileBitmap = BitmapFactory.decodeStream(input);
+
+                // Save the downsampled bitmap into the cache
+                File f = new File(mContext.getCacheDir(), "Rapback_downsampled_profile");
+                ByteArrayOutputStream bout = new ByteArrayOutputStream();
+                profileBitmap.compress(Bitmap.CompressFormat.JPEG, 100, bout);
+                byte[] bitmapData = bout.toByteArray();
+
+                try {
+                    FileOutputStream fos = new FileOutputStream(f);
+                    fos.write(bitmapData);
+                } catch(Exception e) {
+                    e.printStackTrace();
+                }
+
+                // Set the new profile picture
+                profilePictureFile = f;
+                return f;
+            } catch (IOException e) {
+                e.printStackTrace();
+                return null;
+            }
+        }
+    }
+
     // Our receivers
     public class MeReceiver extends ResultReceiver {
         public MeReceiver(Handler handler) {
@@ -346,8 +391,12 @@ public class ProfileFragment extends Fragment implements View.OnClickListener{
                 myUsernameTv.setText(myUsername);
                 myFullNameTv.setText(userMe.getFullName());
 
+                // Download our profile picture
+                profilePictureIv.setTag(userMe.getProfilePicture());
+                new DownloadImagesTask().execute(profilePictureIv);
+
                 // Show data
-                setProfileVisibility(1);
+//                setProfileVisibility(1);
             } else {
                 Log.d(TAG, "GET friends unsuccessful");
             }
@@ -392,37 +441,6 @@ public class ProfileFragment extends Fragment implements View.OnClickListener{
             }
         }
     }
-
-//    public class CrowdReceiver extends ResultReceiver {
-//        public CrowdReceiver(Handler handler) {
-//            super(handler);
-//        }
-//
-//        @Override
-//        public void onReceiveResult(int resultCode, Bundle resultData) {
-//            if (resultCode == T.GET_CROWDS) {
-//                // Convert the api request from JSON
-//                Log.d(TAG, "APIService returned successful with crowds");
-//                String result = resultData.getString("crowdsJson");
-//
-//                Log.d(TAG, "result from apiservice is: " + result);
-//                Crowd[] temp = new Gson().fromJson(result, Crowds.class).getCrowds();
-//                ArrayList<Crowd> crowds = new ArrayList<Crowd>(Arrays.asList(temp));
-//
-//                // Update the data on our listview
-//                crowdsAdapter = new TabCrowdAdapter(getActivity(), R.layout.tab_crowd_list_row, null);
-//                listview.setAdapter(crowdsAdapter);
-//                crowdsAdapter.setSessionsList(crowds);
-//                crowdsAdapter.notifyDataSetChanged();
-//
-//                // Show data
-//                setTabVisibility(1);
-//            }
-//            else {
-//                Log.d(TAG, "getCrowds() failed");
-//            }
-//        }
-//    }
 
     private class LikesReceiver extends ResultReceiver {
         public LikesReceiver(Handler handler) {

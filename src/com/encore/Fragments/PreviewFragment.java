@@ -77,9 +77,9 @@ public class PreviewFragment extends Fragment implements View.OnClickListener {
     private void generateThumbnail() {
         //TODO: This thumbnailFilepath shouldn't be generated here. Maybe in oncreate or something
         File mediaStorageDir = new File(Environment.getExternalStoragePublicDirectory(
-                Environment.DIRECTORY_PICTURES), "RapchatVideos");
+                Environment.DIRECTORY_PICTURES), "Rapback");
         thumbnailFilepath = mediaStorageDir.getPath() + File.separator
-                + "VID_TempRapchat_Thumbnail.jpg";
+                + "VID_TempRapback_Thumbnail.jpg";
         FileOutputStream stream;
         try {
             stream = new FileOutputStream(thumbnailFilepath);
