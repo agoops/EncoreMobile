@@ -7,7 +7,6 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.graphics.Bitmap;
-import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -27,6 +26,7 @@ import com.encore.API.APIService;
 import com.encore.R;
 import com.encore.TokenHelper;
 import com.encore.util.T;
+import com.squareup.picasso.Picasso;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -41,7 +41,7 @@ public class EditProfileActivity extends Activity implements View.OnClickListene
     private Button makeChangesBtn, logoutButton;
     private String currentFirst, currentLast, currentEmail, currentPhone;
     private ImageView profilePictureIV;
-    private static File newProfilePic, oldProfilePic, temp;
+    private static File profilePic, temp;
     private Context context;
 
     public void onCreate(Bundle savedInstanceState) {
@@ -74,21 +74,20 @@ public class EditProfileActivity extends Activity implements View.OnClickListene
         currentEmail = intent.getStringExtra(T.EMAIL);
         currentPhone = intent.getStringExtra(T.PHONE_NUMBER);
 
-        if (intent.getSerializableExtra(T.PROFILE_PICTURE) == null) {
-            // Show default profile picture
-            Drawable defaultPic = getResources().getDrawable(R.drawable.default_profile_picture);
-            Bitmap bitmap = T.drawableToBitmap(defaultPic);
-            File f = T.bitmapToFile(bitmap, 10, context.getCacheDir(), "rapback_default_prof_pic");
-            oldProfilePic = f;
-        } else {
-            oldProfilePic = (File)intent.getSerializableExtra(T.PROFILE_PICTURE);
-        }
-
         first.setText(currentFirst);
         last.setText(currentLast);
         email.setText(currentEmail);
         phone.setText(currentPhone);
-        profilePictureIV.setImageURI(Uri.fromFile(oldProfilePic));
+
+        // Set profile picture
+        if (intent.getSerializableExtra(T.PROFILE_PICTURE) == null) {
+            Picasso.with(context)
+                    .load(R.drawable.default_profile_picture)
+                    .into(profilePictureIV);
+        } else {
+            File oldProfilePic = (File)intent.getSerializableExtra(T.PROFILE_PICTURE);
+            profilePictureIV.setImageURI(Uri.fromFile(oldProfilePic));
+        }
     }
 
     private void setOnClickListeners() {
@@ -129,8 +128,6 @@ public class EditProfileActivity extends Activity implements View.OnClickListene
         String emailAddress = email.getText().toString().trim();
         String phoneNumber = PhoneNumberUtils.formatNumber(
                 phone.getText().toString());
-        File profilePic = (newProfilePic == null) ?
-                oldProfilePic : newProfilePic;
 
         boolean isValid =
                 validateFields(firstName, lastName, emailAddress, phoneNumber);
@@ -223,12 +220,12 @@ public class EditProfileActivity extends Activity implements View.OnClickListene
                 Uri selectedImageUri;
                 if(isCamera)
                 {
-                    Log.d(TAG, "newProfilePic from camera");
-                    selectedImageUri = Uri.fromFile(newProfilePic);
+                    Log.d(TAG, "profilePic from camera");
+                    selectedImageUri = Uri.fromFile(temp);
                 }
                 else
                 {
-                    Log.d(TAG, "newProfilePic from gallery ");
+                    Log.d(TAG, "profilePic from gallery ");
                     selectedImageUri = data == null ? null : data.getData();
 
                     // Delete unused file
@@ -243,9 +240,9 @@ public class EditProfileActivity extends Activity implements View.OnClickListene
                 profilePictureIV.setImageBitmap(downsampledSelection);
 
                 // Save the downsampled bitmap into the cache
-                File f = T.bitmapToFile(downsampledSelection, 100,
+                File f = T.bitmapToFile(downsampledSelection, 40,
                         context.getCacheDir(), "Rapback_downsampled_profile");
-                newProfilePic = f;
+                profilePic = f;
             }
         }
     }

@@ -388,7 +388,7 @@ public class HomeActivity extends FragmentActivity implements View.OnClickListen
                 InputStream input = connection.getInputStream();
                 profileBitmap = BitmapFactory.decodeStream(input);
 
-                File f = T.bitmapToFile(profileBitmap, 100,
+                File f = T.bitmapToFile(profileBitmap, 40,
                         context.getCacheDir(), "Rapback_downsampled_profile");
 
                 profilePictureFile = f;
