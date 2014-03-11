@@ -68,6 +68,7 @@ public class SearchUsersFragmentAdapter extends ArrayAdapter<User> implements Vi
         usernameTv = (TextView) convertView.findViewById(R.id.search_username);
         fullNameTv = (TextView) convertView.findViewById(R.id.search_fullname);
         addFriendButton = (Button) convertView.findViewById(R.id.search_add_friend);
+        profilePic = (ImageView) convertView.findViewById(R.id.search_profile_pic);
     }
 
     private void setTags() {
@@ -81,15 +82,19 @@ public class SearchUsersFragmentAdapter extends ArrayAdapter<User> implements Vi
     }
 
     private void populateViews(User user) {
-        // TODO: Set profile picture
         usernameTv.setText(user.getUsername());
         fullNameTv.setText(user.getFullName());
+        // TODO: Profile picture
+//        Picasso.with(mContext)
+//                .load(entry.getThumbnailUrl())
+//                .resize((int) width,(int) height)
+//                .into(thumbnailIv);
 
         if(friendsUsernamesSet != null && friendsUsernamesSet.contains(user.getUsername())) {
             // If you're friends with someone, disable the button
             disableButton(addFriendButton, "Friends");
         } else if(pendingThemSet != null && pendingThemSet.contains(user.getUsername())) {
-            // If you've already sent a request, don't send another!
+            // If you've already sent a request, don't send another
             disableButton(addFriendButton, "Sent");
         }
     }

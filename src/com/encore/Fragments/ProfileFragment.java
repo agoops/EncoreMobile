@@ -37,9 +37,7 @@ import com.encore.views.FindFriendsActivity;
 import com.encore.views.OtherProfileActivity;
 import com.google.gson.Gson;
 
-import java.io.ByteArrayOutputStream;
 import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
@@ -59,7 +57,6 @@ public class ProfileFragment extends Fragment implements View.OnClickListener{
     private ImageView profilePictureIv;
     private ProgressBar progressProfile, progressTabs;
     private TabFriendsAdapter friendsAdapter;
-//    private TabCrowdAdapter crowdsAdapter;
     private TabLikesAdapter likesAdapter;
     private TabRequestsAdapter requestsAdapter;
     private ResultReceiver receiver;
@@ -71,8 +68,6 @@ public class ProfileFragment extends Fragment implements View.OnClickListener{
 
     private File profilePictureFile;
     private Bitmap profileBitmap;
-
-    // TODO: Set the profile picture
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -89,7 +84,6 @@ public class ProfileFragment extends Fragment implements View.OnClickListener{
 
     private void getViews() {
         rapsButton = (Button) view.findViewById(R.id.profile_raps_button);
-//        crowdsButton = (Button) view.findViewById(R.id.profile_crowds_button);
         likesButton = (Button) view.findViewById(R.id.profile_likes_button);
         requestsButton = (Button) view.findViewById(R.id.profile_requests_button);
         editProfileButton = (Button) view.findViewById(R.id.profileEditButton);
@@ -110,7 +104,6 @@ public class ProfileFragment extends Fragment implements View.OnClickListener{
 
     private void setOnClickListeners() {
         rapsButton.setOnClickListener(this);
-//        crowdsButton.setOnClickListener(this);
         likesButton.setOnClickListener(this);
         requestsButton.setOnClickListener(this);
         editProfileButton.setOnClickListener(this);
@@ -244,7 +237,6 @@ public class ProfileFragment extends Fragment implements View.OnClickListener{
     // To visually simulate tabs, we "select" the given tab number
     private void setTabPressed(int tabNumber) {
         rapsButton.setSelected((tabNumber == 1));
-//        crowdsButton.setSelected((tabNumber == 2));
         likesButton.setSelected((tabNumber == 3));
         requestsButton.setSelected((tabNumber == 4));
     }
@@ -336,20 +328,9 @@ public class ProfileFragment extends Fragment implements View.OnClickListener{
                 InputStream input = connection.getInputStream();
                 profileBitmap = BitmapFactory.decodeStream(input);
 
-                // Save the downsampled bitmap into the cache
-                File f = new File(mContext.getCacheDir(), "Rapback_downsampled_profile");
-                ByteArrayOutputStream bout = new ByteArrayOutputStream();
-                profileBitmap.compress(Bitmap.CompressFormat.JPEG, 100, bout);
-                byte[] bitmapData = bout.toByteArray();
+                File f = T.bitmapToFile(profileBitmap, 100,
+                        mContext.getCacheDir(), "Rapback_downsampled_profile");
 
-                try {
-                    FileOutputStream fos = new FileOutputStream(f);
-                    fos.write(bitmapData);
-                } catch(Exception e) {
-                    e.printStackTrace();
-                }
-
-                // Set the new profile picture
                 profilePictureFile = f;
                 return f;
             } catch (IOException e) {

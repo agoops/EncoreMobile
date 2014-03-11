@@ -101,7 +101,7 @@ public class FindFriendsActivity extends Activity implements View.OnClickListene
             String query = intent.getStringExtra(SearchManager.QUERY);
             Log.d(TAG, "querying data: " + query);
             if(query.length() == 0) {
-                // Do nothing. Maybe notify the user.
+                // TODO: Notify the user.
             } else {
                 searchUsername(query);
             }

@@ -27,6 +27,7 @@ import java.io.OutputStream;
 import java.lang.reflect.Type;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.net.URLEncoder;
 //import com.encore.models.Crowds;
 
 public class API {
@@ -67,6 +68,7 @@ public class API {
     private static final String CREATE_SESSION = SESSIONS;
     private static final String SESSION_PAGE = SESSIONS + "?page=%s";
     // Clips
+    private static final String GET_CLIPS = USER_ME + "clips/";
     private static final String GET_CLIP = CLIP;
     private static final String ADD_CLIP = CLIP;
     // Friends
@@ -572,6 +574,22 @@ public class API {
         return resultJSON;
     }
 
+    public String getClips(String token) throws Exception {
+        Log.d(TAG, "getClips called");
+        String url = GET_CLIPS;
+        ACCESS_TOKEN = "Token " + token;
+        String resultJSON = null;
+
+        try {
+            resultJSON = get(url, String.class);
+            Log.d(TAG, "getClips result: " + resultJSON);
+        } catch(Exception e) {
+            Log.d(TAG, "getClips() error");
+            throw e;
+        }
+        return resultJSON;
+    }
+
     public String updateUser(String token, HttpEntity entity) throws Exception {
         Log.d(TAG, "updateUser called");
         String url = USER_ME;
@@ -621,6 +639,7 @@ public class API {
 
     public String getOtherProfile(String token, String username) throws Exception {
         Log.d(TAG, "getOtherProfile called");
+        username = URLEncoder.encode(username, "UTF-8");
         String url = String.format(USER_OTHER, username);
         ACCESS_TOKEN = "Token " + token;
         String resultJSON = null;

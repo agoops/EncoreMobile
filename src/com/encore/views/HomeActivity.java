@@ -3,8 +3,13 @@ package com.encore.views;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
+import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.ResultReceiver;
 import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
@@ -17,20 +22,43 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import com.encore.API.APIService;
 import com.encore.Fragments.ProfileFragment;
 import com.encore.R;
 import com.encore.StartSession;
+import com.encore.models.Profile;
+import com.encore.util.T;
+import com.google.gson.Gson;
 
-public class HomeActivity extends FragmentActivity {
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
+
+public class HomeActivity extends FragmentActivity implements View.OnClickListener {
     private static final String TAG = "HomeActivity";
 
     private DrawerLayout drawerLayout;
     private ListView leftDrawerList, rightDrawerList;
     private String[] leftDrawerTitles, rightDrawerTitles;
     private ActionBarDrawerToggle leftDrawerToggle;
+    private RelativeLayout leftDrawerContainer;
+    private ImageView profilePictureIv;
+    private TextView usernameTv, fullnameTv, numRapsTv, numLikesTv, numFriendsTv;
+    private Button editProfile;
+
+    private Profile userMe;
+
+    private File profilePictureFile;
+    private Bitmap profileBitmap;
 
     private Context context;
 
@@ -49,6 +77,8 @@ public class HomeActivity extends FragmentActivity {
         this.context = this;
 
         getViews();
+        assignClickListeners();
+        initData();
         setupNavDrawer();
     }
 
@@ -58,6 +88,65 @@ public class HomeActivity extends FragmentActivity {
         drawerLayout = (DrawerLayout) findViewById(R.id.home_drawer_layout);
         leftDrawerList = (ListView) findViewById(R.id.home_left_drawer);
         rightDrawerList = (ListView) findViewById(R.id.home_right_drawer);
+        leftDrawerContainer = (RelativeLayout) findViewById(R.id.home_left_drawer_container);
+
+        profilePictureIv = (ImageView) findViewById(R.id.left_drawer_profile_picture);
+        usernameTv = (TextView) findViewById(R.id.left_drawer_username);
+        fullnameTv = (TextView) findViewById(R.id.left_drawer_fullname);
+        numRapsTv = (TextView) findViewById(R.id.left_drawer_NumRapsTv);
+        numLikesTv = (TextView) findViewById(R.id.left_drawer_NumLikesTv);
+        numFriendsTv = (TextView) findViewById(R.id.left_drawer_NumFriendsTv);
+        editProfile = (Button) findViewById(R.id.left_drawer_EditButton);
+    }
+
+    private void assignClickListeners() {
+        numRapsTv.setOnClickListener(this);
+        numLikesTv.setOnClickListener(this);
+        numFriendsTv.setOnClickListener(this);
+        editProfile.setOnClickListener(this);
+        leftDrawerContainer.setOnClickListener(this);
+    }
+
+    private void initData() {
+        // Init the drawers' data
+        getMe();
+    }
+
+    @Override
+    public void onClick(View v) {
+        switch(v.getId()) {
+            case R.id.left_drawer_NumRapsTv:
+                launchProfileDetailsFragment(T.PROFILE_INFO_RAPS);
+                break;
+            case R.id.left_drawer_NumLikesTv:
+                launchProfileDetailsFragment(T.PROFILE_INFO_LIKES);
+                break;
+            case R.id.left_drawer_NumFriendsTv:
+                launchProfileDetailsFragment(T.PROFILE_INFO_FRIENDS);
+                break;
+            case R.id.left_drawer_EditButton:
+                Intent launchEditProfileActivity = new Intent(context, EditProfileActivity.class);
+                launchEditProfileActivity.putExtra(T.FIRST_NAME, userMe.getFirstName());
+                launchEditProfileActivity.putExtra(T.LAST_NAME, userMe.getLastName());
+                launchEditProfileActivity.putExtra(T.EMAIL, userMe.getEmail());
+                launchEditProfileActivity.putExtra(T.PHONE_NUMBER, userMe.getPhoneNumber());
+                launchEditProfileActivity.putExtra(T.PROFILE_PICTURE, profilePictureFile);
+                startActivity(launchEditProfileActivity);
+                break;
+        }
+    }
+
+    private void launchProfileDetailsFragment(String type) {
+        Bundle bundle = new Bundle();
+        bundle.putString(T.PROFILE_INFO_TYPE, type);
+        Fragment profileDetailsFragment = new com.encore.Fragments.ProfileDetailsFragment();
+        profileDetailsFragment.setArguments(bundle);
+
+        FragmentManager fm = getSupportFragmentManager();
+        fm.beginTransaction()
+                .replace(R.id.home_content_frame, profileDetailsFragment)
+                .commit();
+        drawerLayout.closeDrawer(leftDrawerContainer);
     }
 
     private void setupNavDrawer() {
@@ -138,7 +227,7 @@ public class HomeActivity extends FragmentActivity {
 
             leftDrawerList.setItemChecked(position, true);
             setTitle(leftDrawerTitles[position]);
-            drawerLayout.closeDrawer(leftDrawerList);
+            drawerLayout.closeDrawer(leftDrawerContainer);
         }
     }
 
@@ -169,6 +258,90 @@ public class HomeActivity extends FragmentActivity {
 //            rightDrawerList.setItemChecked(position, true);
             setTitle(rightDrawerTitles[position]);
             drawerLayout.closeDrawer(rightDrawerList);
+        }
+    }
+
+    private void getMe() {
+        Log.d(TAG, "Making request to users/me");
+
+        Intent api = new Intent(context, APIService.class);
+        ResultReceiver receiver = new MeReceiver(new Handler());
+        api.putExtra(T.API_TYPE, T.GET_ME);
+        api.putExtra(T.RECEIVER, receiver);
+        startService(api);
+    }
+
+    // Our receivers
+    public class MeReceiver extends ResultReceiver {
+        public MeReceiver(Handler handler) {
+            super(handler);
+        }
+
+        @Override
+        public void onReceiveResult(int resultCode, Bundle data) {
+            if(resultCode == 1) {
+                Log.d(TAG, "APIService returned successful with users/me");
+                String result = data.getString("result");
+
+                Log.d(TAG, "result from apiservice is: " + result);
+                userMe = new Gson().fromJson(result, Profile.class);
+
+                int numRaps = userMe.getNumRaps();
+                int numLikes = userMe.getNumLikes();
+                int numFriends = userMe.getNumFriends();
+
+                numRapsTv.setText(
+                        (numRaps == 1) ? numRaps + " \nRap" : numRaps + " \nRaps");
+                numLikesTv.setText(
+                        (numLikes == 1) ? numLikes + " \nLike" : numLikes + " \nLikes");
+                numFriendsTv.setText(
+                        (numFriends == 1) ? numFriends + " \nFriend" : numFriends + " \nFriends");
+                usernameTv.setText(userMe.getUsername());
+                fullnameTv.setText(userMe.getFullName());
+
+                // Download our profile picture
+                profilePictureIv.setTag(userMe.getProfilePicture());
+                new DownloadImagesTask().execute(profilePictureIv);
+
+            } else {
+                Log.d(TAG, "GET friends unsuccessful");
+            }
+        }
+    }
+
+    public class DownloadImagesTask extends AsyncTask<ImageView, Void, File> {
+        ImageView imageView = null;
+
+        @Override
+        protected File doInBackground(ImageView... imageViews) {
+            this.imageView = imageViews[0];
+            return downloadImage((URL) imageView.getTag());
+        }
+
+        @Override
+        protected void onPostExecute(File file) {
+            profilePictureIv.setImageBitmap(profileBitmap);
+        }
+
+        public File downloadImage(URL url) {
+            // TODO: Find a better way to encapsulate all the data for profile pictures (e.g., URIs, files, bitmaps)
+            try {
+                HttpURLConnection connection = (HttpURLConnection) url
+                        .openConnection();
+                connection.setDoInput(true);
+                connection.connect();
+                InputStream input = connection.getInputStream();
+                profileBitmap = BitmapFactory.decodeStream(input);
+
+                File f = T.bitmapToFile(profileBitmap, 100,
+                        context.getCacheDir(), "Rapback_downsampled_profile");
+
+                profilePictureFile = f;
+                return f;
+            } catch (IOException e) {
+                e.printStackTrace();
+                return null;
+            }
         }
     }
 

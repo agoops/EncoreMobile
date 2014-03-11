@@ -12,6 +12,8 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.FrameLayout;
 
+import com.encore.util.T;
+
 import java.io.File;
 import java.io.IOException;
 
@@ -114,7 +116,9 @@ public class CameraActivity extends Activity {
 		mMediaRecorder.setProfile(CamcorderProfile.get(CamcorderProfile.QUALITY_HIGH));
 		
 		// Step 4. Set the output file
-		mMediaRecorder.setOutputFile(getOutputMediaFile().toString());
+        File outputFile = T.createFile(Environment.getExternalStoragePublicDirectory(
+                Environment.DIRECTORY_PICTURES), "Rapback", "VID_TempRapback.mp4");
+		mMediaRecorder.setOutputFile(outputFile.toString());
 		
 		// Step 5. Set the preview output
 //		mMediaRecorder.setPreviewDisplay(mPreview.getHolder().getSurface());
@@ -160,47 +164,7 @@ public class CameraActivity extends Activity {
 			Log.d(TAG, "successfully deleted file");
 		}
 	}
-	
-	/** Create a File for saving an image or video */
-	private static File getOutputMediaFile(){
-		Log.d(TAG, "getOutputMediaFile called");
-	    // TODO: To be safe, you should check that the SDCard is mounted
-	    // using Environment.getExternalStorageState() before doing this.
-		
-		// Android's default directory for pictures and videos
-	    File mediaStorageDir = new File(Environment.getExternalStoragePublicDirectory(
-	              Environment.DIRECTORY_PICTURES), "Rapback");
-	    
-	    // Create the storage directory if it does not exist
-	    if (!mediaStorageDir.exists()){
-	    	Log.d(TAG, "The following directory doesn't exist: " + mediaStorageDir);
-	        if (!mediaStorageDir.mkdirs()) {
-	            Log.d(TAG, "failed to create directory");
-	            return null;
-	        }
-	    }
-	    
-	    String path = mediaStorageDir.getPath() + File.separator +
-	    		"VID_TempRapback.mp4";
-	    mediaFile = new File(path);
-	    Log.d(TAG, "File path: " + path);
-	    try {
-	    	// Delete any previous recording
-	    	if(mediaFile.exists()) {
-	    		mediaFile.delete();
-	    		Log.d(TAG, "Previously existing file deleted.");
-	    	}
-			mediaFile.createNewFile();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			Log.d(TAG, "Failed to create new file");
-			e.printStackTrace();
-		}
-	    
-	    Log.d(TAG, "getOutputMediaFile successful");
-	    return mediaFile;
-	}
-	
+
 	private void releaseMediaRecorder() {
 		if(mMediaRecorder != null) {
 			mCamera.lock();

@@ -6,12 +6,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
-import android.database.Cursor;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.Canvas;
-import android.graphics.Matrix;
-import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
@@ -33,11 +28,7 @@ import com.encore.R;
 import com.encore.TokenHelper;
 import com.encore.util.T;
 
-import java.io.ByteArrayOutputStream;
 import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -76,7 +67,7 @@ public class EditProfileActivity extends Activity implements View.OnClickListene
     }
 
     private void setCurrentInfo() {
-        // Pre-fill the edittexts with the user's current information
+        // Pre-fill the fields with the user's current information
         Intent intent = getIntent();
         currentFirst = intent.getStringExtra(T.FIRST_NAME);
         currentLast = intent.getStringExtra(T.LAST_NAME);
@@ -84,23 +75,11 @@ public class EditProfileActivity extends Activity implements View.OnClickListene
         currentPhone = intent.getStringExtra(T.PHONE_NUMBER);
 
         if (intent.getSerializableExtra(T.PROFILE_PICTURE) == null) {
-            // Convert from drawable to bitmap
-            Drawable defaultProfDrawable = getResources().getDrawable(R.drawable.default_profile_picture);
-            Bitmap bitmap = drawableToBitmap(defaultProfDrawable);
-
-            // Read the bitmap into a file
-            File f = new File(context.getCacheDir(), "rapback_default_prof_pic");
-            ByteArrayOutputStream bos = new ByteArrayOutputStream();
-            bitmap.compress(Bitmap.CompressFormat.JPEG, 20, bos);
-            byte[] bitmapData = bos.toByteArray();
-
-            try {
-                FileOutputStream fos = new FileOutputStream(f);
-                fos.write(bitmapData);
-                oldProfilePic = f;
-            } catch(Exception e) {
-                e.printStackTrace();
-            }
+            // Show default profile picture
+            Drawable defaultPic = getResources().getDrawable(R.drawable.default_profile_picture);
+            Bitmap bitmap = T.drawableToBitmap(defaultPic);
+            File f = T.bitmapToFile(bitmap, 10, context.getCacheDir(), "rapback_default_prof_pic");
+            oldProfilePic = f;
         } else {
             oldProfilePic = (File)intent.getSerializableExtra(T.PROFILE_PICTURE);
         }
@@ -153,9 +132,6 @@ public class EditProfileActivity extends Activity implements View.OnClickListene
         File profilePic = (newProfilePic == null) ?
                 oldProfilePic : newProfilePic;
 
-        Log.d(TAG, "newProfilePic == null: " + (newProfilePic == null));
-        Log.d(TAG, "profilePic: " + profilePic.getPath());
-
         boolean isValid =
                 validateFields(firstName, lastName, emailAddress, phoneNumber);
 
@@ -181,19 +157,6 @@ public class EditProfileActivity extends Activity implements View.OnClickListene
         startActivity(homeActivity);
     }
 
-    private Bitmap drawableToBitmap(Drawable drawable) {
-        if (drawable instanceof BitmapDrawable) {
-            return ((BitmapDrawable) drawable).getBitmap();
-        }
-
-        Bitmap bitmap = Bitmap.createBitmap(drawable.getIntrinsicWidth(), drawable.getIntrinsicHeight(), Bitmap.Config.ARGB_8888);
-        Canvas canvas = new Canvas(bitmap);
-        drawable.setBounds(0, 0, canvas.getWidth(), canvas.getHeight());
-        drawable.draw(canvas);
-
-        return bitmap;
-    }
-
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch(item.getItemId())
@@ -207,7 +170,8 @@ public class EditProfileActivity extends Activity implements View.OnClickListene
     }
 
     public void openImageIntent() {
-        temp = getProfPicFile();
+        temp = T.createFile(Environment.getExternalStoragePublicDirectory(
+                Environment.DIRECTORY_PICTURES), "Rapback", "Rapback_Profile.jpg");
         Uri outputFileUri = Uri.fromFile(temp);
 
         // Intents that can take a picture are added to a list
@@ -275,174 +239,15 @@ public class EditProfileActivity extends Activity implements View.OnClickListene
                 }
 
                 // Downsample the image
-                Bitmap downsampledSelection = decodeUri(selectedImageUri);
+                Bitmap downsampledSelection = T.decodeUri(context, selectedImageUri);
                 profilePictureIV.setImageBitmap(downsampledSelection);
 
                 // Save the downsampled bitmap into the cache
-                File f = new File(context.getCacheDir(), "Rapback_downsampled_profile");
-                ByteArrayOutputStream bout = new ByteArrayOutputStream();
-                downsampledSelection.compress(Bitmap.CompressFormat.JPEG, 100, bout);
-                byte[] bitmapData = bout.toByteArray();
-
-                try {
-                    FileOutputStream fos = new FileOutputStream(f);
-                    fos.write(bitmapData);
-                    newProfilePic = f;
-                } catch(Exception e) {
-                    e.printStackTrace();
-                }
+                File f = T.bitmapToFile(downsampledSelection, 100,
+                        context.getCacheDir(), "Rapback_downsampled_profile");
+                newProfilePic = f;
             }
         }
-    }
-
-    /*
-      * Downsamples the given image to prevent out-of-memory errors
-      */
-    private Bitmap decodeUri(Uri selectedImageUri) {
-        // Decode image size
-//        BitmapFactory.Options opts = new BitmapFactory.Options();
-//        opts.inJustDecodeBounds = true;
-//        try {
-//            BitmapFactory.decodeStream(
-//                    getContentResolver().openInputStream(selectedImageUri),
-//                    null, opts);
-//
-//            // The new size we want to scale to
-//            final int REQUIRED_SIZE = 140;
-//
-//            int width_tmp = Math.min(opts.outWidth, opts.outHeight);
-//            int scale = 1;
-//            while (true) {
-//                if (width_tmp / 2 < REQUIRED_SIZE) {
-//                    break;
-//                }
-//                width_tmp /= 2;
-//                scale *= 2;
-//            }
-//
-//            // Decode with inSampleSize
-//            BitmapFactory.Options opts2 = new BitmapFactory.Options();
-//            opts2.inSampleSize = scale;
-//
-//            return BitmapFactory.decodeStream(
-//                    getContentResolver().openInputStream(selectedImageUri),
-//                    null, opts2);
-//        } catch (FileNotFoundException e) {
-//            Log.e(TAG, "File not found: " + selectedImageUri.getPath());
-//            e.printStackTrace();
-//        }
-//
-//        return null;
-        try {
-            // TODO: Crop the image. Better yet, let the user crop the image.
-            final int MAX_IMAGE_DIMENSION = 140;
-
-            InputStream is = context.getContentResolver().openInputStream(selectedImageUri);
-            BitmapFactory.Options dbo = new BitmapFactory.Options();
-            dbo.inJustDecodeBounds = true;
-            BitmapFactory.decodeStream(is, null, dbo);
-            is.close();
-
-            int rotatedWidth, rotatedHeight;
-            int orientation = getOrientation(context, selectedImageUri);
-
-            if (orientation == 90 || orientation == 270) {
-                rotatedWidth = dbo.outHeight;
-                rotatedHeight = dbo.outWidth;
-            } else {
-                rotatedWidth = dbo.outWidth;
-                rotatedHeight = dbo.outHeight;
-            }
-
-            Bitmap srcBitmap;
-            is = context.getContentResolver().openInputStream(selectedImageUri);
-            if (rotatedWidth > MAX_IMAGE_DIMENSION || rotatedHeight > MAX_IMAGE_DIMENSION) {
-                float widthRatio = ((float) rotatedWidth) / ((float) MAX_IMAGE_DIMENSION);
-                float heightRatio = ((float) rotatedHeight) / ((float) MAX_IMAGE_DIMENSION);
-                float maxRatio = Math.max(widthRatio, heightRatio);
-
-                // Create the bitmap from file
-                BitmapFactory.Options options = new BitmapFactory.Options();
-                options.inSampleSize = (int) maxRatio;
-                srcBitmap = BitmapFactory.decodeStream(is, null, options);
-            } else {
-                srcBitmap = BitmapFactory.decodeStream(is);
-            }
-            is.close();
-            /*
-             * if the orientation is not 0 (or -1, which means we don't know), we
-             * have to do a rotation.
-             */
-            if (orientation > 0) {
-                Matrix matrix = new Matrix();
-                matrix.postRotate(orientation);
-
-                srcBitmap = Bitmap.createBitmap(srcBitmap, 0, 0, srcBitmap.getWidth(),
-                        srcBitmap.getHeight(), matrix, true);
-            }
-
-            return srcBitmap;
-
-        } catch (Exception e) {
-            e.printStackTrace();
-
-        }
-        return null;
-    }
-
-    /*
-        Get the orientation information of a photo.
-     */
-    private static int getOrientation(Context context, Uri photoUri) {
-        Cursor cursor = context.getContentResolver().query(photoUri,
-                new String[] { MediaStore.Images.ImageColumns.ORIENTATION }, null, null, null);
-
-        if (cursor.getCount() != 1) {
-            return -1;
-        }
-
-        cursor.moveToFirst();
-        return cursor.getInt(0);
-    }
-
-    /*
-      Creates a new jpg in the Rapback directory to store the camera's result.
-      Optionally takes a string as the name of the created file
-      */
-    private File getProfPicFile(){
-        // TODO: Check the SDCard is mounted using Environment.getExternalStorageState()
-
-        // Android's default directory for pictures and videos
-        File mediaStorageDir = new File(Environment.getExternalStoragePublicDirectory(
-                Environment.DIRECTORY_PICTURES), "Rapback");
-
-        // Create the storage directory if it does not exist
-        if (!mediaStorageDir.exists()){
-            Log.d(TAG, "The following directory doesn't exist: " + mediaStorageDir);
-            if (!mediaStorageDir.mkdirs()) {
-                Log.d(TAG, "failed to create directory");
-                return null;
-            }
-        }
-
-//        String time = new SimpleDateFormat("yyyyMMddhhmm")
-//                .format(new Date());
-
-        String path;
-        path = mediaStorageDir.getPath() + File.separator +
-                "Rapback_Profile.jpg";
-        File profPicFile = new File(path);
-
-        try {
-            if(profPicFile.exists()) {
-                profPicFile.delete();
-            }
-            profPicFile.createNewFile();
-        } catch (IOException e) {
-            Log.d(TAG, "Failed to create new file");
-            e.printStackTrace();
-        }
-        return profPicFile;
     }
 
     // Basic checking of fields

@@ -6,24 +6,6 @@ import java.sql.Date;
 
 public class User implements UserInfo{
 
-	/*
-	 *{"friends": [
-	 *	{"id": 2, 
-	 *	 "user": {
-	 *		"id": 4, "first_name": "Michael", "last_name": "Paris", 
-	 *		"email": "mlparis92@gmail.com", "username": "mikeyp", 
-	 *		"date_joined": "2013-11-05T03:59:38.518Z"}, 
-	 *	 "phone_number": "757-285-6806"}, 
-	 *
-	 *	{"id": 3, 
-	 *	 "user": {
-	 *		"id": 5, "first_name": "rhymeslayer", "last_name": "gupta",
-	 *		 "email": "ag7bf@virginia.edu", "username": "anskeet", 
-	 *		"date_joined": "2013-11-19T01:52:19Z"}, 
-	 *	"phone_number": "7572899330"}
-	 * ]}
-	 */
-
 	@SerializedName("id")
 	private int userId;
 	

@@ -2,7 +2,6 @@ package com.encore.API;
 
 import android.app.IntentService;
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.os.ResultReceiver;
 import android.util.Log;
@@ -109,6 +108,8 @@ public class APIService extends IntentService {
             case T.GET_OTHER_PROFILE:
                 getOtherProfile(intent.getExtras());
                 break;
+            case T.GET_CLIPS:
+                getClips(intent.getExtras());
             default:
                 break;
 		}
@@ -266,8 +267,7 @@ public class APIService extends IntentService {
         String email = data.getString(T.EMAIL);
         String phoneNumber = data.getString(T.PHONE_NUMBER);
 
-        Uri defaultProfileUri = Uri.parse("R.drawable.default_profile_picture");
-        File defaultProfilePicture = new File(defaultProfileUri.getPath());
+
         // TODO: Add some sort of profile picture flow
 
 		try {
@@ -278,7 +278,7 @@ public class APIService extends IntentService {
             json.put(T.LAST_NAME, lastName);
             json.put(T.EMAIL, email);
             json.put(T.PHONE_NUMBER, phoneNumber);
-            json.put(T.PROFILE_PICTURE, defaultProfilePicture);
+            json.put(T.PROFILE_PICTURE, null);
 
 			StringEntity entity = new StringEntity(json.toString());
 			result = api.signUp(entity);
@@ -417,6 +417,24 @@ public class APIService extends IntentService {
 
         try {
             resultJSON = api.getLikes(token);
+
+            Bundle b = new Bundle();
+            b.putString("result", resultJSON);
+            resultReceiver.send(1, b);
+        } catch(Exception e) {
+            Log.e(TAG, e.getMessage() + " ");
+            e.printStackTrace();
+            resultReceiver.send(0, null);
+        }
+    }
+
+    private void getClips(Bundle data) {
+        Log.d(TAG, "getClips called");
+        String token = TokenHelper.getToken(this);
+        String resultJSON = null;
+
+        try {
+            resultJSON = api.getClips(token);
 
             Bundle b = new Bundle();
             b.putString("result", resultJSON);

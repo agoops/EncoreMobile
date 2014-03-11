@@ -13,7 +13,7 @@
         android:paddingTop="5dp"
         android:paddingBottom="5dp"
         android:layout_centerVertical="true"
-        android:src="@drawable/bobby_prof"/>
+        android:src="@drawable/default_profile_picture"/>
 
     <LinearLayout
         android:id="@+id/search_textview_container"

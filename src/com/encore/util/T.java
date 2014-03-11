@@ -1,10 +1,28 @@
 package com.encore.util;
 
 import android.content.Context;
+import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
+import android.graphics.Matrix;
 import android.graphics.Typeface;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
+import android.net.Uri;
+import android.provider.MediaStore;
+import android.util.Log;
 import android.widget.TextView;
 
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+
 public class T {
+    public static final String TAG = "T";
+
 	public static final String USERNAME = "username";
     public static final String MY_USERNAME = "my_username";
 	public static final String PASSWORD = "password";
@@ -27,6 +45,11 @@ public class T {
     public static final String ALL_CLIPS = "all_clips";
     public static final String IS_COMPLETE = "is_complete";
     public static final String PROFILE_PICTURE = "profile_picture";
+    public static final String PROFILE_INFO_TYPE = "profile_info_type";
+    public static final String PROFILE_INFO_RAPS = "profile_raps";
+    public static final String PROFILE_INFO_LIKES = "profile_likes";
+    public static final String PROFILE_INFO_FRIENDS = "profile_friends";
+
 
 	// API call types
 	public static final int SIGN_IN = 0;
@@ -49,6 +72,7 @@ public class T {
     public static final int SEARCH_USERNAME = 19;
     public static final int PAGINATE_NEXT_SESSION = 20;
     public static final int GET_OTHER_PROFILE = 21;
+    public static final int GET_CLIPS = 22;
 	
 	// Column names for newsfeed query
 	public static final String SESSION_TITLE = "title";
@@ -70,5 +94,151 @@ public class T {
         for(TextView view : views) {
             view.setTypeface(typeface);
         }
+    }
+
+    /*
+     *   Creates a new file in the given directory.
+     *   If the directory doesn't exist, it is created.
+     *   Returns the new file.
+     */
+    public static File createFile(File dir, String dirName, String fileName){
+        // TODO: Check the SDCard is mounted using Environment.getExternalStorageState()
+
+        File mediaStorageDir = new File(dir, dirName);
+
+        // Create the storage directory if it does not exist
+        if (!mediaStorageDir.exists()){
+            Log.d(TAG, "The following directory doesn't exist: " + mediaStorageDir);
+            if (!mediaStorageDir.mkdirs()) {
+                Log.d(TAG, "failed to create directory");
+                return null;
+            }
+        }
+
+        String path;
+        path = mediaStorageDir.getPath() + File.separator +
+                fileName;
+        File newFile = new File(path);
+
+        try {
+            if(newFile.exists()) {
+                newFile.delete();
+            }
+            newFile.createNewFile();
+        } catch (IOException e) {
+            Log.d(TAG, "Failed to create new file");
+            e.printStackTrace();
+        }
+        return newFile;
+    }
+
+    /*
+     *   -------------- Bitmap manipulation ----------------
+     */
+
+    public static Bitmap drawableToBitmap(Drawable drawable) {
+        if (drawable instanceof BitmapDrawable) {
+            return ((BitmapDrawable) drawable).getBitmap();
+        }
+
+        Bitmap bitmap = Bitmap.createBitmap(drawable.getIntrinsicWidth(), drawable.getIntrinsicHeight(), Bitmap.Config.ARGB_8888);
+        Canvas canvas = new Canvas(bitmap);
+        drawable.setBounds(0, 0, canvas.getWidth(), canvas.getHeight());
+        drawable.draw(canvas);
+
+        return bitmap;
+    }
+
+    public static File bitmapToFile(Bitmap bitmap, int compressionQuality, File dir, String fileName) {
+        // Read the bitmap into a file
+        File f = new File(dir, fileName);
+        ByteArrayOutputStream bos = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.JPEG, compressionQuality, bos);
+        byte[] bitmapData = bos.toByteArray();
+
+        try {
+            FileOutputStream fos = new FileOutputStream(f);
+            fos.write(bitmapData);
+        } catch(Exception e) {
+            e.printStackTrace();
+        }
+
+        return f;
+    }
+
+    /*
+      * Downsamples the given image to prevent out-of-memory errors
+      */
+    public static Bitmap decodeUri(Context context, Uri selectedImageUri) {
+        try {
+            // TODO: Crop the image. Better yet, let the user crop the image.
+            final int MAX_IMAGE_DIMENSION = 140;
+
+            InputStream is = context.getContentResolver().openInputStream(selectedImageUri);
+            BitmapFactory.Options dbo = new BitmapFactory.Options();
+            dbo.inJustDecodeBounds = true;
+            BitmapFactory.decodeStream(is, null, dbo);
+            is.close();
+
+            int rotatedWidth, rotatedHeight;
+            int orientation = getOrientation(context, selectedImageUri);
+
+            if (orientation == 90 || orientation == 270) {
+                rotatedWidth = dbo.outHeight;
+                rotatedHeight = dbo.outWidth;
+            } else {
+                rotatedWidth = dbo.outWidth;
+                rotatedHeight = dbo.outHeight;
+            }
+
+            Bitmap srcBitmap;
+            is = context.getContentResolver().openInputStream(selectedImageUri);
+            if (rotatedWidth > MAX_IMAGE_DIMENSION || rotatedHeight > MAX_IMAGE_DIMENSION) {
+                float widthRatio = ((float) rotatedWidth) / ((float) MAX_IMAGE_DIMENSION);
+                float heightRatio = ((float) rotatedHeight) / ((float) MAX_IMAGE_DIMENSION);
+                float maxRatio = Math.max(widthRatio, heightRatio);
+
+                // Create the bitmap from file
+                BitmapFactory.Options options = new BitmapFactory.Options();
+                options.inSampleSize = (int) maxRatio;
+                srcBitmap = BitmapFactory.decodeStream(is, null, options);
+            } else {
+                srcBitmap = BitmapFactory.decodeStream(is);
+            }
+            is.close();
+            /*
+             * if the orientation is not 0 (or -1, which means we don't know), we
+             * have to do a rotation.
+             */
+            if (orientation > 0) {
+                Matrix matrix = new Matrix();
+                matrix.postRotate(orientation);
+
+                srcBitmap = Bitmap.createBitmap(srcBitmap, 0, 0, srcBitmap.getWidth(),
+                        srcBitmap.getHeight(), matrix, true);
+            }
+
+            return srcBitmap;
+
+        } catch (Exception e) {
+            e.printStackTrace();
+
+        }
+        return null;
+    }
+
+    /*
+        Get the orientation information of a photo.
+     */
+    public static int getOrientation(Context context, Uri photoUri) {
+        Cursor cursor = context.getContentResolver().query(photoUri,
+                new String[] { MediaStore.Images.ImageColumns.ORIENTATION }, null, null, null);
+
+        if (cursor.getCount() != 1) {
+            return -1;
+        }
+
+        cursor.moveToFirst();
+        return cursor.getInt(0);
     }
 }
