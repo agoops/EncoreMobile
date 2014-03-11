@@ -85,7 +85,7 @@ public class AndroidVideoCapture extends Activity implements
 
 		restart = (Button) findViewById(R.id.record);
 		restart.setOnClickListener(restartListener);
-		send = (Button) findViewById(R.id.send);
+//		send = (Button) findViewById(R.id.send);
 		send.setOnClickListener(sendListener);
 		recordTask = new RecordAsyncTask();
 		audioInfo = new AudioInfo(AUDIO_SOURCE);

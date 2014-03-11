@@ -2,7 +2,6 @@ package com.encore;
 
 import android.app.Activity;
 import android.content.Context;
-import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.hardware.Camera;
@@ -18,9 +17,6 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.ImageView;
-
-import com.encore.API.APIService;
-import com.encore.util.T;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -143,7 +139,7 @@ public class CameraActivity2 extends Activity implements
 
 	private void setUpButtons() {
 		record = (ImageView) findViewById(R.id.record);
-		send = (ImageView) findViewById(R.id.send);
+//		send = (ImageView) findViewById(R.id.send);
 
 		record.setOnClickListener(this);
 		send.setOnClickListener(this);
@@ -179,29 +175,29 @@ public class CameraActivity2 extends Activity implements
 			}
 			break;
 
-		case R.id.send:
-            Log.d(TAG, "send clicked");
-            if (isRecording || !oneRecorded || !mediaFile.exists()) {
-                return;
-            }
-            if (sessionId == -1) {
-                //take to screen to collect new information
-                Log.d(TAG, "create new session with recorded clip...not implemented yet");
-            }
-            else {
-                //add recorded clip to current session
-                generateThumbnail();
-
-                Intent addClipIntent = new Intent(this, APIService.class);
-                addClipIntent.putExtra(T.API_TYPE, T.ADD_CLIP);
-                addClipIntent.putExtra(T.SESSION_ID, sessionId);
-                addClipIntent.putExtra(T.FILEPATH, mediaFile.getAbsolutePath());
-                addClipIntent.putExtra(T.THUMBNAIL_FILEPATH, thumbnailFilepath);
-                startService(addClipIntent);
-                finish();
-            }
-
-            break;
+//		case R.id.send:
+//            Log.d(TAG, "send clicked");
+//            if (isRecording || !oneRecorded || !mediaFile.exists()) {
+//                return;
+//            }
+//            if (sessionId == -1) {
+//                //take to screen to collect new information
+//                Log.d(TAG, "create new session with recorded clip...not implemented yet");
+//            }
+//            else {
+//                //add recorded clip to current session
+//                generateThumbnail();
+//
+//                Intent addClipIntent = new Intent(this, APIService.class);
+//                addClipIntent.putExtra(T.API_TYPE, T.ADD_CLIP);
+//                addClipIntent.putExtra(T.SESSION_ID, sessionId);
+//                addClipIntent.putExtra(T.FILEPATH, mediaFile.getAbsolutePath());
+//                addClipIntent.putExtra(T.THUMBNAIL_FILEPATH, thumbnailFilepath);
+//                startService(addClipIntent);
+//                finish();
+//            }
+//
+//            break;
 		}
 	}
 	

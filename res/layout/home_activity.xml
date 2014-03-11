@@ -115,17 +115,31 @@
         android:background="#333"
         android:paddingBottom="20dp">
 
+        <TextView
+            android:id="@+id/home_right_drawer_title"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:layout_marginTop="10dp"
+            android:layout_marginLeft="15dp"
+            android:textAppearance="?android:textAppearanceLarge"
+            android:textColor="#fff"
+            android:textStyle="bold"
+            android:text="Friends"/>
+
         <Button
             android:id="@+id/home_right_drawer_find_friends_button"
+            android:layout_alignTop="@id/home_right_drawer_title"
+            android:layout_alignBottom="@id/home_right_drawer_title"
+            android:layout_toRightOf="@id/home_right_drawer_title"
+            android:layout_marginLeft="15dp"
+            android:layout_marginRight="15dp"
             android:layout_height="wrap_content"
             android:layout_width="match_parent"
-            android:layout_marginTop="7dp"
             android:text="Find Friends"/>
 
         <ListView
             android:id="@+id/home_right_drawer"
-            android:layout_below="@+id/home_right_drawer_find_friends_button"
-            android:layout_marginTop="10dp"
+            android:layout_below="@+id/home_right_drawer_title"
             android:layout_height="match_parent"
             android:layout_width="match_parent" />
     </RelativeLayout>

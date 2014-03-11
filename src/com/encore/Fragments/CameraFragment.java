@@ -192,11 +192,11 @@ public class CameraFragment extends Fragment implements
 
     @Override
     public void surfaceDestroyed(SurfaceHolder holder) {
-
+        Log.d(TAG, "surfaceDestroyed()");
     }
 
     private void setUpButtons() {
-        // TODO: Moving action bar
+        // TODO: 15 second visual
         record = (Button) view.findViewById(R.id.record);
 
         record.setOnTouchListener(new View.OnTouchListener() {

@@ -80,7 +80,7 @@ public class T {
 
 	public static final String COMMENT_TEXT = "comment_text";
 
-    // For determining StartSession's flow
+    // For determining SessionFlowManager's flow
     public static final String FEED_TYPE = "feed_type";
     public static final int LIVE_FEED = 1;
     public static final int COMPLETE_FEED = 2;

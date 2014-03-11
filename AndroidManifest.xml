@@ -60,7 +60,7 @@
             android:configChanges="orientation"
             android:screenOrientation="portrait">
         </activity>
-        <activity android:name="com.encore.StartSession"
+        <activity android:name=".SessionFlowManager"
             android:parentActivityName="com.encore.views.HomeActivity"
             android:configChanges="orientation"
             android:screenOrientation="portrait">

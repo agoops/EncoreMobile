@@ -284,7 +284,7 @@ public class InboxViewAdapter extends ArrayAdapter<Session> implements OnClickLi
             String clipsJson = (new Gson()).toJson(clips, listType);
 
             // Playback all clips
-            Intent startSession = new Intent(mContext, StartSession.class);
+            Intent startSession = new Intent(mContext, SessionFlowManager.class);
             startSession.putExtra(T.SESSION_ID, sessionId);
             startSession.putExtra(T.ALL_CLIPS, clipsJson);
             startSession.putExtra(T.IS_COMPLETE, sesh.isComplete());
@@ -294,7 +294,7 @@ public class InboxViewAdapter extends ArrayAdapter<Session> implements OnClickLi
             String clipUrl = sesh.getClipUrl();
 
             // Playback most recent clip, allow for reply flow
-            Intent startSession = new Intent(mContext, StartSession.class);
+            Intent startSession = new Intent(mContext, SessionFlowManager.class);
             startSession.putExtra(T.SESSION_ID, sessionId);
             startSession.putExtra(T.CLIP_URL, clipUrl);
             startSession.putExtra(T.IS_COMPLETE, sesh.isComplete());

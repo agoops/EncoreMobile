@@ -20,8 +20,8 @@ import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 
-public class StartSession extends FragmentActivity {
-    private static final String TAG = "StartSession";
+public class SessionFlowManager extends FragmentActivity {
+    private static final String TAG = "SessionFlowManager";
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -29,8 +29,8 @@ public class StartSession extends FragmentActivity {
         setContentView(R.layout.placeholder);
 
         // Flow:
-        // Inbox > StartSession:ClipPreview > StartSession:Camera > StartSession:Preview > Send clip, HomeActivity
-        // StartSession:Camera > StartSession:Preview > StartSession:CrowdPicker
+        // Inbox > SessionFlowManager:ClipPreview > SessionFlowManager:Camera > SessionFlowManager:Preview > Send clip, HomeActivity
+        // SessionFlowManager:Camera > SessionFlowManager:Preview > SessionFlowManager:CrowdPicker
         int sessionId = getIntent().getIntExtra(T.SESSION_ID, -1);
         int feedType = getIntent().getIntExtra(T.FEED_TYPE, -1);
         boolean isComplete = getIntent().getBooleanExtra(T.IS_COMPLETE, false);
@@ -47,13 +47,11 @@ public class StartSession extends FragmentActivity {
             FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
             CameraFragment cameraFragment = new CameraFragment();
 
-            // Open the camera fragment
-            Intent intent = getIntent();
             Bundle bundle = new Bundle();
-            bundle.putString("sessionTitle", intent.getStringExtra("sessionTitle"));
-            bundle.putInt("sessionId", intent.getIntExtra("sessionId", -1));
+            bundle.putInt(T.SESSION_ID, -1);
             cameraFragment.setArguments(bundle);
 
+            // Open the camera fragment
             ft.add(R.id.fragment_placeholder, cameraFragment);
             ft.commit();
         } else {

@@ -31,7 +31,7 @@ import android.widget.TextView;
 import com.encore.API.APIService;
 import com.encore.Fragments.ProfileFragment;
 import com.encore.R;
-import com.encore.StartSession;
+import com.encore.SessionFlowManager;
 import com.encore.TabFriendsAdapter;
 import com.encore.models.Friends;
 import com.encore.models.Profile;
@@ -114,8 +114,9 @@ public class HomeActivity extends FragmentActivity implements View.OnClickListen
         numLikesTv.setOnClickListener(this);
         numFriendsTv.setOnClickListener(this);
         editProfile.setOnClickListener(this);
-        leftDrawerContainer.setOnClickListener(this);
         findFriends.setOnClickListener(this);
+        leftDrawerContainer.setOnClickListener(this);
+        rightDrawerContainer.setOnClickListener(this);
     }
 
     private void initData() {
@@ -432,8 +433,8 @@ public class HomeActivity extends FragmentActivity implements View.OnClickListen
         {
             case R.id.action_video:
                 // Launch a new session
-                Log.d(TAG, "Launching StartSession");
-                Intent intent = new Intent(this, StartSession.class);
+                Log.d(TAG, "Launching SessionFlowManager");
+                Intent intent = new Intent(this, SessionFlowManager.class);
                 startActivity(intent);
 
                 return true;

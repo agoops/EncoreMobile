@@ -17,4 +17,17 @@
         android:layout_width="match_parent"
         android:layout_above="@id/sendBtn" />
 
+    <EditText
+        android:id="@+id/preview_session_title"
+        android:layout_height="100dp"
+        android:layout_width="match_parent"
+        android:hint="Enter a title"
+        android:textColor="#fff"
+        android:textAppearance="?android:textAppearanceLarge"
+        android:textStyle="bold"
+        android:gravity="center"
+        android:background="#00000000"
+        android:textColorHint="#fff"
+        android:visibility="invisible" />
+
 </RelativeLayout>
