@@ -272,6 +272,7 @@ public class ProfileFragment extends Fragment implements View.OnClickListener{
                         otherProfile.putExtra(T.USERNAME, friendsList.get(position).getUsername());
                         otherProfile.putExtra(T.MY_USERNAME, myUsername);
                         startActivity(otherProfile);
+
                     }
                 });
                 break;
@@ -373,7 +374,7 @@ public class ProfileFragment extends Fragment implements View.OnClickListener{
                 myFullNameTv.setText(userMe.getFullName());
 
                 // Download our profile picture
-                profilePictureIv.setTag(userMe.getProfilePicture());
+                profilePictureIv.setTag(userMe.getProfilePictureUrl());
                 new DownloadImagesTask().execute(profilePictureIv);
 
                 // Show data

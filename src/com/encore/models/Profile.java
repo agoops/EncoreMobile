@@ -27,7 +27,7 @@ public class Profile implements UserInfo {
     private int numRaps;
 
     @SerializedName("profile_picture")
-    private URL profilePicture;
+    private URL profilePictureUrl;
 
 	public Profile() {
 		this.profileId =  -1;
@@ -101,8 +101,8 @@ public class Profile implements UserInfo {
 		return user.getLastName();
 	}
 
-    public URL getProfilePicture() {
-        return profilePicture;
+    public URL getProfilePictureUrl() {
+        return profilePictureUrl;
     }
 
     public String getFullName() {

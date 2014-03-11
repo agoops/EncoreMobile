@@ -27,7 +27,6 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.encore.API.APIService;
 import com.encore.Fragments.ProfileFragment;
@@ -53,7 +52,7 @@ public class HomeActivity extends FragmentActivity implements View.OnClickListen
 
     private DrawerLayout drawerLayout;
     private ListView leftDrawerList, rightDrawerList;
-    private String[] leftDrawerTitles, rightDrawerTitles;
+    private String[] leftDrawerTitles;
     private ActionBarDrawerToggle leftDrawerToggle;
     private RelativeLayout leftDrawerContainer, rightDrawerContainer;
     private ImageView profilePictureIv;
@@ -94,7 +93,6 @@ public class HomeActivity extends FragmentActivity implements View.OnClickListen
 
     private void getViews() {
         leftDrawerTitles = getResources().getStringArray(R.array.left_drawer_titles);
-        rightDrawerTitles = getResources().getStringArray(R.array.right_drawer_titles);
         drawerLayout = (DrawerLayout) findViewById(R.id.home_drawer_layout);
         leftDrawerList = (ListView) findViewById(R.id.home_left_drawer);
         rightDrawerList = (ListView) findViewById(R.id.home_right_drawer);
@@ -201,8 +199,6 @@ public class HomeActivity extends FragmentActivity implements View.OnClickListen
                 R.layout.drawer_list_item, leftDrawerTitles));
         leftDrawerList.setOnItemClickListener(new LeftDrawerItemClickListener());
 
-        rightDrawerList.setAdapter(new ArrayAdapter<String>(this,
-                R.layout.drawer_list_item, rightDrawerTitles));
         rightDrawerList.setOnItemClickListener(new RightDrawerClickListener());
 
         // Hide overlay
@@ -259,27 +255,18 @@ public class HomeActivity extends FragmentActivity implements View.OnClickListen
             selectItem(position);
         }
 
-        /* Swaps fragments in the main content view */
+        /* Opens the friends' profile */
         private void selectItem(int position) {
-            FragmentManager fm = getSupportFragmentManager();
-
-            switch(position)
-            {
-                case 0:
-                    Toast.makeText(context, "Rap Battle!", Toast.LENGTH_SHORT).show();
-                    break;
-                case 1:
-                    Toast.makeText(context, "Freestyle!", Toast.LENGTH_SHORT).show();
-                    break;
-                default:
-                    Toast.makeText(context, "Rap Battle!", Toast.LENGTH_SHORT).show();
-                    break;
-            }
+            Intent otherProfile = new Intent(context, OtherProfileActivity.class);
+            otherProfile.putExtra(T.USERNAME, friendsList.get(position).getUsername());
+            otherProfile.putExtra(T.MY_USERNAME, myUsername);
 
             // TODO: Prevent the item from remaining selected
-//            rightDrawerList.setItemChecked(position, true);
-            setTitle(rightDrawerTitles[position]);
+            rightDrawerList.setItemChecked(position, true);
+            setTitle(friendsList.get(position).getFullName());
             drawerLayout.closeDrawer(rightDrawerContainer);
+
+            startActivity(otherProfile);
         }
     }
 
@@ -335,7 +322,7 @@ public class HomeActivity extends FragmentActivity implements View.OnClickListen
                 fullnameTv.setText(userMe.getFullName());
 
                 // Download our profile picture
-                profilePictureIv.setTag(userMe.getProfilePicture());
+                profilePictureIv.setTag(userMe.getProfilePictureUrl());
                 new DownloadImagesTask().execute(profilePictureIv);
 
             } else {
@@ -360,7 +347,6 @@ public class HomeActivity extends FragmentActivity implements View.OnClickListen
                 Friends friends = (new Gson()).fromJson(result, Friends.class);
                 Profile[] friendsArray = friends.getFriends();
 
-                // Prevents a contextual null-pointer
                 // Update the data on our listview
                 friendsAdapter = new TabFriendsAdapter(context, R.layout.tab_friends_list_row, null);
                 rightDrawerList.setAdapter(friendsAdapter);
