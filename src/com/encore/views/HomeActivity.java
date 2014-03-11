@@ -33,6 +33,8 @@ import com.encore.API.APIService;
 import com.encore.Fragments.ProfileFragment;
 import com.encore.R;
 import com.encore.StartSession;
+import com.encore.TabFriendsAdapter;
+import com.encore.models.Friends;
 import com.encore.models.Profile;
 import com.encore.util.T;
 import com.google.gson.Gson;
@@ -42,6 +44,9 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashSet;
 
 public class HomeActivity extends FragmentActivity implements View.OnClickListener {
     private static final String TAG = "HomeActivity";
@@ -50,15 +55,20 @@ public class HomeActivity extends FragmentActivity implements View.OnClickListen
     private ListView leftDrawerList, rightDrawerList;
     private String[] leftDrawerTitles, rightDrawerTitles;
     private ActionBarDrawerToggle leftDrawerToggle;
-    private RelativeLayout leftDrawerContainer;
+    private RelativeLayout leftDrawerContainer, rightDrawerContainer;
     private ImageView profilePictureIv;
     private TextView usernameTv, fullnameTv, numRapsTv, numLikesTv, numFriendsTv;
-    private Button editProfile;
+    private Button editProfile, findFriends;
 
     private Profile userMe;
 
     private File profilePictureFile;
     private Bitmap profileBitmap;
+    private String myUsername;
+
+    private TabFriendsAdapter friendsAdapter;
+    private ArrayList<Profile> friendsList;
+    private HashSet<String> friendsUsernames;
 
     private Context context;
 
@@ -89,6 +99,7 @@ public class HomeActivity extends FragmentActivity implements View.OnClickListen
         leftDrawerList = (ListView) findViewById(R.id.home_left_drawer);
         rightDrawerList = (ListView) findViewById(R.id.home_right_drawer);
         leftDrawerContainer = (RelativeLayout) findViewById(R.id.home_left_drawer_container);
+        rightDrawerContainer = (RelativeLayout) findViewById(R.id.home_right_drawer_container);
 
         profilePictureIv = (ImageView) findViewById(R.id.left_drawer_profile_picture);
         usernameTv = (TextView) findViewById(R.id.left_drawer_username);
@@ -97,6 +108,7 @@ public class HomeActivity extends FragmentActivity implements View.OnClickListen
         numLikesTv = (TextView) findViewById(R.id.left_drawer_NumLikesTv);
         numFriendsTv = (TextView) findViewById(R.id.left_drawer_NumFriendsTv);
         editProfile = (Button) findViewById(R.id.left_drawer_EditButton);
+        findFriends = (Button) findViewById(R.id.home_right_drawer_find_friends_button);
     }
 
     private void assignClickListeners() {
@@ -105,11 +117,14 @@ public class HomeActivity extends FragmentActivity implements View.OnClickListen
         numFriendsTv.setOnClickListener(this);
         editProfile.setOnClickListener(this);
         leftDrawerContainer.setOnClickListener(this);
+        findFriends.setOnClickListener(this);
     }
 
     private void initData() {
         // Init the drawers' data
+        friendsUsernames = new HashSet<String>();
         getMe();
+        getFriends();
     }
 
     @Override
@@ -132,6 +147,13 @@ public class HomeActivity extends FragmentActivity implements View.OnClickListen
                 launchEditProfileActivity.putExtra(T.PHONE_NUMBER, userMe.getPhoneNumber());
                 launchEditProfileActivity.putExtra(T.PROFILE_PICTURE, profilePictureFile);
                 startActivity(launchEditProfileActivity);
+                break;
+            case R.id.home_right_drawer_find_friends_button:
+                Intent launchFriendFinder = new Intent(context, FindFriendsActivity.class);
+                launchFriendFinder.putExtra(T.MY_USERNAME, myUsername);
+                launchFriendFinder.putExtra("friendsUsernames", friendsUsernames);
+                launchFriendFinder.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
+                startActivity(launchFriendFinder);
                 break;
         }
     }
@@ -163,10 +185,10 @@ public class HomeActivity extends FragmentActivity implements View.OnClickListen
 
             public void onDrawerOpened(View drawerView) {
                 super.onDrawerOpened(drawerView);
-                if(drawerLayout.isDrawerOpen(rightDrawerList) &&
-                        drawerView != rightDrawerList) {
+                if(drawerLayout.isDrawerOpen(rightDrawerContainer) &&
+                        drawerView != rightDrawerContainer) {
                     // Close right drawer if left is open
-                    drawerLayout.closeDrawer(rightDrawerList);
+                    drawerLayout.closeDrawer(rightDrawerContainer);
                 }
             }
         };
@@ -257,7 +279,7 @@ public class HomeActivity extends FragmentActivity implements View.OnClickListen
             // TODO: Prevent the item from remaining selected
 //            rightDrawerList.setItemChecked(position, true);
             setTitle(rightDrawerTitles[position]);
-            drawerLayout.closeDrawer(rightDrawerList);
+            drawerLayout.closeDrawer(rightDrawerContainer);
         }
     }
 
@@ -267,6 +289,16 @@ public class HomeActivity extends FragmentActivity implements View.OnClickListen
         Intent api = new Intent(context, APIService.class);
         ResultReceiver receiver = new MeReceiver(new Handler());
         api.putExtra(T.API_TYPE, T.GET_ME);
+        api.putExtra(T.RECEIVER, receiver);
+        startService(api);
+    }
+
+    private void getFriends() {
+        Log.d(TAG, "Making request to get friends");
+
+        Intent api = new Intent(context, APIService.class);
+        ResultReceiver receiver = new FriendsReceiver(new Handler());
+        api.putExtra(T.API_TYPE, T.GET_FRIENDS);
         api.putExtra(T.RECEIVER, receiver);
         startService(api);
     }
@@ -296,13 +328,49 @@ public class HomeActivity extends FragmentActivity implements View.OnClickListen
                         (numLikes == 1) ? numLikes + " \nLike" : numLikes + " \nLikes");
                 numFriendsTv.setText(
                         (numFriends == 1) ? numFriends + " \nFriend" : numFriends + " \nFriends");
-                usernameTv.setText(userMe.getUsername());
+
+                myUsername = userMe.getUsername();
+
+                usernameTv.setText(myUsername);
                 fullnameTv.setText(userMe.getFullName());
 
                 // Download our profile picture
                 profilePictureIv.setTag(userMe.getProfilePicture());
                 new DownloadImagesTask().execute(profilePictureIv);
 
+            } else {
+                Log.d(TAG, "GET friends unsuccessful");
+            }
+        }
+    }
+
+    public class FriendsReceiver extends ResultReceiver {
+        public FriendsReceiver(Handler handler) {
+            super(handler);
+        }
+
+        @Override
+        public void onReceiveResult(int resultCode, Bundle data) {
+            if(resultCode == 1) {
+                // Convert the api request from JSON
+                Log.d(TAG, "APIService returned successful with friends");
+                String result = data.getString("result");
+
+                Log.d(TAG, "result from apiservice is: " + result);
+                Friends friends = (new Gson()).fromJson(result, Friends.class);
+                Profile[] friendsArray = friends.getFriends();
+
+                // Prevents a contextual null-pointer
+                // Update the data on our listview
+                friendsAdapter = new TabFriendsAdapter(context, R.layout.tab_friends_list_row, null);
+                rightDrawerList.setAdapter(friendsAdapter);
+                friendsList = new ArrayList<Profile>(Arrays.asList(friendsArray));
+                friendsAdapter.setItemList(friendsList);
+                friendsAdapter.notifyDataSetChanged();
+
+                for(Profile profile : friendsList) {
+                    friendsUsernames.add(profile.getUsername());
+                }
             } else {
                 Log.d(TAG, "GET friends unsuccessful");
             }
