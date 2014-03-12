@@ -47,9 +47,9 @@ public class T {
     public static final String IS_COMPLETE = "is_complete";
     public static final String PROFILE_PICTURE = "profile_picture";
     public static final String PROFILE_INFO_TYPE = "profile_info_type";
-    public static final String PROFILE_INFO_RAPS = "profile_raps";
-    public static final String PROFILE_INFO_LIKES = "profile_likes";
-    public static final String PROFILE_INFO_FRIENDS = "profile_friends";
+    public static final String PROFILE_INFO_RAPS = "My Raps";
+    public static final String PROFILE_INFO_LIKES = "My Likes";
+    public static final String PROFILE_INFO_FRIENDS = "My Friends";
 
 
 	// API call types

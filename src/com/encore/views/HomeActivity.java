@@ -29,7 +29,6 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.encore.API.APIService;
-import com.encore.Fragments.ProfileFragment;
 import com.encore.R;
 import com.encore.SessionFlowManager;
 import com.encore.TabFriendsAdapter;
@@ -163,11 +162,13 @@ public class HomeActivity extends FragmentActivity implements View.OnClickListen
         Fragment profileDetailsFragment = new com.encore.Fragments.ProfileDetailsFragment();
         profileDetailsFragment.setArguments(bundle);
 
+        setTitle(type);
+        drawerLayout.closeDrawer(leftDrawerContainer);
+
         FragmentManager fm = getSupportFragmentManager();
         fm.beginTransaction()
                 .replace(R.id.home_content_frame, profileDetailsFragment)
                 .commit();
-        drawerLayout.closeDrawer(leftDrawerContainer);
     }
 
     private void setupNavDrawer() {
@@ -228,12 +229,6 @@ public class HomeActivity extends FragmentActivity implements View.OnClickListen
                     Fragment completeFragment = new CompleteFragment();
                     fm.beginTransaction()
                             .replace(R.id.home_content_frame, completeFragment)
-                            .commit();
-                    break;
-                case 2:
-                    Fragment profileFragment = new ProfileFragment();
-                    fm.beginTransaction()
-                            .replace(R.id.home_content_frame, profileFragment)
                             .commit();
                     break;
                 default:
