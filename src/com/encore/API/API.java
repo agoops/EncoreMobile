@@ -47,7 +47,7 @@ public class API {
 	private static final String AUTHORIZATION = "Authorization";
 	private static String ACCESS_TOKEN = "invalidaccesstoken";
 	private static final String PROD = "http://rapback.herokuapp.com/";
-	private static final String QA = "http://rapback.herokuapp.com/";
+	private static final String QA = "http://rapchat-django.herokuapp.com/";
 	private static final String BASE_URL = Constants.DEBUG ? QA:PROD;
 
 	// Common URLs
@@ -61,7 +61,8 @@ public class API {
     private static final String LIKES = USER_ME + "likes/";
     private static final String CLIP = BASE_URL + "sessions/%s/clips/";
     private static final String FEEDBACK = BASE_URL + "feedback/";
-    private static final String INVITE = USERS + "invite/";
+    public static final String INVITE = BASE_URL + "invite/";
+
     // Sign up / Log in
 	private static final String LOG_IN = USERS + "obtain-token/";
     private static final String SIGN_UP = USERS;
@@ -668,21 +669,6 @@ public class API {
             resultJSON = post(url, new StringEntity(JSON), String.class);
         } catch (Exception e) {
             Log.e(TAG, "sendFeedback() error");
-            throw e;
-        }
-        return resultJSON;
-    }
-
-    public String sendInvite(String token) throws Exception {
-        Log.d(TAG, "sendInvite called");
-        ACCESS_TOKEN = "Token " + token;
-        String url = INVITE;
-        String resultJSON;
-
-        try {
-            resultJSON = get(url, String.class);
-        } catch (Exception e) {
-            Log.e(TAG, "sendInvite() error");
             throw e;
         }
         return resultJSON;

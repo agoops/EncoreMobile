@@ -36,6 +36,7 @@ import com.encore.models.Friends;
 import com.encore.models.Profile;
 import com.encore.util.T;
 import com.google.gson.Gson;
+import com.squareup.picasso.Picasso;
 
 import java.io.File;
 import java.io.IOException;
@@ -381,12 +382,23 @@ public class HomeActivity extends FragmentActivity implements View.OnClickListen
 
         @Override
         protected void onPostExecute(File file) {
-            profilePictureIv.setImageBitmap(profileBitmap);
+            if(profilePictureFile == null) {
+                Picasso.with(context)
+                        .load(R.drawable.default_profile_picture)
+                        .into(profilePictureIv);
+            } else {
+                profilePictureIv.setImageBitmap(profileBitmap);
+            }
         }
 
         public File downloadImage(URL url) {
             // TODO: Find a better way to encapsulate all the data for profile pictures (e.g., URIs, files, bitmaps)
             try {
+                if(url == null) {
+                    profilePictureFile = null;
+                    return null;
+                }
+
                 HttpURLConnection connection = (HttpURLConnection) url
                         .openConnection();
                 connection.setDoInput(true);

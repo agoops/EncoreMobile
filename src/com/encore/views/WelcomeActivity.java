@@ -21,6 +21,7 @@ public class WelcomeActivity extends FragmentActivity {
 
         setContentView(R.layout.placeholder);
         String token = TokenHelper.getToken(this);
+
 		if(token == null) {
 			// Create a new transaction and welcome screen fragment
 			FragmentTransaction ft = getSupportFragmentManager().beginTransaction();

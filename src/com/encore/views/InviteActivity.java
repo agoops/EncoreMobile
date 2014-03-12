@@ -3,17 +3,18 @@ package com.encore.views;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.database.Cursor;
+import android.net.Uri;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.ResultReceiver;
+import android.provider.ContactsContract;
 import android.support.v4.app.NavUtils;
+import android.telephony.SmsManager;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
-import android.widget.Toast;
 
-import com.encore.API.APIService;
+import com.encore.API.API;
 import com.encore.R;
 import com.encore.util.T;
 
@@ -23,6 +24,8 @@ import com.encore.util.T;
 public class InviteActivity extends Activity implements View.OnClickListener {
     private static final String TAG = "InviteActivity";
     private Context context;
+    private static String inviteURL = API.INVITE;
+    private String inviteNumber;
 
     private Button emailButton, textButton;
 
@@ -52,25 +55,59 @@ public class InviteActivity extends Activity implements View.OnClickListener {
     public void onClick(View v) {
         switch(v.getId()) {
             case R.id.invite_email_button:
-                sendInvite(T.EMAIL);
+                Log.d(TAG, "Sending email");
+                launchEmailPickerIntent();
                 break;
             case R.id.invite_text_button:
-                sendInvite(T.TEXT);
+                Log.d(TAG, "Sending SMS");
+                launchContactPickerIntent();
                 break;
         }
     }
 
-    private void sendInvite(String inviteType) {
-        if(inviteType.equals(T.EMAIL)) {
+    private void launchEmailPickerIntent() {
+        String message = "Yo, you've been invited to Rapback!\nGoto " + inviteURL + " to get the app.";
 
-        } else if(inviteType.equals(T.TEXT)) {
+        Intent intent = new Intent(Intent.ACTION_SEND);
+        intent.putExtra(Intent.EXTRA_EMAIL, new String[]{""});
+        intent.putExtra(Intent.EXTRA_SUBJECT, "You've been invited to try Rapback!");
+        intent.putExtra(Intent.EXTRA_TEXT, message);
+        intent.setType("message/rfc822");
+        startActivity(Intent.createChooser(intent, "Choose an email provider :"));
+    }
 
+    private void launchContactPickerIntent() {
+        Intent intent = new Intent(Intent.ACTION_PICK, Uri.parse("content://contacts"));
+        // Show user only contacts w/ phone numbers
+        intent.setType(ContactsContract.CommonDataKinds.Phone.CONTENT_TYPE);
+        startActivityForResult(intent, T.CONTACT_NUMBER_REQUEST_CODE);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data)
+    {
+        if(resultCode == RESULT_OK)
+        {
+            if(requestCode == T.CONTACT_NUMBER_REQUEST_CODE)
+            {
+                Uri contactUri = data.getData();
+                String[] projection = { ContactsContract.CommonDataKinds.Phone.NUMBER };
+                Cursor cursor = getContentResolver()
+                        .query(contactUri, projection, null, null, null);
+                cursor.moveToFirst();
+                int column = cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER);
+                inviteNumber = cursor.getString(column);
+                Log.d(TAG, "selected number: " + inviteNumber);
+                sendText(inviteNumber);
+            }
         }
-        ResultReceiver receiver = new InviteReceiver(new Handler());
-        Intent sendInvite = new Intent(context, APIService.class);
-        sendInvite.putExtra(T.API_TYPE, T.SEND_INVITE);
-        sendInvite.putExtra(T.RECEIVER, receiver);
-        startService(sendInvite);
+    }
+
+    private void sendText(String phoneNum) {
+        String message = "Don't have Rapback? Goto " + inviteURL;
+
+        SmsManager smsManager = SmsManager.getDefault();
+        smsManager.sendTextMessage(phoneNum, null, message, null, null);
     }
 
     @Override
@@ -82,24 +119,5 @@ public class InviteActivity extends Activity implements View.OnClickListener {
                 return true;
         }
         return super.onOptionsItemSelected(item);
-    }
-
-    public class InviteReceiver extends ResultReceiver {
-        public InviteReceiver(Handler handler) {
-            super(handler);
-        }
-
-        @Override
-        public void onReceiveResult(int resultCode, Bundle data) {
-            if(resultCode == 1) {
-                Log.d(TAG, "invite returned successfully");
-                Log.d(TAG, "Returned invite data: " + data.toString());
-            } else {
-                Log.d(TAG, "invite unsuccessful!");
-                Toast.makeText(context, "Unable to send invitation. Try again.", Toast.LENGTH_SHORT)
-                        .show();
-            }
-        }
-
     }
 }

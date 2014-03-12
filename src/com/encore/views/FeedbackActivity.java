@@ -65,6 +65,7 @@ public class FeedbackActivity extends Activity implements View.OnClickListener {
                     api.putExtra(T.API_TYPE, T.FEEDBACK);
                     api.putExtra(T.FEEDBACK_KEY, feedbackString);
                     api.putExtra(T.RECEIVER, receiver);
+                    startService(api);
                 }
                 break;
         }
@@ -89,8 +90,10 @@ public class FeedbackActivity extends Activity implements View.OnClickListener {
         public void onReceiveResult(int resultCode, Bundle data) {
             if(resultCode == 1) {
                 Log.d(TAG, "feedback returned successfully");
+                Log.d(TAG, "feedback data: " + data.toString());
                 Toast.makeText(context, "We got your feedback, thanks!", Toast.LENGTH_SHORT)
                         .show();
+                finish();
             } else {
                 Log.d(TAG, "POST feedback unsuccessful!");
                 Toast.makeText(context, "Feedback unable to send", Toast.LENGTH_SHORT)

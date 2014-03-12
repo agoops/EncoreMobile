@@ -77,8 +77,7 @@ public class T {
     public static final int GET_OTHER_PROFILE = 21;
     public static final int GET_CLIPS = 22;
     public static final int FEEDBACK = 23;
-    public static final int SEND_INVITE = 24;
-	
+
 	// Column names for newsfeed query
 	public static final String SESSION_TITLE = "title";
 	public static final String SESSION_ID = "id";
@@ -92,6 +91,7 @@ public class T {
 
     // Request codes
     public static final int IMAGE_PICKER_REQUEST_CODE = 100;
+    public static final int CONTACT_NUMBER_REQUEST_CODE = 200;
 
     public static void setTypeFace(Context c, TextView... views) {
         Typeface typeface = Typeface.createFromAsset(c.getAssets(),
