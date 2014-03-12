@@ -56,7 +56,7 @@ public class HomeActivity extends FragmentActivity implements View.OnClickListen
     private RelativeLayout leftDrawerContainer, rightDrawerContainer;
     private ImageView profilePictureIv;
     private TextView usernameTv, fullnameTv, numRapsTv, numLikesTv, numFriendsTv;
-    private Button editProfile, findFriends;
+    private Button editProfile, findFriends, inviteButton;
 
     private Profile userMe;
 
@@ -106,6 +106,7 @@ public class HomeActivity extends FragmentActivity implements View.OnClickListen
         numFriendsTv = (TextView) findViewById(R.id.left_drawer_NumFriendsTv);
         editProfile = (Button) findViewById(R.id.left_drawer_EditButton);
         findFriends = (Button) findViewById(R.id.home_right_drawer_find_friends_button);
+        inviteButton = (Button) findViewById(R.id.home_left_drawer_invite_button);
     }
 
     private void assignClickListeners() {
@@ -114,6 +115,7 @@ public class HomeActivity extends FragmentActivity implements View.OnClickListen
         numFriendsTv.setOnClickListener(this);
         editProfile.setOnClickListener(this);
         findFriends.setOnClickListener(this);
+        inviteButton.setOnClickListener(this);
         leftDrawerContainer.setOnClickListener(this);
         rightDrawerContainer.setOnClickListener(this);
     }
@@ -145,6 +147,10 @@ public class HomeActivity extends FragmentActivity implements View.OnClickListen
                 launchEditProfileActivity.putExtra(T.PHONE_NUMBER, userMe.getPhoneNumber());
                 launchEditProfileActivity.putExtra(T.PROFILE_PICTURE, profilePictureFile);
                 startActivity(launchEditProfileActivity);
+                break;
+            case R.id.home_left_drawer_invite_button:
+                Intent launchInviteActivity = new Intent(context, InviteActivity.class);
+                startActivity(launchInviteActivity);
                 break;
             case R.id.home_right_drawer_find_friends_button:
                 Intent launchFriendFinder = new Intent(context, FindFriendsActivity.class);

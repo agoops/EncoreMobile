@@ -114,6 +114,9 @@ public class APIService extends IntentService {
             case T.FEEDBACK:
                 sendFeedback(intent.getExtras());
                 break;
+            case T.SEND_INVITE:
+                sendInvite(intent.getExtras());
+                break;
             default:
                 break;
 		}
@@ -556,6 +559,23 @@ public class APIService extends IntentService {
             resultJSON = api.sendFeedback(token, feedback);
             Log.d(TAG, "result: " + resultJSON);
 
+            Bundle b = new Bundle();
+            b.putString("result", resultJSON);
+            resultReceiver.send(1, b);
+        } catch(Exception e) {
+            Log.e(TAG, e.getMessage() + " ");
+            e.printStackTrace();
+            resultReceiver.send(0, null);
+        }
+    }
+
+    private void sendInvite(Bundle data) {
+        Log.d(TAG, "sendInvite called");
+        String token = TokenHelper.getToken(this);
+        String resultJSON;
+
+        try {
+            resultJSON = api.sendInvite(token);
             Bundle b = new Bundle();
             b.putString("result", resultJSON);
             resultReceiver.send(1, b);

@@ -91,6 +91,11 @@
             android:windowSoftInputMode="adjustResize"
             android:configChanges="orientation"
             android:screenOrientation="portrait" />
+        <activity android:name="com.encore.views.InviteActivity"
+            android:parentActivityName="com.encore.views.HomeActivity"
+            android:windowSoftInputMode="adjustPan"
+            android:configChanges="orientation"
+            android:screenOrientation="portrait" />
 
 
         <activity android:name="com.encore.views.FindFriendsActivity"

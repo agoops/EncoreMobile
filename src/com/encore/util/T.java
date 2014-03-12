@@ -51,6 +51,7 @@ public class T {
     public static final String PROFILE_INFO_LIKES = "My Likes";
     public static final String PROFILE_INFO_FRIENDS = "My Friends";
     public static final String FEEDBACK_KEY = "feedback";
+    public static final String TEXT = "text";
 
 
 	// API call types
@@ -76,6 +77,7 @@ public class T {
     public static final int GET_OTHER_PROFILE = 21;
     public static final int GET_CLIPS = 22;
     public static final int FEEDBACK = 23;
+    public static final int SEND_INVITE = 24;
 	
 	// Column names for newsfeed query
 	public static final String SESSION_TITLE = "title";

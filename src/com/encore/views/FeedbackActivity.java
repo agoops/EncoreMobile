@@ -97,6 +97,5 @@ public class FeedbackActivity extends Activity implements View.OnClickListener {
                         .show();
             }
         }
-
     }
 }
