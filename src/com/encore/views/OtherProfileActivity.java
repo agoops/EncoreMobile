@@ -29,7 +29,9 @@ import com.encore.models.Profile;
 import com.encore.models.Session;
 import com.encore.util.T;
 import com.google.gson.Gson;
+import com.squareup.picasso.Picasso;
 
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -284,8 +286,7 @@ public class OtherProfileActivity extends Activity implements View.OnClickListen
         Display display = getWindowManager().getDefaultDisplay();
         Point size = new Point();
         display.getSize(size);
-        double width = size.x;
-        return width;
+        return size.x;
     }
 
     public class OtherProfileReceiver extends ResultReceiver {
@@ -339,6 +340,18 @@ public class OtherProfileActivity extends Activity implements View.OnClickListen
                 } else {
                     // By default
                     enableButton(addFriendButton, "Add Friend");
+                }
+
+                URL profilePictureURL = otherUser.getProfilePictureUrl();
+                if(profilePictureURL != null) {
+                    Picasso.with(context)
+                            .load(profilePictureURL.toString())
+                            .placeholder(R.drawable.background_333_transparent2)
+                            .into(profilePicture);
+                } else {
+                    Picasso.with(context)
+                            .load(R.drawable.default_profile_picture)
+                            .into(profilePicture);
                 }
 
                 // Show data

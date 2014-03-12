@@ -2,6 +2,7 @@ package com.encore.models;
 
 import com.google.gson.annotations.SerializedName;
 
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
@@ -84,5 +85,9 @@ public class OtherProfile {
 
     public int getNumFriends() {
         return profile.getNumFriends();
+    }
+
+    public URL getProfilePictureUrl() {
+        return profile.getProfilePictureUrl();
     }
 }

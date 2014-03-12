@@ -145,8 +145,7 @@ public class LiveFragment extends Fragment implements OnRefreshListener {
         Display display = getActivity().getWindowManager().getDefaultDisplay();
         Point size = new Point();
         display.getSize(size);
-        double width = size.x;
-        return width;
+        return size.x;
     }
 
 	public InboxViewAdapter getAdapter () {
