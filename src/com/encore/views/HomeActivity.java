@@ -231,6 +231,11 @@ public class HomeActivity extends FragmentActivity implements View.OnClickListen
                             .replace(R.id.home_content_frame, completeFragment)
                             .commit();
                     break;
+                case 2:
+                    Intent feedbackActivity = new Intent(context, FeedbackActivity.class);
+                    startActivity(feedbackActivity);
+
+                    break;
                 default:
                     Fragment defaultFragment = new LiveFragment();
                     fm.beginTransaction()

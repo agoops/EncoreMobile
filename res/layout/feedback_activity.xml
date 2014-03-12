@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <EditText
+        android:id="@+id/feedback_edittext"
+        android:layout_height="0dp"
+        android:layout_width="match_parent"
+        android:layout_margin="15dp"
+        android:layout_weight="1"
+        android:gravity="start"
+        android:hint="Man, I really wish you guys could add a unicorn generator. That would seriously take Rapback to another level."
+        android:background="#00000000"/>
+
+    <Button
+        android:id="@+id/feedback_submit"
+        android:layout_height="wrap_content"
+        android:layout_width="150dp"
+        android:layout_gravity="center"
+        android:layout_marginBottom="15dp"
+        android:text="Submit" />
+
+</LinearLayout>

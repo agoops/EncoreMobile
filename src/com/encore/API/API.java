@@ -4,6 +4,7 @@ import android.content.Context;
 import android.util.Log;
 
 import com.encore.TokenHelper;
+import com.encore.models.Feedback;
 import com.encore.models.PostComment;
 import com.encore.models.PostLike;
 import com.encore.util.Constants;
@@ -59,6 +60,7 @@ public class API {
     private static final String REPLY = REQUESTS + "reply/";
     private static final String LIKES = USER_ME + "likes/";
     private static final String CLIP = BASE_URL + "sessions/%s/clips/";
+    private static final String FEEDBACK = BASE_URL + "feedback/";
     // Sign up / Log in
 	private static final String LOG_IN = USERS + "obtain-token/";
     private static final String SIGN_UP = USERS;
@@ -642,13 +644,29 @@ public class API {
         username = URLEncoder.encode(username, "UTF-8");
         String url = String.format(USER_OTHER, username);
         ACCESS_TOKEN = "Token " + token;
-        String resultJSON = null;
+        String resultJSON;
 
         try {
             resultJSON = get(url, String.class);
             Log.d(TAG, "getOtherProfile result: " + resultJSON);
         } catch(Exception e) {
             Log.d(TAG, "getOtherProfile error");
+            throw e;
+        }
+        return resultJSON;
+    }
+
+    public String sendFeedback(String token, Feedback feedback) throws Exception {
+        Log.d(TAG, "sendFeedback called");
+        ACCESS_TOKEN = "Token " + token;
+        String url = FEEDBACK;
+        String resultJSON;
+
+        try {
+            String JSON = getGson().toJson(feedback);
+            resultJSON = post(url, new StringEntity(JSON), String.class);
+        } catch (Exception e) {
+            Log.e(TAG, "sendFeedback() error");
             throw e;
         }
         return resultJSON;

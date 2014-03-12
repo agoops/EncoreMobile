@@ -7,6 +7,7 @@ import android.os.ResultReceiver;
 import android.util.Log;
 
 import com.encore.TokenHelper;
+import com.encore.models.Feedback;
 import com.encore.models.PostComment;
 import com.encore.models.PostLike;
 import com.encore.util.T;
@@ -110,6 +111,9 @@ public class APIService extends IntentService {
                 break;
             case T.GET_CLIPS:
                 getClips(intent.getExtras());
+            case T.FEEDBACK:
+                sendFeedback(intent.getExtras());
+                break;
             default:
                 break;
 		}
@@ -529,6 +533,27 @@ public class APIService extends IntentService {
 
         try {
             resultJSON = api.getOtherProfile(token, username);
+            Log.d(TAG, "result: " + resultJSON);
+
+            Bundle b = new Bundle();
+            b.putString("result", resultJSON);
+            resultReceiver.send(1, b);
+        } catch(Exception e) {
+            Log.e(TAG, e.getMessage() + " ");
+            e.printStackTrace();
+            resultReceiver.send(0, null);
+        }
+    }
+
+    private void sendFeedback(Bundle data) {
+        Log.d(TAG, "sendFeedback called");
+        String feedbackString = data.getString(T.FEEDBACK_KEY);
+        String token = TokenHelper.getToken(this);
+        String resultJSON;
+        Feedback feedback = new Feedback(feedbackString);
+
+        try {
+            resultJSON = api.sendFeedback(token, feedback);
             Log.d(TAG, "result: " + resultJSON);
 
             Bundle b = new Bundle();
