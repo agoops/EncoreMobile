@@ -3,11 +3,13 @@ package com.encore.views;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Point;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.ResultReceiver;
 import android.support.v4.app.NavUtils;
 import android.util.Log;
+import android.view.Display;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
@@ -18,9 +20,9 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.encore.API.APIService;
+import com.encore.InboxViewAdapter;
 import com.encore.R;
 import com.encore.TabFriendsAdapter;
-import com.encore.TabLikesAdapter;
 import com.encore.models.FriendRequest;
 import com.encore.models.OtherProfile;
 import com.encore.models.Profile;
@@ -49,8 +51,7 @@ public class OtherProfileActivity extends Activity implements View.OnClickListen
     
     private ResultReceiver receiver;
     private TabFriendsAdapter friendsAdapter;
-//    private TabCrowdAdapter crowdsAdapter;
-    private TabLikesAdapter likesAdapter;
+    private InboxViewAdapter likesAdapter;
 
     private ArrayList<Session> likedSessions;
     private ArrayList<Profile> friendsList;
@@ -183,9 +184,11 @@ public class OtherProfileActivity extends Activity implements View.OnClickListen
                 break;
             case 2:
                 // Likes
-                likesAdapter = new TabLikesAdapter(context, R.layout.tab_likes_list_row, null);
+                likesAdapter = new InboxViewAdapter(context, R.layout.tab_likes_list_row, null);
+                likesAdapter.setOtherUser(true);
+                likesAdapter.setThumbnailScreenWidth(getScreenWidth());
                 listview.setAdapter(likesAdapter);
-                likesAdapter.setItemList(likedSessions);
+                likesAdapter.setSessionsList(likedSessions);
                 likesAdapter.notifyDataSetChanged();
 
                 setOnItemClickListener(2);
@@ -207,6 +210,14 @@ public class OtherProfileActivity extends Activity implements View.OnClickListen
 
                 break;
             case 2:
+                listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
+                        // TODO: Play video
+                        Session likedVideo = likedSessions.get(position);
+
+                    }
+                });
                 break;
         }
     }
@@ -267,6 +278,14 @@ public class OtherProfileActivity extends Activity implements View.OnClickListen
         context.startService(api);
 
         addFriendButton.setText("Sent");
+    }
+
+    private double getScreenWidth() {
+        Display display = getWindowManager().getDefaultDisplay();
+        Point size = new Point();
+        display.getSize(size);
+        double width = size.x;
+        return width;
     }
 
     public class OtherProfileReceiver extends ResultReceiver {

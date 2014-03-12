@@ -85,7 +85,7 @@ public class SearchUsersFragmentAdapter extends ArrayAdapter<User> implements Vi
         usernameTv.setText(user.getUsername());
         fullNameTv.setText(user.getFullName());
         // TODO: Profile picture
-//        Picasso.with(mContext)
+//        Picasso.with(context)
 //                .load(entry.getThumbnailUrl())
 //                .resize((int) width,(int) height)
 //                .into(thumbnailIv);

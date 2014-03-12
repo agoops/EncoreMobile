@@ -44,6 +44,7 @@ public class InboxViewAdapter extends ArrayAdapter<Session> implements OnClickLi
     private Button likeButton;
     private com.encore.widget.AspectRatioImageView thumbnailIv;
     private double width, height;
+    private boolean isOtherUser = false;
 
     private HashSet<Integer> likedSessionIds;
 
@@ -125,8 +126,13 @@ public class InboxViewAdapter extends ArrayAdapter<Session> implements OnClickLi
 
         // Set the like icon if the session is liked
         int sessionId = entry.getId();
-        likeButton.setSelected(
-                likedSessionIds.contains(sessionId));
+
+        if(isOtherUser) {
+            likeButton.setSelected(true);
+        } else {
+            likeButton.setSelected(
+                    likedSessionIds.contains(sessionId));
+        }
 
         // set num comments and num likes
         List<Comment> comments = entry.getComments();
@@ -145,15 +151,29 @@ public class InboxViewAdapter extends ArrayAdapter<Session> implements OnClickLi
         }
 
         if(entry.isComplete()) {
-            Clip firstClip = entry.getClips().get(0);
 
-            // Set the thumbnail
-            if(firstClip.getThumbnail_url() != null) {
-                Picasso.with(mContext)
-                        .load(firstClip.getThumbnail_url())
-                        .resize((int) width,(int) height)
-                        .into(thumbnailIv);
+            if(isOtherUser) {
+                Log.d(TAG, "entry" + entry);
+
+                // Set the thumbnail
+                if(entry.getThumbnailUrl() != null) {
+                    Picasso.with(mContext)
+                            .load(entry.getThumbnailUrl())
+                            .resize((int) width,(int) height)
+                            .into(thumbnailIv);
+                }
+            } else {
+                Clip firstClip = entry.getClips().get(0);
+
+                // Set the thumbnail
+                if(firstClip.getThumbnail_url() != null) {
+                    Picasso.with(mContext)
+                            .load(firstClip.getThumbnail_url())
+                            .resize((int) width,(int) height)
+                            .into(thumbnailIv);
+                }
             }
+
         } else {
             // Set the thumbnail
             if(entry.getThumbnailUrl() != null) {
@@ -163,7 +183,6 @@ public class InboxViewAdapter extends ArrayAdapter<Session> implements OnClickLi
                         .into(thumbnailIv);
             }
         }
-
     }
 
     @Override
@@ -394,5 +413,14 @@ public class InboxViewAdapter extends ArrayAdapter<Session> implements OnClickLi
     public void setThumbnailScreenWidth(double width) {
         this.width = width;
         this.height = 1.3*width;
+    }
+
+    /*
+     *  Set to false if loading the logged-in user's information
+     *  Set to true if loading for another profile.
+     *  Either type requires modified code in certain places.
+      */
+    public void setOtherUser(boolean isOtherUser) {
+        this.isOtherUser = isOtherUser;
     }
 }

@@ -53,11 +53,6 @@ public class TabLikesAdapter extends ArrayAdapter<Session> {
         sessionTitle = (TextView) convertView.findViewById(R.id.tab_likes_title);
         numLikes = (TextView) convertView.findViewById(R.id.tab_likes_num_likes);
 
-//        while(likedSessions == null) {
-//            Log.d(TAG, "waiting...");
-//            continue;
-//        }
-
         // And set the sessionTitle and numLikes
         Session session = likedSessions.get(position);
         sessionTitle.setText(session.getTitle());
