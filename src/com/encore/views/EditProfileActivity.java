@@ -236,8 +236,10 @@ public class EditProfileActivity extends Activity implements View.OnClickListene
                 }
 
                 // Downsample the image
-                Bitmap downsampledSelection = T.decodeUri(context, selectedImageUri);
+                Bitmap downsampledSelection = T.decodeUri(context, selectedImageUri, temp.getPath());
                 profilePictureIV.setImageBitmap(downsampledSelection);
+
+                Log.d(TAG, "downsampledSelection: " + downsampledSelection.toString());
 
                 // Save the downsampled bitmap into the cache
                 File f = T.bitmapToFile(downsampledSelection, 40,

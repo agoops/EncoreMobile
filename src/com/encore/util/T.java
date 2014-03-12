@@ -9,6 +9,7 @@ import android.graphics.Matrix;
 import android.graphics.Typeface;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
+import android.media.ExifInterface;
 import android.net.Uri;
 import android.provider.MediaStore;
 import android.util.Log;
@@ -153,6 +154,7 @@ public class T {
         // Read the bitmap into a file
         File f = new File(dir, fileName);
         ByteArrayOutputStream bos = new ByteArrayOutputStream();
+
         bitmap.compress(Bitmap.CompressFormat.JPEG, compressionQuality, bos);
         byte[] bitmapData = bos.toByteArray();
 
@@ -169,7 +171,7 @@ public class T {
     /*
       * Downsamples the given image to prevent out-of-memory errors
       */
-    public static Bitmap decodeUri(Context context, Uri selectedImageUri) {
+    public static Bitmap decodeUri(Context context, Uri selectedImageUri, String photoPath) {
         try {
             // TODO: Crop the image. Better yet, let the user crop the image.
             final int MAX_IMAGE_DIMENSION = 140;
@@ -181,7 +183,7 @@ public class T {
             is.close();
 
             int rotatedWidth, rotatedHeight;
-            int orientation = getOrientation(context, selectedImageUri);
+            int orientation = getOrientation(context, selectedImageUri, photoPath);
 
             if (orientation == 90 || orientation == 270) {
                 rotatedWidth = dbo.outHeight;
@@ -230,11 +232,38 @@ public class T {
     /*
         Get the orientation information of a photo.
      */
-    public static int getOrientation(Context context, Uri photoUri) {
+    public static int getOrientation(Context context, Uri photoUri, String photoPath) {
         Cursor cursor = context.getContentResolver().query(photoUri,
                 new String[] { MediaStore.Images.ImageColumns.ORIENTATION }, null, null, null);
 
-        if (cursor.getCount() != 1) {
+        if(cursor == null) {
+            try {
+                ExifInterface exif = new ExifInterface("Rapback_Profile");
+                int orientation = exif.getAttributeInt(ExifInterface.TAG_ORIENTATION, 1);
+                Log.d(TAG, "orientation: " + orientation);
+                switch(orientation) {
+                    case 0:
+                        // Case 0 can be either portrait or landscape
+                        // AKA this doesn't always work...
+                        return 270;
+                    case 1:
+                        return 0;
+                    case 3:
+                        return 180;
+                    case 6:
+                        return 270;
+                    case 8:
+                        return 90;
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+
+        Log.d(TAG, "cursor: " + cursor);
+
+        if (cursor == null ||
+                cursor.getCount() != 1) {
             return -1;
         }
 
