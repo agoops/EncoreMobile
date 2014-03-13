@@ -22,8 +22,8 @@ import android.widget.TextView;
 import com.encore.API.APIService;
 import com.encore.R;
 import com.encore.SearchUsersFragmentAdapter;
+import com.encore.models.Profile;
 import com.encore.models.SearchProfile;
-import com.encore.models.User;
 import com.encore.util.T;
 import com.google.gson.Gson;
 
@@ -39,7 +39,7 @@ public class FindFriendsActivity extends Activity implements View.OnClickListene
     private ListView listview;
     private SearchUsersFragmentAdapter adapter;
     private String myUsername;
-    private ArrayList<User> searchResults;
+    private ArrayList<Profile> searchResults;
     private HashSet<String> friendsUsernames;
 
     public void onCreate(Bundle savedInstanceState) {

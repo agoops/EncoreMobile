@@ -11,25 +11,25 @@ import java.util.List;
  */
 public class SearchProfile {
     @SerializedName("profiles")
-    private User[] users;
+    private Profile[] profiles;
 
     public SearchProfile() {
-        this.users = null;
+        this.profiles = null;
     }
 
-    public SearchProfile(User[] users) {
-        this.users = users;
+    public SearchProfile(Profile[] profiles) {
+        this.profiles = profiles;
     }
 
-    public User[] getUsers() {
-        return users;
+    public Profile[] getProfiles() {
+        return profiles;
     }
 
-    public List<User> getAsList() {
-        if(users == null) {
-            return new ArrayList<User>();
+    public List<Profile> getAsList() {
+        if(profiles == null) {
+            return new ArrayList<Profile>();
         }
 
-        return new ArrayList<User>(Arrays.asList(users));
+        return new ArrayList<Profile>(Arrays.asList(profiles));
     }
 }

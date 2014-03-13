@@ -16,10 +16,12 @@ import android.widget.TextView;
 
 import com.encore.API.APIService;
 import com.encore.models.FriendRequest;
-import com.encore.models.User;
+import com.encore.models.Profile;
 import com.encore.util.T;
 import com.google.gson.Gson;
+import com.squareup.picasso.Picasso;
 
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -27,10 +29,10 @@ import java.util.List;
 /**
  * Created by babakpourkazemi on 1/7/14.
  */
-public class SearchUsersFragmentAdapter extends ArrayAdapter<User> implements View.OnClickListener {
-    private static final String TAG = "SearchUsersFragmentAdapter";
+public class SearchUsersFragmentAdapter extends ArrayAdapter<Profile> implements View.OnClickListener {
+    private static final String TAG = "SearchprofilesFragmentAdapter";
     private Context context;
-    private List<User> users;
+    private List<Profile> profiles;
     private HashSet<String> pendingThemSet;
     private HashSet<String> friendsUsernamesSet;
 
@@ -41,10 +43,10 @@ public class SearchUsersFragmentAdapter extends ArrayAdapter<User> implements Vi
     // Note: this adapter is only used after the search has completed
     // from FindFriendsActivity. This means we make our request for
     // pending requests AFTER the user searches for a username
-    public SearchUsersFragmentAdapter(Context context, int layoutId, List<User> users) {
-        super(context, layoutId, users);
+    public SearchUsersFragmentAdapter(Context context, int layoutId, List<Profile> profiles) {
+        super(context, layoutId, profiles);
         this.context = context;
-        this.users = users;
+        this.profiles = profiles;
 
         getPendingRequests();
     }
@@ -53,12 +55,12 @@ public class SearchUsersFragmentAdapter extends ArrayAdapter<User> implements Vi
     public View getView(int position, View convertView, ViewGroup parent) {
         convertView = LayoutInflater.from(context).inflate(R.layout.search_list_row, parent, false);
 
-        User user = users.get(position);
+        Profile profile = profiles.get(position);
 
         initViews(convertView);
         setTags();
         setOnClickListeners();
-        populateViews(user);
+        populateViews(profile);
 
         return convertView;
     }
@@ -81,19 +83,26 @@ public class SearchUsersFragmentAdapter extends ArrayAdapter<User> implements Vi
         addFriendButton.setOnClickListener(this);
     }
 
-    private void populateViews(User user) {
-        usernameTv.setText(user.getUsername());
-        fullNameTv.setText(user.getFullName());
-        // TODO: Profile picture
-//        Picasso.with(context)
-//                .load(entry.getThumbnailUrl())
-//                .resize((int) width,(int) height)
-//                .into(thumbnailIv);
+    private void populateViews(Profile profile) {
+        usernameTv.setText(profile.getUsername());
+        fullNameTv.setText(profile.getFullName());
 
-        if(friendsUsernamesSet != null && friendsUsernamesSet.contains(user.getUsername())) {
+        URL url = profile.getProfilePictureUrl();
+        if(url == null) {
+            Picasso.with(context)
+                    .load(R.drawable.default_profile_picture)
+                    .into(profilePic);
+        } else {
+            Picasso.with(context)
+                    .load(url.toString())
+                    .placeholder(R.drawable.background_333_transparent2)
+                    .into(profilePic);
+        }
+
+        if(friendsUsernamesSet != null && friendsUsernamesSet.contains(profile.getUsername())) {
             // If you're friends with someone, disable the button
             disableButton(addFriendButton, "Friends");
-        } else if(pendingThemSet != null && pendingThemSet.contains(user.getUsername())) {
+        } else if(pendingThemSet != null && pendingThemSet.contains(profile.getUsername())) {
             // If you've already sent a request, don't send another
             disableButton(addFriendButton, "Sent");
         }
@@ -148,16 +157,16 @@ public class SearchUsersFragmentAdapter extends ArrayAdapter<User> implements Vi
 
     @Override
     public int getCount() {
-        if (users != null) {
-            return users.size();
+        if (profiles != null) {
+            return profiles.size();
         }
         return 0;
     }
 
     @Override
-    public User getItem(int position) {
-        if (users != null) {
-            return users.get(position);
+    public Profile getItem(int position) {
+        if (profiles != null) {
+            return profiles.get(position);
         }
         return null;
     }
@@ -167,8 +176,8 @@ public class SearchUsersFragmentAdapter extends ArrayAdapter<User> implements Vi
         return arg0;
     }
 
-    public void setItemList(ArrayList<User> users) {
-        this.users = users;
+    public void setItemList(ArrayList<Profile> profiles) {
+        this.profiles = profiles;
     }
 
     public class RequestsReceiver extends ResultReceiver {

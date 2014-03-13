@@ -418,7 +418,7 @@ public class API {
 	}
 
 	public String getUsers(String token) throws Exception {
-		Log.d(TAG, "getUsers called");
+		Log.d(TAG, "getProfiles called");
 		ACCESS_TOKEN = "Token " + token;
 		String url = USERS;
 		String result = "defaultstringifnoresult";
@@ -426,7 +426,7 @@ public class API {
 			result = get(url, String.class);
 			return result;
 		} catch (Exception e) {
-			Log.d(TAG, "API.getUsers error");
+			Log.d(TAG, "API.getProfiles error");
 			throw e;
 		}
 	}

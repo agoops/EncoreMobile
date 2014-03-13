@@ -37,12 +37,22 @@ public class Session {
     @SerializedName("modified")
     private String modified;
 
+    @SerializedName("session_creator")
+    private Profile sessionCreator;
+
+    @SerializedName("session_receiver")
+    private Profile sessionReceiver;
+
+    @SerializedName("is_battle")
+    private boolean isBattle;
+
 	// GET only, use PostSession for POST
 
 
     public Session(int id, String title, boolean complete, List<Comment> comments,
                    int numLikes, String thumbnailUrl, String clipUrl,
-                   List<Clip> clips, String created, String modified) {
+                   List<Clip> clips, String created, String modified,
+                   Profile sessionCreator, Profile sessionReceiver, boolean isBattle) {
         this.id = id;
         this.title = title;
         this.complete = complete;
@@ -53,6 +63,9 @@ public class Session {
         this.clips = clips;
         this.created = created;
         this.modified = modified;
+        this.sessionCreator = sessionCreator;
+        this.sessionReceiver = sessionReceiver;
+        this.isBattle = isBattle;
     }
 
     public Session(String title) {
@@ -115,31 +128,25 @@ public class Session {
 
     public void setClipUrl(String url) { this.clipUrl=url;}
 
-//    public String[] getMembersFirstNamesAsArray() {
-//        return crowd.getMembersFirstNames();
-//    }
-
-//    public String getMembersFirstNames() {
-//        String[] namesArray = crowd.getMembersFirstNames();
-//        StringBuilder sb = new StringBuilder();
-//        for(int i=0; i<namesArray.length; i++) {
-//            sb.append(namesArray[i]);
-//            if(i < namesArray.length-1) {
-//                sb.append(", ");
-//            }
-//        }
-//        return sb.toString();
-//    }
-
     public String getCreated() { return created; }
 
     public String getModified() {
         return modified;
     }
-	
-	public String toString() {
-//		return "[" + "Title: " + this.title + ", \nCrowd Title" + this.crowd.getTitle() + ", \nCrowd ID: " + this.crowd.getId() +
-//				", \nThumbnail URL: " + this.thumbnailUrl + " \nClip URL: " + this.clipUrl + " \n]";
+
+    public Profile getSessionCreator() {
+        return sessionCreator;
+    }
+
+    public Profile getSessionReceiver() {
+        return sessionReceiver;
+    }
+
+    public boolean isBattle() {
+        return isBattle;
+    }
+
+    public String toString() {
         return "[" + "Title: " + this.title + ", \nThumbnail URL: " + this.thumbnailUrl +
                 " \nClip URL: " + this.clipUrl + " \n]";
 	}

@@ -39,7 +39,7 @@ public class InboxViewAdapter extends ArrayAdapter<Session> implements OnClickLi
 	private List<Session> mSessionList;
 	private static LayoutInflater inflater = null;
 	private SessionView rowView;
-    private TextView titleTextView, crowdTextView, likesTv, commentsTv, crowdSizeTv, dateTv;
+    private TextView titleTextView, likesTv, commentsTv, dateTv, inboxRapTypeTv;
     private ImageView commentsIcon;
     private Button likeButton;
     private com.encore.widget.AspectRatioImageView thumbnailIv;
@@ -82,9 +82,8 @@ public class InboxViewAdapter extends ArrayAdapter<Session> implements OnClickLi
         commentsTv = (TextView) convertView.findViewById(R.id.comments_tv);
         commentsIcon = (ImageView) convertView.findViewById(R.id.comments_icon);
         thumbnailIv = (com.encore.widget.AspectRatioImageView) convertView.findViewById(R.id.inboxImageView);
-        crowdTextView = (TextView) convertView.findViewById(R.id.crowd_tv);
-        crowdSizeTv = (TextView) convertView.findViewById(R.id.crowd_size_tv);
         dateTv = (TextView) convertView.findViewById(R.id.inbox_date_tv);
+        inboxRapTypeTv = (TextView) convertView.findViewById(R.id.inbox_rap_type);
     }
 
     public void setTags(Session entry) {
@@ -110,15 +109,24 @@ public class InboxViewAdapter extends ArrayAdapter<Session> implements OnClickLi
         commentsIcon.setOnClickListener(this);
         thumbnailIv.setOnClickListener(this);
         likeButton.setOnClickListener(this);
+        // TODO: inbox_rap_type onclick
     }
 
     public void populateViewsWithData(View convertView, Session entry) {
         // Set session title
         titleTextView.setText(entry.getTitle());
 
-        // Get the members' names and size
-        crowdTextView.setText("Crowd: NO CROWD DATA HERE");
-        crowdSizeTv.setText("NO CROWD DATA members");
+        // populate data
+        if(entry.isBattle()) {
+            String sessionCreator = entry.getSessionCreator()
+                    .getUsername();
+            String sessionReceiver = entry.getSessionReceiver()
+                    .getUsername();
+
+            inboxRapTypeTv.setText("Battle: " + sessionCreator + " vs " + sessionReceiver);
+        } else {
+            inboxRapTypeTv.setText("Freestyle");
+        }
 
         // Set date
         String date = formatDate(entry.getModified());

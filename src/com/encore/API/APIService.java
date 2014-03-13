@@ -218,7 +218,7 @@ public class APIService extends IntentService {
 		}
 	}
 	private void getUsers(Bundle data) {
-		Log.d(TAG, "getUsers called");
+		Log.d(TAG, "getProfiles called");
 		String token = TokenHelper.getToken(this);
 		Log.d(TAG, "token: " + token);
 		if (token == null) {

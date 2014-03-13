@@ -40,40 +40,28 @@
         android:layout_alignTop="@id/thumbnail_container" />
 
     <TextView
-        android:id="@+id/crowd_tv"
-        android:layout_width="match_parent"
+        android:id="@+id/inbox_rap_type"
         android:layout_height="wrap_content"
-        android:text="Crowd: "
-        android:paddingRight="10dp"
-        android:paddingLeft="10dp"
-        android:paddingTop="5dp"
-        android:textColor="#fff"
-        android:background="@drawable/background_333_transparent"
-        android:layout_below="@id/session_title_tv"/>
-
-    <TextView
-        android:id="@+id/crowd_size_tv"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="3 members"
-        android:paddingRight="10dp"
+        android:layout_below="@id/session_title_tv"
         android:paddingLeft="10dp"
         android:paddingBottom="5dp"
         android:paddingTop="5dp"
         android:textColor="#fff"
+        android:textAppearance="?android:textAppearanceLarge"
         android:background="@drawable/background_333_transparent"
-        android:layout_below="@id/crowd_tv"/>
+        android:text="Spiderman vs Batman"/>
 
     <TextView
         android:id="@+id/inbox_date_tv"
         android:layout_height="wrap_content"
         android:layout_width="wrap_content"
         android:layout_alignParentRight="true"
-        android:layout_alignBottom="@id/crowd_size_tv"
+        android:layout_alignBottom="@id/inbox_rap_type"
         android:textColor="#fff"
         android:paddingRight="10dp"
+        android:paddingBottom="5dp"
         android:text="Jan 17"/>
-
 
     <LinearLayout
         android:id="@+id/likes_and_comments_container"
