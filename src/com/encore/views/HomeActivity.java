@@ -17,7 +17,6 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.widget.DrawerLayout;
 import android.util.Log;
 import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
@@ -30,7 +29,6 @@ import android.widget.TextView;
 
 import com.encore.API.APIService;
 import com.encore.R;
-import com.encore.SessionFlowManager;
 import com.encore.TabFriendsAdapter;
 import com.encore.models.Friends;
 import com.encore.models.Profile;
@@ -421,8 +419,8 @@ public class HomeActivity extends FragmentActivity implements View.OnClickListen
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu items in the action bar
-        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.home_activity_actions, menu);
+//        MenuInflater inflater = getMenuInflater();
+//        inflater.inflate(R.menu.home_activity_actions, menu);
 
         return super.onCreateOptionsMenu(menu);
     }
@@ -447,16 +445,16 @@ public class HomeActivity extends FragmentActivity implements View.OnClickListen
             return true;
         }
 
-        switch(item.getItemId())
-        {
-            case R.id.action_video:
-                // Launch a new session
-                Log.d(TAG, "Launching SessionFlowManager");
-                Intent intent = new Intent(this, SessionFlowManager.class);
-                startActivity(intent);
-
-                return true;
-        }
+//        switch(item.getItemId())
+//        {
+//            case R.id.action_video:
+//                // Launch a new session
+//                Log.d(TAG, "Launching SessionFlowManager");
+//                Intent intent = new Intent(this, SessionFlowManager.class);
+//                startActivity(intent);
+//
+//                return true;
+//        }
 
         return super.onOptionsItemSelected(item);
     }

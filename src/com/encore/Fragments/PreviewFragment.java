@@ -39,8 +39,10 @@ public class PreviewFragment extends Fragment implements View.OnClickListener {
 
     private Context mContext;
     private int sessionId;
-    private String uriString;
+    private boolean isBattle;
+    private String battleReceiver;
 
+    private String uriString;
     private String thumbnailFilepath;
 
     private VideoView videoView;
@@ -69,6 +71,8 @@ public class PreviewFragment extends Fragment implements View.OnClickListener {
     private void initData() {
         Bundle args = getArguments();
         sessionId = args.getInt(T.SESSION_ID);
+        isBattle = args.getBoolean(T.IS_BATTLE);
+        battleReceiver = args.getString(T.BATTLE_RECEIVER);
         uriString = args.getString(T.FILEPATH);
 
         if(sessionId == -1) {
@@ -116,7 +120,7 @@ public class PreviewFragment extends Fragment implements View.OnClickListener {
         File mediaStorageDir = new File(Environment.getExternalStoragePublicDirectory(
                 Environment.DIRECTORY_PICTURES), "Rapback");
         thumbnailFilepath = mediaStorageDir.getPath() + File.separator
-                + "VID_TempRapback_Thumbnail.jpg";
+                + "VID_Rapback_Thumbnail.jpg";
         FileOutputStream stream;
         try {
             stream = new FileOutputStream(thumbnailFilepath);
@@ -137,20 +141,31 @@ public class PreviewFragment extends Fragment implements View.OnClickListener {
                     // Start new session flow
                     Log.d(TAG, "Creating new session");
                     String enteredTitle = sessionTitle.getText().toString();
-                    if(enteredTitle.length() > 0) {
+                    if(isValidSessionTitle(enteredTitle)) {
                         generateThumbnail();
 
-                        Intent createNewSession = new Intent(mContext, APIService.class);
-                        createNewSession.putExtra(T.API_TYPE, T.CREATE_SESSION);
-                        createNewSession.putExtra(T.SESSION_TITLE, enteredTitle);
-                        createNewSession.putExtra(T.FILEPATH, uriString);
-                        createNewSession.putExtra(T.THUMBNAIL_FILEPATH, thumbnailFilepath);
-                        getActivity().startService(createNewSession);
+                        if(isBattle) {
+                            Intent createNewSession = new Intent(mContext, APIService.class);
+                            createNewSession.putExtra(T.API_TYPE, T.CREATE_SESSION);
+                            createNewSession.putExtra(T.SESSION_TITLE, enteredTitle);
+                            createNewSession.putExtra(T.IS_BATTLE, isBattle);
+                            createNewSession.putExtra(T.BATTLE_RECEIVER, battleReceiver);
+                            createNewSession.putExtra(T.FILEPATH, uriString);
+                            createNewSession.putExtra(T.THUMBNAIL_FILEPATH, thumbnailFilepath);
+                            Log.d(TAG, "isBattle: " + isBattle);
+                            Log.d(TAG, "battleReceiver: " + battleReceiver);
+                            Log.d(TAG, "sessionTitle: " + enteredTitle);
+                            getActivity().startService(createNewSession);
+                        } else {
+                            Intent createNewSession = new Intent(mContext, APIService.class);
+                            createNewSession.putExtra(T.API_TYPE, T.CREATE_SESSION);
+                            createNewSession.putExtra(T.SESSION_TITLE, enteredTitle);
+                            createNewSession.putExtra(T.FILEPATH, uriString);
+                            createNewSession.putExtra(T.THUMBNAIL_FILEPATH, thumbnailFilepath);
+                            getActivity().startService(createNewSession);
+                        }
 
                         getActivity().finish();
-                    } else {
-                        Toast.makeText(mContext, "Enter a title", Toast.LENGTH_SHORT)
-                                .show();
                     }
                 }
                 else {
@@ -167,6 +182,16 @@ public class PreviewFragment extends Fragment implements View.OnClickListener {
                 }
 
                 break;
+        }
+    }
+
+    private Boolean isValidSessionTitle(String sessionTitle) {
+        if(sessionTitle.length() > 0) {
+            return true;
+        } else {
+            Toast.makeText(mContext, "Enter a title", Toast.LENGTH_SHORT)
+                    .show();
+            return false;
         }
     }
 }

@@ -294,7 +294,7 @@ public class APIService extends IntentService {
 			resultReceiver.send(1, bundle);
 		} catch (Exception e) {
 			Log.e(TAG, e.getMessage() + " ");
-			resultReceiver.send(0,null);
+			resultReceiver.send(0, null);
 		}
 		
 	}
@@ -304,11 +304,21 @@ public class APIService extends IntentService {
         multipartEntity.setMode(HttpMultipartMode.BROWSER_COMPATIBLE);
 
         multipartEntity.setBoundary("---*******");
-        multipartEntity.addTextBody("title", data.getString(T.SESSION_TITLE));
-        multipartEntity.addPart("clip", new FileBody(new File(data.getString(T.FILEPATH))));
-        multipartEntity.addPart("thumbnail", new FileBody(new File(data.getString(T.THUMBNAIL_FILEPATH))));
+        multipartEntity.addTextBody(T.SESSION_TITLE, data.getString(T.SESSION_TITLE));
+        multipartEntity.addPart(T.CLIP_KEY, new FileBody(new File(data.getString(T.FILEPATH))));
+        multipartEntity.addPart(T.THUMBNAIL_KEY, new FileBody(new File(data.getString(T.THUMBNAIL_FILEPATH))));
+
+        boolean isBattle = data.getBoolean(T.IS_BATTLE);
+        Log.d(TAG, "isBattle: " + String.valueOf(isBattle));
+        Log.d(TAG, "battleReceiver: " + data.getString(T.BATTLE_RECEIVER));
+        Log.d(TAG, "sessionTitle: " + data.getString(T.SESSION_TITLE));
+        if(isBattle) {
+            multipartEntity.addTextBody(T.IS_BATTLE, String.valueOf(isBattle));
+            multipartEntity.addTextBody(T.BATTLE_RECEIVER, data.getString(T.BATTLE_RECEIVER));
+        }
 
 	    HttpEntity entity = multipartEntity.build();
+        Log.d(TAG, "POSTING: " + entity.toString());
 		try {
 			String result = api.createSession(entity);
 			Log.d(TAG, "FROM createSessions() apiservice"+result);

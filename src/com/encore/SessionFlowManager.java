@@ -32,7 +32,8 @@ public class SessionFlowManager extends FragmentActivity {
         // Inbox > SessionFlowManager:ClipPreview > SessionFlowManager:Camera > SessionFlowManager:Preview > Send clip, HomeActivity
         // SessionFlowManager:Camera > SessionFlowManager:Preview > SessionFlowManager:CrowdPicker
         int sessionId = getIntent().getIntExtra(T.SESSION_ID, -1);
-        int feedType = getIntent().getIntExtra(T.FEED_TYPE, -1);
+        String battleReceiver = getIntent().getStringExtra(T.BATTLE_RECEIVER);
+        boolean isBattle = getIntent().getBooleanExtra(T.IS_BATTLE, false);
         boolean isComplete = getIntent().getBooleanExtra(T.IS_COMPLETE, false);
 
         // Add UP navigation
@@ -49,6 +50,10 @@ public class SessionFlowManager extends FragmentActivity {
 
             Bundle bundle = new Bundle();
             bundle.putInt(T.SESSION_ID, -1);
+            bundle.putBoolean(T.IS_BATTLE, isBattle);
+            bundle.putString(T.BATTLE_RECEIVER, battleReceiver);
+            Log.d(TAG, "isBattle: " + isBattle);
+            Log.d(TAG, "battleReceiver: " + battleReceiver);
             cameraFragment.setArguments(bundle);
 
             // Open the camera fragment
@@ -59,7 +64,7 @@ public class SessionFlowManager extends FragmentActivity {
             ReplyFragment replyFragment = new ReplyFragment();
 
             if(isComplete) {
-                // Complete sessions can only be viewed, not rapbacked
+                // Complete session - read only, can't rapback
                 Intent intent = getIntent();
 
                 // Get clip urls

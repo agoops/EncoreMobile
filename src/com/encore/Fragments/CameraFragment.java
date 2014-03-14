@@ -40,9 +40,12 @@ public class CameraFragment extends Fragment implements
     private Button record;
 
     private File mediaFile;
-    boolean isRecording;
-    boolean oneRecorded;
-    int sessionId;
+    private boolean isRecording;
+    private boolean oneRecorded;
+    private int sessionId;
+    private boolean isBattle;
+    private String battleReceiver;
+
     private String thumbnailFilepath;
     private int[] beatIds;
     private static int curBeatIndex;
@@ -85,6 +88,9 @@ public class CameraFragment extends Fragment implements
     private void initData() {
         // Get sessionId. -1 means we need to create a new session
         sessionId = getArguments().getInt(T.SESSION_ID, -1);
+
+        isBattle = getArguments().getBoolean(T.IS_BATTLE, false);
+        battleReceiver = getArguments().getString(T.BATTLE_RECEIVER, null);
 
         // Stores beat ids
         beatIds = new int[]
@@ -250,6 +256,10 @@ public class CameraFragment extends Fragment implements
         Bundle args = new Bundle();
         args.putString(T.FILEPATH, mediaFile.getAbsolutePath());
         args.putInt(T.SESSION_ID, this.sessionId);
+        args.putBoolean(T.IS_BATTLE, this.isBattle);
+        args.putString(T.BATTLE_RECEIVER, battleReceiver);
+        Log.d(TAG, "isBattle: " + isBattle);
+        Log.d(TAG, "battleReceiver: " + battleReceiver);
         previewFragment.setArguments(args);
 
         ft.replace(R.id.fragment_placeholder, previewFragment);

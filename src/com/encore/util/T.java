@@ -41,9 +41,12 @@ public class T {
 	public static final String FILEPATH = "filepath";
 	public static final String ACCEPTED = "accepted";
 	public static final String THUMBNAIL_FILEPATH = "thumbnail_filepath";
+    public static final String THUMBNAIL_KEY = "thumbnail";
     public static final String NEXT_SESSION_URL= "next_session_url";
     public static final String PREVIOUS_SESSION_URL = "previous_session_url";
     public static final String PENDING_THEM = "pending_them";
+    public static final String CLIP_KEY = "clip";
+
     public static final String CLIP_URL = "clip_url";
     public static final String ALL_CLIPS = "all_clips";
     public static final String IS_COMPLETE = "is_complete";
@@ -54,6 +57,9 @@ public class T {
     public static final String PROFILE_INFO_FRIENDS = "My Friends";
     public static final String FEEDBACK_KEY = "feedback";
     public static final String TEXT = "text";
+    public static final String IS_BATTLE = "is_battle";
+    public static final String SESSION_CREATOR = "session_creator";
+    public static final String BATTLE_RECEIVER = "battle_receiver";
 
 
 	// API call types
