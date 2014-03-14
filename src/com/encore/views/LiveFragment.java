@@ -12,6 +12,7 @@ import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewTreeObserver;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.ProgressBar;
@@ -111,36 +112,35 @@ public class LiveFragment extends Fragment implements OnRefreshListener {
 
         // Draw in bottom right corner
         // TODO: THESE FUCKING MARGINS. FUCK THEM
-//        ArcLayout arcLayout = menu.getArcLayout();
-//
-//        menu.getViewTreeObserver().addOnPreDrawListener(new ViewTreeObserver.OnPreDrawListener()
-//        {
-//            @Override
-//            public boolean onPreDraw()
-//            {
-//                isMenuDrawn = true;
-//                setArcMenuMargins();
-//
-//                return true;
-//            }
-//        });
-//
-//        arcLayout.getViewTreeObserver().addOnPreDrawListener(new ViewTreeObserver.OnPreDrawListener()
-//        {
-//            @Override
-//            public boolean onPreDraw()
-//            {
-//                isLayoutDrawn = true;
-//                setArcMenuMargins();
-//
-//                return true;
-//            }
-//        });
+        ArcLayout arcLayout = menu.getArcLayout();
+
+        menu.getViewTreeObserver().addOnPreDrawListener(new ViewTreeObserver.OnPreDrawListener()
+        {
+            @Override
+            public boolean onPreDraw()
+            {
+                isMenuDrawn = true;
+                setArcMenuMargins();
+
+                return true;
+            }
+        });
+
+        arcLayout.getViewTreeObserver().addOnPreDrawListener(new ViewTreeObserver.OnPreDrawListener()
+        {
+            @Override
+            public boolean onPreDraw()
+            {
+                isLayoutDrawn = true;
+                setArcMenuMargins();
+
+                return true;
+            }
+        });
     }
 
     private void setArcMenuMargins() {
         if(isMenuDrawn && isLayoutDrawn && !isMarginSet) {
-            Log.d(TAG, "setArcMenuMargins called and valid");
             ArcLayout arcLayout = arcMenu.getArcLayout();
 
             final int arcMenuHeight = arcMenu.getMeasuredHeight();
@@ -164,7 +164,7 @@ public class LiveFragment extends Fragment implements OnRefreshListener {
                     RelativeLayout.LayoutParams.WRAP_CONTENT
             );
             params.setMargins(0, 0, (int)marginRight, (int)marginBottom);
-            arcLayout.setLayoutParams(params);
+            arcMenu.setLayoutParams(params);
 
             isMarginSet = true;
         }

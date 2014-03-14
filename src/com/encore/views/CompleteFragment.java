@@ -87,13 +87,6 @@ public class CompleteFragment extends Fragment implements OnRefreshListener {
     }
 
     public void setupArcMenu(int[] item_drawables, ArcMenu menu) {
-//        RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(
-//                LayoutParams.WRAP_CONTENT,
-//                LayoutParams.WRAP_CONTENT
-//        );
-//        params.setMargins(0, 0, (int)right, (int)bottom);
-//        menu.setLayoutParams(params);
-
         final int itemCount = item_drawables.length;
         for (int i = 0; i < itemCount; i++) {
             ImageView item = new ImageView(context);
