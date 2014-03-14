@@ -1,5 +1,6 @@
 package com.encore.views;
 
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Point;
 import android.os.Bundle;
@@ -11,6 +12,7 @@ import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.Toast;
@@ -22,6 +24,7 @@ import com.encore.R;
 import com.encore.models.Paginator;
 import com.encore.models.Session;
 import com.encore.util.T;
+import com.encore.widget.ArcMenu;
 import com.encore.widget.EndlessScrollListener;
 import com.google.gson.Gson;
 
@@ -39,6 +42,7 @@ import uk.co.senab.actionbarpulltorefresh.library.listeners.OnRefreshListener;
  */
 public class CompleteFragment extends Fragment implements OnRefreshListener {
     private static final String TAG = "LiveFragment";
+    private Context context;
     private VideoView videoView;
     private InboxViewAdapter adapter;
     private Session[] sessions;
@@ -47,6 +51,7 @@ public class CompleteFragment extends Fragment implements OnRefreshListener {
     private static ResultReceiver receiver;
     private PullToRefreshLayout pullToRefreshLayout;
     private Paginator paginator;
+    private ArcMenu arcMenu;
 
     private boolean flagLoading = false;
     private List<Session> sessionsList;
@@ -56,10 +61,14 @@ public class CompleteFragment extends Fragment implements OnRefreshListener {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.video_list_fragment, container, false);
+        context = getActivity();
 
         initData();
         getViews(view);
+        setupArcMenu(T.ITEM_DRAWABLES, arcMenu);
         setupListView(view);
+
+        // TODO: set click listener on the comments+likes container
 
         return view;
     }
@@ -71,9 +80,34 @@ public class CompleteFragment extends Fragment implements OnRefreshListener {
     private void getViews(View view) {
         progressBar = (ProgressBar) view.findViewById(R.id.progress_live);
         listView = (ListView) view.findViewById(R.id.video_list_view2);
+        arcMenu = (ArcMenu) view.findViewById(R.id.arc_menu);
 
         // Show Progress Bar
         progressBar.setVisibility(View.VISIBLE);
+    }
+
+    public void setupArcMenu(int[] item_drawables, ArcMenu menu) {
+//        RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(
+//                LayoutParams.WRAP_CONTENT,
+//                LayoutParams.WRAP_CONTENT
+//        );
+//        params.setMargins(0, 0, (int)right, (int)bottom);
+//        menu.setLayoutParams(params);
+
+        final int itemCount = item_drawables.length;
+        for (int i = 0; i < itemCount; i++) {
+            ImageView item = new ImageView(context);
+            item.setImageResource(item_drawables[i]);
+
+            final int position = i;
+            menu.addItem(item, new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Toast.makeText(context, "position " + position, Toast.LENGTH_SHORT)
+                            .show();
+                }
+            });
+        }
     }
 
     private void setupListView(View view) {

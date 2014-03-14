@@ -60,7 +60,7 @@ public class ArcLayout extends ViewGroup {
 
     private float mToDegrees = DEFAULT_TO_DEGREES;
 
-    private static final int MIN_RADIUS = 100;
+    private static final int MIN_RADIUS = 130;
 
     /* the distance between the layout's center and any child's center */
     private int mRadius;
@@ -113,7 +113,7 @@ public class ArcLayout extends ViewGroup {
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
         final int radius = mRadius = computeRadius(Math.abs(mToDegrees - mFromDegrees), getChildCount(), mChildSize,
                 mChildPadding, MIN_RADIUS);
-        final int size = radius * 2 + mChildSize + mChildPadding + mLayoutPadding * 2;
+        final int size = radius * 2 + mChildSize + mChildPadding + mLayoutPadding * 8;
 
         setMeasuredDimension(size, size);
 
@@ -306,5 +306,4 @@ public class ArcLayout extends ViewGroup {
 
         requestLayout();
     }
-
 }

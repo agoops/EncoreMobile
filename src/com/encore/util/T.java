@@ -15,6 +15,8 @@ import android.provider.MediaStore;
 import android.util.Log;
 import android.widget.TextView;
 
+import com.encore.R;
+
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
@@ -92,6 +94,9 @@ public class T {
     // Request codes
     public static final int IMAGE_PICKER_REQUEST_CODE = 100;
     public static final int CONTACT_NUMBER_REQUEST_CODE = 200;
+
+    // Arc menu drawables
+    public static final int[] ITEM_DRAWABLES = { R.drawable.bg_new_session_btn, R.drawable.bg_new_battle };
 
     public static void setTypeFace(Context c, TextView... views) {
         Typeface typeface = Typeface.createFromAsset(c.getAssets(),

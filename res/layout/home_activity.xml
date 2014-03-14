@@ -12,7 +12,7 @@
     <!-- The navigation drawers -->
     <RelativeLayout
         android:id="@+id/home_left_drawer_container"
-        android:layout_width="320dp"
+        android:layout_width="290dp"
         android:layout_height="match_parent"
         android:layout_gravity="start"
         android:background="#333"
@@ -76,7 +76,7 @@
                 android:textColor="#bbb"
                 android:layout_weight="1"
                 android:gravity="center"
-                android:textAppearance="?android:textAppearanceMedium" />
+                android:textAppearance="?android:textAppearanceSmall" />
 
             <TextView
                 android:id="@+id/left_drawer_NumLikesTv"
@@ -86,7 +86,7 @@
                 android:textColor="#bbb"
                 android:layout_weight="1"
                 android:gravity="center"
-                android:textAppearance="?android:textAppearanceMedium" />
+                android:textAppearance="?android:textAppearanceSmall" />
 
             <TextView
                 android:id="@+id/left_drawer_NumFriendsTv"
@@ -96,7 +96,7 @@
                 android:textColor="#bbb"
                 android:layout_weight="1"
                 android:gravity="center"
-                android:textAppearance="?android:textAppearanceMedium" />
+                android:textAppearance="?android:textAppearanceSmall" />
         </LinearLayout>
 
         <ListView
@@ -117,7 +117,7 @@
 
     <RelativeLayout
         android:id="@+id/home_right_drawer_container"
-        android:layout_width="320dp"
+        android:layout_width="290dp"
         android:layout_height="match_parent"
         android:layout_gravity="end"
         android:background="#333"

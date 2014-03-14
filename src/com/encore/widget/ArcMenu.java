@@ -44,8 +44,8 @@ import com.encore.R;
  */
 public class ArcMenu extends RelativeLayout {
     private ArcLayout mArcLayout;
-
     private ImageView mHintView;
+    private ViewGroup controlLayout;
 
     public ArcMenu(Context context) {
         super(context);
@@ -64,7 +64,7 @@ public class ArcMenu extends RelativeLayout {
 
         mArcLayout = (ArcLayout) findViewById(R.id.item_layout);
 
-        final ViewGroup controlLayout = (ViewGroup) findViewById(R.id.control_layout);
+        controlLayout = (ViewGroup) findViewById(R.id.control_layout);
         controlLayout.setClickable(true);
         controlLayout.setOnTouchListener(new OnTouchListener() {
 
@@ -190,5 +190,31 @@ public class ArcMenu extends RelativeLayout {
         animation.setFillAfter(true);
 
         return animation;
+    }
+
+    public ArcLayout getArcLayout() {
+        return mArcLayout;
+    }
+
+    public static void setupArcMenu(Context context, int[] item_drawables, ArcMenu menu) {
+//        RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(
+//                LayoutParams.WRAP_CONTENT,
+//                LayoutParams.WRAP_CONTENT
+//        );
+//        params.setMargins(0, 0, (int)right, (int)bottom);
+//        menu.setLayoutParams(params);
+
+        final int itemCount = item_drawables.length;
+        for (int i = 0; i < itemCount; i++) {
+            ImageView item = new ImageView(context);
+            item.setImageResource(item_drawables[i]);
+
+            final int position = i;
+            menu.addItem(item, new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                }
+            });
+        }
     }
 }

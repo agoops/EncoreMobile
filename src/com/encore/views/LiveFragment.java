@@ -15,6 +15,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
 import android.widget.Toast;
 import android.widget.VideoView;
 
@@ -24,6 +25,7 @@ import com.encore.R;
 import com.encore.models.Paginator;
 import com.encore.models.Session;
 import com.encore.util.T;
+import com.encore.widget.ArcLayout;
 import com.encore.widget.ArcMenu;
 import com.encore.widget.EndlessScrollListener;
 import com.google.gson.Gson;
@@ -50,10 +52,12 @@ public class LiveFragment extends Fragment implements OnRefreshListener {
     private Paginator paginator;
     private ArcMenu arcMenu;
 
-    private static final int[] ITEM_DRAWABLES = { R.drawable.bg_create_new, R.drawable.bg_new_battle };
-
     private boolean flagLoading = false;
     private List<Session> sessionsList;
+
+    private boolean isMenuDrawn = false;
+    private boolean isLayoutDrawn = false;
+    private boolean isMarginSet = false;
 
 	@Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -64,8 +68,10 @@ public class LiveFragment extends Fragment implements OnRefreshListener {
 
         initData();
         getViews(view);
-        setupArcMenu(ITEM_DRAWABLES, arcMenu);
+        setupArcMenu(T.ITEM_DRAWABLES, arcMenu);
         setupListView(view);
+
+        // TODO: set click listener on the comments+likes container
 
 	    return view;
     }
@@ -86,7 +92,8 @@ public class LiveFragment extends Fragment implements OnRefreshListener {
         progressBar.setVisibility(View.VISIBLE);
     }
 
-    private void setupArcMenu(int[] item_drawables, ArcMenu menu) {
+    public void setupArcMenu(int[] item_drawables, ArcMenu menu) {
+
         final int itemCount = item_drawables.length;
         for (int i = 0; i < itemCount; i++) {
             ImageView item = new ImageView(context);
@@ -96,9 +103,70 @@ public class LiveFragment extends Fragment implements OnRefreshListener {
             menu.addItem(item, new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Toast.makeText(context, "position:" + position, Toast.LENGTH_SHORT).show();
+                    Toast.makeText(context, "position " + position, Toast.LENGTH_SHORT)
+                            .show();
                 }
             });
+        }
+
+        // Draw in bottom right corner
+        // TODO: THESE FUCKING MARGINS. FUCK THEM
+//        ArcLayout arcLayout = menu.getArcLayout();
+//
+//        menu.getViewTreeObserver().addOnPreDrawListener(new ViewTreeObserver.OnPreDrawListener()
+//        {
+//            @Override
+//            public boolean onPreDraw()
+//            {
+//                isMenuDrawn = true;
+//                setArcMenuMargins();
+//
+//                return true;
+//            }
+//        });
+//
+//        arcLayout.getViewTreeObserver().addOnPreDrawListener(new ViewTreeObserver.OnPreDrawListener()
+//        {
+//            @Override
+//            public boolean onPreDraw()
+//            {
+//                isLayoutDrawn = true;
+//                setArcMenuMargins();
+//
+//                return true;
+//            }
+//        });
+    }
+
+    private void setArcMenuMargins() {
+        if(isMenuDrawn && isLayoutDrawn && !isMarginSet) {
+            Log.d(TAG, "setArcMenuMargins called and valid");
+            ArcLayout arcLayout = arcMenu.getArcLayout();
+
+            final int arcMenuHeight = arcMenu.getMeasuredHeight();
+            final int arcMenuWidth = arcMenu.getMeasuredWidth();
+            final int iconHeight = arcLayout.getMeasuredHeight();
+            final int iconWidth = arcLayout.getMeasuredWidth();
+
+            Log.d(TAG, "arc arcMenuHeight: " + arcMenuHeight);
+            Log.d(TAG, "arc arcMenuWidth: " + arcMenuWidth);
+            Log.d(TAG, "arc iconHeight: " + iconHeight);
+            Log.d(TAG, "arc iconWidth: " + iconWidth);
+
+            float marginRight = (iconHeight - arcMenuWidth)/2,
+                    marginBottom = (iconWidth - arcMenuWidth)/2;
+
+            Log.d(TAG, "arc marginRight: " + marginRight);
+            Log.d(TAG, "arc marginBottom: " + marginBottom);
+
+            RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(
+                    RelativeLayout.LayoutParams.WRAP_CONTENT,
+                    RelativeLayout.LayoutParams.WRAP_CONTENT
+            );
+            params.setMargins(0, 0, (int)marginRight, (int)marginBottom);
+            arcLayout.setLayoutParams(params);
+
+            isMarginSet = true;
         }
     }
 
