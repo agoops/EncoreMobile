@@ -12,14 +12,14 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
-        custom:childSize="45dp"
+        custom:childSize="55dp"
         custom:fromDegrees="180.0"
         custom:toDegrees="270.0"  />
 
     <FrameLayout
         android:id="@+id/control_layout"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="65dp"
+        android:layout_height="65dp"
         android:layout_centerInParent="true"
         android:background="@drawable/composer_button" >
 

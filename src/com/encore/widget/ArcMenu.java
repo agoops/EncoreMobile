@@ -195,26 +195,4 @@ public class ArcMenu extends RelativeLayout {
     public ArcLayout getArcLayout() {
         return mArcLayout;
     }
-
-    public static void setupArcMenu(Context context, int[] item_drawables, ArcMenu menu) {
-//        RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(
-//                LayoutParams.WRAP_CONTENT,
-//                LayoutParams.WRAP_CONTENT
-//        );
-//        params.setMargins(0, 0, (int)right, (int)bottom);
-//        menu.setLayoutParams(params);
-
-        final int itemCount = item_drawables.length;
-        for (int i = 0; i < itemCount; i++) {
-            ImageView item = new ImageView(context);
-            item.setImageResource(item_drawables[i]);
-
-            final int position = i;
-            menu.addItem(item, new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                }
-            });
-        }
-    }
 }

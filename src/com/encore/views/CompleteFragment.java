@@ -12,9 +12,11 @@ import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewTreeObserver;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
 import android.widget.Toast;
 import android.widget.VideoView;
 
@@ -24,6 +26,7 @@ import com.encore.R;
 import com.encore.models.Paginator;
 import com.encore.models.Session;
 import com.encore.util.T;
+import com.encore.widget.ArcLayout;
 import com.encore.widget.ArcMenu;
 import com.encore.widget.EndlessScrollListener;
 import com.google.gson.Gson;
@@ -56,6 +59,10 @@ public class CompleteFragment extends Fragment implements OnRefreshListener {
     private boolean flagLoading = false;
     private List<Session> sessionsList;
 
+    private boolean isMenuDrawn = false;
+    private boolean isLayoutDrawn = false;
+    private boolean isMarginSet = false;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -87,6 +94,7 @@ public class CompleteFragment extends Fragment implements OnRefreshListener {
     }
 
     public void setupArcMenu(int[] item_drawables, ArcMenu menu) {
+
         final int itemCount = item_drawables.length;
         for (int i = 0; i < itemCount; i++) {
             ImageView item = new ImageView(context);
@@ -100,6 +108,63 @@ public class CompleteFragment extends Fragment implements OnRefreshListener {
                             .show();
                 }
             });
+        }
+
+        // Draw in bottom right corner
+        ArcLayout arcLayout = menu.getArcLayout();
+
+        menu.getViewTreeObserver().addOnPreDrawListener(new ViewTreeObserver.OnPreDrawListener()
+        {
+            @Override
+            public boolean onPreDraw()
+            {
+                isMenuDrawn = true;
+                setArcMenuMargins();
+
+                return true;
+            }
+        });
+
+        arcLayout.getViewTreeObserver().addOnPreDrawListener(new ViewTreeObserver.OnPreDrawListener() {
+            @Override
+            public boolean onPreDraw() {
+                isLayoutDrawn = true;
+                setArcMenuMargins();
+
+                return true;
+            }
+        });
+    }
+
+    private void setArcMenuMargins() {
+        if(isMenuDrawn && isLayoutDrawn && !isMarginSet) {
+            ArcLayout arcLayout = arcMenu.getArcLayout();
+
+            final int arcMenuHeight = arcMenu.getMeasuredHeight();
+            final int arcMenuWidth = arcMenu.getMeasuredWidth();
+            final int iconHeight = arcLayout.getMeasuredHeight();
+            final int iconWidth = arcLayout.getMeasuredWidth();
+
+//            Log.d(TAG, "arc arcMenuHeight: " + arcMenuHeight);
+//            Log.d(TAG, "arc arcMenuWidth: " + arcMenuWidth);
+//            Log.d(TAG, "arc iconHeight: " + iconHeight);
+//            Log.d(TAG, "arc iconWidth: " + iconWidth);
+
+            // TODO: Test if these margins work on other devices too
+            float marginRight = (iconHeight - arcMenuWidth)/2,
+                    marginBottom = (iconWidth - arcMenuWidth)/2;
+
+//            Log.d(TAG, "arc marginRight: " + marginRight);
+//            Log.d(TAG, "arc marginBottom: " + marginBottom);
+
+            RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(
+                    RelativeLayout.LayoutParams.WRAP_CONTENT,
+                    RelativeLayout.LayoutParams.WRAP_CONTENT
+            );
+            params.setMargins(0, 0, (int)marginRight, (int)marginBottom);
+            arcMenu.setLayoutParams(params);
+
+            isMarginSet = true;
         }
     }
 
