@@ -84,8 +84,8 @@ public class EditProfileActivity extends Activity implements View.OnClickListene
         // Set profile picture
         if (intent.getSerializableExtra(T.PROFILE_PICTURE) != null) {
             profilePic = (File)intent.getSerializableExtra(T.PROFILE_PICTURE);
-            imageLoader.displayImage(Uri.fromFile(profilePic).toString(), profilePictureIV);
-//            profilePictureIV.setImageURI(Uri.fromFile(profilePic));
+            Log.d(TAG, "derp URI.fromfile: " + Uri.fromFile(profilePic).toString());
+            profilePictureIV.setImageURI(Uri.fromFile(profilePic));
         }
     }
 

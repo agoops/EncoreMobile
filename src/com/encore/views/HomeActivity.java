@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.content.res.Configuration;
 import android.graphics.Bitmap;
 import android.graphics.Color;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.ResultReceiver;
@@ -151,6 +152,7 @@ public class HomeActivity extends FragmentActivity implements View.OnClickListen
                 launchProfileDetailsFragment(T.PROFILE_INFO_FRIENDS);
                 break;
             case R.id.left_drawer_EditButton:
+                Log.d(TAG, "derp profilePictureFile (launching editprofileactivity): " + profilePictureFile.toString());
                 Intent launchEditProfileActivity = new Intent(context, EditProfileActivity.class);
                 launchEditProfileActivity.putExtra(T.FIRST_NAME, userMe.getFirstName());
                 launchEditProfileActivity.putExtra(T.LAST_NAME, userMe.getLastName());
@@ -347,11 +349,13 @@ public class HomeActivity extends FragmentActivity implements View.OnClickListen
                     imageLoader.loadImage(url, new SimpleImageLoadingListener() {
                         @Override
                         public void onLoadingComplete(String imageUri, View view, Bitmap loadedBitmap) {
-                            profilePictureIv.setImageBitmap(loadedBitmap);
+//                            profilePictureIv.setImageBitmap(loadedBitmap);
 
                             File f = T.bitmapToFile(loadedBitmap, 30,
                                     context.getCacheDir(), "Rapback_downsampled_profile");
                             profilePictureFile = f;
+                            Log.d(TAG, "derp profilePictureFile uri (nav bar): " + profilePictureFile.toString());
+                            profilePictureIv.setImageURI(Uri.fromFile(f));
                         }
                     });
                 } else {
