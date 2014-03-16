@@ -23,7 +23,7 @@
             android:id="@+id/other_profile_picture"
             android:layout_height="100dp"
             android:layout_width="100dp"
-            android:src="@drawable/bobby_prof"
+            android:src="@drawable/default_profile_picture"
             android:layout_margin="20dp"/>
 
         <TextView

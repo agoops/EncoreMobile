@@ -126,6 +126,8 @@ public class HomeActivity extends FragmentActivity implements View.OnClickListen
         // Create global configuration and initialize ImageLoader with this configuration
         DisplayImageOptions defaultOptions = new DisplayImageOptions.Builder()
                 .cacheInMemory(true)
+                .cacheOnDisc(true)
+                .considerExifParams(true)
                 .showImageOnLoading(R.drawable.background_333_transparent2)
                 .showImageOnFail(R.drawable.default_profile_picture)
                 .build();

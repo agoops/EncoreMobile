@@ -62,7 +62,7 @@ public class OtherProfileActivity extends Activity implements View.OnClickListen
 
     private ImageLoader imageLoader = ImageLoader.getInstance();
 
-    // TODO: Change the friends tab to raps tab + support profile pics
+    // TODO: Change the friends tab to raps tab
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
