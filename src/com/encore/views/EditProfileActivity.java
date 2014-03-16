@@ -28,7 +28,6 @@ import com.encore.TokenHelper;
 import com.encore.util.T;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.assist.SimpleImageLoadingListener;
-import com.squareup.picasso.Picasso;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -83,15 +82,10 @@ public class EditProfileActivity extends Activity implements View.OnClickListene
         phone.setText(currentPhone);
 
         // Set profile picture
-        if (intent.getSerializableExtra(T.PROFILE_PICTURE) == null) {
-            Log.d(TAG, "HERE");
-            Picasso.with(context)
-                    .load(R.drawable.default_profile_picture)
-                    .into(profilePictureIV);
-        } else {
-            Log.d(TAG, "HERE2");
-            File oldProfilePic = (File)intent.getSerializableExtra(T.PROFILE_PICTURE);
-            profilePictureIV.setImageURI(Uri.fromFile(oldProfilePic));
+        if (intent.getSerializableExtra(T.PROFILE_PICTURE) != null) {
+            profilePic = (File)intent.getSerializableExtra(T.PROFILE_PICTURE);
+            imageLoader.displayImage(Uri.fromFile(profilePic).toString(), profilePictureIV);
+//            profilePictureIV.setImageURI(Uri.fromFile(profilePic));
         }
     }
 
@@ -244,22 +238,13 @@ public class EditProfileActivity extends Activity implements View.OnClickListene
                 imageLoader.loadImage(selectedImageUri.toString(), new SimpleImageLoadingListener() {
                     @Override
                     public void onLoadingComplete(String imageUri, View view, Bitmap loadedBitmap) {
-                        Log.d(TAG, "Loading complete");
                         profilePictureIV.setImageBitmap(loadedBitmap);
 
-                        // Save the downsampled bitmap into the cache
-                        File f = T.bitmapToFile(loadedBitmap, 20,
+                        // Compress into the file we'll send upstream
+                        profilePic = T.bitmapToFile(loadedBitmap, 25,
                                 context.getCacheDir(), "Rapback_downsampled_profile");
-                        profilePic = f;
                     }
                 });
-
-                // Downsample the image
-//                Bitmap downsampledSelection = T.decodeUri(context, selectedImageUri, temp.getPath());
-//                profilePictureIV.setImageBitmap(downsampledSelection);
-//
-//                Log.d(TAG, "downsampledSelection: " + downsampledSelection.toString());
-//
             }
         }
     }

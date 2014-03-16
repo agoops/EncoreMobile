@@ -26,7 +26,6 @@ import com.encore.widget.CommentDialog;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.nostra13.universalimageloader.core.ImageLoader;
-import com.squareup.picasso.Picasso;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
@@ -167,33 +166,33 @@ public class InboxViewAdapter extends ArrayAdapter<Session> implements OnClickLi
 
                 // Set the thumbnail
                 if(entry.getThumbnailUrl() != null) {
-//                    imageLoader.displayImage(entry.getThumbnailUrl(), thumbnailIv, options);
-                    Picasso.with(mContext)
-                            .load(entry.getThumbnailUrl())
-                            .resize((int) width,(int) height)
-                            .into(thumbnailIv);
+                    imageLoader.displayImage(entry.getThumbnailUrl(), thumbnailIv);
+//                    Picasso.with(mContext)
+//                            .load(entry.getThumbnailUrl())
+//                            .resize((int) width,(int) height)
+//                            .into(thumbnailIv);
                 }
             } else {
                 Clip firstClip = entry.getClips().get(0);
 
                 // Set the thumbnail
                 if(firstClip.getThumbnail_url() != null) {
-//                    imageLoader.displayImage(firstClip.getThumbnail_url(), thumbnailIv, options);
-                    Picasso.with(mContext)
-                            .load(firstClip.getThumbnail_url())
-                            .resize((int) width,(int) height)
-                            .into(thumbnailIv);
+                    imageLoader.displayImage(entry.getThumbnailUrl(), thumbnailIv);
+//                    Picasso.with(mContext)
+//                            .load(firstClip.getThumbnail_url())
+//                            .resize((int) width,(int) height)
+//                            .into(thumbnailIv);
                 }
             }
 
         } else {
             // Set the thumbnail
             if(entry.getThumbnailUrl() != null) {
-//                imageLoader.displayImage(entry.getThumbnailUrl(), thumbnailIv, options);
-                Picasso.with(mContext)
-                        .load(entry.getThumbnailUrl())
-                        .resize((int) width,(int) height)
-                        .into(thumbnailIv);
+                imageLoader.displayImage(entry.getThumbnailUrl(), thumbnailIv);
+//                Picasso.with(mContext)
+//                        .load(entry.getThumbnailUrl())
+//                        .resize((int) width,(int) height)
+//                        .into(thumbnailIv);
             }
         }
     }

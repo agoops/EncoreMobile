@@ -10,7 +10,6 @@ import android.widget.TextView;
 
 import com.encore.models.Profile;
 import com.nostra13.universalimageloader.core.ImageLoader;
-import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -55,10 +54,6 @@ public class TabFriendsAdapter extends ArrayAdapter<Profile> {
         if(friend.getProfilePictureUrl() != null) {
             String url = friend.getProfilePictureUrl().toString();
             imageLoader.displayImage(url, profilePicture);
-        } else {
-            Picasso.with(context)
-                    .load(R.drawable.default_profile_picture)
-                    .into(profilePicture);
         }
 
         return convertView;

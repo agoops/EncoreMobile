@@ -10,7 +10,8 @@
         android:layout_height="135dp"
         android:layout_centerVertical="true"
         android:paddingLeft="20dp"
-        android:paddingRight="20dp"/>
+        android:paddingRight="20dp"
+        android:src="@drawable/default_profile_picture" />
 
     <TextView
         android:id="@+id/tab_friends_username"

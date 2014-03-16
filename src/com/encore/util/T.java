@@ -82,19 +82,12 @@ public class T {
 
 	public static final String COMMENT_TEXT = "comment_text";
 
-    // For determining SessionFlowManager's flow
-    public static final String FEED_TYPE = "feed_type";
-    public static final int LIVE_FEED = 1;
-    public static final int COMPLETE_FEED = 2;
-
     // Request codes
     public static final int IMAGE_PICKER_REQUEST_CODE = 100;
     public static final int CONTACT_NUMBER_REQUEST_CODE = 200;
 
     // Arc menu drawables
     public static final int[] ITEM_DRAWABLES = { R.drawable.bg_new_session_btn, R.drawable.bg_new_battle };
-
-    public static final int IMAGE_MAX_SIZE = 70;
 
     public static void setTypeFace(Context c, TextView... views) {
         Typeface typeface = Typeface.createFromAsset(c.getAssets(),
@@ -140,26 +133,19 @@ public class T {
         return newFile;
     }
 
-    /*
-     *   -------------- Bitmap manipulation ----------------
-     */
-
-//    public static Bitmap drawableToBitmap(Drawable drawable) {
-//        if (drawable instanceof BitmapDrawable) {
-//            return ((BitmapDrawable) drawable).getBitmap();
-//        }
-//
-//        Bitmap bitmap = Bitmap.createBitmap(drawable.getIntrinsicWidth(), drawable.getIntrinsicHeight(), Bitmap.Config.ARGB_8888);
-//        Canvas canvas = new Canvas(bitmap);
-//        drawable.setBounds(0, 0, canvas.getWidth(), canvas.getHeight());
-//        drawable.draw(canvas);
-//
-//        return bitmap;
-//    }
-//
     public static File bitmapToFile(Bitmap bitmap, int compressionQuality, File dir, String fileName) {
         // Read the bitmap into a file
         File f = new File(dir, fileName);
+        if(f.exists()) {
+            Log.d(TAG, "HERE");
+            f.delete();
+//            f = new File(dir, fileName);
+            try {
+                f.createNewFile();
+            } catch(IOException e) {
+                e.printStackTrace();
+            }
+        }
         ByteArrayOutputStream bos = new ByteArrayOutputStream();
 
         bitmap.compress(Bitmap.CompressFormat.JPEG, compressionQuality, bos);
@@ -174,136 +160,4 @@ public class T {
 
         return f;
     }
-//
-//    /*
-//      * Downsamples the given image to prevent out-of-memory errors
-//      */
-//    public static Bitmap decodeUri(Context context, Uri selectedImageUri, String photoPath) {
-//        try {
-//            // TODO: Crop the image. Better yet, let the user crop the image.
-//            final int MAX_IMAGE_DIMENSION = 140;
-//
-//            InputStream is = context.getContentResolver().openInputStream(selectedImageUri);
-//            BitmapFactory.Options dbo = new BitmapFactory.Options();
-//            dbo.inJustDecodeBounds = true;
-//            BitmapFactory.decodeStream(is, null, dbo);
-//            is.close();
-//
-//            int rotatedWidth, rotatedHeight;
-//            int orientation = getOrientation(context, selectedImageUri, photoPath);
-//
-//            if (orientation == 90 || orientation == 270) {
-//                rotatedWidth = dbo.outHeight;
-//                rotatedHeight = dbo.outWidth;
-//            } else {
-//                rotatedWidth = dbo.outWidth;
-//                rotatedHeight = dbo.outHeight;
-//            }
-//
-//            Bitmap srcBitmap;
-//            is = context.getContentResolver().openInputStream(selectedImageUri);
-//            if (rotatedWidth > MAX_IMAGE_DIMENSION || rotatedHeight > MAX_IMAGE_DIMENSION) {
-//                float widthRatio = ((float) rotatedWidth) / ((float) MAX_IMAGE_DIMENSION);
-//                float heightRatio = ((float) rotatedHeight) / ((float) MAX_IMAGE_DIMENSION);
-//                float maxRatio = Math.max(widthRatio, heightRatio);
-//
-//                // Create the bitmap from file
-//                BitmapFactory.Options options = new BitmapFactory.Options();
-//                options.inSampleSize = (int) maxRatio;
-//                srcBitmap = BitmapFactory.decodeStream(is, null, options);
-//            } else {
-//                srcBitmap = BitmapFactory.decodeStream(is);
-//            }
-//            is.close();
-//            /*
-//             * if the orientation is not 0 (or -1, which means we don't know), we
-//             * have to do a rotation.
-//             */
-//            if (orientation > 0) {
-//                Matrix matrix = new Matrix();
-//                matrix.postRotate(orientation);
-//
-//                srcBitmap = Bitmap.createBitmap(srcBitmap, 0, 0, srcBitmap.getWidth(),
-//                        srcBitmap.getHeight(), matrix, true);
-//            }
-//
-//            return srcBitmap;
-//
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//
-//        }
-//        return null;
-//    }
-//
-//    /*
-//        Get the orientation information of a photo.
-//     */
-//    public static int getOrientation(Context context, Uri photoUri, String photoPath) {
-//        Cursor cursor = context.getContentResolver().query(photoUri,
-//                new String[] { MediaStore.Images.ImageColumns.ORIENTATION }, null, null, null);
-//
-//        if(cursor == null) {
-//            try {
-//                ExifInterface exif = new ExifInterface("Rapback_Profile");
-//                int orientation = exif.getAttributeInt(ExifInterface.TAG_ORIENTATION, 1);
-//                Log.d(TAG, "orientation: " + orientation);
-//                switch(orientation) {
-//                    case 0:
-//                        // Case 0 can be either portrait or landscape
-//                        // AKA this doesn't always work...
-//                        return 270;
-//                    case 1:
-//                        return 0;
-//                    case 3:
-//                        return 180;
-//                    case 6:
-//                        return 270;
-//                    case 8:
-//                        return 90;
-//                }
-//            } catch (IOException e) {
-//                e.printStackTrace();
-//            }
-//        }
-//
-//        Log.d(TAG, "cursor: " + cursor);
-//
-//        if (cursor == null ||
-//                cursor.getCount() != 1) {
-//            return -1;
-//        }
-//
-//        cursor.moveToFirst();
-//        return cursor.getInt(0);
-//    }
-//
-//    public Bitmap decodeFile(File f){
-//        Bitmap b = null;
-//
-//        //Decode image size
-//        BitmapFactory.Options o = new BitmapFactory.Options();
-//        o.inJustDecodeBounds = true;
-//
-//        try {
-//            FileInputStream fis = new FileInputStream(f);
-//            BitmapFactory.decodeStream(fis, null, o);
-//            fis.close();
-//            int scale = 1;
-//            if (o.outHeight > IMAGE_MAX_SIZE || o.outWidth > IMAGE_MAX_SIZE) {
-//                scale = (int)Math.pow(2, (int) Math.round(Math.log(IMAGE_MAX_SIZE /
-//                        (double) Math.max(o.outHeight, o.outWidth)) / Math.log(0.5)));
-//            }
-//
-//            //Decode with inSampleSize
-//            BitmapFactory.Options o2 = new BitmapFactory.Options();
-//            o2.inSampleSize = scale;
-//            fis = new FileInputStream(f);
-//            b = BitmapFactory.decodeStream(fis, null, o2);
-//            fis.close();
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
-//        return b;
-//    }
 }

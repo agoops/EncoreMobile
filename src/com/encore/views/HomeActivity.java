@@ -349,7 +349,7 @@ public class HomeActivity extends FragmentActivity implements View.OnClickListen
                         public void onLoadingComplete(String imageUri, View view, Bitmap loadedBitmap) {
                             profilePictureIv.setImageBitmap(loadedBitmap);
 
-                            File f = T.bitmapToFile(loadedBitmap, 40,
+                            File f = T.bitmapToFile(loadedBitmap, 30,
                                     context.getCacheDir(), "Rapback_downsampled_profile");
                             profilePictureFile = f;
                         }
@@ -399,59 +399,9 @@ public class HomeActivity extends FragmentActivity implements View.OnClickListen
         }
     }
 
-//    public class DownloadImagesTask extends AsyncTask<ImageView, Void, File> {
-//        ImageView imageView = null;
-//
-//        @Override
-//        protected File doInBackground(ImageView... imageViews) {
-//            this.imageView = imageViews[0];
-//            return downloadImage((URL) imageView.getTag());
-//        }
-//
-//        @Override
-//        protected void onPostExecute(File file) {
-//            if(profilePictureFile == null) {
-//                Picasso.with(context)
-//                        .load(R.drawable.default_profile_picture)
-//                        .into(profilePictureIv);
-//            } else {
-//                profilePictureIv.setImageBitmap(profileBitmap);
-//            }
-//        }
-//
-//        public File downloadImage(URL url) {
-//            // TODO: Find a better way to encapsulate all the data for profile pictures (e.g., URIs, files, bitmaps)
-//            try {
-//                if(url == null) {
-//                    profilePictureFile = null;
-//                    return null;
-//                }
-//
-//                HttpURLConnection connection = (HttpURLConnection) url
-//                        .openConnection();
-//                connection.setDoInput(true);
-//                connection.connect();
-//                InputStream input = connection.getInputStream();
-//                profileBitmap = BitmapFactory.decodeStream(input);
-//
-//                File f = T.bitmapToFile(profileBitmap, 40,
-//                        context.getCacheDir(), "Rapback_downsampled_profile");
-//
-//                profilePictureFile = f;
-//                return f;
-//            } catch (IOException e) {
-//                e.printStackTrace();
-//                return null;
-//            }
-//        }
-//    }
-
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu items in the action bar
-//        MenuInflater inflater = getMenuInflater();
-//        inflater.inflate(R.menu.home_activity_actions, menu);
-
         return super.onCreateOptionsMenu(menu);
     }
 
@@ -474,17 +424,6 @@ public class HomeActivity extends FragmentActivity implements View.OnClickListen
             // If leftDrawerToggle returned true, it has handled the touch event
             return true;
         }
-
-//        switch(item.getItemId())
-//        {
-//            case R.id.action_video:
-//                // Launch a new session
-//                Log.d(TAG, "Launching SessionFlowManager");
-//                Intent intent = new Intent(this, SessionFlowManager.class);
-//                startActivity(intent);
-//
-//                return true;
-//        }
 
         return super.onOptionsItemSelected(item);
     }

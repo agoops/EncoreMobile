@@ -30,7 +30,6 @@ import com.encore.models.Session;
 import com.encore.util.T;
 import com.google.gson.Gson;
 import com.nostra13.universalimageloader.core.ImageLoader;
-import com.squareup.picasso.Picasso;
 
 import java.net.URL;
 import java.util.ArrayList;
@@ -348,14 +347,6 @@ public class OtherProfileActivity extends Activity implements View.OnClickListen
                 URL profilePictureURL = otherUser.getProfilePictureUrl();
                 if(profilePictureURL != null) {
                     imageLoader.displayImage(profilePictureURL.toString(), profilePicture);
-//                    Picasso.with(context)
-//                            .load(profilePictureURL.toString())
-//                            .placeholder(R.drawable.background_333_transparent2)
-//                            .into(profilePicture);
-                } else {
-                    Picasso.with(context)
-                            .load(R.drawable.default_profile_picture)
-                            .into(profilePicture);
                 }
 
                 // Show data
