@@ -9,6 +9,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.encore.models.Profile;
+import com.nostra13.universalimageloader.core.ImageLoader;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -26,6 +27,8 @@ public class TabFriendsAdapter extends ArrayAdapter<Profile> {
     private TextView username, fullName;
     private ImageView profilePicture;
 
+    private ImageLoader imageLoader = ImageLoader.getInstance();
+
     public TabFriendsAdapter(Context context, int layoutId, List<Profile> friends) {
         super(context, layoutId, friends);
         this.context = context;
@@ -36,23 +39,22 @@ public class TabFriendsAdapter extends ArrayAdapter<Profile> {
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-
-        // Get the view elements
         convertView = inflater.inflate(layoutId, null);
+        Profile friend = friends.get(position);
 
+        // Get the views
         username = (TextView) convertView.findViewById(R.id.tab_friends_username);
         fullName = (TextView) convertView.findViewById(R.id.tab_friends_fullname);
         profilePicture = (ImageView) convertView.findViewById(R.id.profile_details_profile_picture);
 
-        // And set the sessionTitle and numLikes
-        Profile friend = friends.get(position);
+        // Set the sessionTitle and numLikes
         username.setText(friend.getUsername());
         fullName.setText(friend.getFullName());
+
+        // Set the profile picture
         if(friend.getProfilePictureUrl() != null) {
-            Picasso.with(context)
-                    .load(friend.getProfilePictureUrl().toString())
-                    .placeholder(R.drawable.placeholder_grey)
-                    .into(profilePicture);
+            String url = friend.getProfilePictureUrl().toString();
+            imageLoader.displayImage(url, profilePicture);
         } else {
             Picasso.with(context)
                     .load(R.drawable.default_profile_picture)
@@ -73,4 +75,6 @@ public class TabFriendsAdapter extends ArrayAdapter<Profile> {
     public void setItemList(ArrayList<Profile> friends) {
         this.friends = friends;
     }
+
+
 }

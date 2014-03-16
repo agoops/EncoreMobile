@@ -29,6 +29,7 @@ import com.encore.models.Profile;
 import com.encore.models.Session;
 import com.encore.util.T;
 import com.google.gson.Gson;
+import com.nostra13.universalimageloader.core.ImageLoader;
 import com.squareup.picasso.Picasso;
 
 import java.net.URL;
@@ -58,6 +59,8 @@ public class OtherProfileActivity extends Activity implements View.OnClickListen
     private ArrayList<Session> likedSessions;
     private ArrayList<Profile> friendsList;
     private HashSet<String> pendingThemSet;
+
+    private ImageLoader imageLoader = ImageLoader.getInstance();
 
     // TODO: Change the friends tab to raps tab + support profile pics
 
@@ -344,10 +347,11 @@ public class OtherProfileActivity extends Activity implements View.OnClickListen
 
                 URL profilePictureURL = otherUser.getProfilePictureUrl();
                 if(profilePictureURL != null) {
-                    Picasso.with(context)
-                            .load(profilePictureURL.toString())
-                            .placeholder(R.drawable.background_333_transparent2)
-                            .into(profilePicture);
+                    imageLoader.displayImage(profilePictureURL.toString(), profilePicture);
+//                    Picasso.with(context)
+//                            .load(profilePictureURL.toString())
+//                            .placeholder(R.drawable.background_333_transparent2)
+//                            .into(profilePicture);
                 } else {
                     Picasso.with(context)
                             .load(R.drawable.default_profile_picture)

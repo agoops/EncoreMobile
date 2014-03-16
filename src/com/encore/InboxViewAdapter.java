@@ -25,6 +25,7 @@ import com.encore.util.T;
 import com.encore.widget.CommentDialog;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import com.nostra13.universalimageloader.core.ImageLoader;
 import com.squareup.picasso.Picasso;
 
 import java.lang.reflect.Type;
@@ -49,6 +50,8 @@ public class InboxViewAdapter extends ArrayAdapter<Session> implements OnClickLi
     private HashSet<Integer> likedSessionIds;
 
     private MediaController mc;
+
+    private ImageLoader imageLoader = ImageLoader.getInstance();
 
 	public InboxViewAdapter(Context c, int textViewResourceId, List<Session> sessions) {
 		super(c, textViewResourceId, sessions);
@@ -159,12 +162,12 @@ public class InboxViewAdapter extends ArrayAdapter<Session> implements OnClickLi
         }
 
         if(entry.isComplete()) {
-
             if(isOtherUser) {
                 Log.d(TAG, "entry" + entry);
 
                 // Set the thumbnail
                 if(entry.getThumbnailUrl() != null) {
+//                    imageLoader.displayImage(entry.getThumbnailUrl(), thumbnailIv, options);
                     Picasso.with(mContext)
                             .load(entry.getThumbnailUrl())
                             .resize((int) width,(int) height)
@@ -175,6 +178,7 @@ public class InboxViewAdapter extends ArrayAdapter<Session> implements OnClickLi
 
                 // Set the thumbnail
                 if(firstClip.getThumbnail_url() != null) {
+//                    imageLoader.displayImage(firstClip.getThumbnail_url(), thumbnailIv, options);
                     Picasso.with(mContext)
                             .load(firstClip.getThumbnail_url())
                             .resize((int) width,(int) height)
@@ -185,6 +189,7 @@ public class InboxViewAdapter extends ArrayAdapter<Session> implements OnClickLi
         } else {
             // Set the thumbnail
             if(entry.getThumbnailUrl() != null) {
+//                imageLoader.displayImage(entry.getThumbnailUrl(), thumbnailIv, options);
                 Picasso.with(mContext)
                         .load(entry.getThumbnailUrl())
                         .resize((int) width,(int) height)
@@ -234,30 +239,6 @@ public class InboxViewAdapter extends ArrayAdapter<Session> implements OnClickLi
                 break;
 		}
 	}
-
-    // TODO: Thumbnail stitching
-//    private void setCompleteThumbnail(Session session) {
-//        List<Clip> clips = session.getClips();
-//        List<String> thumbnails = new ArrayList<String>();
-//
-//        for (Clip clip : clips) {
-//            thumbnails.add(clip.getThumbnail_url());
-//        }
-//
-//        Bitmap finalImage = downloadAndStichThumbnails(thumbnails);
-//
-//        if(entry.getThumbnailUrl() != null) {
-//            Picasso.with(mContext)
-//                    .load(entry.getThumbnailUrl())
-//                    .resize((int) width,(int) height)
-//                    .into(thumbnailIv);
-//        }
-//    }
-//
-//    private Bitmap downloadAndStichThumbnails(List<String> thumbnails) {
-//
-//    }
-
 
     private void likeServerSide(Session sesh) {
         Log.d(TAG, "Making like request");

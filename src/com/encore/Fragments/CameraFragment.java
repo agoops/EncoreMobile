@@ -20,6 +20,8 @@ import android.view.SurfaceView;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.RelativeLayout;
 
 import com.encore.R;
 import com.encore.util.T;
@@ -38,6 +40,7 @@ public class CameraFragment extends Fragment implements
     private Camera camera;
     private View view;
     private Button record;
+    private ImageView fillerView;
 
     private File mediaFile;
     private boolean isRecording;
@@ -100,6 +103,8 @@ public class CameraFragment extends Fragment implements
                         R.raw.simple_beat5
                 };
         curBeatIndex = 0;
+
+        fillerView = (ImageView) view.findViewById(R.id.filler_view);
 
         surfaceView = (SurfaceView) view.findViewById(R.id.videoview);
         surfaceHolder = surfaceView.getHolder();
@@ -212,6 +217,7 @@ public class CameraFragment extends Fragment implements
                     // Record
                     Log.d(TAG, "Start recording");
                     startRecording();
+//                    animateRecordingView(fillerView, 0, 0);
                     Button button = (Button) v;
                     button.setBackgroundColor(getResources().getColor(R.color.button_pressed));
                 } else if (event.getAction() == MotionEvent.ACTION_UP) {
@@ -225,6 +231,17 @@ public class CameraFragment extends Fragment implements
                 return true;
             }
         });
+    }
+
+    public void animateRecordingView(ImageView v, int total_width, int duration) {
+        int startingHeight = v.getMeasuredHeight();
+
+        RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(
+                0,
+                startingHeight
+        );
+
+        v.setLayoutParams(params);
     }
 
     public void startRecording() {

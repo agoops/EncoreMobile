@@ -3,8 +3,6 @@ package com.encore.Fragments;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.ResultReceiver;
@@ -36,12 +34,10 @@ import com.encore.views.EditProfileActivity;
 import com.encore.views.FindFriendsActivity;
 import com.encore.views.OtherProfileActivity;
 import com.google.gson.Gson;
+import com.nostra13.universalimageloader.core.ImageLoader;
+import com.squareup.picasso.Picasso;
 
 import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.HttpURLConnection;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
@@ -68,6 +64,8 @@ public class ProfileFragment extends Fragment implements View.OnClickListener{
 
     private File profilePictureFile;
     private Bitmap profileBitmap;
+
+    private ImageLoader imageLoader = ImageLoader.getInstance();
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -113,7 +111,6 @@ public class ProfileFragment extends Fragment implements View.OnClickListener{
     public void initData() {
         // Init our friendsUsernames
         friendsUsernames = new HashSet<String>();
-
 
         // Populate the profile page's basic data
         getMe();
@@ -303,43 +300,43 @@ public class ProfileFragment extends Fragment implements View.OnClickListener{
         }
     }
 
-    // TODO: Add to T.java?
-    public class DownloadImagesTask extends AsyncTask<ImageView, Void, File> {
-        ImageView imageView = null;
-
-        @Override
-        protected File doInBackground(ImageView... imageViews) {
-            this.imageView = imageViews[0];
-            return downloadImage((URL) imageView.getTag());
-        }
-
-        @Override
-        protected void onPostExecute(File file) {
-            profilePictureIv.setImageBitmap(profileBitmap);
-            setProfileVisibility(1);
-        }
-
-        public File downloadImage(URL url) {
-            // TODO: Find a better way to encapsulate all the data for profile pictures (e.g., URIs, files, bitmaps)
-            try {
-                HttpURLConnection connection = (HttpURLConnection) url
-                        .openConnection();
-                connection.setDoInput(true);
-                connection.connect();
-                InputStream input = connection.getInputStream();
-                profileBitmap = BitmapFactory.decodeStream(input);
-
-                File f = T.bitmapToFile(profileBitmap, 100,
-                        mContext.getCacheDir(), "Rapback_downsampled_profile");
-
-                profilePictureFile = f;
-                return f;
-            } catch (IOException e) {
-                e.printStackTrace();
-                return null;
-            }
-        }
-    }
+//    // TODO: Add to T.java?
+//    public class DownloadImagesTask extends AsyncTask<ImageView, Void, File> {
+//        ImageView imageView = null;
+//
+//        @Override
+//        protected File doInBackground(ImageView... imageViews) {
+//            this.imageView = imageViews[0];
+//            return downloadImage((URL) imageView.getTag());
+//        }
+//
+//        @Override
+//        protected void onPostExecute(File file) {
+//            profilePictureIv.setImageBitmap(profileBitmap);
+//            setProfileVisibility(1);
+//        }
+//
+//        public File downloadImage(URL url) {
+//            // TODO: Find a better way to encapsulate all the data for profile pictures (e.g., URIs, files, bitmaps)
+//            try {
+//                HttpURLConnection connection = (HttpURLConnection) url
+//                        .openConnection();
+//                connection.setDoInput(true);
+//                connection.connect();
+//                InputStream input = connection.getInputStream();
+//                profileBitmap = BitmapFactory.decodeStream(input);
+//
+//                File f = T.bitmapToFile(profileBitmap, 100,
+//                        mContext.getCacheDir(), "Rapback_downsampled_profile");
+//
+//                profilePictureFile = f;
+//                return f;
+//            } catch (IOException e) {
+//                e.printStackTrace();
+//                return null;
+//            }
+//        }
+//    }
 
     // Our receivers
     public class MeReceiver extends ResultReceiver {
@@ -374,8 +371,14 @@ public class ProfileFragment extends Fragment implements View.OnClickListener{
                 myFullNameTv.setText(userMe.getFullName());
 
                 // Download our profile picture
-                profilePictureIv.setTag(userMe.getProfilePictureUrl());
-                new DownloadImagesTask().execute(profilePictureIv);
+                if(userMe.getProfilePictureUrl() != null) {
+                    String url = userMe.getProfilePictureUrl().toString();
+                    imageLoader.displayImage(url, profilePictureIv);
+                } else {
+                    Picasso.with(mContext)
+                            .load(R.drawable.default_profile_picture)
+                            .into(profilePictureIv);
+                }
 
                 // Show data
 //                setProfileVisibility(1);

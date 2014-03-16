@@ -4,9 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Color;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.ResultReceiver;
@@ -34,13 +32,13 @@ import com.encore.models.Friends;
 import com.encore.models.Profile;
 import com.encore.util.T;
 import com.google.gson.Gson;
+import com.nostra13.universalimageloader.core.DisplayImageOptions;
+import com.nostra13.universalimageloader.core.ImageLoader;
+import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
+import com.nostra13.universalimageloader.core.assist.SimpleImageLoadingListener;
 import com.squareup.picasso.Picasso;
 
 import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.HttpURLConnection;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
@@ -124,6 +122,18 @@ public class HomeActivity extends FragmentActivity implements View.OnClickListen
         friendsUsernames = new HashSet<String>();
         getMe();
         getFriends();
+
+        // Create global configuration and initialize ImageLoader with this configuration
+        DisplayImageOptions defaultOptions = new DisplayImageOptions.Builder()
+                .cacheInMemory(true)
+                .showImageOnLoading(R.drawable.background_333_transparent2)
+                .showImageOnFail(R.drawable.default_profile_picture)
+                .build();
+
+        ImageLoaderConfiguration config = new ImageLoaderConfiguration.Builder(context)
+                .defaultDisplayImageOptions(defaultOptions)
+                .build();
+        ImageLoader.getInstance().init(config);
     }
 
     @Override
@@ -328,9 +338,27 @@ public class HomeActivity extends FragmentActivity implements View.OnClickListen
                 fullnameTv.setText(userMe.getFullName());
 
                 // Download our profile picture
-                profilePictureIv.setTag(userMe.getProfilePictureUrl());
-                new DownloadImagesTask().execute(profilePictureIv);
+                ImageLoader imageLoader = ImageLoader.getInstance();
 
+                if(userMe.getProfilePictureUrl() != null) {
+                    String url = userMe.getProfilePictureUrl().toString();
+                    imageLoader.loadImage(url, new SimpleImageLoadingListener() {
+                        @Override
+                        public void onLoadingComplete(String imageUri, View view, Bitmap loadedBitmap) {
+                            profilePictureIv.setImageBitmap(loadedBitmap);
+
+                            File f = T.bitmapToFile(loadedBitmap, 40,
+                                    context.getCacheDir(), "Rapback_downsampled_profile");
+                            profilePictureFile = f;
+                        }
+                    });
+                } else {
+                    Picasso.with(context)
+                            .load(R.drawable.default_profile_picture)
+                            .into(profilePictureIv);
+                }
+
+                // TODO: Camera & Gallery pics are oriented wrong
             } else {
                 Log.d(TAG, "GET friends unsuccessful");
             }
@@ -369,52 +397,52 @@ public class HomeActivity extends FragmentActivity implements View.OnClickListen
         }
     }
 
-    public class DownloadImagesTask extends AsyncTask<ImageView, Void, File> {
-        ImageView imageView = null;
-
-        @Override
-        protected File doInBackground(ImageView... imageViews) {
-            this.imageView = imageViews[0];
-            return downloadImage((URL) imageView.getTag());
-        }
-
-        @Override
-        protected void onPostExecute(File file) {
-            if(profilePictureFile == null) {
-                Picasso.with(context)
-                        .load(R.drawable.default_profile_picture)
-                        .into(profilePictureIv);
-            } else {
-                profilePictureIv.setImageBitmap(profileBitmap);
-            }
-        }
-
-        public File downloadImage(URL url) {
-            // TODO: Find a better way to encapsulate all the data for profile pictures (e.g., URIs, files, bitmaps)
-            try {
-                if(url == null) {
-                    profilePictureFile = null;
-                    return null;
-                }
-
-                HttpURLConnection connection = (HttpURLConnection) url
-                        .openConnection();
-                connection.setDoInput(true);
-                connection.connect();
-                InputStream input = connection.getInputStream();
-                profileBitmap = BitmapFactory.decodeStream(input);
-
-                File f = T.bitmapToFile(profileBitmap, 40,
-                        context.getCacheDir(), "Rapback_downsampled_profile");
-
-                profilePictureFile = f;
-                return f;
-            } catch (IOException e) {
-                e.printStackTrace();
-                return null;
-            }
-        }
-    }
+//    public class DownloadImagesTask extends AsyncTask<ImageView, Void, File> {
+//        ImageView imageView = null;
+//
+//        @Override
+//        protected File doInBackground(ImageView... imageViews) {
+//            this.imageView = imageViews[0];
+//            return downloadImage((URL) imageView.getTag());
+//        }
+//
+//        @Override
+//        protected void onPostExecute(File file) {
+//            if(profilePictureFile == null) {
+//                Picasso.with(context)
+//                        .load(R.drawable.default_profile_picture)
+//                        .into(profilePictureIv);
+//            } else {
+//                profilePictureIv.setImageBitmap(profileBitmap);
+//            }
+//        }
+//
+//        public File downloadImage(URL url) {
+//            // TODO: Find a better way to encapsulate all the data for profile pictures (e.g., URIs, files, bitmaps)
+//            try {
+//                if(url == null) {
+//                    profilePictureFile = null;
+//                    return null;
+//                }
+//
+//                HttpURLConnection connection = (HttpURLConnection) url
+//                        .openConnection();
+//                connection.setDoInput(true);
+//                connection.connect();
+//                InputStream input = connection.getInputStream();
+//                profileBitmap = BitmapFactory.decodeStream(input);
+//
+//                File f = T.bitmapToFile(profileBitmap, 40,
+//                        context.getCacheDir(), "Rapback_downsampled_profile");
+//
+//                profilePictureFile = f;
+//                return f;
+//            } catch (IOException e) {
+//                e.printStackTrace();
+//                return null;
+//            }
+//        }
+//    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
