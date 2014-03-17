@@ -26,6 +26,7 @@ import com.encore.widget.CommentDialog;
 import com.encore.widget.ImageLoaderWrapper;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import com.squareup.picasso.Picasso;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
@@ -175,8 +176,13 @@ public class InboxViewAdapter extends ArrayAdapter<Session> implements OnClickLi
 
             if(firstClip.getThumbnail_url() != null) {
                 String url = firstClip.getThumbnail_url();
-                imageLoaderWrapper.uriToImageView.put(url, holder.thumbnailIv);
-                imageLoaderWrapper.loadImage(url);
+                Picasso.with(mContext)
+                            .load(url)
+                            .resize((int) width,(int) height)
+                            .into(holder.thumbnailIv);
+//                imageLoaderWrapper.uriToImageView.put(url, holder.thumbnailIv);
+//                imageLoaderWrapper.loadImage(url);
+
             } else {
                 holder.thumbnailIv.setImageDrawable(
                         mContext.getResources().getDrawable(R.drawable.background_333_transparent2));
@@ -184,8 +190,12 @@ public class InboxViewAdapter extends ArrayAdapter<Session> implements OnClickLi
         } else {
             if(entry.getThumbnailUrl() != null) {
                 String url = entry.getThumbnailUrl();
-                imageLoaderWrapper.uriToImageView.put(url, holder.thumbnailIv);
-                imageLoaderWrapper.loadImage(url);
+                Picasso.with(mContext)
+                        .load(url)
+                        .resize((int) width,(int) height)
+                        .into(holder.thumbnailIv);
+//                imageLoaderWrapper.uriToImageView.put(url, holder.thumbnailIv);
+//                imageLoaderWrapper.loadImage(url);
             } else {
                 holder.thumbnailIv.setImageDrawable(
                         mContext.getResources().getDrawable(R.drawable.background_333_transparent2));
