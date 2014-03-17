@@ -64,8 +64,14 @@ public class TabFriendsAdapter extends ArrayAdapter<Profile> {
         if(friend.getProfilePictureUrl() != null) {
             String url = friend.getProfilePictureUrl().toString();
             uriToImageView.put(url, profilePicture);
-
             imageLoader.loadImage(url, new SimpleImageLoadingListener() {
+                @Override
+                public void onLoadingStarted(String imageUri, View view) {
+                    ImageView thumbnail = uriToImageView.get(imageUri);
+                    thumbnail.setImageDrawable(
+                            context.getResources().getDrawable(R.drawable.background_333_transparent2));
+                }
+
                 @Override
                 public void onLoadingComplete(String imageUri, View view, Bitmap loadedBitmap) {
                     // TODO: What is the friend limit before the cache explodes?

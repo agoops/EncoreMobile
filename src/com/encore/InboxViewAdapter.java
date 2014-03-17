@@ -2,6 +2,8 @@ package com.encore;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.ResultReceiver;
@@ -26,9 +28,12 @@ import com.encore.widget.CommentDialog;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.nostra13.universalimageloader.core.ImageLoader;
+import com.nostra13.universalimageloader.core.assist.SimpleImageLoadingListener;
 
+import java.io.File;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 
@@ -44,11 +49,13 @@ public class InboxViewAdapter extends ArrayAdapter<Session> implements OnClickLi
     private Button likeButton;
     private com.encore.widget.AspectRatioImageView thumbnailIv;
     private double width, height;
+    private MediaController mc;
+
     private boolean isOtherUser = false;
+    private int count;
+    private HashMap<String, ImageView> uriToImageView;
 
     private HashSet<Integer> likedSessionIds;
-
-    private MediaController mc;
 
     private ImageLoader imageLoader = ImageLoader.getInstance();
 
@@ -59,6 +66,8 @@ public class InboxViewAdapter extends ArrayAdapter<Session> implements OnClickLi
 
         // When the adapter is instantiated, we'll populate the likedSessionIds
         likedSessionIds = null;
+        uriToImageView = new HashMap<String, ImageView>();
+        count = 0;
         getUsersLikes();
 	}
 
@@ -160,39 +169,60 @@ public class InboxViewAdapter extends ArrayAdapter<Session> implements OnClickLi
             likesTv.setText(numLikes + " likes");
         }
 
-        if(entry.isComplete()) {
-            if(isOtherUser) {
-                Log.d(TAG, "entry" + entry);
+        // Load thumbnail previews
+        if(entry.isComplete() && !isOtherUser) {
+            Clip firstClip = entry.getClips().get(0);
 
-                // Set the thumbnail
-                if(entry.getThumbnailUrl() != null) {
-                    imageLoader.displayImage(entry.getThumbnailUrl(), thumbnailIv);
-//                    Picasso.with(mContext)
-//                            .load(entry.getThumbnailUrl())
-//                            .resize((int) width,(int) height)
-//                            .into(thumbnailIv);
-                }
-            } else {
-                Clip firstClip = entry.getClips().get(0);
+            if(firstClip.getThumbnail_url() != null) {
+                String url = firstClip.getThumbnail_url();
+                uriToImageView.put(url, thumbnailIv);
 
-                // Set the thumbnail
-                if(firstClip.getThumbnail_url() != null) {
-                    imageLoader.displayImage(entry.getThumbnailUrl(), thumbnailIv);
-//                    Picasso.with(mContext)
-//                            .load(firstClip.getThumbnail_url())
-//                            .resize((int) width,(int) height)
-//                            .into(thumbnailIv);
-                }
+                imageLoader.loadImage(url, new SimpleImageLoadingListener() {
+                    @Override
+                    public void onLoadingStarted(String imageUri, View view) {
+                        ImageView thumbnail = uriToImageView.get(imageUri);
+                        thumbnail.setImageDrawable(
+                                mContext.getResources().getDrawable(R.drawable.background_333_transparent2));
+                    }
+
+                    @Override
+                    public void onLoadingComplete(String imageUri, View view, Bitmap loadedBitmap) {
+                        String filename = "Rapback_inbox_" + count;
+                        count += 1;
+                        File f = T.bitmapToFile(loadedBitmap, 90,
+                                mContext.getCacheDir(), filename);
+
+                        ImageView thumbnail = uriToImageView.get(imageUri);
+                        thumbnail.setImageURI(null);
+                        thumbnail.setImageURI(Uri.fromFile(f));
+                    }
+                });
             }
-
         } else {
-            // Set the thumbnail
             if(entry.getThumbnailUrl() != null) {
-                imageLoader.displayImage(entry.getThumbnailUrl(), thumbnailIv);
-//                Picasso.with(mContext)
-//                        .load(entry.getThumbnailUrl())
-//                        .resize((int) width,(int) height)
-//                        .into(thumbnailIv);
+                String url = entry.getThumbnailUrl();
+                uriToImageView.put(url, thumbnailIv);
+
+                imageLoader.loadImage(url, new SimpleImageLoadingListener() {
+                    @Override
+                    public void onLoadingStarted(String imageUri, View view) {
+                        ImageView thumbnail = uriToImageView.get(imageUri);
+                        thumbnail.setImageDrawable(
+                                mContext.getResources().getDrawable(R.drawable.background_333_transparent2));
+                    }
+
+                    @Override
+                    public void onLoadingComplete(String imageUri, View view, Bitmap loadedBitmap) {
+                        String filename = "Rapback_inbox_" + count;
+                        count += 1;
+                        File f = T.bitmapToFile(loadedBitmap, 90,
+                                mContext.getCacheDir(), filename);
+
+                        ImageView thumbnail = uriToImageView.get(imageUri);
+                        thumbnail.setImageURI(null);
+                        thumbnail.setImageURI(Uri.fromFile(f));
+                    }
+                });
             }
         }
     }

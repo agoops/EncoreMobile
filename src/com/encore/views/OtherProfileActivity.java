@@ -3,7 +3,9 @@ package com.encore.views;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.graphics.Point;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.ResultReceiver;
@@ -30,9 +32,12 @@ import com.encore.models.Session;
 import com.encore.util.T;
 import com.google.gson.Gson;
 import com.nostra13.universalimageloader.core.ImageLoader;
+import com.nostra13.universalimageloader.core.assist.SimpleImageLoadingListener;
 
+import java.io.File;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 
@@ -58,6 +63,8 @@ public class OtherProfileActivity extends Activity implements View.OnClickListen
     private ArrayList<Session> likedSessions;
     private ArrayList<Profile> friendsList;
     private HashSet<String> pendingThemSet;
+    private HashMap<String, ImageView> uriToImageView;
+    private int count;
 
     private ImageLoader imageLoader = ImageLoader.getInstance();
 
@@ -108,6 +115,7 @@ public class OtherProfileActivity extends Activity implements View.OnClickListen
     private void initData() {
         Bundle arguments = getIntent().getExtras();
         myUsername = arguments.getString(T.MY_USERNAME);
+        uriToImageView = new HashMap<String, ImageView>();
         pendingThemSet = (HashSet) arguments.getSerializable(T.PENDING_THEM);
         if(pendingThemSet == null) {
             // Does this really need to be made? It only executes from ProfileFragment, but
@@ -346,7 +354,31 @@ public class OtherProfileActivity extends Activity implements View.OnClickListen
 
                 URL profilePictureURL = otherUser.getProfilePictureUrl();
                 if(profilePictureURL != null) {
-                    imageLoader.displayImage(profilePictureURL.toString(), profilePicture);
+                    String url = profilePictureURL.toString();
+                    uriToImageView.put(url, profilePicture);
+                    imageLoader.loadImage(url, new SimpleImageLoadingListener() {
+                        @Override
+                        public void onLoadingStarted(String imageUri, View view) {
+                            ImageView thumbnail = uriToImageView.get(imageUri);
+                            thumbnail.setImageDrawable(
+                                    getResources().getDrawable(R.drawable.background_333_transparent2));
+                        }
+
+                        @Override
+                        public void onLoadingComplete(String imageUri, View view, Bitmap loadedBitmap) {
+                            String filename = "Rapback_other_" + count;
+                            count += 1;
+                            File f = T.bitmapToFile(loadedBitmap, 90,
+                                    context.getCacheDir(), filename);
+
+                            ImageView thumbnail = uriToImageView.get(imageUri);
+                            thumbnail.setImageURI(null);
+                            thumbnail.setImageURI(Uri.fromFile(f));
+                        }
+                    });
+                } else {
+                    profilePicture.setImageDrawable(
+                            getResources().getDrawable(R.drawable.default_profile_picture));
                 }
 
                 // Show data
