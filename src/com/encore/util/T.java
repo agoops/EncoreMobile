@@ -137,7 +137,6 @@ public class T {
         // Read the bitmap into a file
         File f = new File(dir, fileName);
         if(f.exists()) {
-            Log.d(TAG, "HERE");
             f.delete();
 //            f = new File(dir, fileName);
             try {

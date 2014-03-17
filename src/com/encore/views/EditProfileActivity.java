@@ -84,7 +84,6 @@ public class EditProfileActivity extends Activity implements View.OnClickListene
         // Set profile picture
         if (intent.getSerializableExtra(T.PROFILE_PICTURE) != null) {
             profilePic = (File)intent.getSerializableExtra(T.PROFILE_PICTURE);
-            Log.d(TAG, "derp URI.fromfile: " + Uri.fromFile(profilePic).toString());
             profilePictureIV.setImageURI(Uri.fromFile(profilePic));
         }
     }
@@ -238,11 +237,12 @@ public class EditProfileActivity extends Activity implements View.OnClickListene
                 imageLoader.loadImage(selectedImageUri.toString(), new SimpleImageLoadingListener() {
                     @Override
                     public void onLoadingComplete(String imageUri, View view, Bitmap loadedBitmap) {
-                        profilePictureIV.setImageBitmap(loadedBitmap);
-
                         // Compress into the file we'll send upstream
                         profilePic = T.bitmapToFile(loadedBitmap, 25,
                                 context.getCacheDir(), "Rapback_downsampled_profile");
+                        profilePictureIV.setImageURI(null);
+                        profilePictureIV.setImageURI(Uri.fromFile(profilePic));
+                        loadedBitmap.recycle();
                     }
                 });
             }

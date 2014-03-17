@@ -131,6 +131,7 @@ public class HomeActivity extends FragmentActivity implements View.OnClickListen
                 .considerExifParams(true)
                 .showImageOnLoading(R.drawable.background_333_transparent2)
                 .showImageOnFail(R.drawable.default_profile_picture)
+                .resetViewBeforeLoading(true)
                 .build();
 
         ImageLoaderConfiguration config = new ImageLoaderConfiguration.Builder(context)
@@ -152,7 +153,6 @@ public class HomeActivity extends FragmentActivity implements View.OnClickListen
                 launchProfileDetailsFragment(T.PROFILE_INFO_FRIENDS);
                 break;
             case R.id.left_drawer_EditButton:
-                Log.d(TAG, "derp profilePictureFile (launching editprofileactivity): " + profilePictureFile.toString());
                 Intent launchEditProfileActivity = new Intent(context, EditProfileActivity.class);
                 launchEditProfileActivity.putExtra(T.FIRST_NAME, userMe.getFirstName());
                 launchEditProfileActivity.putExtra(T.LAST_NAME, userMe.getLastName());
@@ -354,8 +354,9 @@ public class HomeActivity extends FragmentActivity implements View.OnClickListen
                             File f = T.bitmapToFile(loadedBitmap, 30,
                                     context.getCacheDir(), "Rapback_downsampled_profile");
                             profilePictureFile = f;
-                            Log.d(TAG, "derp profilePictureFile uri (nav bar): " + profilePictureFile.toString());
+                            profilePictureIv.setImageURI(null);  // refreshes imageview
                             profilePictureIv.setImageURI(Uri.fromFile(f));
+                            loadedBitmap.recycle();
                         }
                     });
                 } else {
