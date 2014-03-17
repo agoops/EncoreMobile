@@ -26,9 +26,10 @@ public class TabRapsAdapter extends ArrayAdapter<Clip> {
     private List<Clip> clips;
     private LayoutInflater inflater = null;
     private int layoutId;
-    private AspectRatioImageView thumbnailIv;
+//    private AspectRatioImageView thumbnailIv;
     private double height, width;
 
+    // TODO: Does this send a request to /feedback on accident?
     public TabRapsAdapter(Context context, int layoutId, List<Clip> clips) {
         super(context, layoutId, clips);
         this.context = context;
@@ -38,18 +39,24 @@ public class TabRapsAdapter extends ArrayAdapter<Clip> {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        ViewHolder holder;
+        if(convertView == null) {
+            inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+            convertView = inflater.inflate(layoutId, null);
 
-        // Get the view elements
-        convertView = inflater.inflate(layoutId, null);
-        thumbnailIv = (AspectRatioImageView) convertView.findViewById(R.id.clip_thumbnail_iv);
+            holder = new ViewHolder();
+            holder.thumbnailIv = (AspectRatioImageView) convertView.findViewById(R.id.clip_thumbnail_iv);
+            convertView.setTag(holder);
+        } else {
+            holder = (ViewHolder) convertView.getTag();
+        }
 
         // And populate them
         Clip clip = clips.get(position);
         Picasso.with(context)
                 .load(clip.getThumbnail_url())
                 .resize((int) width,(int) height)
-                .into(thumbnailIv);
+                .into(holder.thumbnailIv);
 
         return convertView;
     }
@@ -69,6 +76,10 @@ public class TabRapsAdapter extends ArrayAdapter<Clip> {
     public void setThumbnailWidth(double width) {
         this.width = width;
         this.height = 1.3*width;
+    }
+
+    static class ViewHolder {
+        private AspectRatioImageView thumbnailIv;
     }
 }
 

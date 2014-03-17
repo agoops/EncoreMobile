@@ -1,9 +1,5 @@
 package com.encore;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import com.encore.util.T;
 import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
@@ -17,6 +13,10 @@ import android.widget.TextView;
 
 import com.encore.API.APIService;
 import com.encore.models.Profile;
+import com.encore.util.T;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class UsersFragmentAdapter extends ArrayAdapter<Profile> {
 	private Context mContext;
@@ -103,4 +103,6 @@ public class UsersFragmentAdapter extends ArrayAdapter<Profile> {
 	public void setItemList(ArrayList<Profile> Profiles) {
 		this.mProfileList = Profiles;
 	}
+
+
 }

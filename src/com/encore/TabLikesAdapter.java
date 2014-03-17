@@ -32,8 +32,6 @@ public class TabLikesAdapter extends ArrayAdapter<Session> {
     private List<Session> likedSessions;
     private LayoutInflater inflater;
 
-    private TextView sessionTitle, numLikes;
-
     public TabLikesAdapter(Context context, int layoutId, List<Session> likedSessions) {
         super(context, layoutId, likedSessions);
         Log.d(TAG, "Creating new TabLikesAdapter");
@@ -47,16 +45,22 @@ public class TabLikesAdapter extends ArrayAdapter<Session> {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        Log.d(TAG, "getView");
-        convertView = LayoutInflater.from(context).inflate(R.layout.tab_likes_list_row, parent, false);
+        ViewHolder holder;
+        if(convertView == null) {
+            convertView = LayoutInflater.from(context).inflate(R.layout.tab_likes_list_row, parent, false);
 
-        sessionTitle = (TextView) convertView.findViewById(R.id.tab_likes_title);
-        numLikes = (TextView) convertView.findViewById(R.id.tab_likes_num_likes);
+            holder = new ViewHolder();
+            holder.sessionTitle = (TextView) convertView.findViewById(R.id.tab_likes_title);
+            holder.numLikes = (TextView) convertView.findViewById(R.id.tab_likes_num_likes);
+            convertView.setTag(holder);
+        } else {
+            holder = (ViewHolder) convertView.getTag();
+        }
 
         // And set the sessionTitle and numLikes
         Session session = likedSessions.get(position);
-        sessionTitle.setText(session.getTitle());
-        numLikes.setText(session.getLikes() + " likes");
+        holder.sessionTitle.setText(session.getTitle());
+        holder.numLikes.setText(session.getLikes() + " likes");
 
         return convertView;
     }
@@ -101,5 +105,9 @@ public class TabLikesAdapter extends ArrayAdapter<Session> {
 
     public void setItemList(ArrayList<Session> sessions) {
         this.likedSessions = sessions;
+    }
+
+    static class ViewHolder {
+        private TextView sessionTitle, numLikes;
     }
 }

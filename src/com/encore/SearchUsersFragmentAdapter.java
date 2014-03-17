@@ -36,9 +36,9 @@ public class SearchUsersFragmentAdapter extends ArrayAdapter<Profile> implements
     private HashSet<String> pendingThemSet;
     private HashSet<String> friendsUsernamesSet;
 
-    private ImageView profilePic;
-    private TextView usernameTv, fullNameTv;
-    private Button addFriendButton;
+//    private ImageView profilePic;
+//    private TextView usernameTv, fullNameTv;
+//    private Button addFriendButton;
 
     // Note: this adapter is only used after the search has completed
     // from FindFriendsActivity. This means we make our request for
@@ -53,58 +53,67 @@ public class SearchUsersFragmentAdapter extends ArrayAdapter<Profile> implements
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        convertView = LayoutInflater.from(context).inflate(R.layout.search_list_row, parent, false);
+        ViewHolder holder;
+
+        if(convertView == null) {
+            convertView = LayoutInflater.from(context).inflate(R.layout.search_list_row, parent, false);
+
+            holder = new ViewHolder();
+            initViews(holder, convertView);
+            convertView.setTag(holder);
+        } else {
+            holder = (ViewHolder) convertView.getTag();
+        }
 
         Profile profile = profiles.get(position);
 
-        initViews(convertView);
-        setTags();
-        setOnClickListeners();
-        populateViews(profile);
+        setTags(holder);
+        setOnClickListeners(holder);
+        populateViews(holder, profile);
 
         return convertView;
     }
 
-    private void initViews(View convertView) {
-        profilePic = (ImageView) convertView.findViewById(R.id.search_profile_pic);
-        usernameTv = (TextView) convertView.findViewById(R.id.search_username);
-        fullNameTv = (TextView) convertView.findViewById(R.id.search_fullname);
-        addFriendButton = (Button) convertView.findViewById(R.id.search_add_friend);
-        profilePic = (ImageView) convertView.findViewById(R.id.search_profile_pic);
+    private void initViews(ViewHolder holder, View convertView) {
+        holder.profilePic = (ImageView) convertView.findViewById(R.id.search_profile_pic);
+        holder.usernameTv = (TextView) convertView.findViewById(R.id.search_username);
+        holder.fullNameTv = (TextView) convertView.findViewById(R.id.search_fullname);
+        holder.addFriendButton = (Button) convertView.findViewById(R.id.search_add_friend);
+        holder.profilePic = (ImageView) convertView.findViewById(R.id.search_profile_pic);
     }
 
-    private void setTags() {
+    private void setTags(ViewHolder holder) {
         // necessary for adding a friend
-        addFriendButton.setTag(R.string.first_key, usernameTv);
-        addFriendButton.setTag(R.string.second_key, addFriendButton);
+        holder.addFriendButton.setTag(R.string.first_key, holder.usernameTv);
+        holder.addFriendButton.setTag(R.string.second_key, holder.addFriendButton);
     }
 
-    private void setOnClickListeners() {
-        addFriendButton.setOnClickListener(this);
+    private void setOnClickListeners(ViewHolder holder) {
+        holder.addFriendButton.setOnClickListener(this);
     }
 
-    private void populateViews(Profile profile) {
-        usernameTv.setText(profile.getUsername());
-        fullNameTv.setText(profile.getFullName());
+    private void populateViews(ViewHolder holder, Profile profile) {
+        holder.usernameTv.setText(profile.getUsername());
+        holder.fullNameTv.setText(profile.getFullName());
 
         URL url = profile.getProfilePictureUrl();
         if(url == null) {
             Picasso.with(context)
                     .load(R.drawable.default_profile_picture)
-                    .into(profilePic);
+                    .into(holder.profilePic);
         } else {
             Picasso.with(context)
                     .load(url.toString())
                     .placeholder(R.drawable.background_333_transparent2)
-                    .into(profilePic);
+                    .into(holder.profilePic);
         }
 
         if(friendsUsernamesSet != null && friendsUsernamesSet.contains(profile.getUsername())) {
             // If you're friends with someone, disable the button
-            disableButton(addFriendButton, "Friends");
+            disableButton(holder.addFriendButton, "Friends");
         } else if(pendingThemSet != null && pendingThemSet.contains(profile.getUsername())) {
             // If you've already sent a request, don't send another
-            disableButton(addFriendButton, "Sent");
+            disableButton(holder.addFriendButton, "Sent");
         }
     }
 
@@ -115,7 +124,7 @@ public class SearchUsersFragmentAdapter extends ArrayAdapter<Profile> implements
             case R.id.search_add_friend:
                 TextView usernameTv = (TextView) v.getTag(R.string.first_key);
                 Button addFriendButton = (Button) v.getTag(R.string.second_key);
-                sendFriendRequest(usernameTv.getText().toString());
+                sendFriendRequest(addFriendButton, usernameTv.getText().toString());
                 disableButton(addFriendButton, "Sent");
                 break;
             default:
@@ -129,7 +138,7 @@ public class SearchUsersFragmentAdapter extends ArrayAdapter<Profile> implements
         button.setBackgroundResource(R.drawable.disabled_state);
     }
 
-    private void sendFriendRequest(String username) {
+    private void sendFriendRequest(Button addFriendButton, String username) {
         Intent api = new Intent(context, APIService.class);
         api.putExtra(T.API_TYPE, T.FRIEND_REQUEST);
         api.putExtra(T.USERNAME, username);
@@ -199,5 +208,11 @@ public class SearchUsersFragmentAdapter extends ArrayAdapter<Profile> implements
                 Log.d(TAG, "GET friends unsuccessful");
             }
         }
+    }
+
+    static class ViewHolder {
+        private ImageView profilePic;
+        private TextView usernameTv, fullNameTv;
+        private Button addFriendButton;
     }
 }

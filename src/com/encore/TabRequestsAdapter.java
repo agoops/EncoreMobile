@@ -22,8 +22,8 @@ public class TabRequestsAdapter extends ArrayAdapter<FriendRequestProfile> {
     private int layoutId;
     private List<FriendRequestProfile> friendRequestProfiles;
     private static LayoutInflater inflater = null;
-    private TextView username, fullName;
-    private Button accept, decline;
+//    private TextView username, fullName;
+//    private Button accept, decline;
 
     public TabRequestsAdapter(Context context, int layoutId, List<FriendRequestProfile> friendRequestProfiles) {
         super(context, layoutId, friendRequestProfiles);
@@ -35,18 +35,25 @@ public class TabRequestsAdapter extends ArrayAdapter<FriendRequestProfile> {
     // Returns the appropriate view to our custom listview
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        ViewHolder holder;
+        if(convertView == null) {
+            inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+            convertView = inflater.inflate(layoutId, null);
 
-        convertView = inflater.inflate(layoutId, null);
+            holder = new ViewHolder();
+            holder.username = (TextView) convertView.findViewById(R.id.tab_requests_username);
+            holder.fullName= (TextView) convertView.findViewById(R.id.tab_requests_fullname);
+            holder.accept = (Button) convertView.findViewById(R.id.tab_requests_accept);
+            holder.decline = (Button) convertView.findViewById(R.id.tab_requests_decline);
+            convertView.setTag(holder);
+        } else {
+            holder = (ViewHolder) convertView.getTag();
+        }
 
-        username = (TextView) convertView.findViewById(R.id.tab_requests_username);
-        fullName= (TextView) convertView.findViewById(R.id.tab_requests_fullname);
-        accept = (Button) convertView.findViewById(R.id.tab_requests_accept);
-        decline = (Button) convertView.findViewById(R.id.tab_requests_decline);
 
         FriendRequestProfile request = friendRequestProfiles.get(position);
-        username.setText(request.getSender().getUsername());
-        fullName.setText(request.getSender().getFullName());
+        holder.username.setText(request.getSender().getUsername());
+        holder.fullName.setText(request.getSender().getFullName());
         // TODO: set button click listeners
         return convertView;
     }
@@ -61,5 +68,10 @@ public class TabRequestsAdapter extends ArrayAdapter<FriendRequestProfile> {
 
     public void setItemList(ArrayList<FriendRequestProfile> requests) {
         this.friendRequestProfiles = requests;
+    }
+
+    static class ViewHolder {
+        private TextView username, fullName;
+        private Button accept, decline;
     }
 }

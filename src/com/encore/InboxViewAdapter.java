@@ -37,12 +37,11 @@ public class InboxViewAdapter extends ArrayAdapter<Session> implements OnClickLi
 	private static final String TAG = "InboxViewAdapter";
 	private Context mContext;
 	private List<Session> mSessionList;
-	private static LayoutInflater inflater = null;
 	private SessionView rowView;
-    private TextView titleTextView, likesTv, commentsTv, dateTv, inboxRapTypeTv;
-    private ImageView commentsIcon;
-    private Button likeButton;
-    private com.encore.widget.AspectRatioImageView thumbnailIv;
+//    private TextView titleTextView, likesTv, commentsTv, dateTv, inboxRapTypeTv;
+//    private ImageView commentsIcon;
+//    private Button likeButton;
+//    private com.encore.widget.AspectRatioImageView thumbnailIv;
     private double width, height;
     private MediaController mc;
 
@@ -65,59 +64,68 @@ public class InboxViewAdapter extends ArrayAdapter<Session> implements OnClickLi
 
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
-        convertView = LayoutInflater.from(mContext).inflate(R.layout.inbox_view, parent, false);
+        ViewHolder holder;
+        if(convertView == null) {
+            convertView = LayoutInflater.from(mContext).inflate(R.layout.inbox_view, parent, false);
+
+            holder = new ViewHolder();
+            getViews(holder, convertView);
+            convertView.setTag(holder);
+        } else {
+            holder = (ViewHolder) convertView.getTag();
+        }
+
         // Get the most recently loaded session
         Session entry = mSessionList.get(position);
 
-        getViews(convertView);
-        setTags(entry);
-        assignOnClickListeners();
-        populateViewsWithData(convertView, entry);
+        setTags(holder, entry);
+        assignOnClickListeners(holder);
+        populateViewsWithData(holder, convertView, entry);
 
         return convertView;
     }
 
-    public void getViews(View convertView) {
+    public void getViews(ViewHolder holder, View convertView) {
         // Get the row views
-        titleTextView = (TextView) convertView.findViewById(R.id.session_title_tv);
-        likeButton = (Button) convertView.findViewById(R.id.like_button);
-        likesTv = (TextView) convertView.findViewById(R.id.likes_tv);
-        commentsTv = (TextView) convertView.findViewById(R.id.comments_tv);
-        commentsIcon = (ImageView) convertView.findViewById(R.id.comments_icon);
-        thumbnailIv = (com.encore.widget.AspectRatioImageView) convertView.findViewById(R.id.inboxImageView);
-        dateTv = (TextView) convertView.findViewById(R.id.inbox_date_tv);
-        inboxRapTypeTv = (TextView) convertView.findViewById(R.id.inbox_rap_type);
+        holder.titleTextView = (TextView) convertView.findViewById(R.id.session_title_tv);
+        holder.likeButton = (Button) convertView.findViewById(R.id.like_button);
+        holder.likesTv = (TextView) convertView.findViewById(R.id.likes_tv);
+        holder.commentsTv = (TextView) convertView.findViewById(R.id.comments_tv);
+        holder.commentsIcon = (ImageView) convertView.findViewById(R.id.comments_icon);
+        holder.thumbnailIv = (com.encore.widget.AspectRatioImageView) convertView.findViewById(R.id.inboxImageView);
+        holder.dateTv = (TextView) convertView.findViewById(R.id.inbox_date_tv);
+        holder.inboxRapTypeTv = (TextView) convertView.findViewById(R.id.inbox_rap_type);
     }
 
-    public void setTags(Session entry) {
+    public void setTags(ViewHolder holder, Session entry) {
         // Assign the appropriate data to each view
         int numLikes = entry.getLikes();
 
-        likeButton.setTag(R.string.first_key, entry);
-        likesTv.setTag(R.string.first_key, entry);
-        commentsTv.setTag(R.string.first_key, entry);
-        commentsIcon.setTag(R.string.first_key, entry);
-        thumbnailIv.setTag(R.string.first_key, entry);
+        holder.likeButton.setTag(R.string.first_key, entry);
+        holder.likesTv.setTag(R.string.first_key, entry);
+        holder.commentsTv.setTag(R.string.first_key, entry);
+        holder.commentsIcon.setTag(R.string.first_key, entry);
+        holder.thumbnailIv.setTag(R.string.first_key, entry);
 
-        likesTv.setTag(R.string.second_key, likeButton); // TV will need the button's selector status
-        likesTv.setTag(R.string.third_key, likesTv);
-        likeButton.setTag(R.string.second_key, likeButton);
-        likeButton.setTag(R.string.third_key, likesTv);
+        holder.likesTv.setTag(R.string.second_key, holder.likeButton); // TV will need the button's selector status
+        holder.likesTv.setTag(R.string.third_key, holder.likesTv);
+        holder.likeButton.setTag(R.string.second_key, holder.likeButton);
+        holder.likeButton.setTag(R.string.third_key, holder.likesTv);
     }
 
-    public void assignOnClickListeners() {
+    public void assignOnClickListeners(ViewHolder holder) {
         // Assign click listeners
-        likesTv.setOnClickListener(this);
-        commentsTv.setOnClickListener(this);
-        commentsIcon.setOnClickListener(this);
-        thumbnailIv.setOnClickListener(this);
-        likeButton.setOnClickListener(this);
+        holder.likesTv.setOnClickListener(this);
+        holder.commentsTv.setOnClickListener(this);
+        holder.commentsIcon.setOnClickListener(this);
+        holder.thumbnailIv.setOnClickListener(this);
+        holder.likeButton.setOnClickListener(this);
         // TODO: inbox_rap_type onclick
     }
 
-    public void populateViewsWithData(View convertView, Session entry) {
+    public void populateViewsWithData(ViewHolder holder, View convertView, Session entry) {
         // Set session title
-        titleTextView.setText(entry.getTitle());
+        holder.titleTextView.setText(entry.getTitle());
 
         // populate data
         if(entry.isBattle()) {
@@ -126,22 +134,22 @@ public class InboxViewAdapter extends ArrayAdapter<Session> implements OnClickLi
             String sessionReceiver = entry.getSessionReceiver()
                     .getUsername();
 
-            inboxRapTypeTv.setText("Battle: " + sessionCreator + " vs " + sessionReceiver);
+            holder.inboxRapTypeTv.setText("Battle: " + sessionCreator + " vs " + sessionReceiver);
         } else {
-            inboxRapTypeTv.setText("Freestyle");
+            holder.inboxRapTypeTv.setText("Freestyle");
         }
 
         // Set date
         String date = formatDate(entry.getModified());
-        dateTv.setText(formatDate(date));
+        holder.dateTv.setText(formatDate(date));
 
         // Set the like icon if the session is liked
         int sessionId = entry.getId();
 
         if(isOtherUser) {
-            likeButton.setSelected(true);
+            holder.likeButton.setSelected(true);
         } else {
-            likeButton.setSelected(
+            holder.likeButton.setSelected(
                     likedSessionIds.contains(sessionId));
         }
 
@@ -149,16 +157,16 @@ public class InboxViewAdapter extends ArrayAdapter<Session> implements OnClickLi
         List<Comment> comments = entry.getComments();
         int commentsSize = comments.size();
         if(commentsSize == 1) {
-            commentsTv.setText(commentsSize + " comment");
+            holder.commentsTv.setText(commentsSize + " comment");
         } else {
-            commentsTv.setText(commentsSize + " comments");
+            holder.commentsTv.setText(commentsSize + " comments");
         }
 
         int numLikes = entry.getLikes();
         if(numLikes == 1) {
-            likesTv.setText(numLikes + " like");
+            holder.likesTv.setText(numLikes + " like");
         } else {
-            likesTv.setText(numLikes + " likes");
+            holder.likesTv.setText(numLikes + " likes");
         }
 
         // Load thumbnail previews
@@ -167,14 +175,20 @@ public class InboxViewAdapter extends ArrayAdapter<Session> implements OnClickLi
 
             if(firstClip.getThumbnail_url() != null) {
                 String url = firstClip.getThumbnail_url();
-                imageLoaderWrapper.uriToImageView.put(url, thumbnailIv);
+                imageLoaderWrapper.uriToImageView.put(url, holder.thumbnailIv);
                 imageLoaderWrapper.loadImage(url);
+            } else {
+                holder.thumbnailIv.setImageDrawable(
+                        mContext.getResources().getDrawable(R.drawable.background_333_transparent2));
             }
         } else {
             if(entry.getThumbnailUrl() != null) {
                 String url = entry.getThumbnailUrl();
-                imageLoaderWrapper.uriToImageView.put(url, thumbnailIv);
+                imageLoaderWrapper.uriToImageView.put(url, holder.thumbnailIv);
                 imageLoaderWrapper.loadImage(url);
+            } else {
+                holder.thumbnailIv.setImageDrawable(
+                        mContext.getResources().getDrawable(R.drawable.background_333_transparent2));
             }
         }
     }
@@ -392,5 +406,12 @@ public class InboxViewAdapter extends ArrayAdapter<Session> implements OnClickLi
       */
     public void setOtherUser(boolean isOtherUser) {
         this.isOtherUser = isOtherUser;
+    }
+
+    static class ViewHolder {
+        private TextView titleTextView, likesTv, commentsTv, dateTv, inboxRapTypeTv;
+        private ImageView commentsIcon;
+        private Button likeButton;
+        private com.encore.widget.AspectRatioImageView thumbnailIv;
     }
 }

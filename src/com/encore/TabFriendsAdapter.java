@@ -23,8 +23,6 @@ public class TabFriendsAdapter extends ArrayAdapter<Profile> {
     private List<Profile> friends;
     private LayoutInflater inflater = null;
     private int layoutId;
-    private TextView username, fullName;
-    private ImageView profilePicture;
 
     private ImageLoaderWrapper imageLoaderWrapper;
 
@@ -39,48 +37,32 @@ public class TabFriendsAdapter extends ArrayAdapter<Profile> {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        convertView = inflater.inflate(layoutId, null);
+        ViewHolder holder;
+        if(convertView == null) {
+            inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+            convertView = inflater.inflate(layoutId, null);
+
+            holder = new ViewHolder();
+            holder.username = (TextView) convertView.findViewById(R.id.tab_friends_username);
+            holder.fullName = (TextView) convertView.findViewById(R.id.tab_friends_fullname);
+            holder.profilePicture = (ImageView) convertView.findViewById(R.id.profile_details_profile_picture);
+            convertView.setTag(holder);
+        } else {
+            holder = (ViewHolder) convertView.getTag();
+        }
+
         Profile friend = friends.get(position);
-
-        // Get the views
-        username = (TextView) convertView.findViewById(R.id.tab_friends_username);
-        fullName = (TextView) convertView.findViewById(R.id.tab_friends_fullname);
-        profilePicture = (ImageView) convertView.findViewById(R.id.profile_details_profile_picture);
-
-        // Set the sessionTitle and numLikes
-        username.setText(friend.getUsername());
-        fullName.setText(friend.getFullName());
-
+        holder.username.setText(friend.getUsername());
+        holder.fullName.setText(friend.getFullName());
         // Set the profile picture
         if(friend.getProfilePictureUrl() != null) {
             String url = friend.getProfilePictureUrl().toString();
 
-            imageLoaderWrapper.uriToImageView.put(url, profilePicture);
+            imageLoaderWrapper.uriToImageView.put(url, holder.profilePicture);
             imageLoaderWrapper.loadImage(url);
-
-//            imageLoader.loadImage(url, new SimpleImageLoadingListener() {
-//                @Override
-//                public void onLoadingStarted(String imageUri, View view) {
-//                    ImageView thumbnail = uriToImageView.get(imageUri);
-//                    thumbnail.setImageDrawable(
-//                            context.getResources().getDrawable(R.drawable.background_333_transparent2));
-//                }
-//
-//                @Override
-//                public void onLoadingComplete(String imageUri, View view, Bitmap loadedBitmap) {
-//                    // TODO: What is the friend limit before the cache explodes?
-//                    String filename = "Rapback_friend_" + count;
-//                    count += 1;
-//                    f = T.bitmapToFile(loadedBitmap, 90,
-//                            context.getCacheDir(), filename);
-//
-//                    ImageView profile = uriToImageView.get(imageUri);
-//                    profile.setImageURI(null);
-//                    profile.setImageURI(Uri.fromFile(f));
-////                    loadedBitmap.recycle(); // TODO implement viewholder pattern to overcome not being able to recycle
-//                }
-//            });
+        } else {
+            holder.profilePicture.setImageDrawable(
+                    context.getResources().getDrawable(R.drawable.default_profile_picture));
         }
         return convertView;
     }
@@ -95,5 +77,11 @@ public class TabFriendsAdapter extends ArrayAdapter<Profile> {
 
     public void setItemList(ArrayList<Profile> friends) {
         this.friends = friends;
+    }
+
+    static class ViewHolder {
+        TextView username;
+        TextView fullName;
+        ImageView profilePicture;
     }
 }

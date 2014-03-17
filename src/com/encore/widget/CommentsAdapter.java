@@ -24,32 +24,31 @@ public class CommentsAdapter extends ArrayAdapter<Comment> {
 	}
 	
 	public View getView(int position, View convertView, ViewGroup parent) {
-		inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-		View rowView = convertView;
-		final CommentsHolder viewHolder;
-		
-		// Get the view elements
-		if(rowView == null) {
-			rowView = inflater.inflate(R.layout.comment_list_row, parent, false);
-			viewHolder = new CommentsHolder();
+        ViewHolder holder;
+
+        // Get the view elements
+        if(convertView == null) {
+            inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+            convertView = inflater.inflate(R.layout.comment_list_row, parent, false);
+
+            holder = new ViewHolder();
+			holder.creator = (TextView) convertView.findViewById(R.id.commentCreator);
+            holder.comment = (TextView) convertView.findViewById(R.id.commentText);
 			
-			viewHolder.creator = (TextView) rowView.findViewById(R.id.commentCreator);
-			viewHolder.comment = (TextView) rowView.findViewById(R.id.commentText);
-			
-			rowView.setTag(viewHolder);
+			convertView.setTag(holder);
 		} else {
-			viewHolder = (CommentsHolder) rowView.getTag();
+			holder = (ViewHolder) convertView.getTag();
 		}
 		
 		// And set the creator and comment
 		Comment comment = comments.get(position);
-		viewHolder.creator.setText(comment.getCommenter());
-		viewHolder.comment.setText(comment.getText());
+        holder.creator.setText(comment.getCommenter());
+        holder.comment.setText(comment.getText());
 		
-		return rowView;
+		return convertView;
 	}
 	
-	static class CommentsHolder {
+	static class ViewHolder {
 		TextView creator, comment;
 	}
 }
