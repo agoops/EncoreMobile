@@ -194,6 +194,8 @@ public class HomeActivity extends FragmentActivity implements View.OnClickListen
     }
 
     private void setupNavDrawer() {
+        // TODO: If either right or left drawer is open, then pressing the opposite button acts weird
+
         drawerToggle = new ActionBarDrawerToggle(
                 this,
                 drawerLayout,
@@ -203,17 +205,24 @@ public class HomeActivity extends FragmentActivity implements View.OnClickListen
         ) {
             public void onDrawerSlide(View drawerView, float slideOffset) {
                 float moveFactor;
+
                 if(drawerView == leftDrawerContainer) {
+                    drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED, rightDrawerContainer);
                     moveFactor = (leftDrawerList.getWidth() * slideOffset);
                 } else {
+                    drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED, leftDrawerContainer);
                     moveFactor = -(rightDrawerList.getWidth() * slideOffset);
                 }
+
                 mainFrameLayout.setTranslationX(moveFactor);
 
             }
 
             public void onDrawerClosed(View view) {
                 super.onDrawerClosed(view);
+
+                drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED, rightDrawerContainer);
+                drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED, leftDrawerContainer);
             }
 
             public void onDrawerOpened(View drawerView) {

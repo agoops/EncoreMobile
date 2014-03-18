@@ -130,21 +130,42 @@ public class ReplyFragment extends Fragment implements View.OnClickListener {
         clipVideoView.setOnCompletionListener(onCompletionListener);
     }
 
-//    private class DownloadFilesTask extends AsyncTask<URL, Integer, Long> {
-//        protected Long doInBackground(URL... urls) {
-//            int count = urls.length;
-//            for(int i=0; i<count; i++) {
-//                Downloader.downloadFile(urls[i]);
-//                if(isCancelled()) break;
+//        private class DownloadFilesTask extends AsyncTask<URL, Integer, Long> {
+//            private OkHttpClient client;
+//
+//            @Override
+//            protected void onPreExecute() {
+//                super.onPreExecute();
+//                client = new OkHttpClient();
 //            }
 //
-//            return 1l;
-//        }
+//            protected Long doInBackground(URL... urls) {
+//                int count = urls.length;
+//                for(int i=0; i<count; i++) {
+//                    Downloader.downloadFile(urls[i]);
+//                    if(isCancelled()) break;
+//                }
 //
-//        protected void onPostExecute(Long result) {
+//                return 1l;
+//            }
 //
+//            protected void onPostExecute(Long result) {
+//
+//            }
+//
+//            public String get(URL url) throws IOException {
+//                HttpURLConnection connection = client.open(url);
+//                InputStream in = null;
+//                try {
+//                    // Read the response.
+//                    in = connection.getInputStream();
+//                    byte[] response = readFully(in);
+//                    return new String(response, "UTF-8");
+//                } finally {
+//                    if (in != null) in.close();
+//                }
+//            }
 //        }
-//    }
 
     @Override
     public void onClick(View v) {
