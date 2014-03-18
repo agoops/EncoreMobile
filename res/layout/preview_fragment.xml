@@ -15,7 +15,8 @@
         android:id="@+id/vidView"
         android:layout_height="match_parent"
         android:layout_width="match_parent"
-        android:layout_above="@id/sendBtn" />
+        android:layout_above="@id/sendBtn"
+        android:keepScreenOn="true"/>
 
     <EditText
         android:id="@+id/preview_session_title"

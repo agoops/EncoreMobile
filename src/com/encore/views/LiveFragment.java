@@ -158,17 +158,9 @@ public class LiveFragment extends Fragment implements OnRefreshListener {
             final int iconHeight = arcLayout.getMeasuredHeight();
             final int iconWidth = arcLayout.getMeasuredWidth();
 
-//            Log.d(TAG, "arc arcMenuHeight: " + arcMenuHeight);
-//            Log.d(TAG, "arc arcMenuWidth: " + arcMenuWidth);
-//            Log.d(TAG, "arc iconHeight: " + iconHeight);
-//            Log.d(TAG, "arc iconWidth: " + iconWidth);
-
             // TODO: Test if these margins work on other devices too
             float marginRight = (iconHeight - arcMenuWidth)/2,
                     marginBottom = (iconWidth - arcMenuWidth)/2;
-
-//            Log.d(TAG, "arc marginRight: " + marginRight);
-//            Log.d(TAG, "arc marginBottom: " + marginBottom);
 
             RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(
                     RelativeLayout.LayoutParams.WRAP_CONTENT,

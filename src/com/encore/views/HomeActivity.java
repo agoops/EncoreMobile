@@ -16,11 +16,13 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.widget.DrawerLayout;
 import android.util.Log;
 import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
@@ -50,16 +52,16 @@ public class HomeActivity extends FragmentActivity implements View.OnClickListen
     private DrawerLayout drawerLayout;
     private ListView leftDrawerList, rightDrawerList;
     private String[] leftDrawerTitles;
-    private ActionBarDrawerToggle leftDrawerToggle;
+    private ActionBarDrawerToggle drawerToggle;
     private RelativeLayout leftDrawerContainer, rightDrawerContainer;
     private ImageView profilePictureIv;
     private TextView usernameTv, fullnameTv, numRapsTv, numLikesTv, numFriendsTv;
     private Button editProfile, findFriends, inviteButton;
+    private FrameLayout mainFrameLayout;
 
     private Profile userMe;
 
     private File profilePictureFile;
-    private Bitmap profileBitmap;
     private String myUsername;
 
     private TabFriendsAdapter friendsAdapter;
@@ -95,6 +97,7 @@ public class HomeActivity extends FragmentActivity implements View.OnClickListen
         rightDrawerList = (ListView) findViewById(R.id.home_right_drawer);
         leftDrawerContainer = (RelativeLayout) findViewById(R.id.home_left_drawer_container);
         rightDrawerContainer = (RelativeLayout) findViewById(R.id.home_right_drawer_container);
+        mainFrameLayout = (FrameLayout) findViewById(R.id.home_content_frame);
 
         profilePictureIv = (ImageView) findViewById(R.id.left_drawer_profile_picture);
         usernameTv = (TextView) findViewById(R.id.left_drawer_username);
@@ -191,13 +194,24 @@ public class HomeActivity extends FragmentActivity implements View.OnClickListen
     }
 
     private void setupNavDrawer() {
-        leftDrawerToggle = new ActionBarDrawerToggle(
+        drawerToggle = new ActionBarDrawerToggle(
                 this,
                 drawerLayout,
                 R.drawable.ic_navigation_drawer,
                 R.string.drawer_open,
                 R.string.drawer_close
         ) {
+            public void onDrawerSlide(View drawerView, float slideOffset) {
+                float moveFactor;
+                if(drawerView == leftDrawerContainer) {
+                    moveFactor = (leftDrawerList.getWidth() * slideOffset);
+                } else {
+                    moveFactor = -(rightDrawerList.getWidth() * slideOffset);
+                }
+                mainFrameLayout.setTranslationX(moveFactor);
+
+            }
+
             public void onDrawerClosed(View view) {
                 super.onDrawerClosed(view);
             }
@@ -211,7 +225,8 @@ public class HomeActivity extends FragmentActivity implements View.OnClickListen
                 }
             }
         };
-        drawerLayout.setDrawerListener(leftDrawerToggle);
+
+        drawerLayout.setDrawerListener(drawerToggle);
         getActionBar().setDisplayHomeAsUpEnabled(true);
         getActionBar().setHomeButtonEnabled(true);
 
@@ -407,6 +422,9 @@ public class HomeActivity extends FragmentActivity implements View.OnClickListen
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu items in the action bar
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.home_activity_actions, menu);
+
         return super.onCreateOptionsMenu(menu);
     }
 
@@ -414,20 +432,35 @@ public class HomeActivity extends FragmentActivity implements View.OnClickListen
     protected void onPostCreate(Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);
         // Sync the toggle state after onRestoreInstanceState has occurred.
-        leftDrawerToggle.syncState();
+        drawerToggle.syncState();
     }
 
     @Override
     public void onConfigurationChanged(Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
-        leftDrawerToggle.onConfigurationChanged(newConfig);
+        drawerToggle.onConfigurationChanged(newConfig);
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        if (leftDrawerToggle.onOptionsItemSelected(item)) {
-            // If leftDrawerToggle returned true, it has handled the touch event
+        if (drawerToggle.onOptionsItemSelected(item)) {
+            // If drawerToggle returned true, it already handled the touch event
             return true;
+        }
+
+        switch(item.getItemId())
+        {
+            case R.id.action_right_nav_drawer:
+                if(drawerLayout.isDrawerOpen(leftDrawerContainer)) {
+                    drawerLayout.closeDrawer(leftDrawerContainer);
+                }
+
+                if(drawerLayout.isDrawerOpen(rightDrawerContainer)) {
+                    drawerLayout.closeDrawer(rightDrawerContainer);
+                } else {
+                    drawerLayout.openDrawer(rightDrawerContainer);
+                }
+                break;
         }
 
         return super.onOptionsItemSelected(item);

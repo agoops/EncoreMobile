@@ -130,6 +130,22 @@ public class ReplyFragment extends Fragment implements View.OnClickListener {
         clipVideoView.setOnCompletionListener(onCompletionListener);
     }
 
+//    private class DownloadFilesTask extends AsyncTask<URL, Integer, Long> {
+//        protected Long doInBackground(URL... urls) {
+//            int count = urls.length;
+//            for(int i=0; i<count; i++) {
+//                Downloader.downloadFile(urls[i]);
+//                if(isCancelled()) break;
+//            }
+//
+//            return 1l;
+//        }
+//
+//        protected void onPostExecute(Long result) {
+//
+//        }
+//    }
+
     @Override
     public void onClick(View v) {
         switch(v.getId())

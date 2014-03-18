@@ -39,10 +39,6 @@ public class InboxViewAdapter extends ArrayAdapter<Session> implements OnClickLi
 	private Context mContext;
 	private List<Session> mSessionList;
 	private SessionView rowView;
-//    private TextView titleTextView, likesTv, commentsTv, dateTv, inboxRapTypeTv;
-//    private ImageView commentsIcon;
-//    private Button likeButton;
-//    private com.encore.widget.AspectRatioImageView thumbnailIv;
     private double width, height;
     private MediaController mc;
 
@@ -53,8 +49,8 @@ public class InboxViewAdapter extends ArrayAdapter<Session> implements OnClickLi
 
 	public InboxViewAdapter(Context c, int textViewResourceId, List<Session> sessions) {
 		super(c, textViewResourceId, sessions);
-		mContext = c;
-		mSessionList = sessions;
+        mContext = c;
+        mSessionList = sessions;
 
         // When the adapter is instantiated, we'll populate the likedSessionIds
         likedSessionIds = null;

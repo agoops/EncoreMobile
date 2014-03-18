@@ -125,7 +125,7 @@ public class PreviewFragment extends Fragment implements View.OnClickListener {
         try {
             stream = new FileOutputStream(thumbnailFilepath);
             Bitmap bitmap = ThumbnailUtils.createVideoThumbnail(uriString, MediaStore.Video.Thumbnails.MINI_KIND);
-            bitmap.compress(Bitmap.CompressFormat.JPEG, 40, stream);
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 35, stream);
             Log.d(TAG, "jpeg thumbnail successfully generated!");
         } catch (FileNotFoundException e) {
             Log.d(TAG, "Error creating FileOutputStream.");

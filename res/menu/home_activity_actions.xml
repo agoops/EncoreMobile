@@ -1,8 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android" >
 
+    <!--<item-->
+        <!--android:id="@+id/action_video"-->
+        <!--android:icon="@drawable/actionbar_video_selector"-->
+        <!--android:showAsAction="always"/>-->
+
     <item
-        android:id="@+id/action_video"
-        android:icon="@drawable/actionbar_video_selector"
-        android:showAsAction="always"/>
+        android:id="@+id/action_right_nav_drawer"
+        android:icon="@drawable/ic_navigation_drawer"
+        android:showAsAction="always" />
 </menu>

@@ -23,6 +23,7 @@ import android.widget.VideoView;
 import com.encore.API.APIService;
 import com.encore.InboxViewAdapter;
 import com.encore.R;
+import com.encore.SessionFlowManager;
 import com.encore.models.Paginator;
 import com.encore.models.Session;
 import com.encore.util.T;
@@ -95,20 +96,30 @@ public class CompleteFragment extends Fragment implements OnRefreshListener {
 
     public void setupArcMenu(int[] item_drawables, ArcMenu menu) {
 
-        final int itemCount = item_drawables.length;
-        for (int i = 0; i < itemCount; i++) {
-            ImageView item = new ImageView(context);
-            item.setImageResource(item_drawables[i]);
+        ImageView freestyleButton = new ImageView(context);
+        freestyleButton.setImageResource(item_drawables[0]);
 
-            final int position = i;
-            menu.addItem(item, new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Toast.makeText(context, "position " + position, Toast.LENGTH_SHORT)
-                            .show();
-                }
-            });
-        }
+        menu.addItem(freestyleButton, new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Launch freestyle
+                Intent createFreestyle = new Intent(context, SessionFlowManager.class);
+                startActivity(createFreestyle);
+            }
+        });
+
+        ImageView battlesButton = new ImageView(context);
+        battlesButton.setImageResource(item_drawables[1]);
+
+        menu.addItem(battlesButton, new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Launch battles (friend picker dialog or something)
+                Intent createBattle = new Intent(context, FriendPickerActivity.class);
+                createBattle.setFlags(createBattle.getFlags() | Intent.FLAG_ACTIVITY_NO_HISTORY);
+                startActivity(createBattle);
+            }
+        });
 
         // Draw in bottom right corner
         ArcLayout arcLayout = menu.getArcLayout();
@@ -125,9 +136,11 @@ public class CompleteFragment extends Fragment implements OnRefreshListener {
             }
         });
 
-        arcLayout.getViewTreeObserver().addOnPreDrawListener(new ViewTreeObserver.OnPreDrawListener() {
+        arcLayout.getViewTreeObserver().addOnPreDrawListener(new ViewTreeObserver.OnPreDrawListener()
+        {
             @Override
-            public boolean onPreDraw() {
+            public boolean onPreDraw()
+            {
                 isLayoutDrawn = true;
                 setArcMenuMargins();
 
@@ -145,17 +158,10 @@ public class CompleteFragment extends Fragment implements OnRefreshListener {
             final int iconHeight = arcLayout.getMeasuredHeight();
             final int iconWidth = arcLayout.getMeasuredWidth();
 
-//            Log.d(TAG, "arc arcMenuHeight: " + arcMenuHeight);
-//            Log.d(TAG, "arc arcMenuWidth: " + arcMenuWidth);
-//            Log.d(TAG, "arc iconHeight: " + iconHeight);
-//            Log.d(TAG, "arc iconWidth: " + iconWidth);
 
             // TODO: Test if these margins work on other devices too
             float marginRight = (iconHeight - arcMenuWidth)/2,
                     marginBottom = (iconWidth - arcMenuWidth)/2;
-
-//            Log.d(TAG, "arc marginRight: " + marginRight);
-//            Log.d(TAG, "arc marginBottom: " + marginBottom);
 
             RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(
                     RelativeLayout.LayoutParams.WRAP_CONTENT,
