@@ -173,6 +173,7 @@ public class ReplyFragment extends Fragment implements View.OnClickListener {
         if(!isPlaying) {
             // Wait until the current clip has been downloaded
             if(downloadedClipUris.get(curClipIndex) == null) {
+                // TODO: Show visual indicator that the next clip is currently being loaded!
                 return;
             }
 

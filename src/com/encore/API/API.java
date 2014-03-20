@@ -27,8 +27,8 @@ import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.lang.reflect.Type;
 import java.net.HttpURLConnection;
+import java.net.URI;
 import java.net.URL;
-import java.net.URLEncoder;
 //import com.encore.models.Crowds;
 
 public class API {
@@ -612,12 +612,16 @@ public class API {
 
     public String searchUsername(String token, String username) throws Exception {
         Log.d(TAG, "searchUsername called");
-        String url = String.format(SEARCH_USERNAME, username);
+        String urlStr = String.format(SEARCH_USERNAME, username);
+        URL url = new URL(urlStr);
+        URI uri = new URI(url.getProtocol(), url.getUserInfo(), url.getHost(), url.getPort(), url.getPath(), url.getQuery(), url.getRef());
+        url = uri.toURL();
+
         ACCESS_TOKEN = "Token " + token;
         String resultJSON = null;
 
         try {
-            resultJSON = get(url, String.class);
+            resultJSON = get(url.toString(), String.class);
             Log.d(TAG, "searchUsername result: " + resultJSON);
         } catch(Exception e) {
             Log.d(TAG, "searchUsername error");
@@ -642,14 +646,19 @@ public class API {
     }
 
     public String getOtherProfile(String token, String username) throws Exception {
+        // TODO: Encode
         Log.d(TAG, "getOtherProfile called");
-        username = URLEncoder.encode(username, "UTF-8");
-        String url = String.format(USER_OTHER, username);
+        String urlStr = String.format(USER_OTHER, username);
+        URL url = new URL(urlStr);
+        URI uri = new URI(url.getProtocol(), url.getUserInfo(), url.getHost(), url.getPort(), url.getPath(), url.getQuery(), url.getRef());
+        url = uri.toURL();
+        Log.d(TAG, "encoded url: " + url.toString());
         ACCESS_TOKEN = "Token " + token;
         String resultJSON;
 
+
         try {
-            resultJSON = get(url, String.class);
+            resultJSON = get(url.toString(), String.class);
             Log.d(TAG, "getOtherProfile result: " + resultJSON);
         } catch(Exception e) {
             Log.d(TAG, "getOtherProfile error");
