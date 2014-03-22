@@ -156,6 +156,7 @@ public class HomeActivity extends FragmentActivity implements View.OnClickListen
                 launchProfileDetailsFragment(T.PROFILE_INFO_FRIENDS);
                 break;
             case R.id.left_drawer_EditButton:
+                //
                 Intent launchEditProfileActivity = new Intent(context, EditProfileActivity.class);
                 launchEditProfileActivity.putExtra(T.FIRST_NAME, userMe.getFirstName());
                 launchEditProfileActivity.putExtra(T.LAST_NAME, userMe.getLastName());
@@ -378,7 +379,7 @@ public class HomeActivity extends FragmentActivity implements View.OnClickListen
                             File f = T.bitmapToFile(loadedBitmap, 30,
                                     context.getCacheDir(), "Rapback_downsampled_profile");
                             profilePictureFile = f;
-                            profilePictureIv.setImageURI(null);  // refreshes imageview
+                            profilePictureIv.setImageURI(null);
                             profilePictureIv.setImageURI(Uri.fromFile(f));
                             loadedBitmap.recycle();
                         }

@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -27,7 +28,6 @@ import com.encore.R;
 import com.encore.TokenHelper;
 import com.encore.util.T;
 import com.nostra13.universalimageloader.core.ImageLoader;
-import com.nostra13.universalimageloader.core.assist.SimpleImageLoadingListener;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -227,26 +227,33 @@ public class EditProfileActivity extends Activity implements View.OnClickListene
                     selectedImageUri = data == null ? null : data.getData();
 
                     // Delete unused file
-                    if(temp.exists()) {
+                    if(temp != null && temp.exists()) {
                         temp.delete();
                         Log.d(TAG, "Unused profile picture deleted.");
                     }
                 }
+                performCrop(selectedImageUri);
 
-                Log.d(TAG, "selectedImageURI: " + selectedImageUri.toString());
-                imageLoader.loadImage(selectedImageUri.toString(), new SimpleImageLoadingListener() {
-                    @Override
-                    public void onLoadingComplete(String imageUri, View view, Bitmap loadedBitmap) {
-                        // Compress into the file we'll send upstream
-                        profilePic = T.bitmapToFile(loadedBitmap, 25,
-                                context.getCacheDir(), "Rapback_downsampled_profile");
-                        profilePictureIV.setImageURI(null);
-                        profilePictureIV.setImageURI(Uri.fromFile(profilePic));
-                        loadedBitmap.recycle();
-                    }
-                });
+            }
+            if(requestCode == T.CROP_IMAGE_REQUEST_CODE) {
+                if(data != null) {
+                    Log.d(TAG, "Cropping picture returned successfully");
+                    Bundle extras = data.getExtras();
+                    byte[] byteArray = extras.getByteArray("cropped-image");
+                    Bitmap croppedBitmap = BitmapFactory.decodeByteArray(byteArray, 0, byteArray.length);
+                    profilePictureIV.setImageBitmap(croppedBitmap);
+
+                    profilePic = T.bitmapToFile(
+                            croppedBitmap, 90, context.getCacheDir(), "Rapback_downsampled_profile");
+                }
             }
         }
+    }
+
+    private void performCrop(Uri picUri) {
+        Intent cropImageIntent = new Intent(this, CropImageActivity.class);
+        cropImageIntent.putExtra("uri", picUri);
+        startActivityForResult(cropImageIntent, T.CROP_IMAGE_REQUEST_CODE);
     }
 
     // Basic checking of fields

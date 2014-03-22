@@ -250,7 +250,9 @@ public class ReplyFragment extends Fragment implements View.OnClickListener {
     @Override
     public void onStop()
     {
-        getActivity().unregisterReceiver(receiver);
+        if(isComplete) {
+            getActivity().unregisterReceiver(receiver);
+        }
         super.onStop();
     }
 }

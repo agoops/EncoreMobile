@@ -2,6 +2,7 @@ package com.encore.util;
 
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Typeface;
 import android.util.Log;
 import android.widget.TextView;
@@ -85,6 +86,7 @@ public class T {
     // Request codes
     public static final int IMAGE_PICKER_REQUEST_CODE = 100;
     public static final int CONTACT_NUMBER_REQUEST_CODE = 200;
+    public static final int CROP_IMAGE_REQUEST_CODE = 300;
 
     // Arc menu drawables
     public static final int[] ITEM_DRAWABLES = { R.drawable.bg_new_session_btn, R.drawable.bg_new_battle };
@@ -131,6 +133,13 @@ public class T {
             e.printStackTrace();
         }
         return newFile;
+    }
+
+    public static Bitmap compressBitmap(Bitmap bitmap, int compressionQuality) {
+        ByteArrayOutputStream stream = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.JPEG, compressionQuality, stream);
+        byte[] byteArray = stream.toByteArray();
+        return BitmapFactory.decodeByteArray(byteArray, 0, byteArray.length);
     }
 
     public static File bitmapToFile(Bitmap bitmap, int compressionQuality, File dir, String fileName) {
