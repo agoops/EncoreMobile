@@ -9,18 +9,18 @@ import java.util.List;
 /**
  * Created by babakpourkazemi on 12/27/13.
  */
-public class Likes {
+public class LikeArray {
 
-    private static final String TAG = "Likes";
+    private static final String TAG = "LikeArray";
 
     @SerializedName("likes")
     private Like[] likes;
 
-    public Likes() {
+    public LikeArray() {
         this.likes = null;
     }
 
-    public Likes(Like[] likes) {
+    public LikeArray(Like[] likes) {
         this.likes = likes;
     }
 

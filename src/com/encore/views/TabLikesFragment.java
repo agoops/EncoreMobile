@@ -15,7 +15,7 @@ import android.widget.ListView;
 import com.encore.API.APIService;
 import com.encore.R;
 import com.encore.TabLikesAdapter;
-import com.encore.models.Likes;
+import com.encore.models.LikeArray;
 import com.encore.models.Session;
 import com.encore.util.T;
 import com.google.gson.Gson;
@@ -80,7 +80,7 @@ public class TabLikesFragment extends Fragment {
                 String result = resultData.getString("result");
 
                 Log.d(TAG, "result from apiservice is: " + result);
-                likedSessions = new Gson().fromJson(result, Likes.class)
+                likedSessions = new Gson().fromJson(result, LikeArray.class)
                         .getLikedSessionsList();
                 adapter.setItemList(likedSessions);
                 adapter.notifyDataSetChanged();

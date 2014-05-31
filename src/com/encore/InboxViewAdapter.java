@@ -19,7 +19,7 @@ import android.widget.TextView;
 import com.encore.API.APIService;
 import com.encore.models.Clip;
 import com.encore.models.Comment;
-import com.encore.models.Likes;
+import com.encore.models.LikeArray;
 import com.encore.models.Session;
 import com.encore.util.T;
 import com.encore.widget.CommentDialog;
@@ -38,7 +38,6 @@ public class InboxViewAdapter extends ArrayAdapter<Session> implements OnClickLi
 	private static final String TAG = "InboxViewAdapter";
 	private Context mContext;
 	private List<Session> mSessionList;
-	private SessionView rowView;
     private double width, height;
     private MediaController mc;
 
@@ -387,7 +386,7 @@ public class InboxViewAdapter extends ArrayAdapter<Session> implements OnClickLi
                 Log.d(TAG, "APIService returned successful with likes");
                 String result = resultData.getString("result");
                 Log.d(TAG, "result from apiservice is: " + result);
-                likedSessionIds = new Gson().fromJson(result, Likes.class)
+                likedSessionIds = new Gson().fromJson(result, LikeArray.class)
                         .getLikedSessionIds();
             } else {
                 Log.d(TAG, "APIService get session clip url failed?");

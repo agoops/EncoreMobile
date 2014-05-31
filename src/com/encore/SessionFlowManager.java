@@ -25,6 +25,8 @@ public class SessionFlowManager extends FragmentActivity {
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
+        // TODO: Don't pass flags if possible. Too tight coupling.
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.placeholder);
 

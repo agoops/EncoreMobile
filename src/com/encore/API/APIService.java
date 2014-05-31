@@ -70,7 +70,6 @@ public class APIService extends IntentService {
                 getUsers(intent.getExtras());
                 break;
             case T.ADD_CLIP:
-                Log.d(TAG, "case ADD_CLIP in API Service");
                 addClip(intent.getExtras());
                 break;
             case T.ACCEPT_FRIEND_REQUEST:
@@ -138,8 +137,7 @@ public class APIService extends IntentService {
 			e.printStackTrace();
 		}
 	}
-	
-	
+
 	private void addClip(Bundle data) {
 		int sessionId = data.getInt(T.SESSION_ID);
 		MultipartEntityBuilder multipartEntity = MultipartEntityBuilder
@@ -171,6 +169,7 @@ public class APIService extends IntentService {
 		}
 		
 	}
+
 	private void sendFriendRequest(Bundle data) {
 		String token = TokenHelper.getToken(this);
 		
@@ -199,7 +198,6 @@ public class APIService extends IntentService {
 		}
 	}
 	
-	
 	private void getFriends(Bundle data) {
 		Log.d(TAG, "getFriends called");
 		String token = TokenHelper.getToken(this);
@@ -217,6 +215,7 @@ public class APIService extends IntentService {
 			e.printStackTrace();
 		}
 	}
+
 	private void getUsers(Bundle data) {
 		Log.d(TAG, "getProfiles called");
 		String token = TokenHelper.getToken(this);
@@ -273,7 +272,6 @@ public class APIService extends IntentService {
 
 
         // TODO: Add some sort of profile picture flow
-
 		try {
 			JSONObject json = new JSONObject();
             json.put(T.USERNAME, username);

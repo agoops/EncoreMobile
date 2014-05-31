@@ -115,7 +115,7 @@ public class OtherProfileActivity extends Activity implements View.OnClickListen
         imageLoaderWrapper.init();
 
         if(pendingThemSet == null) {
-            // Does this really need to be made? It only executes from ProfileFragment, but
+            // Does this really need to be made? It only executes from ProfileFragment(deleted!), but
             // we always get friends from profile fragment, not pending friends...
             getPendingRequests();
         }

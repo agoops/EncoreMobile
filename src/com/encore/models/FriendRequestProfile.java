@@ -6,6 +6,8 @@ import com.google.gson.annotations.SerializedName;
  * Created by babakpourkazemi on 1/2/14.
  */
 public class FriendRequestProfile {
+    // TODO: Naming is fucking horrible
+
     @SerializedName("sender")
     private User sender;
 

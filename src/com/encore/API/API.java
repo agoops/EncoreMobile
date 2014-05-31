@@ -7,7 +7,7 @@ import com.encore.TokenHelper;
 import com.encore.models.Feedback;
 import com.encore.models.PostComment;
 import com.encore.models.PostLike;
-import com.encore.util.Constants;
+import com.encore.util.T;
 import com.google.gson.Gson;
 import com.squareup.okhttp.OkHttpClient;
 
@@ -48,7 +48,7 @@ public class API {
 	private static String ACCESS_TOKEN = "invalidaccesstoken";
 	private static final String PROD = "http://rapback.herokuapp.com/";
 	private static final String QA = "http://rapchat-django.herokuapp.com/";
-	private static final String BASE_URL = Constants.DEBUG ? QA:PROD;
+	private static final String BASE_URL = T.DEBUG ? QA:PROD;
 
 	// Common URLs
 	private static final String USERS = BASE_URL + "users/";
@@ -71,7 +71,7 @@ public class API {
     private static final String GET_COMPLETE_SESSIONS = SESSIONS + "complete/";
     private static final String CREATE_SESSION = SESSIONS;
     private static final String SESSION_PAGE = SESSIONS + "?page=%s";
-    // Clips
+    // ClipList
     private static final String GET_CLIPS = USER_ME + "clips/";
     private static final String GET_CLIP = CLIP;
     private static final String ADD_CLIP = CLIP;
@@ -241,87 +241,9 @@ public class API {
         return total.toString();
     }
 
-	// ------------- PUT -----------
-	private <T> T put(String url, StringEntity entity, Type type)
-			throws IOException {
-		URL postUrl = new URL(url);
-		HttpURLConnection connection = client.open(postUrl);
-        connection.setRequestProperty(AUTHORIZATION, ACCESS_TOKEN);
-		connection.setRequestProperty("Content-Type", "application/json");
-		connection.setDoOutput(true);
-		OutputStream out = null;
-		InputStream in = null;
-		try {
-			Log.d(TAG, "PUT body: " + entity);
-			connection.setRequestMethod("PUT");
-
-			// Write entity to the output stream
-			out = connection.getOutputStream();
-			entity.writeTo(out);
-			out.close();
-
-			// Read the response code
-			if (connection.getResponseCode() != HttpURLConnection.HTTP_OK
-					&& connection.getResponseCode() != HttpURLConnection.HTTP_CREATED
-					&& connection.getResponseCode() != HttpURLConnection.HTTP_ACCEPTED) {
-				throw new IOException("Unexpected HTTP response: "
-						+ connection.getResponseCode() + " "
-						+ connection.getResponseMessage());
-			}
-
-            // Return the response as the given type
-                    in = connection.getInputStream();
-
-            // return getGson().fromJson(new InputStreamReader(in), type);
-            Log.d(TAG, "Just got input stream: " + in.toString());
-			/* Adding this section to see response */
-            BufferedReader r = new BufferedReader(new InputStreamReader(in));
-            StringBuilder total = new StringBuilder();
-            String line;
-            while ((line = r.readLine()) != null) {
-                total.append(line);
-            }
-            return (T) total.toString();
-
-		} finally {
-			if (out != null)
-				out.close();
-			if (in != null)
-				in.close();
-		}
-	}
-
-	// ------------- DELETE -----------
-	private <T> T delete(String url, StringEntity entity, Type type)
-			throws IOException {
-		URL postUrl = new URL(url);
-		HttpURLConnection connection = client.open(postUrl);
-		InputStream in = null;
-		try {
-			Log.d(TAG, "DELETE");
-			connection.setRequestMethod("DELETE");
-
-			// Read the response code
-			if (connection.getResponseCode() != HttpURLConnection.HTTP_OK
-					&& connection.getResponseCode() != HttpURLConnection.HTTP_CREATED
-					&& connection.getResponseCode() != HttpURLConnection.HTTP_ACCEPTED) {
-				throw new IOException("Unexpected HTTP response: "
-						+ connection.getResponseCode() + " "
-						+ connection.getResponseMessage());
-			}
-
-			// Return the response as the given type
-			in = connection.getInputStream();
-			return getGson().fromJson(new InputStreamReader(in), type);
-		} finally {
-			if (in != null)
-				in.close();
-		}
-	}
-
 	/*************************************************************
 	 * 
-	 * Helper methods to take in the kind of request occurring, and execute the
+	 * Helper methods that take a typed request, and execute the
 	 * proper method above.
 	 * 
 	 * *
@@ -333,7 +255,7 @@ public class API {
 
 	public String acceptFriendRequest(StringEntity entity) throws IOException {
 		String url = REPLY;
-		String result = "emptyresult_failed";
+		String result = "";
 
 		try {
 			result = post(url, entity, String.class);
@@ -350,7 +272,7 @@ public class API {
 
 		String url = String.format(ADD_CLIP, Integer.toString(sessionId));
 		
-		String result = "emptyresult_failed";
+		String result = "";
 		try {
 			result = postClip(entity, url);
 			return result;
@@ -379,7 +301,8 @@ public class API {
 		Log.d(TAG, "login called with entity: " + entity.toString());
 		String url = LOG_IN;
 		isSigningIn = true;
-		String result = "emptystringdawg-API.signin worked?";
+		String result = "";
+
 		try {
 			result = post(url, entity, String.class);
 		} catch (Exception e) {
@@ -393,7 +316,7 @@ public class API {
 			throws Exception {
 		ACCESS_TOKEN = "Token " + token;
 		String url = SEND_FRIEND_REQUEST;
-		String result = "emptystirngdawg-sendfriendrequest probably didn't work";
+		String result = "";
 
 		try {
 			result = post(url, entity, String.class);
@@ -406,7 +329,7 @@ public class API {
 	public String getPendingFriendRequests(String token) throws Exception {
 		ACCESS_TOKEN = "Token " + token;
 		String url = REQUESTS;
-		String result = "emptystringiffailed??";
+		String result = "";
 
 		try {
 			result = get(url, String.class);
@@ -421,7 +344,8 @@ public class API {
 		Log.d(TAG, "getProfiles called");
 		ACCESS_TOKEN = "Token " + token;
 		String url = USERS;
-		String result = "defaultstringifnoresult";
+		String result = "";
+
 		try {
 			result = get(url, String.class);
 			return result;
@@ -435,7 +359,8 @@ public class API {
 		Log.d(TAG, "getFriends called");
 		ACCESS_TOKEN = "Token " + token;
 		String url = FRIENDS;
-		String result = "defaultstringifnoresult";
+		String result = "";
+
 		try {
 			result = get(url, String.class);
 			return result;
@@ -446,20 +371,17 @@ public class API {
 
 	}
 	
-	// POST to sessions/
-	// Creates a new session
 	public String createSession(HttpEntity entity) throws Exception {
-		
 		Log.d(TAG, "createSession() called");
 		String url = CREATE_SESSION;
 		String postResult = null;
 		String result = null;
+
 		try {
 			postResult = postClip(entity, url);
 			result = postResult;
 			Log.d(TAG, "POST result: " + postResult);
 //			result = getGson().fromJson(postResult, String.class);
-
 		} catch (Exception e) {
 			Log.e(TAG, "createSession() error");
 			throw e;
@@ -469,12 +391,11 @@ public class API {
 	
 	public String getLiveSessions() throws IOException {
 		Log.d(TAG, "getLiveSessions called");
-
 		String url = GET_LIVE_SESSIONS;
-		String result = "emptyresult";
+		String result = "";
 		try {
 			result = get(url, String.class);
-			Log.d(TAG, "getLiveSessions resulting JSON: " + result);
+			// Log.d(TAG, "getLiveSessions resulting JSON: " + result);
 		} catch (IOException e) {
 			Log.d(TAG, "getLiveSessions() error");
 			throw e;
@@ -484,12 +405,12 @@ public class API {
 
     public String getCompleteSessions() throws IOException {
         Log.d(TAG, "getCompleteSessions called");
-
         String url = GET_COMPLETE_SESSIONS;
-        String result = "emptyresult";
+        String result = "";
+
         try {
             result = get(url, String.class);
-            Log.d(TAG, "getCompleteSessions resulting JSON: " + result);
+            // Log.d(TAG, "getCompleteSessions resulting JSON: " + result);
         } catch (IOException e) {
             Log.d(TAG, "getLiveSessions() error");
             throw e;
@@ -614,7 +535,8 @@ public class API {
         Log.d(TAG, "searchUsername called");
         String urlStr = String.format(SEARCH_USERNAME, username);
         URL url = new URL(urlStr);
-        URI uri = new URI(url.getProtocol(), url.getUserInfo(), url.getHost(), url.getPort(), url.getPath(), url.getQuery(), url.getRef());
+        URI uri = new URI(url.getProtocol(), url.getUserInfo(), url.getHost(),
+                url.getPort(), url.getPath(), url.getQuery(), url.getRef());
         url = uri.toURL();
 
         ACCESS_TOKEN = "Token " + token;
@@ -650,7 +572,8 @@ public class API {
         Log.d(TAG, "getOtherProfile called");
         String urlStr = String.format(USER_OTHER, username);
         URL url = new URL(urlStr);
-        URI uri = new URI(url.getProtocol(), url.getUserInfo(), url.getHost(), url.getPort(), url.getPath(), url.getQuery(), url.getRef());
+        URI uri = new URI(url.getProtocol(), url.getUserInfo(), url.getHost(),
+                url.getPort(), url.getPath(), url.getQuery(), url.getRef());
         url = uri.toURL();
         Log.d(TAG, "encoded url: " + url.toString());
         ACCESS_TOKEN = "Token " + token;

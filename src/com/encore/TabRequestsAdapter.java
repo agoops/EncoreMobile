@@ -17,7 +17,7 @@ import java.util.List;
  * Created by babakpourkazemi on 1/2/14.
  */
 public class TabRequestsAdapter extends ArrayAdapter<FriendRequestProfile> {
-    private static final String TAG = "CrowdAdapter";
+    private static final String TAG = "TabRequestsAdapter";
     private Context context;
     private int layoutId;
     private List<FriendRequestProfile> friendRequestProfiles;

@@ -13,7 +13,7 @@ import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
 import com.encore.API.APIService;
-import com.encore.models.Likes;
+import com.encore.models.LikeArray;
 import com.encore.models.Session;
 import com.encore.util.T;
 import com.google.gson.Gson;
@@ -95,7 +95,7 @@ public class TabLikesAdapter extends ArrayAdapter<Session> {
                 String result = resultData.getString("result");
 
                 Log.d(TAG, "result from apiservice is: " + result);
-                likedSessions = new Gson().fromJson(result, Likes.class)
+                likedSessions = new Gson().fromJson(result, LikeArray.class)
                         .getLikedSessionsList();
             } else {
                 Log.d(TAG, "APIService get session clip url failed?");

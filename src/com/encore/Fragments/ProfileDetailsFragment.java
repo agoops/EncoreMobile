@@ -21,9 +21,9 @@ import com.encore.TabFriendsAdapter;
 import com.encore.TabLikesAdapter;
 import com.encore.TabRapsAdapter;
 import com.encore.models.Clip;
-import com.encore.models.Clips;
+import com.encore.models.ClipList;
 import com.encore.models.Friends;
-import com.encore.models.Likes;
+import com.encore.models.LikeArray;
 import com.encore.models.Profile;
 import com.encore.models.Session;
 import com.encore.util.T;
@@ -129,8 +129,8 @@ public class ProfileDetailsFragment extends Fragment {
                 String result = data.getString("result");
 
                 Log.d(TAG, "result from apiservice is: " + result);
-                Clips clips = (new Gson()).fromJson(result, Clips.class);
-                ArrayList<Clip> clipsList = clips.getClips();
+                ClipList clipList = (new Gson()).fromJson(result, ClipList.class);
+                ArrayList<Clip> clipsList = clipList.getClips();
 
                 // Update the data on our listview
                 rapsAdapter = new TabRapsAdapter(getActivity(), R.layout.tab_raps_list_row, null);
@@ -188,7 +188,7 @@ public class ProfileDetailsFragment extends Fragment {
                 String result = resultData.getString("result");
 
                 Log.d(TAG, "result from apiservice is: " + result);
-                ArrayList<Session> likedSessions = new Gson().fromJson(result, Likes.class)
+                ArrayList<Session> likedSessions = new Gson().fromJson(result, LikeArray.class)
                         .getLikedSessionsList();
 
                 // Update the data on our listview

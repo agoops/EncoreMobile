@@ -25,6 +25,8 @@ import java.util.Arrays;
 
 public class FriendRequestsFragment extends Fragment {
 
+    // TODO: Use this somewhere
+
 	private static final String TAG = "FriendRequestsFragment";
 	private ListView listView;
 	private FriendRequestFragmentAdapter adapter;

@@ -17,6 +17,8 @@ import java.io.IOException;
 public class T {
     public static final String TAG = "T";
 
+    public static final boolean DEBUG = true;
+
 	public static final String USERNAME = "username";
     public static final String MY_USERNAME = "my_username";
 	public static final String PASSWORD = "password";

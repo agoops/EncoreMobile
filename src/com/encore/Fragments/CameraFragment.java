@@ -60,6 +60,7 @@ public class CameraFragment extends Fragment implements
         setHasOptionsMenu(true);
         context = getActivity();
 
+
         initData();
         playFirstBeat();
 
